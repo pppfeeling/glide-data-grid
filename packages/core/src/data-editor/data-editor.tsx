@@ -3114,12 +3114,42 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     void appendColumn(row, false);
                 }
                 if (updateSelected) {
+                    const newCol = clamp(gridSelection.current.cell[0] + movX, 0, mangledCols.length - 1);
+                    const newRow = clamp(gridSelection.current.cell[1] + movY, 0, mangledRows - 1);
                     updateSelectedCell(
-                        clamp(gridSelection.current.cell[0] + movX, 0, mangledCols.length - 1),
-                        clamp(gridSelection.current.cell[1] + movY, 0, mangledRows - 1),
+                        newCol,
+                        newRow,
                         isEditingLastRow,
                         false
                     );
+                    
+                    // Auto-activate editing when moving with Enter key (movement [0, 1])
+                    if (movX === 0 && movY === 1) {
+                        window.setTimeout(() => {
+                            const cell = getCellContent([newCol - rowMarkerOffset, newRow]);
+                            if (isReadWriteCell(cell)) {
+                                const bounds = gridRef.current?.getBounds(newCol, newRow);
+                                if (bounds && cell.allowOverlay) {
+                                    const activationEvent: CellActivatedEventArgs = {
+                                        inputType: "keyboard",
+                                        key: "Enter",
+                                    };
+                                    onCellActivated?.([newCol - rowMarkerOffset, newRow], activationEvent);
+                                    
+                                    // Start editing with the correct cell content
+                                    setOverlaySimple({
+                                        target: bounds,
+                                        content: cell,
+                                        initialValue: undefined,
+                                        cell: [newCol, newRow],
+                                        highlight: true,
+                                        forceEditMode: true,
+                                        activation: activationEvent,
+                                    });
+                                }
+                            }
+                        }, 50); // Increased delay to ensure selection is updated
+                    }
                 }
             }
             onFinishedEditing?.(newValue, movement);
@@ -3138,6 +3168,12 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             onRowAppended,
             onColumnAppended,
             getCustomNewRowTargetColumn,
+            gridRef,
+            getCellContent,
+            rowMarkerOffset,
+            onCellActivated,
+            reselect,
+            setOverlaySimple,
         ]
     );
 
@@ -3501,34 +3537,35 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             if (handleFixedKeybindings(event)) return;
 
             if (gridSelection.current === undefined) return;
-            const [col, row] = gridSelection.current.cell;
-            const vr = visibleRegionRef.current;
+            // const [col, row] = gridSelection.current.cell;
+            // const vr = visibleRegionRef.current;
 
-            if (
-                editOnType &&
-                !event.metaKey &&
-                !event.ctrlKey &&
-                gridSelection.current !== undefined &&
-                event.key.length === 1 &&
-                /[\p{L}\p{M}\p{N}\p{S}\p{P}]/u.test(event.key) &&
-                event.bounds !== undefined &&
-                isReadWriteCell(getCellContent([col - rowMarkerOffset, Math.max(0, Math.min(row, rows - 1))]))
-            ) {
-                if (
-                    (!showTrailingBlankRow || row !== rows) &&
-                    (vr.y > row || row > vr.y + vr.height || vr.x > col || col > vr.x + vr.width)
-                ) {
-                    return;
-                }
-                const activationEvent: CellActivatedEventArgs = {
-                    inputType: "keyboard",
-                    key: event.key,
-                };
-                onCellActivated?.([col - rowMarkerOffset, row], activationEvent);
-                reselect(event.bounds, activationEvent, event.key);
-                event.stopPropagation();
-                event.preventDefault();
-            }
+            // Character input editing disabled - only double-click and Enter key will activate editing
+            // if (
+            //     editOnType &&
+            //     !event.metaKey &&
+            //     !event.ctrlKey &&
+            //     gridSelection.current !== undefined &&
+            //     event.key.length === 1 &&
+            //     /[\p{L}\p{M}\p{N}\p{S}\p{P}]/u.test(event.key) &&
+            //     event.bounds !== undefined &&
+            //     isReadWriteCell(getCellContent([col - rowMarkerOffset, Math.max(0, Math.min(row, rows - 1))]))
+            // ) {
+            //     if (
+            //         (!showTrailingBlankRow || row !== rows) &&
+            //         (vr.y > row || row > vr.y + vr.height || vr.x > col || col > vr.x + vr.width)
+            //     ) {
+            //         return;
+            //     }
+            //     const activationEvent: CellActivatedEventArgs = {
+            //         inputType: "keyboard",
+            //         key: event.key,
+            //     };
+            //     onCellActivated?.([col - rowMarkerOffset, row], activationEvent);
+            //     reselect(event.bounds, activationEvent, event.key);
+            //     event.stopPropagation();
+            //     event.preventDefault();
+            // }
         },
         [
             editOnType,
