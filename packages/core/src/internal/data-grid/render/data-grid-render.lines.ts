@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable unicorn/no-for-loop */
-import { type Rectangle, CompactSelection } from "../data-grid-types.js";
+import { type Rectangle, CompactSelection, type InnerGridCell, type Item } from "../data-grid-types.js";
 import { CellSet } from "../cell-set.js";
 import groupBy from "lodash/groupBy.js";
 import { getStickyWidth, type MappedGridColumn, getFreezeTrailingHeight } from "./data-grid-lib.js";
@@ -294,7 +294,8 @@ export function drawGridLines(
     freezeTrailingRows: number,
     rows: number,
     theme: FullTheme,
-    verticalOnly: boolean = false
+    verticalOnly: boolean = false,
+    getCellContent?: (cell: Item) => InnerGridCell
 ) {
     if (spans !== undefined) {
         ctx.beginPath();
@@ -322,13 +323,71 @@ export function drawGridLines(
         x += c.width;
         const tx = c.sticky ? x : x + translateX;
         if (tx >= minX && tx <= maxX && verticalBorder(index + 1)) {
-            toDraw.push({
-                x1: tx,
-                y1: Math.max(groupHeaderHeight, minY),
-                x2: tx,
-                y2: Math.min(height, maxY),
-                color: vColor,
-            });
+            // Check if we need to draw per-cell borders
+            if (getCellContent) {
+                // Draw vertical lines per cell, checking right border of current cell and left border of next cell
+                let y = totalHeaderHeight + 0.5;
+                let row = cellYOffset;
+                const target = height - getFreezeTrailingHeight(rows, freezeTrailingRows, getRowHeight);
+                
+                while (y + translateY < target && row < rows) {
+                    const ty = y + translateY;
+                    const rh = getRowHeight(row);
+                    
+                    if (ty >= minY && ty <= maxY - 1) {
+                        const currentCell = getCellContent([c.sourceIndex, row]);
+                        const nextCell = index < effectiveCols.length - 1 ? getCellContent([effectiveCols[index + 1].sourceIndex, row]) : undefined;
+                        
+                        // Draw border if current cell wants right border or next cell wants left border
+                        // Default to true if border properties are undefined (backward compatibility)
+                        const shouldDrawBorder = (currentCell?.borderRight !== false) && (nextCell?.borderLeft !== false);
+                        
+                        if (shouldDrawBorder) {
+                            toDraw.push({
+                                x1: tx,
+                                y1: ty,
+                                x2: tx,
+                                y2: ty + rh,
+                                color: vColor,
+                            });
+                        }
+                    }
+                    
+                    y += rh;
+                    row++;
+                }
+                
+                // Handle trailing frozen rows
+                let freezeY = height + 0.5;
+                for (let i = rows - freezeTrailingRows; i < rows; i++) {
+                    const rh = getRowHeight(i);
+                    freezeY -= rh;
+                    
+                    const currentCell = getCellContent([c.sourceIndex, i]);
+                    const nextCell = index < effectiveCols.length - 1 ? getCellContent([effectiveCols[index + 1].sourceIndex, i]) : undefined;
+                    
+                    const shouldDrawBorder = (currentCell?.borderRight !== false) && (nextCell?.borderLeft !== false);
+                    
+                    if (shouldDrawBorder) {
+                        toDraw.push({
+                            x1: tx,
+                            y1: freezeY,
+                            x2: tx,
+                            y2: freezeY + rh,
+                            color: vColor,
+                        });
+                    }
+                }
+            } else {
+                // Default behavior when getCellContent is not provided
+                toDraw.push({
+                    x1: tx,
+                    y1: Math.max(groupHeaderHeight, minY),
+                    x2: tx,
+                    y2: Math.min(height, maxY),
+                    color: vColor,
+                });
+            }
         }
     }
 
@@ -344,17 +403,83 @@ export function drawGridLines(
         let y = totalHeaderHeight + 0.5;
         let row = cellYOffset;
         const target = freezeY;
+        
         while (y + translateY < target) {
             const ty = y + translateY;
+            
+            // Debug: Check rendering bounds for last few rows
+            if (row >= 5) {
+                console.log(`Render bounds check: row=${row}, ty=${ty}, minY=${minY}, maxY=${maxY}, target=${target}, inBounds=${ty >= minY && ty <= maxY - 1}`);
+            }
+            
             if (ty >= minY && ty <= maxY - 1) {
                 const rowTheme = getRowThemeOverride?.(row);
-                toDraw.push({
-                    x1: minX,
-                    y1: ty,
-                    x2: maxX,
-                    y2: ty,
-                    color: rowTheme?.horizontalBorderColor ?? rowTheme?.borderColor ?? hColor,
-                });
+                const color = rowTheme?.horizontalBorderColor ?? rowTheme?.borderColor ?? hColor;
+                
+                if (getCellContent) {
+                    // Draw horizontal lines per cell, checking bottom border of current row and top border of next row
+                    let x = 0.5;
+                    for (let index = 0; index < effectiveCols.length; index++) {
+                        const c = effectiveCols[index];
+                        if (c.width === 0) continue;
+                        
+                        const startX = c.sticky ? x : x + translateX;
+                        const endX = startX + c.width;
+                        
+                        if (endX >= minX && startX <= maxX && row >= 0) {
+                            // Adjust row index to match actual data rows
+                            const dataRow = row - cellYOffset;
+                            const currentCell = dataRow >= 0 && dataRow < rows ? getCellContent([c.sourceIndex, dataRow]) : undefined;
+                            const nextRowCell = dataRow + 1 >= 0 && dataRow + 1 < rows ? getCellContent([c.sourceIndex, dataRow + 1]) : undefined;
+                            
+                            // Draw border if current cell wants bottom border or next row cell wants top border
+                            let shouldDrawBorder;
+                            
+                            // Explicit control for Department columns (both original and merged)
+                            if (c.sourceIndex === 2 || c.sourceIndex === 3) { // Department columns
+                                shouldDrawBorder = currentCell?.borderBottom === true;
+                            } else {
+                                // Default behavior for other columns (backward compatibility)
+                                shouldDrawBorder = (currentCell?.borderBottom !== false) && (nextRowCell?.borderTop !== false);
+                            }
+                            
+                            if (shouldDrawBorder) {
+                                // For Department columns, apply position adjustment
+                                if (c.sourceIndex === 2 || c.sourceIndex === 3) {
+                                    const rowHeight = getRowHeight(dataRow >= 0 ? dataRow : 0);
+                                    const adjustedY = ty + rowHeight;
+                                    
+                                    toDraw.push({
+                                        x1: Math.max(startX, minX),
+                                        y1: adjustedY,
+                                        x2: Math.min(endX, maxX),
+                                        y2: adjustedY,
+                                        color: color,
+                                    });
+                                } else {
+                                    toDraw.push({
+                                        x1: Math.max(startX, minX),
+                                        y1: ty,
+                                        x2: Math.min(endX, maxX),
+                                        y2: ty,
+                                        color: color,
+                                    });
+                                }
+                            }
+                        }
+                        
+                        x += c.width;
+                    }
+                } else {
+                    // Default behavior when getCellContent is not provided
+                    toDraw.push({
+                        x1: minX,
+                        y1: ty,
+                        x2: maxX,
+                        y2: ty,
+                        color: color,
+                    });
+                }
             }
 
             y += getRowHeight(row);

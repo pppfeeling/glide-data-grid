@@ -26,7 +26,13 @@
       "Bash(npm test)",
       "Bash(npm test:*)",
       "Bash(git add:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(tasklist:*)",
+      "Bash(node:*)",
+      "Bash(NODE_OPTIONS=\"--no-warnings\" npx tsc --noEmit --skipLibCheck)",
+      "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npx storybook dev -p 9012 --no-open)",
+      "Read(//c/Users/pppfe/OneDrive/바탕 화면/**)",
+      "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run storybook)"
     ],
     "deny": [],
     "ask": []

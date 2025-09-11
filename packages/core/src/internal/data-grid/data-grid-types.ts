@@ -318,6 +318,10 @@ export interface BaseGridCell {
     readonly cursor?: CSSProperties["cursor"];
     readonly copyData?: string;
     readonly activationBehaviorOverride?: CellActivationBehavior;
+    readonly borderTop?: boolean;
+    readonly borderLeft?: boolean;
+    readonly borderRight?: boolean;
+    readonly borderBottom?: boolean;
 }
 
 /** @category Cells */
