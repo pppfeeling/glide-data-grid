@@ -3130,12 +3130,29 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                             if (isReadWriteCell(cell)) {
                                 const bounds = gridRef.current?.getBounds(newCol, newRow);
                                 if (bounds && cell.allowOverlay) {
+                                    // Ensure focus is maintained on the grid
+                                    if (gridRef.current) {
+                                        gridRef.current.focus();
+                                    }
+
+                                    // Update selection to the new cell
+                                    const newSelection: GridSelection = {
+                                        current: {
+                                            cell: [newCol, newRow],
+                                            range: { x: newCol, y: newRow, width: 1, height: 1 },
+                                            rangeStack: [],
+                                        },
+                                        columns: CompactSelection.empty(),
+                                        rows: CompactSelection.empty(),
+                                    };
+                                    onGridSelectionChange?.(newSelection);
+
                                     const activationEvent: CellActivatedEventArgs = {
                                         inputType: "keyboard",
                                         key: "Enter",
                                     };
                                     onCellActivated?.([newCol - rowMarkerOffset, newRow], activationEvent);
-                                    
+
                                     // Start editing with the correct cell content
                                     setOverlaySimple({
                                         target: bounds,
