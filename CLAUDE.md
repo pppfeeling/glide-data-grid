@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Glide Data Grid is a canvas-based React data grid component that supports millions of rows with fast scrolling performance. The project is built using a monorepo structure with three packages:
 
 - **`packages/core`** - Main data grid component (`@glideapps/glide-data-grid`)
-- **`packages/cells`** - Additional cell renderers (`@glideapps/glide-data-grid-cells`)  
+- **`packages/cells`** - Additional cell renderers (`@glideapps/glide-data-grid-cells`)
 - **`packages/source`** - Data source utilities (`@glideapps/glide-data-grid-source`)
 
 ## Development Commands
@@ -28,14 +28,14 @@ npm run lint         # Run ESLint and cycle checks
 npm run test         # Run tests with Vitest
 npm run watch        # Watch for changes and rebuild
 
-# Cells package  
+# Cells package
 cd packages/cells
 npm run build        # Build cells package
 npm run lint         # Run ESLint
 npm run test         # Run tests
 
 # Source package
-cd packages/source  
+cd packages/source
 npm run build        # Build source package
 npm run lint         # Run ESLint
 npm run test         # Run tests
@@ -43,7 +43,7 @@ npm run test         # Run tests
 
 ### Testing Commands
 - **`npm run test-source`** - Test source package
-- **`npm run test-cells`** - Test cells package  
+- **`npm run test-cells`** - Test cells package
 - **`npm run test-projects`** - Test integration projects
 
 ## Architecture
@@ -105,7 +105,7 @@ The project uses **Vitest** for testing with **React Testing Library**. Canvas r
 # Run all tests
 npm test
 
-# Test specific React versions  
+# Test specific React versions
 npm run test-18  # React 18
 npm run test-19  # React 19
 
@@ -121,3 +121,7 @@ Test projects demonstrate integration with different frameworks:
 - `test-projects/next-gdg` - Next.js integration
 
 Run with: `npm run test-projects`
+
+"shadcn/ui 마이그레이션 작업을 이어서 진행해주세요.
+  SHADCN_UI_MIGRATION.md 파일과 packages/cells/src/shadcnCell/ 폴더의
+  내용을 확인하고 다음 단계를 진행해주세요."
