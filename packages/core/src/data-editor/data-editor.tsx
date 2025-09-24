@@ -2591,6 +2591,16 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             ty: number
         ) => {
             hasJustScrolled.current = false;
+
+            // Close overlay editor when scrolling
+            if (overlay !== undefined) {
+                const prevRegion = visibleRegionRef.current;
+                const hasScrolled = prevRegion.x !== region.x || prevRegion.y !== region.y;
+                if (hasScrolled) {
+                    setOverlay(undefined);
+                }
+            }
+
             let selected = currentCell;
             if (selected !== undefined) {
                 selected = [selected[0] - rowMarkerOffset, selected[1]];
@@ -2646,11 +2656,13 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         },
         [
             currentCell,
+            overlay,
             rowMarkerOffset,
             showTrailingBlankRow,
             rows,
             freezeColumns,
             freezeTrailingRows,
+            setOverlay,
             setVisibleRegion,
             onVisibleRegionChanged,
         ]
