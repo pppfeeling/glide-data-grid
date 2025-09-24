@@ -2580,6 +2580,66 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         [onHeaderIndicatorClick, rowMarkerOffset]
     );
 
+    // Add parent container scroll detection for overlay termination
+    React.useEffect(() => {
+        if (overlay === undefined) return;
+
+        // Function to find all scrollable parent elements
+        const findScrollableParents = (element: HTMLElement): HTMLElement[] => {
+            const parents: HTMLElement[] = [];
+            let currentParent = element.parentElement;
+
+            while (currentParent && currentParent !== document.documentElement) {
+                const styles = window.getComputedStyle(currentParent);
+                const overflow = styles.overflow + styles.overflowY + styles.overflowX;
+
+                if (overflow.includes('scroll') || overflow.includes('auto')) {
+                    parents.push(currentParent);
+                }
+
+                currentParent = currentParent.parentElement;
+            }
+
+            return parents;
+        };
+
+        const handleParentScroll = (event: Event) => {
+            const target = event.target as Element;
+
+            // Check if this is a scroll from a parent container (not from data-editor itself)
+            if (scrollRef.current && !scrollRef.current.contains(target)) {
+                // Close overlay editor when parent container scrolls
+                setOverlay(undefined);
+            }
+        };
+
+        // Find scrollable parents and add listeners to them
+        const scrollableParents: HTMLElement[] = [];
+        if (scrollRef.current) {
+            const parents = findScrollableParents(scrollRef.current);
+            scrollableParents.push(...parents);
+        }
+
+        // Add scroll listeners to all scrollable parent containers
+        scrollableParents.forEach(parent => {
+            parent.addEventListener('scroll', handleParentScroll);
+        });
+
+        // Also listen to window scroll and document scroll with capture phase
+        window.addEventListener('scroll', handleParentScroll);
+        document.addEventListener('scroll', handleParentScroll, true);
+
+        return () => {
+            // Remove scroll listeners from all scrollable parents
+            scrollableParents.forEach(parent => {
+                parent.removeEventListener('scroll', handleParentScroll);
+            });
+
+            window.removeEventListener('scroll', handleParentScroll);
+            document.removeEventListener('scroll', handleParentScroll, true);
+        };
+    }, [overlay, setOverlay, scrollRef]);
+
     const currentCell = gridSelection?.current?.cell;
     const onVisibleRegionChangedImpl = React.useCallback(
         (

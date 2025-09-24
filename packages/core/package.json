@@ -26,6 +26,7 @@
         }
     },
     "scripts": {
+        "prebuild": "rm -rf dist",
         "build": "./build.sh",
         "lint": "concurrently \"npm run cycle-check\" \"eslint src --ext .ts,.tsx\"",
         "cycle-check": "ts-helper -p ./tsconfig.json -r ./src/index.ts -c",
