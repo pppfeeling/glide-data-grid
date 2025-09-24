@@ -32,8 +32,7 @@
       "Bash(NODE_OPTIONS=\"--no-warnings\" npx tsc --noEmit --skipLibCheck)",
       "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npx storybook dev -p 9012 --no-open)",
       "Read(//c/Users/pppfe/OneDrive/바탕 화면/**)",
-      "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run storybook)",
-      "WebFetch(domain:ui.shadcn.com)"
+      "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run storybook)"
     ],
     "deny": [],
     "ask": []
