@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Grid - 최종 IME 해결 (DataLudi 방식)</title>
+    <style>
+        body { margin: 0; padding: 20px; font-family: sans-serif; }
+        #container { position: relative; display: inline-block; border: 2px solid #333; }
+        #gridCanvas { display: block; cursor: cell; }
+        /* 🔑 핵심 1: 프록시 입력 필드 - 화면 밖으로 숨김 */
+        #proxyInput {
+            position: absolute;
+            top: -1000px;
+            left: -1000px;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            pointer-events: none; /* 마우스 이벤트 무시 */
+        }
+        #cellEditor {
+            position: absolute;
+            border: 2px solid #007acc;
+            padding: 0 4px;
+            margin: 0;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            background: white;
+            z-index: 1000;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        /* 🔑 편집 모드가 아닐 때는 숨김 (프록시로 사용) */
+        #cellEditor:not(.editing) {
+            top: -1000px;
+            left: -1000px;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .info { margin-top: 20px; padding: 10px; background: #f0f0f0; border-radius: 4px; }
+        .debug {
+            margin-top: 10px; padding: 10px; background: #fff3cd;
+            border: 1px solid #ddd; border-radius: 4px; font-family: monospace;
+            font-size: 12px; height: 200px;
+            overflow-y: scroll; white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h2>Canvas Grid - 통합된 CellEditor 방식</h2>
+    <p>`cellEditor` 하나로 모든 걸 처리: 숨김 상태에서 프록시 역할, 편집 모드에서는 해당 셀 위치에 표시됩니다.</p>
+
+    <div id="container">
+        <canvas id="gridCanvas" width="600" height="400"></canvas>
+        <!-- 🔑 핵심 1: cellEditor를 숨김 상태로 두고 프록시로도 사용 -->
+        <input type="text" id="cellEditor" spellcheck="false" autocomplete="off" autocapitalize="off" />
+    </div>
+
+    <div class="info">
+        <strong>통합된 CellEditor 동작 방식:</strong><br>
+        1. Canvas 클릭 시, <strong>`#cellEditor`</strong>에 포커스를 줍니다. (숨김 상태)<br>
+        2. 사용자가 '가'를 입력하면 한글 조합이 숨겨진 <strong>`#cellEditor`</strong>에서 진행됩니다.<br>
+        3. 조합이 완료되면 <strong>`input`</strong> 이벤트가 발생하여 편집 모드로 전환됩니다.<br>
+        4. <strong>`#cellEditor`</strong>가 해당 셀 위치에 나타나서 입력된 내용을 보여줍니다.<br>
+        5. 편집 완료 시 내용이 Canvas에 저장되고 다시 숨김 상태로 전환됩니다.
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+        <strong>디버그 로그:</strong>
+        <button onclick="clearLog()" style="padding: 4px 8px; font-size: 11px;">로그 클리어</button>
+    </div>
+    <div class="debug" id="debugLog"></div>
+
+    <script>
+        class CanvasGrid {
+            constructor() {
+                this.canvas = document.getElementById('gridCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.editor = document.getElementById('cellEditor');
+                this.debugLog = document.getElementById('debugLog');
+
+                this.cellWidth = 120;
+                this.cellHeight = 30;
+                this.rows = 10;
+                this.cols = 5;
+
+                this.selectedRow = 0;
+                this.selectedCol = 0;
+
+                this.data = Array(this.rows).fill().map(() => Array(this.cols).fill(''));
+                this.isEditing = false;
+                this.isComposing = false;
+                this.debugMessages = [];
+
+                this.init();
+            }
+
+            init() {
+                this.drawGrid();
+                this.bindEvents();
+                this.focusEditor();
+                this.log('Canvas 초기화 완료. 셀을 클릭하거나 방향키로 이동 후 문자를 입력하세요.');
+            }
+            
+            log(message) {
+                this.debugMessages.unshift(`${new Date().toLocaleTimeString()}: ${message}`);
+                if (this.debugMessages.length > 50) this.debugMessages.pop();
+                this.debugLog.innerHTML = this.debugMessages.join('<br>');
+                this.debugLog.scrollTop = 0;
+            }
+
+            bindEvents() {
+                // 🔑 핵심 2: Canvas 클릭 시 CellEditor에 포커스
+                this.canvas.addEventListener('click', this.handleCanvasClick.bind(this));
+                this.canvas.addEventListener('dblclick', this.handleCanvasDblClick.bind(this));
+
+                // 🔑 핵심 3: CellEditor에서 모든 이벤트 처리
+                this.editor.addEventListener('keydown', this.handleEditorKeydown.bind(this));
+                this.editor.addEventListener('input', this.handleEditorInput.bind(this));
+                this.editor.addEventListener('blur', this.handleEditorBlur.bind(this));
+                
+            }
+
+            focusEditor() {
+                this.editor.focus();
+                this.log('CellEditor에 포커스 설정');
+            }
+
+            handleCanvasClick(e) {
+                if (this.isEditing) this.finishEdit();
+
+                const rect = this.canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const col = Math.floor(x / this.cellWidth);
+                const row = Math.floor(y / this.cellHeight);
+
+                if (row >= 0 && row < this.rows && col >= 0 && col < this.cols) {
+                    this.selectCell(row, col);
+                }
+                this.focusEditor();
+            }
+
+            handleCanvasDblClick(e) {
+                if (!this.isEditing) {
+                    this.log('더블클릭으로 편집 시작');
+                    this.startEdit(true); // 더블클릭 시 기존 내용 유지
+                }
+            }
+            
+            // 🔑 핵심 4: CellEditor의 input 핸들러
+            handleEditorInput(e) {
+                const inputText = this.editor.value;
+                this.log(`Editor input: "${inputText}" (편집중: ${this.isEditing}, 조합중: ${this.isComposing})`);
+
+                // 편집 모드가 아니고 입력이 있으면 편집 시작
+                if (!this.isEditing && inputText && !this.isComposing) {
+                    this.log(`편집 모드로 전환: "${inputText}"`);
+                    this.startEdit(false, inputText);
+                }
+            }
+
+            handleEditorKeydown(e) {
+                this.log(`Editor keydown: key="${e.key}" (편집중: ${this.isEditing})`);
+
+                if (this.isComposing) return;
+
+                if (this.isEditing) {
+                    // 편집 모드일 때
+                    switch(e.key) {
+                        case 'Enter':
+                            this.finishEdit();
+                            this.moveSelection(1, 0);
+                            e.preventDefault();
+                            break;
+                        case 'Tab':
+                            this.finishEdit();
+                            this.moveSelection(0, e.shiftKey ? -1 : 1);
+                            e.preventDefault();
+                            break;
+                        case 'Escape':
+                            this.cancelEdit();
+                            e.preventDefault();
+                            break;
+                    }
+                } else {
+                    // 탐색 모드일 때
+                    if (this.isNavigationKey(e)) {
+                        e.preventDefault();
+                        this.handleNavigationKey(e);
+                    }
+                }
+            }
+
+            handleEditorBlur() {
+                this.log('Editor blur 이벤트 발생');
+                // IME 조합 중에 포커스가 떠나는 것을 방지
+                setTimeout(() => {
+                    if (this.isEditing && !this.isComposing) {
+                        this.log('편집 종료 (blur로 인한)');
+                        this.finishEdit();
+                    }
+                }, 100);
+            }
+            
+            isNavigationKey(e) {
+                const navKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'PageUp', 'PageDown', 'Delete', 'Backspace', 'F2'];
+                return navKeys.includes(e.key);
+            }
+
+            // 🔑 핵심 5: startEdit - cellEditor를 편집 모드로 전환
+            startEdit(keepContent = false, initialText = '') {
+                if (this.isEditing) return;
+
+                this.isEditing = true;
+                this.editor.classList.add('editing'); // 편집 모드 CSS 클래스 추가
+                this.drawGrid();
+
+                const x = this.selectedCol * this.cellWidth;
+                const y = this.selectedRow * this.cellHeight;
+
+                // 편집 모드에서는 셀 위치에 표시
+                this.editor.style.left = x + 'px';
+                this.editor.style.top = y + 'px';
+                this.editor.style.width = this.cellWidth + 'px';
+                this.editor.style.height = this.cellHeight + 'px';
+
+                const value = keepContent ? this.data[this.selectedRow][this.selectedCol] || '' : initialText;
+                this.editor.value = value;
+                this.log(`편집 시작: (${this.selectedRow}, ${this.selectedCol}) - 초기값: "${value}"`);
+
+                this.editor.focus();
+                this.editor.setSelectionRange(value.length, value.length);
+            }
+
+
+            finishEdit() {
+                if (!this.isEditing) return;
+
+                this.log(`편집 완료: "${this.editor.value}"`);
+
+                // Canvas에 값 저장
+                this.data[this.selectedRow][this.selectedCol] = this.editor.value;
+
+                // 편집 모드 해제
+                this.editor.classList.remove('editing');
+                this.editor.value = ''; // 입력 필드 초기화
+                this.isEditing = false;
+
+                this.focusEditor(); // 다시 숨김 상태로 포커스 유지
+                this.drawGrid();
+            }
+
+            cancelEdit() {
+                if (!this.isEditing) return;
+
+                this.log('편집 취소');
+
+                // 편집 모드 해제
+                this.editor.classList.remove('editing');
+                this.editor.value = ''; // 입력 필드 초기화
+                this.isEditing = false;
+
+                this.focusEditor(); // 다시 숨김 상태로 포커스 유지
+                this.drawGrid();
+            }
+
+            handleNavigationKey(e) {
+                let deltaRow = 0, deltaCol = 0;
+                
+                switch(e.key) {
+                    case 'ArrowUp': deltaRow = -1; break;
+                    case 'ArrowDown': deltaRow = 1; break;
+                    case 'ArrowLeft': deltaCol = -1; break;
+                    case 'ArrowRight': deltaCol = 1; break;
+                    case 'F2': this.startEdit(true); return;
+                    case 'Delete':
+                    case 'Backspace':
+                        this.data[this.selectedRow][this.selectedCol] = '';
+                        this.drawGrid();
+                        return;
+                }
+                
+                this.moveSelection(deltaRow, deltaCol);
+            }
+            
+            selectCell(row, col) {
+                this.selectedRow = row;
+                this.selectedCol = col;
+                this.drawGrid();
+                this.log(`셀 선택: (${row}, ${col})`);
+            }
+            
+            moveSelection(deltaRow, deltaCol) {
+                const newRow = Math.max(0, Math.min(this.rows - 1, this.selectedRow + deltaRow));
+                const newCol = Math.max(0, Math.min(this.cols - 1, this.selectedCol + deltaCol));
+                this.selectCell(newRow, newCol);
+            }
+            
+            drawGrid() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                for (let row = 0; row < this.rows; row++) {
+                    for (let col = 0; col < this.cols; col++) {
+                        const x = col * this.cellWidth;
+                        const y = row * this.cellHeight;
+                        
+                        this.ctx.strokeStyle = '#ccc';
+                        this.ctx.lineWidth = 1;
+                        this.ctx.strokeRect(x, y, this.cellWidth, this.cellHeight);
+                        
+                        const text = this.data[row][col];
+                        if (text) {
+                            this.ctx.fillStyle = '#333';
+                            this.ctx.font = '14px Arial';
+                            this.ctx.textAlign = 'left';
+                            this.ctx.textBaseline = 'middle';
+                            this.ctx.fillText(text, x + 5, y + this.cellHeight / 2);
+                        }
+                    }
+                }
+                
+                if (!this.isEditing) {
+                    const x = this.selectedCol * this.cellWidth;
+                    const y = this.selectedRow * this.cellHeight;
+                    this.ctx.strokeStyle = '#007acc';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.strokeRect(x, y, this.cellWidth, this.cellHeight);
+                }
+            }
+        }
+        
+        function clearLog() {
+            const gridInstance = window.gridInstance;
+            if (gridInstance) {
+                gridInstance.debugMessages = [];
+                gridInstance.log('로그가 수동으로 클리어되었습니다.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.gridInstance = new CanvasGrid();
+        });
+    </script>
+</body>
+</html>
