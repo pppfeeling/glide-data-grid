@@ -163,6 +163,7 @@ export interface BaseGridColumn {
         readonly themeOverride?: Partial<Theme>;
         readonly disabled?: boolean;
     };
+    readonly rowGroupBorder?: boolean;
 }
 
 /** @category Columns */

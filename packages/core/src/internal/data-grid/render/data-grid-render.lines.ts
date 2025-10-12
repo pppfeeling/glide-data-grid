@@ -329,19 +329,22 @@ export function drawGridLines(
                 let y = totalHeaderHeight + 0.5;
                 let row = cellYOffset;
                 const target = height - getFreezeTrailingHeight(rows, freezeTrailingRows, getRowHeight);
-                
+
                 while (y + translateY < target && row < rows) {
                     const ty = y + translateY;
                     const rh = getRowHeight(row);
-                    
+
                     if (ty >= minY && ty <= maxY - 1) {
                         const currentCell = getCellContent([c.sourceIndex, row]);
-                        const nextCell = index < effectiveCols.length - 1 ? getCellContent([effectiveCols[index + 1].sourceIndex, row]) : undefined;
-                        
+                        const nextCell =
+                            index < effectiveCols.length - 1
+                                ? getCellContent([effectiveCols[index + 1].sourceIndex, row])
+                                : undefined;
+
                         // Draw border if current cell wants right border or next cell wants left border
                         // Default to true if border properties are undefined (backward compatibility)
-                        const shouldDrawBorder = (currentCell?.borderRight !== false) && (nextCell?.borderLeft !== false);
-                        
+                        const shouldDrawBorder = currentCell?.borderRight !== false && nextCell?.borderLeft !== false;
+
                         if (shouldDrawBorder) {
                             toDraw.push({
                                 x1: tx,
@@ -352,22 +355,25 @@ export function drawGridLines(
                             });
                         }
                     }
-                    
+
                     y += rh;
                     row++;
                 }
-                
+
                 // Handle trailing frozen rows
                 let freezeY = height + 0.5;
                 for (let i = rows - freezeTrailingRows; i < rows; i++) {
                     const rh = getRowHeight(i);
                     freezeY -= rh;
-                    
+
                     const currentCell = getCellContent([c.sourceIndex, i]);
-                    const nextCell = index < effectiveCols.length - 1 ? getCellContent([effectiveCols[index + 1].sourceIndex, i]) : undefined;
-                    
-                    const shouldDrawBorder = (currentCell?.borderRight !== false) && (nextCell?.borderLeft !== false);
-                    
+                    const nextCell =
+                        index < effectiveCols.length - 1
+                            ? getCellContent([effectiveCols[index + 1].sourceIndex, i])
+                            : undefined;
+
+                    const shouldDrawBorder = currentCell?.borderRight !== false && nextCell?.borderLeft !== false;
+
                     if (shouldDrawBorder) {
                         toDraw.push({
                             x1: tx,
@@ -403,71 +409,58 @@ export function drawGridLines(
         let y = totalHeaderHeight + 0.5;
         let row = cellYOffset;
         const target = freezeY;
-        
+
         while (y + translateY < target) {
             const ty = y + translateY;
-            
-            // Debug: Check rendering bounds for last few rows
-            if (row >= 5) {
-                console.log(`Render bounds check: row=${row}, ty=${ty}, minY=${minY}, maxY=${maxY}, target=${target}, inBounds=${ty >= minY && ty <= maxY - 1}`);
-            }
-            
+
             if (ty >= minY && ty <= maxY - 1) {
                 const rowTheme = getRowThemeOverride?.(row);
                 const color = rowTheme?.horizontalBorderColor ?? rowTheme?.borderColor ?? hColor;
-                
+
                 if (getCellContent) {
-                    // Draw horizontal lines per cell, checking bottom border of current row and top border of next row
+                    // Draw horizontal lines per cell, checking for merge condition
                     let x = 0.5;
                     for (let index = 0; index < effectiveCols.length; index++) {
                         const c = effectiveCols[index];
                         if (c.width === 0) continue;
-                        
+
                         const startX = c.sticky ? x : x + translateX;
                         const endX = startX + c.width;
-                        
-                        if (endX >= minX && startX <= maxX && row >= 0) {
-                            // Adjust row index to match actual data rows
-                            const dataRow = row - cellYOffset;
-                            const currentCell = dataRow >= 0 && dataRow < rows ? getCellContent([c.sourceIndex, dataRow]) : undefined;
-                            const nextRowCell = dataRow + 1 >= 0 && dataRow + 1 < rows ? getCellContent([c.sourceIndex, dataRow + 1]) : undefined;
-                            
-                            // Draw border if current cell wants bottom border or next row cell wants top border
-                            let shouldDrawBorder;
-                            
-                            // Explicit control for Department columns (both original and merged)
-                            if (c.sourceIndex === 2 || c.sourceIndex === 3) { // Department columns
-                                shouldDrawBorder = currentCell?.borderBottom === true;
-                            } else {
-                                // Default behavior for other columns (backward compatibility)
-                                shouldDrawBorder = (currentCell?.borderBottom !== false) && (nextRowCell?.borderTop !== false);
-                            }
-                            
-                            if (shouldDrawBorder) {
-                                // For Department columns, apply position adjustment
-                                if (c.sourceIndex === 2 || c.sourceIndex === 3) {
-                                    const rowHeight = getRowHeight(dataRow >= 0 ? dataRow : 0);
-                                    const adjustedY = ty + rowHeight;
-                                    
-                                    toDraw.push({
-                                        x1: Math.max(startX, minX),
-                                        y1: adjustedY,
-                                        x2: Math.min(endX, maxX),
-                                        y2: adjustedY,
-                                        color: color,
-                                    });
-                                } else {
-                                    toDraw.push({
-                                        x1: Math.max(startX, minX),
-                                        y1: ty,
-                                        x2: Math.min(endX, maxX),
-                                        y2: ty,
-                                        color: color,
-                                    });
+
+                        if (endX >= minX && startX <= maxX) {
+                            let shouldDrawBorder = true;
+
+                            const currentCell = getCellContent([c.sourceIndex, row]);
+
+                            if ((c as any).rowGroupBorder === true && rows > 1) {
+                                const oldRowCell = getCellContent([c.sourceIndex, row - 1]);
+                                if (
+                                    "data" in currentCell &&
+                                    "data" in oldRowCell &&
+                                    currentCell.data === oldRowCell.data
+                                ) {
+                                    shouldDrawBorder = false;
                                 }
+                            } else {
+                                // Fallback to existing explicit border control
+                                const nextRowCell =
+                                    row + 1 < rows ? getCellContent([c.sourceIndex, row + 1]) : undefined;
+                                // Default behavior (backward compatibility)
+                                shouldDrawBorder =
+                                    currentCell?.borderBottom !== false && nextRowCell?.borderTop !== false;
+                            }
+
+                            if (shouldDrawBorder) {
+                                toDraw.push({
+                                    x1: Math.max(startX, minX),
+                                    y1: ty,
+                                    x2: Math.min(endX, maxX),
+                                    y2: ty,
+                                    color: color,
+                                });
                             }
                         }
-                        
+
                         x += c.width;
                     }
                 } else {
