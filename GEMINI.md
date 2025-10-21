@@ -1,6 +1,8 @@
-# CLAUDE.md
+# GEMINI.md
 
-This file provides guidance to gemini when working with code in this repository.
+- This file provides guidance to gemini when working with code in this repository.
+- 답변은 용어는 영어로 나머지 설명은  **한국어**로 해주세요
+
 
 ## Project Overview
 
@@ -351,3 +353,7 @@ To debug a different story, replace `add-columns` with the story's name in the U
 ## Analysis
 
 For a detailed analysis of specific files and features, please see [Analazy.md](./Analazy.md).
+
+# API 문서
+For a detailed analysis of specific features, please see
+**[api.md](C:\workspace\glide-data-grid\packages\core\API.md)**
