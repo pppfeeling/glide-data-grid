@@ -35,16 +35,19 @@ interface AddColumnsProps {
 }
 
 export const AddColumns: React.FC<AddColumnsProps> = p => {
-    const { cols, getCellContent } = useMockDataGenerator(p.columnsCount);
+    let { cols, getCellContent, onColumnResize } = useMockDataGenerator(p.columnsCount);
+
+    cols = cols.map((c, i) => ({ ...c, grow: i }));
 
     return (
         <DataEditor
             {...defaultProps}
             rowMarkers="number"
             getCellContent={getCellContent}
-            experimental={{ strict: true }}
+            freezeTrailingRows={1}
             columns={cols}
-            rows={10_000}
+            onColumnResize={onColumnResize}
+            rows={20}
         />
     );
 };

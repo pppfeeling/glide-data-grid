@@ -298,7 +298,7 @@ function getResizableColumns(amount: number, group: boolean): GridColumnWithMock
                     displayData: firstName,
                     data: firstName,
                     allowOverlay: true,
-                    readonly: true,
+                    readonly: false,
                 };
             },
         },
