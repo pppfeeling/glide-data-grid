@@ -7,7 +7,6 @@ import type { GetCellRendererCallback } from "../../cells/cell-types.js";
 import {
     type EditableGridCell,
     type GridCell,
-    GridCellKind,
     isEditableGridCell,
     isInnerOnlyCell,
     isObjectEditorCallbackResult,
@@ -94,11 +93,6 @@ const DataGridOverlayEditor: React.FunctionComponent<DataGridOverlayEditorProps>
 
     const setTempValue = React.useCallback(
         (newVal: GridCell | undefined) => {
-            // Update latest input value for Korean input tracking
-            if (newVal?.kind === GridCellKind.Text) {
-                latestInputValue.current = newVal.data;
-            }
-            
             if (validateCell !== undefined && newVal !== undefined && isEditableGridCell(newVal)) {
                 const validResult = validateCell(cell, newVal, lastValueRef.current);
                 if (validResult === false) {
@@ -117,8 +111,6 @@ const DataGridOverlayEditor: React.FunctionComponent<DataGridOverlayEditorProps>
 
     const finished = React.useRef(false);
     const customMotion = React.useRef<[-1 | 0 | 1, -1 | 0 | 1] | undefined>(undefined);
-    const isComposing = React.useRef(false);
-    const latestInputValue = React.useRef<string>("");
 
     const onClickOutside = React.useCallback(() => {
         onFinishEditing(tempValue, [0, 0]);
@@ -136,12 +128,6 @@ const DataGridOverlayEditor: React.FunctionComponent<DataGridOverlayEditorProps>
     const onKeyDown = React.useCallback(
         async (event: React.KeyboardEvent) => {
             let save = false;
-            
-            // Handle Korean/Chinese input composition - don't interfere with IME
-            if (event.nativeEvent.isComposing || isComposing.current) {
-                return; // Let IME handle the input completely
-            }
-            
             if (event.key === "Escape") {
                 event.stopPropagation();
                 event.preventDefault();
@@ -163,44 +149,15 @@ const DataGridOverlayEditor: React.FunctionComponent<DataGridOverlayEditorProps>
                 save = true;
             }
 
-            if (customMotion.current !== undefined) {
-                window.setTimeout(() => {
-                    if (!finished.current) {
-                        onFinishEditing(save ? tempValue : undefined, customMotion.current ?? [0, 0]);
-                        finished.current = true;
-                    }
-                }, 0);
-            }
+            window.setTimeout(() => {
+                if (!finished.current && customMotion.current !== undefined) {
+                    onFinishEditing(save ? tempValue : undefined, customMotion.current);
+                    finished.current = true;
+                }
+            }, 0);
         },
         [onFinishEditing, tempValue]
     );
-
-    const onCompositionStart = React.useCallback(() => {
-        isComposing.current = true;
-    }, []);
-
-    const onCompositionEnd = React.useCallback((event: React.CompositionEvent) => {
-        isComposing.current = false;
-        // Capture the final composed value for Korean input and update tempValue immediately
-        if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
-            latestInputValue.current = event.target.value;
-            
-            // Update tempValue with the composed text for Korean/Chinese input
-            const currentContent = tempValue ?? content;
-            if (currentContent.kind === GridCellKind.Text) {
-                const updatedValue = {
-                    ...currentContent,
-                    data: event.target.value,
-                };
-                setTempValue(updatedValue);
-            }
-        }
-        
-        // Small delay to ensure composition is fully finished before allowing other key events
-        setTimeout(() => {
-            isComposing.current = false;
-        }, 10);
-    }, [tempValue, content, setTempValue]);
 
     const targetValue = tempValue ?? content;
 
@@ -292,12 +249,7 @@ const DataGridOverlayEditor: React.FunctionComponent<DataGridOverlayEditorProps>
                     targetY={target.y - bloomY}
                     targetWidth={target.width + bloomX * 2}
                     targetHeight={target.height + bloomY * 2}>
-                    <div 
-                        className="gdg-clip-region" 
-                        onKeyDown={onKeyDown}
-                        onCompositionStart={onCompositionStart}
-                        onCompositionEnd={onCompositionEnd}
-                    >
+                    <div className="gdg-clip-region" onKeyDown={onKeyDown}>
                         {editor}
                     </div>
                 </DataGridOverlayEditorStyle>
