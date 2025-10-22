@@ -2,6 +2,7 @@
 
 - This file provides guidance to gemini when working with code in this repository.
 - 답변은 용어는 영어로 나머지 설명은  **한국어**로 해주세요
+- 답변의 내용 중 코드에 대해서 copy해서 **소스코드에 넣기 쉽도록 번호는 붙이지 말아** 주십시오.
 
 
 ## Project Overview

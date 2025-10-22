@@ -164,6 +164,7 @@ export interface BaseGridColumn {
         readonly disabled?: boolean;
     };
     readonly rowGroupBorder?: boolean;
+    readonly required?: boolean;
 }
 
 /** @category Columns */
