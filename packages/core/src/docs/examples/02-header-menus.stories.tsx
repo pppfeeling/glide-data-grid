@@ -9,8 +9,10 @@ import {
     defaultProps,
     useAllMockedKinds,
 } from "../../data-editor/stories/utils.js";
-import type { GridColumn, Rectangle } from "../../internal/data-grid/data-grid-types.js";
+import { GridColumnIcon, type GridColumn, type Rectangle } from "../../internal/data-grid/data-grid-types.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
+import { getActionBoundsForGroup } from "../../internal/data-grid/render/data-grid-render.header.js";
+import { pointInRect } from "../../common/math.js";
 
 export default {
     title: "Glide-Data-Grid/DataEditor Demos",
@@ -19,7 +21,7 @@ export default {
         (Story: React.ComponentType) => (
             <SimpleThemeWrapper>
                 <BeautifulWrapper
-                    title="Header menus"
+                    title="02. Header menus"
                     description={
                         <>
                             <Description>
@@ -73,26 +75,36 @@ const SimpleMenu = styled.div`
 `;
 
 export const HeaderMenus: React.VFC = () => {
-    const { cols, getCellContent, onColumnResize, setCellValue } = useAllMockedKinds();
+    const { cols, getCellContent } = useAllMockedKinds();
 
-    const realCols = React.useMemo(() => {
+    const realCols = React.useMemo(():GridColumn[] => {
         return cols.map((c, index) => {
             if (index === 2) {
                 return {
                     ...c,
+                    group: "Details",
                     hasMenu: true,
                     menuIcon: "dots",
                     overlayIcon: "rowOwnerOverlay",
+                    themeOverride: {
+                        accentColor: "red",  //overlayIcon text 변경
+                        bgHeader: "blue",    //overlayIcon bg 변경
+                        bgHeaderHasFocus: "green" //select시 head색상 변경
+                    },
                 };
             } else if (index === 3) {
                 return {
                     ...c,
+                    group: "Details",
+                    overlayIcon: GridColumnIcon.HeaderDate,
+                    icon: GridColumnIcon.HeaderCode,
                     hasMenu: true,
                     menuIcon: "headerUri",
                 };
             } else if (index === 4) {
                 return {
                     ...c,
+                    group: "Details",
                     title: "CUSTOM",
                     icon: "custom",
                     themeOverride: {
@@ -106,6 +118,7 @@ export const HeaderMenus: React.VFC = () => {
 
             return {
                 ...c,
+                group: "General",
                 hasMenu: false,
                 required: true,
                 themeOverride: {
@@ -170,7 +183,7 @@ export const HeaderMenus: React.VFC = () => {
       ctx.fillStyle = "red";
       ctx.fill();
             
-    }, []);
+    }, [realCols]);
 
     const headerIcons = React.useMemo<SpriteMap>(() => {
             return {
@@ -196,20 +209,40 @@ export const HeaderMenus: React.VFC = () => {
         console.log("Header clicked");
     }, []);
 
+    const getGroupDetails = React.useCallback((groupName: string) => {
+       if (groupName === "Details") {
+           return {
+               name: "상세",
+               actions: [
+                   {
+                       title: "클릭테스트",
+                       icon: GridColumnIcon.HeaderArray,
+                       onClick: (e: GroupHeaderClickedEventArgs) => {
+                           console.log("click", e);
+                       },
+                   },
+               ],
+           };
+       }
+       return {
+           name: groupName,
+       };
+     }, []);
+
+
+
     return (
         <>
             <DataEditor
-                {...defaultProps}
                 getCellContent={getCellContent}
+                columns={realCols}
+                rows={1000}
                 onHeaderMenuClick={onHeaderMenuClick}
                 onHeaderClicked={onHeaderClicked}
-                columns={realCols}
-                onCellContextMenu={(_, e) => e.preventDefault()}
-                onCellEdited={setCellValue}
-                onColumnResize={onColumnResize}
-                rows={1000}
                 drawHeader={drawHeader}
                 headerIcons={headerIcons}
+                headerHeight={40}
+                getGroupDetails={getGroupDetails}
             />
             {isOpen &&
                 renderLayer(
@@ -225,3 +258,39 @@ export const HeaderMenus: React.VFC = () => {
         </>
     );
 };
+
+HeaderMenus.storyName = "02. Header Menus";
+
+/**
+ <DataEditor
+   // ... 다른 props
+   getGroupDetails={groupName => {
+       // 'Details' 그룹에 대해서만 특별한 설정을 적용
+       if (groupName === "Details") {
+           return {
+               name: "상세 정보", // . 표시 이름을 "상세 정보"로 지정        
+               icon: GridColumnIcon.HeaderCode, // . 이름 옆에 아이콘 추가   
+               actions: [ // . 액션 버튼 추가
+                  {
+                      title: "그룹 설정 열기",
+                      icon: GridColumnIcon.HeaderSettings,
+                      onClick: (e) => {
+                          alert(`'상세 정보' 그룹의 설정을 엽니다.`);        
+                          console.log(e);
+                      },
+                  },
+              ],
+              overrideTheme: { // . 테마 재정의
+                  bgHeader: "#ffff", // 그룹 헤더 배경색을 AliceBlue로 변경
+                  textHeader: "#"   // 그룹 헤더 글자색 변경
+              }
+          };
+      }
+
+      // 그 외 다른 모든 그룹(예: 'General')은 기본 설정을 사용
+      return {
+          name: groupName, // groupName을 그대로 표시 이름으로 사용
+      };
+  }}
+/>
+ */

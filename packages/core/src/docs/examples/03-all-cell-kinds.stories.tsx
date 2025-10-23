@@ -8,6 +8,7 @@ import {
     useAllMockedKinds,
 } from "../../data-editor/stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
+import type { GridCell } from "../../internal/data-grid/data-grid-types.js";
 
 export default {
     title: "Glide-Data-Grid/DataEditor Demos",
@@ -32,10 +33,20 @@ export default {
 export const AllCellKinds: React.VFC = () => {
     const { cols, getCellContent, onColumnResize, setCellValue } = useAllMockedKinds();
 
+    const getCellContentNew = (cell: Item): GridCell => {
+      let ret:GridCell = getCellContent(cell);
+      ret = {
+        ...ret,
+         tooltip: "이 셀에 대한 추가 정보", 
+         
+      }
+
+    }
+
     return (
         <DataEditor
             {...defaultProps}
-            getCellContent={getCellContent}
+            getCellContent={getCellContentNew}
             columns={cols}
             onCellEdited={setCellValue}
             onPaste={true}
@@ -52,10 +63,12 @@ export const AllCellKinds: React.VFC = () => {
                     },
                 },
             ]}
-            cellActivationBehavior="single-click"
+            cellActivationBehavior="second-click"
             editorBloom={[-4, -4]}
-            drawFocusRing={false}
+            
             rows={1000}
         />
     );
 };
+
+AllCellKinds.storyName = "03. Cell";
