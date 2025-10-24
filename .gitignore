@@ -10,3 +10,4 @@ coverage/
 *.tsbuildinfo
 gen-docs/
 .env
+.gemini/settings.json
