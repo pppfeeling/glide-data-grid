@@ -20,7 +20,7 @@ export default {
                     title="Lotsa cell kinds"
                     description={
                         <Description>
-                            Data grid supports plenty cell kinds. Anything under <PropName>GridCellKind</PropName>.
+                            Data grid supports plenty cell kinds. Anything under .
                         </Description>
                     }>
                     <Story />
@@ -35,11 +35,7 @@ export const AllCellKinds: React.VFC = () => {
 
     const getCellContentNew = (cell: Item): GridCell => {
       let ret:GridCell = getCellContent(cell);
-      ret = {
-        ...ret,
-         tooltip: "이 셀에 대한 추가 정보", 
-         
-      }
+      return ret 
 
     }
 
