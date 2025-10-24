@@ -309,7 +309,6 @@ export function drawGrid(arg: DrawGridArg, lastArg: DrawGridArg | undefined) {
             rows,
             theme,
             true,
-            getCellContent
         );
 
         overlayCtx.beginPath();
@@ -718,8 +717,6 @@ export function drawGrid(arg: DrawGridArg, lastArg: DrawGridArg | undefined) {
         freezeTrailingRows,
         rows,
         theme,
-        false,
-        getCellContent
     );
 
     highlightRedraw?.();
