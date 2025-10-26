@@ -1,14 +1,8 @@
 import React from "react";
 import { DataEditorAll as DataEditor } from "../../data-editor-all.js";
-import {
-    BeautifulWrapper,
-    Description,
-    PropName,
-    defaultProps,
-    useAllMockedKinds,
-} from "../../data-editor/stories/utils.js";
+import { BeautifulWrapper, Description, defaultProps, useAllMockedKinds } from "../../data-editor/stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
-import type { GridCell } from "../../internal/data-grid/data-grid-types.js";
+import type { GridCell, Item } from "../../internal/data-grid/data-grid-types.js";
 
 export default {
     title: "Glide-Data-Grid/DataEditor Demos",
@@ -18,11 +12,7 @@ export default {
             <SimpleThemeWrapper>
                 <BeautifulWrapper
                     title="Lotsa cell kinds"
-                    description={
-                        <Description>
-                            Data grid supports plenty cell kinds. Anything under .
-                        </Description>
-                    }>
+                    description={<Description>Data grid supports plenty cell kinds. Anything under .</Description>}>
                     <Story />
                 </BeautifulWrapper>
             </SimpleThemeWrapper>
@@ -34,10 +24,9 @@ export const AllCellKinds: React.VFC = () => {
     const { cols, getCellContent, onColumnResize, setCellValue } = useAllMockedKinds();
 
     const getCellContentNew = (cell: Item): GridCell => {
-      let ret:GridCell = getCellContent(cell);
-      return ret 
-
-    }
+        let ret: GridCell = getCellContent(cell);
+        return ret;
+    };
 
     return (
         <DataEditor
@@ -61,7 +50,6 @@ export const AllCellKinds: React.VFC = () => {
             ]}
             cellActivationBehavior="second-click"
             editorBloom={[-4, -4]}
-            
             rows={1000}
         />
     );

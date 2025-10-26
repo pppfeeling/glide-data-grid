@@ -10,6 +10,7 @@ import {
     useAllMockedKinds,
 } from "../../data-editor/stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
+import type { Item } from "../../internal/data-grid/data-grid-types.js";
 
 export default {
     title: "Glide-Data-Grid/DataEditor Demos",
@@ -99,22 +100,71 @@ const hotdogStand = {
 };
 
 export const ThemeS: React.VFC = () => {
-    const { cols, getCellContent, onColumnResize, setCellValue } = useAllMockedKinds();
+    let { cols, getCellContent, onColumnResize, setCellValue } = useAllMockedKinds();
+
+    cols = cols.map((col, index) => {
+        if (index === 0) {
+            return {
+                ...col,
+                themeOverride: {
+                    bgCell: "#f0f9ff",
+                    textDark: "#0c4a6e",
+                },
+            };
+        } else if (index === 3) {
+            return {
+                ...col,
+                themeOverride: {
+                    bgCell: "#f0fdf4",
+                    textDark: "#14532d",
+                    accentColor: "#22c55e",
+                },
+            };
+        }
+        return col;
+    });
+
+    const getValueTheme = (columnId: string, value: any) => {
+        if (columnId === "Number") {
+            return value > 50 ? { bgCell: "#fffce7", textDark: "#14532d" } : { bgCell: "#eeece2", textDark: "#7f1d1d" };
+        }
+        return undefined;
+    };
+
+    const getCellContentWithTheme = React.useCallback(
+        (item: Item) => {
+            const [col, row] = item;
+            const colId = cols[col]?.title as string;
+            const baseCell = getCellContent(item);
+
+            if (baseCell.kind === "number") {
+                const theme = getValueTheme(colId, baseCell.data as number);
+                return {
+                    ...baseCell,
+                    themeOverride: theme,
+                };
+            }
+
+            return baseCell;
+        },
+        [getCellContent]
+    );
 
     const [theme, setTheme] = React.useState<Partial<Theme>>({});
 
     const [numRows, setNumRows] = React.useState(1000);
 
-    const onRowAppended = React.useCallback(() => {
-        const newRow = numRows;
-        setNumRows(cv => cv + 1);
-        for (let c = 0; c < 6; c++) {
-            setCellValue([c, newRow], {
-                displayData: "",
-                data: "",
-            } as any);
+    const getRowThemeOverride = React.useCallback((row: number) => {
+        if (row % 3 === 0) {
+            return {
+                bgCell: "#f0f9ff",
+                textDark: "#0c4a6e",
+                borderColor: "#4F46E5",
+                horizontalBorderColor: "#818CF8",
+            };
         }
-    }, [numRows, setCellValue]);
+        return undefined;
+    }, []);
 
     return (
         <BeautifulWrapper
@@ -122,7 +172,9 @@ export const ThemeS: React.VFC = () => {
             description={
                 <>
                     <Description>
-                        DataGrid respects the theme provided by the <PropName>theme</PropName> prop.
+                        01. DataGrid respects the theme provided by the <PropName>theme</PropName> prop.
+                        <br />
+                        02. Theme Per Column, 조건부 컬럼 스타일, 03. 조건부 컬럼 스타일
                     </Description>
                     <MoreInfo>
                         <button onClick={() => setTheme({})}>Light</button> or{" "}
@@ -134,16 +186,30 @@ export const ThemeS: React.VFC = () => {
             <DataEditor
                 {...defaultProps}
                 theme={theme}
-                getCellContent={getCellContent}
+                getCellContent={getCellContentWithTheme}
                 columns={cols}
-                onRowAppended={onRowAppended}
-                trailingRowOptions={{
-                    tint: true,
-                    sticky: true,
-                }}
-                onCellEdited={setCellValue}
-                onColumnResize={onColumnResize}
                 rows={numRows}
+                getRowThemeOverride={getRowThemeOverride}
+                highlightRegions={[
+                    {
+                        color: "#ffff00",
+                        range: {
+                            x: 1, // 시작 컬럼
+                            y: 1, // 시작 행
+                            width: 3, // 너비 (컬럼 수)
+                            height: 5, // 높이 (행 수)
+                        },
+                    },
+                    {
+                        color: "#ff0000",
+                        range: {
+                            x: 0,
+                            y: 0,
+                            width: 1,
+                            height: 100,
+                        },
+                    },
+                ]}
             />
         </BeautifulWrapper>
     );
