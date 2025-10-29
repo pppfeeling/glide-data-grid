@@ -813,7 +813,7 @@ export function useAllMockedKinds() {
                 const copied = lossyCopyData(val, current);
                 cache.current.set(col, row, {
                     ...copied,
-                    displayData: noDisplay === true ? undefined : (copied.data?.toString() ?? ""),
+                    displayData: noDisplay === true ? undefined : copied.data?.toString() ?? "",
                 } as any);
 
                 if (forceUpdate === true) {
@@ -825,4 +825,66 @@ export function useAllMockedKinds() {
     );
 
     return { cols, getCellContent, onColumnResize, setCellValue };
+}
+
+const numRows = 1000;
+
+let staticDataCache: {
+    cols: GridColumnWithMockingInfo[];
+    data: ContentCache;
+} | undefined;
+
+function getStaticData() {
+    if (staticDataCache === undefined) {
+        const cols = getColumnsForCellTypes();
+        const data = new ContentCache();
+        for (let r = 0; r < numRows; r++) {
+            for (let c = 0; c < cols.length; c++) {
+                data.set(c, r, cols[c].getContent());
+            }
+        }
+        staticDataCache = { cols, data };
+    }
+    return staticDataCache;
+}
+
+export function useStaticMockData() {
+    const cache = React.useRef<ContentCache>(getStaticData().data);
+    const colsMap = React.useRef<GridColumnWithMockingInfo[]>(getStaticData().cols);
+
+    const [cols, setCols] = React.useState(() => colsMap.current.map(getGridColumn));
+
+    const onColumnResize = React.useCallback((column: GridColumn, newSize: number) => {
+        const newColsMap = [...colsMap.current];
+        const index = newColsMap.findIndex(ci => ci.title === column.title);
+        if (index !== -1) {
+            newColsMap.splice(index, 1, {
+                ...newColsMap[index],
+                width: newSize,
+            });
+            colsMap.current = newColsMap;
+            setCols(newColsMap.map(getGridColumn));
+        }
+    }, []);
+
+    const getCellContent = React.useCallback(([col, row]: Item): GridCell => {
+        return cache.current.get(col, row) ?? { kind: GridCellKind.Loading, allowOverlay: false };
+    }, []);
+
+    const setCellValue = React.useCallback(([col, row]: Item, val: GridCell): void => {
+        let current = cache.current.get(col, row);
+        if (current === undefined) {
+            current = colsMap.current[col].getContent();
+        }
+        if (isEditableGridCell(val) && isEditableGridCell(current)) {
+            const copied = lossyCopyData(val, current);
+            cache.current.set(col, row, {
+                ...copied,
+                displayData: typeof copied.data === "string" ? (copied.data as any) : (copied as any).displayData,
+                lastUpdated: performance.now(),
+            } as any);
+        }
+    }, []);
+
+    return { cols, getCellContent, onColumnResize, setCellValue, rows: numRows, data: cache };
 }
