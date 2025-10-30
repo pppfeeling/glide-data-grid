@@ -9,7 +9,8 @@ import {
     defaultProps,
 } from "../../data-editor/stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
-import type { GridColumn } from '../../internal/data-grid/data-grid-types.js';
+import { useTheme } from "../../common/styles.js";
+import type { GridColumn, GridDragEventArgs, Theme, Item } from '../../internal/data-grid/data-grid-types.js';
 
 export default {
     title: "Glide-Data-Grid/DataEditor Demos",
@@ -42,32 +43,84 @@ interface AddColumnsProps {
 }
 
 export const AddColumns: React.FC<AddColumnsProps> = p => {
-    let { cols, getCellContent, onColumnResize } = useMockDataGenerator(p.columnsCount);
+    const theme = useTheme();
+    const { cols: rawCols, getCellContent, onColumnResize } = useMockDataGenerator(p.columnsCount);
 
-    cols = cols.map((c, index):GridColumn => {
-      if(index == 0) {
-        return {...c, grow: 1, style:"highlight"}
-      } else if(index == 1) {
-        return {...c, width: 400}
-      }
-        return { ...c }
-    });
+    const [cols, setCols] = React.useState(() => rawCols.map((c, index):GridColumn => {
+        if(index === 0) {
+          return {...c, grow: 1}
+        } else if(index === 1) {
+          return {...c, width: 400}
+        }
+          return { ...c }
+      }));
+
+    const [selectedColumn, setSelectedColumn] = React.useState<number | null>(null);
+
+    const onColumnMoved = React.useCallback((startIndex: number, endIndex: number): void => {
+        setCols(old => {
+            const newCols = [...old];
+            const [toMove] = newCols.splice(startIndex, 1);
+            newCols.splice(endIndex, 0, toMove);
+            return newCols;
+        });
+        setSelectedColumn(endIndex);
+    }, []);
+
+    const getCellContentMangled = React.useCallback(
+        (item: any): any => {
+            const [col, row] = item;
+            const remappedCol = rawCols.findIndex(c => c.title === cols[col].title);
+            return getCellContent([remappedCol, row]);
+        },
+        [rawCols, getCellContent, cols]
+    );
+
+
+    const onHeaderClicked = React.useCallback((colIndex: number) => {
+        setSelectedColumn(colIndex);
+    }, []);
+
+    const onCellClicked = React.useCallback((cell: Item) => {
+        setSelectedColumn(null);
+        p.onCellClicked(cell);
+    }, [p]);
+
+    const displayCols = React.useMemo(() => {
+        return cols.map((c, i) => {
+            const { themeOverride, ...rest } = c;
+
+            if (i === selectedColumn) {
+                return {
+                    ...rest,
+                    themeOverride: {
+                        bgHeader: theme.accentColor,
+                        bgHeaderHovered: theme.accentColor,
+                        textHeader: theme.accentFg,
+                    },
+                };
+            }
+            return { ...rest, themeOverride: undefined };
+        });
+    }, [cols, selectedColumn, theme]);
 
     return (
         <DataEditor
             {...defaultProps}
             rowMarkers="number"
-            getCellContent={getCellContent}
+            getCellContent={getCellContentMangled}
             rows={200}
-            
             freezeColumns={1}
-            columns={cols}
+            columns={displayCols}
             onColumnResize={onColumnResize}
-            onCellClicked={p.onCellClicked}
+            onColumnMoved={onColumnMoved}
+            onHeaderClicked={onHeaderClicked}
+            onCellClicked={onCellClicked}
             onCellActivated={p.onCellActivated}
             freezeTrailingRows={1}
         />
     );
+
 };
 AddColumns.storyName = "01. Column";
 (AddColumns as any).args = {
@@ -106,4 +159,19 @@ AddColumns.storyName = "01. Column";
        * disabled: boolean (선택 사항) - 비활성화 여부입니다.
    * `rowGroupBorder`: boolean (선택 사항) - 행 그룹 경계선을 표시할지 여부입니다.  신규
    * `required`: boolean (선택 사항) - 컬럼이 필수 입력 필드인지 여부를 나타냅니다.  신규
+ */
+
+/**
+  컬럼의 표시 순서를 바꿀때 어떤 컬럼이 바뀌고 있는지를 표시하기 위한 방법.
+  선택된 컬럼의 style을 바꾸고 있고 drop나 mouseUp이벤트가 없기 때문에  onHeaderClicked, onCellClick을 사용해 처리함
+
+
+   1. `onColumnMoved` (드래그 중 이동):
+       * 컬럼이 다른 위치로 이동하는 동안, selectedColumn 값을 계속해서 컬럼의 현재 위치(endIndex)로 업데이트합니다. 이를 통해 하이라이트가 컬럼을 따라 움직입니다.
+
+   2. `onHeaderClicked` (다른 헤더 클릭):
+       * 다른 헤더를 클릭하면, selectedColumn을 새로 클릭된 헤더의 인덱스로 변경합니다.
+
+   3. `onCellClicked` (데이터 셀 클릭):
+       * 말씀해주신 문제를 해결하기 위해, 데이터 셀(로우)을 클릭하면 selectedColumn을 null로 설정하여 모든 헤더 하이라이트를 해제하는 로직을 구현합니다.
  */
