@@ -696,6 +696,11 @@ export interface DataEditorProps extends Props, Pick<DataGridSearchProps, "image
      * Allows overriding the default portal element.
      */
     readonly portalElementRef?: React.RefObject<HTMLElement>;
+
+    /**
+     * 편집모드에서 Enter, Tab키 입력시 다음셀로 이동한 후 편집모드로 전환할지 여부
+     */
+    readonly isActivationOnEnter?: Boolean;
 }
 
 type ScrollToFn = (
@@ -904,6 +909,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         scrollToActiveCell = true,
         drawFocusRing: drawFocusRingIn = true,
         portalElementRef,
+        isActivationOnEnter,
     } = p;
 
     const drawFocusRing = drawFocusRingIn === "no-editor" ? overlay === undefined : drawFocusRingIn;
@@ -3206,7 +3212,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     3.  `setOverlaySimple` 함수를 호출하여 `DataGridOverlayEditor` 컴포넌트를 렌더링하고, 새 셀에 대한 편집 모드를 활성화합니다. 
                       이때 `activationEvent`를 통해 키보드(Enter)에 의한 활성화임을 명시합니다.
                     */
-                    if ((movX === 0 && movY === 1) || (movX === 1 && movY === 0)) {
+                    if (isActivationOnEnter && ((movX === 0 && movY === 1) || (movX === 1 && movY === 0))) {
                         window.setTimeout(() => {
                             const cell = getCellContent([newCol - rowMarkerOffset, newRow]);
                             if (isReadWriteCell(cell)) {

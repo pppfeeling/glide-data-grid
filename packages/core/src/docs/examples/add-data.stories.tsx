@@ -55,6 +55,7 @@ export const AddData: React.VFC = () => {
     return (
         <DataEditor
             {...defaultProps}
+            isActivationOnEnter={true}
             getCellContent={getCellContent}
             columns={cols}
             rangeSelectionColumnSpanning={false}
