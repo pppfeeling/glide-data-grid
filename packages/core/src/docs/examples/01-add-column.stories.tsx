@@ -44,16 +44,31 @@ interface AddColumnsProps {
 
 export const AddColumns: React.FC<AddColumnsProps> = p => {
     const theme = useTheme();
-    const { cols: rawCols, getCellContent, onColumnResize } = useMockDataGenerator(p.columnsCount);
+    const { cols: rawCols, getCellContent } = useMockDataGenerator(p.columnsCount);
 
     const [cols, setCols] = React.useState(() => rawCols.map((c, index):GridColumn => {
+      /** 
         if(index === 0) {
           return {...c, grow: 1}
         } else if(index === 1) {
           return {...c, width: 400}
         }
+        */
           return { ...c }
       }));
+
+    const onColumnResize = React.useCallback((column: GridColumn, newSize: number) => {
+           setCols(prevColsMap => {
+               const index = prevColsMap.findIndex(ci => ci.title === column.title);
+               const newArray = [...prevColsMap];
+               newArray.splice(index, 1, {
+                   ...prevColsMap[index],
+                   width: newSize,
+               });
+               return newArray;
+           });
+       }, []);
+    
 
     const [selectedColumn, setSelectedColumn] = React.useState<number | null>(null);
 
@@ -76,6 +91,11 @@ export const AddColumns: React.FC<AddColumnsProps> = p => {
         [rawCols, getCellContent, cols]
     );
 
+    const onDragStart = React.useCallback((args: GridDragEventArgs) => {
+        if (args.kind === "header") {
+            setSelectedColumn(args.location[0]);
+        }
+    }, []);
 
     const onHeaderClicked = React.useCallback((colIndex: number) => {
         setSelectedColumn(colIndex);
@@ -110,6 +130,7 @@ export const AddColumns: React.FC<AddColumnsProps> = p => {
             rowMarkers="number"
             getCellContent={getCellContentMangled}
             rows={200}
+            onDragStart={onDragStart}
             freezeColumns={1}
             columns={displayCols}
             onColumnResize={onColumnResize}
