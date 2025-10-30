@@ -262,6 +262,31 @@ export const BeautifulWrapper: React.FC<React.PropsWithChildren<BeautifulProps>>
     );
 };
 
+export const BeautifulWrapperHeight: React.FC<React.PropsWithChildren<BeautifulProps>> = p => {
+    const { title, children, description, className, scale } = p;
+
+    const { ref, width, height } = useResizeDetector();
+
+    return (
+        <BeautifulStyle className={className + (browserIsFirefox.value ? " firefox" : "")}>
+            <h1>{title}</h1>
+            {description}
+            <div style={{ scale }} className="sizer">
+                <div className="sizer-clip" ref={ref}>
+                    <div
+                        style={{
+                            position: "relative",
+                            width: width ?? 100,
+                            height: p.height ?? 100,
+                        }}>
+                        {children}
+                    </div>
+                </div>
+            </div>
+        </BeautifulStyle>
+    );
+};
+
 function createTextColumnInfo(index: number, group: boolean): GridColumnWithMockingInfo {
     return {
         title: `Column ${index}`,

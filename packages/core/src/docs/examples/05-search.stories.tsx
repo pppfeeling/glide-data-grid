@@ -2,7 +2,7 @@ import React from "react";
 import type { Theme } from "../../common/styles.js";
 import { DataEditorAll as DataEditor } from "../../data-editor-all.js";
 import {
-    BeautifulWrapper,
+    BeautifulWrapperHeight,
     Description,
     MoreInfo,
     PropName,
@@ -10,10 +10,18 @@ import {
     useStaticMockData,
 } from "../../data-editor/stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
-import type { GridCell, Item } from "../../internal/data-grid/data-grid-types.js";
+import type { GridCell, GridColumn, Item } from "../../internal/data-grid/data-grid-types.js";
 import { type SortConfig, multiColumnSort } from "../../data/sort.js";
-import { type FilterConfig, type FilterOption, type FilterOperator, type FilterCondition, multiColumnFilter } from "../../data/filter.js";
-
+import {
+    type FilterConfig,
+    type FilterOption,
+    type FilterOperator,
+    type FilterCondition,
+    multiColumnFilter,
+} from "../../data/filter.js";
+import { groupData, type GroupSummaryRow } from "../../data/grouping.js";
+import {useGridDataProcessing,  type ProcessingOptions } from "../../data/useGridDataProcessing.ts";
+import type { RowGroupingOptions } from "../../data-editor/row-grouping.js";
 
 export default {
     title: "Glide-Data-Grid/DataEditor Demos",
@@ -27,55 +35,83 @@ export default {
     ],
 };
 
-interface FilterInputState {
-    operator: FilterOperator;
-    value: any;
-    condition: FilterCondition;
+
+
+interface ColumnInput {
+    filterCondition: FilterCondition;
+    filterOperator: FilterOperator;
+    filterValue: any;
+    groupingLabel: string;
+    groupingFunction: string;
 }
 
 export const SearchDataEditor: React.VFC = () => {
     const { cols, getCellContent, rows } = useStaticMockData();
-
-    const [sortState, setSortState] = React.useState<{ key: string; order: "asc" | "desc" }[]>([]);
-    const [filterInputState, setFilterInputState] = React.useState<Map<string, FilterInputState>>(() => new Map());
-    const [activeFilterConfig, setActiveFilterConfig] = React.useState<FilterConfig<any> | null>(null);
-
-
-
-    const [processedData, setProcessedData] = React.useState<(any | GroupSummaryRow)[]>([]);
-    const [rowMap, setRowMap] = React.useState<number[]>(() => Array.from({ length: rows }, (_, i) => i));
-
-    const getGridData = React.useCallback(() => {
-        const data: any[] = [];
-        for (let i = 0; i < rows; i++) {
-            const row: any = { originalIndex: i };
-            for (let j = 0; j < cols.length; j++) {
-                row[cols[j].title] = getCellContent([j, i]).data;
+    const initialData = React.useMemo(
+        () => {
+            const data: any[] = [];
+            for (let i = 0; i < rows; i++) {
+                const row: any = { originalIndex: i };
+                for (let j = 0; j < cols.length; j++) {
+                    const colKey = cols[j].id ?? cols[j].title;
+                    row[colKey] = getCellContent([j, i]).data;
+                }
+                data.push(row);
             }
-            data.push(row);
-        }
-        return data;
-    }, [cols, getCellContent, rows]);
+            return data;
+        },
+        [cols, getCellContent, rows]
+    );
 
-    React.useEffect(() => {
-        let currentData = getGridData();
+    const [columnInputs, setColumnInputs] = React.useState<Map<string, Partial<ColumnInput>>>(() => new Map());
+    const [sortState, setSortState] = React.useState<{ key: string; order: "asc" | "desc" }[]>([]);
+    const [groupingState, setGroupingState] = React.useState<string[]>([]);
 
+    const handleColumnInputChange = (columnTitle: string, field: keyof ColumnInput, value: any) => {
+        setColumnInputs(prev => {
+            const newInputs = new Map(prev);
+            const current = newInputs.get(columnTitle) || {};
+            newInputs.set(columnTitle, { ...current, [field]: value });
+            return newInputs;
+        });
+    };
 
-        // Apply Filtering
-        if (activeFilterConfig && activeFilterConfig.filterOptions.length > 0) {
-            currentData = multiColumnFilter(currentData, activeFilterConfig);
-        }
+    const { filterConfig, groupingFunctions, groupingLabels } = React.useMemo(() => {
+        const filterOptions: FilterOption<any>[] = [];
+        const groupingLabels = new Map<string, string>();
+        const groupingFunctions = new Map<string, string>();
 
-        // Apply Sorting
-        if (sortState.length > 0) {
-            currentData = multiColumnSort(currentData, { sortOptions: sortState });
-        }
+        columnInputs.forEach((input, key) => {
+            if (input.filterValue) {
+                filterOptions.push({
+                    key: key,
+                    operator: input.filterOperator ?? "Contain",
+                    value: input.filterValue,
+                    condition: input.filterCondition ?? "AND",
+                });
+            }
+            if (input.groupingLabel) {
+                groupingLabels.set(key, input.groupingLabel);
+            }
+            if (input.groupingFunction) {
+                groupingFunctions.set(key, input.groupingFunction);
+            }
+        });
 
-        setProcessedData(currentData);
-        
-        const newRowMap = currentData.map((row, idx) => (row as any).originalIndex !== undefined ? (row as any).originalIndex : -(idx + 1));
-        setRowMap(newRowMap);
-    }, [sortState, activeFilterConfig,  getGridData]);
+        const derivedConfigs = { filterConfig: { filterOptions }, groupingFunctions, groupingLabels };
+        console.log("[SearchDataEditor] Derived Configs:", derivedConfigs);
+        return derivedConfigs;
+    }, [columnInputs]);
+
+    const { processedData } = useGridDataProcessing(initialData, {
+        filterConfig,
+        sortState,
+        groupingState,
+        groupingFunctions,
+        groupingLabels,
+        cols,
+    });
+   
 
     const handleSort = (columnTitle: string) => {
         setSortState(currentSortState => {
@@ -96,31 +132,29 @@ export const SearchDataEditor: React.VFC = () => {
         });
     };
 
-    const handleFilterChange = (columnTitle: string, field: keyof FilterInputState, value: any) => {
-        setFilterInputState(prev => {
-            const newState = new Map(prev);
-            const current = newState.get(columnTitle) || { operator: "Contain", value: "", condition: "AND" };
-            newState.set(columnTitle, { ...current, [field]: value });
-            return newState;
-        });
-    };
+    const handleGroupingClick = (columnTitle: string) => {
+        setGroupingState(currentGroupingState => {
+            const newGroupingState = [...currentGroupingState];
+            const existingIndex = newGroupingState.indexOf(columnTitle);
 
-    const applyFilters = () => {
-        const filterOptions: FilterOption<any>[] = [];
-        filterInputState.forEach((filter, key) => {
-            if (filter.value !== "") {
-                filterOptions.push({
-                    key: key,
-                    operator: filter.operator,
-                    value: filter.value,
-                    condition: filter.condition,
-                });
+            if (existingIndex !== -1) {
+                newGroupingState.splice(existingIndex, 1);
             }
+            else {
+                newGroupingState.push(columnTitle);
+            }
+            return newGroupingState;
         });
-        setActiveFilterConfig({ filterOptions });
     };
 
-    
+    const getGroupingButtonLabel = (columnTitle: string): string => {
+        const groupIndex = groupingState.indexOf(columnTitle);
+        if (groupIndex === -1) {
+            return "그룹핑";
+        }
+        const priority = groupIndex + 1;
+        return `그룹핑 (${priority})`;
+    };
 
     const getSortButtonLabel = (columnTitle: string): string => {
         const sortIndex = sortState.findIndex(s => s.key === columnTitle);
@@ -133,153 +167,199 @@ export const SearchDataEditor: React.VFC = () => {
         return `${orderLabel} ${sortState.length > 1 ? `(${priority})` : ""}`.trim();
     };
 
-    const getSortedCellContent = React.useCallback(
+    const getCell = React.useCallback(
         ([col, row]: Item): GridCell => {
-            const mappedRowIndex = rowMap[row];
-            const originalRowData = processedData.find(d => (d as any).originalIndex === mappedRowIndex);
+            const rowData = processedData[row];
 
-            if (originalRowData && (originalRowData as GroupSummaryRow).isGroupSummary) {
-                const summaryRow = originalRowData as GroupSummaryRow;
-                const colTitle = cols[col].title;
-                const summaryValue = summaryRow[colTitle] || summaryRow["groupCount"];
+            if (!rowData) {
+                return { kind: "text", data: "", displayData: "", allowOverlay: false };
+            }
+
+            const column = cols[col];
+            const colId = column.id ?? column.title;
+
+            if ((rowData as any).isGroupSummary) {
+                const summaryRow = rowData as GroupSummaryRow;
+
+                const summaryValue = summaryRow[colId];
+                if (summaryValue !== undefined) {
+                    return {
+                        kind: "text",
+                        data: String(summaryValue),
+                        displayData: String(summaryValue),
+                        allowOverlay: false,
+                        readonly: true,
+                        themeOverride: { bgCell: "#e0e0e0" },
+                    };
+                }
 
                 return {
                     kind: "text",
-                    displayData: `소계: ${summaryValue}`,
-                    data: `소계: ${summaryValue}`,
+                    data: "",
+                    displayData: "",
                     allowOverlay: false,
                     readonly: true,
-                    themeOverride: {
-                        bgCell: "#e0e0e0",
-                    },
+                    themeOverride: { bgCell: "#e0e0e0" },
                 };
             }
 
-            return getCellContent([col, mappedRowIndex]);
+            const originalIndex = (rowData as any).originalIndex;
+            if (originalIndex !== undefined) {
+                return getCellContent([col, originalIndex]);
+            }
+
+            return {
+                kind: "text",
+                data: "Error",
+                displayData: "Error",
+                allowOverlay: false,
+            };
         },
-        [getCellContent, rowMap, processedData, cols]
+        [cols, getCellContent, processedData, groupingState]
     );
 
-    const getRowThemeOverride = React.useCallback((row: number): Partial<Theme> | undefined => {
-        const mappedRowIndex = rowMap[row];
-        const originalRowData = processedData.find(d => (d as any).originalIndex === mappedRowIndex);
-        if (originalRowData && (originalRowData as GroupSummaryRow).isGroupSummary) {
-            return {
-                bgCell: "#e0e0e0", // Light grey background for summary rows
-            };
-        }
-        return undefined;
-    }, [rowMap, processedData]);
+    const getRowThemeOverride = React.useCallback(
+        (row: number): Partial<Theme> | undefined => {
+            const rowData = processedData[row];
+            if (rowData && (rowData as any).isGroupSummary) {
+                return {
+                    bgCell: "#e0e0e0",
+                };
+            }
+            return undefined;
+        },
+        [processedData]
+    );
 
     return (
-        <BeautifulWrapper
+        <BeautifulWrapperHeight
+            height={500}
             title="Search"
             description={
                 <>
                     <Description>
                         01. DataGrid respects the theme provided by the <PropName>search</PropName> prop.
-                        <br />
-                        <table>
-                            <thead>
-                                <tr>
-                                    <td>컬럼명</td>
-                                    <td>조건</td>
-                                    <td>연산자</td>
-                                    <td>값</td>
-                                    <td>정렬</td>
-                                    <td>필터링</td>
-                                    <td>그룹핑</td>
-                                    <td>그룹핑 레이블</td>
-                                    <td>그룹핑 함수</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    cols.map(col => {
-                                        const filter = filterInputState.get(col.title) || { operator: "Contain", value: "", condition: "AND" };
-                                        return (
-                                            <tr key={col.id}>
-                                                <td>{col.title}</td>
-                                                <td>
-                                                    <select
-                                                        value={filter.condition}
-                                                        onChange={e => handleFilterChange(col.title, "condition", e.target.value as FilterCondition)}
-                                                    >
-                                                        <option value="AND">AND</option>
-                                                        <option value="OR">OR</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <select
-                                                        value={filter.operator}
-                                                        onChange={e => handleFilterChange(col.title, "operator", e.target.value as FilterOperator)}
-                                                    >
-                                                        <option value="Contain">Contain</option>
-                                                        <option value="Not Contain">Not Contain</option>
-                                                        <option value="Equals">Equals</option>
-                                                        <option value="NotEqual">NotEqual</option>
-                                                        <option value="StartWith">StartWith</option>
-                                                        <option value="EndWith">EndWith</option>
-                                                        <option value="Great">Great</option>
-                                                        <option value="GreatWithEqual">GreatWithEqual</option>
-                                                        <option value="Less">Less</option>
-                                                        <option value="LessWithEqual">LessWithEqual</option>
-                                                        <option value="Between">Between</option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value={filter.value}
-                                                        onChange={e => handleFilterChange(col.title, "value", e.target.value)}
-                                                    ></input>
-                                                </td>
-                                                <td>
-                                                    <button onClick={() => handleSort(col.title)}>
-                                                        {getSortButtonLabel(col.title)}
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <button onClick={applyFilters}>필터링</button>
-                                                </td>
-                                                <td>
-                                                    <button >
-                                                        그룹핑
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    
-                                                        <input
-                                                            type="text"
-                                                            placeholder="그룹 레이블"
-                                                        />
-                                                    
-                                                </td>
-                                                <td>
-                                                     
-                                                        <select>
-                                                            <option value="">없음</option>
-                                                            <option value="label">label</option>
-                                                            <option value="sum">Sum</option>
-                                                            <option value="count">Count</option>
-                                                            <option value="avg">Avg</option>
-                                                            <option value="min">Min</option>
-                                                            <option value="max">Max</option>
-                                                        </select>
-                                                     
-                                                </td>
-                                            </tr>
-                                        );
-                                    })
-                                }
-                            </tbody>
-                        </table>
                     </Description>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>컬럼명</td>
+                                <td>조건</td>
+                                <td>연산자</td>
+                                <td>값</td>
+                                <td>정렬</td>
+                                <td>필터링</td>
+                                <td>그룹핑</td>
+                                <td>그룹핑 레이블</td>
+                                <td>그룹핑 함수</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cols.map(col => {
+                                const inputs = columnInputs.get(col.title) || {};
+                                return (
+                                    <tr key={col.id}>
+                                        <td>{col.title}</td>
+                                        <td>
+                                            <select
+                                                value={inputs.filterCondition ?? "AND"}
+                                                onChange={e =>
+                                                    handleColumnInputChange(
+                                                        col.title,
+                                                        "filterCondition",
+                                                        e.target.value as FilterCondition
+                                                    )
+                                                }>
+                                                <option value="AND">AND</option>
+                                                <option value="OR">OR</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select
+                                                value={inputs.filterOperator ?? "Contain"}
+                                                onChange={e =>
+                                                    handleColumnInputChange(
+                                                        col.title,
+                                                        "filterOperator",
+                                                        e.target.value as FilterOperator
+                                                    )
+                                                }>
+                                                <option value="Contain">Contain</option>
+                                                <option value="Not Contain">Not Contain</option>
+                                                <option value="Equals">Equals</option>
+                                                <option value="NotEqual">NotEqual</option>
+                                                <option value="StartWith">StartWith</option>
+                                                <option value="EndWith">EndWith</option>
+                                                <option value="Great">Great</option>
+                                                <option value="GreatWithEqual">GreatWithEqual</option>
+                                                <option value="Less">Less</option>
+                                                <option value="LessWithEqual">LessWithEqual</option>
+                                                <option value="Between">Between</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                value={inputs.filterValue ?? ""}
+                                                onChange={e =>
+                                                    handleColumnInputChange(col.title, "filterValue", e.target.value)
+                                                }></input>
+                                        </td>
+                                        <td>
+                                            <button onClick={() => handleSort(col.title)}>
+                                                {getSortButtonLabel(col.title)}
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button onClick={() => { /* We dont need apply filter button anymore */ }}>필터링</button>
+                                        </td>
+                                        <td>
+                                            <button onClick={() => handleGroupingClick(col.title)}>
+                                                {getGroupingButtonLabel(col.title)}
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                placeholder="그룹 레이블"
+                                                value={inputs.groupingLabel ?? ""}
+                                                onChange={e =>
+                                                    handleColumnInputChange(col.title, "groupingLabel", e.target.value)
+                                                }
+                                            />
+                                        </td>
+                                        <td>
+                                            <select
+                                                value={inputs.groupingFunction ?? ""}
+                                                onChange={e =>
+                                                    handleColumnInputChange(col.title, "groupingFunction", e.target.value)
+                                                }>
+                                                <option value="">없음</option>
+                                                <option value="label">label</option>
+                                                <option value="sum">Sum</option>
+                                                <option value="count">Count</option>
+                                                <option value="avg">Avg</option>
+                                                <option value="min">Min</option>
+                                                <option value="max">Max</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
                     <MoreInfo></MoreInfo>
                 </>
             }>
-            <DataEditor {...defaultProps} getCellContent={getSortedCellContent} columns={cols} rows={processedData.length} getRowThemeOverride={getRowThemeOverride} />
-        </BeautifulWrapper>
+            <DataEditor
+                {...defaultProps}
+                height="100%"
+                getCellContent={getCell}
+                columns={cols}
+                rows={processedData.length}
+                getRowThemeOverride={getRowThemeOverride}
+            />
+        </BeautifulWrapperHeight>
     );
 };
 
