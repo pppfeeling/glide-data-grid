@@ -66,6 +66,7 @@ export const SearchDataEditor: React.VFC = () => {
     const [columnInputs, setColumnInputs] = React.useState<Map<string, Partial<ColumnInput>>>(() => new Map());
     const [sortState, setSortState] = React.useState<{ key: string; order: "asc" | "desc" }[]>([]);
     const [groupingState, setGroupingState] = React.useState<string[]>([]);
+    const [showTotals, setShowTotals] = React.useState(false);
 
     const handleColumnInputChange = (columnTitle: string, field: keyof ColumnInput, value: any) => {
         setColumnInputs(prev => {
@@ -103,15 +104,19 @@ export const SearchDataEditor: React.VFC = () => {
         return derivedConfigs;
     }, [columnInputs]);
 
-    const { processedData } = useGridDataProcessing(initialData, {
+    const { processedData, totalSummaryRow } = useGridDataProcessing(initialData, {
         filterConfig,
         sortState,
         groupingState,
         groupingFunctions,
         groupingLabels,
+        showTotals,
         cols,
     });
-   
+
+    const finalData = React.useMemo(() => {
+        return totalSummaryRow ? [...processedData, totalSummaryRow] : processedData;
+    }, [processedData, totalSummaryRow]);
 
     const handleSort = (columnTitle: string) => {
         setSortState(currentSortState => {
@@ -169,7 +174,7 @@ export const SearchDataEditor: React.VFC = () => {
 
     const getCell = React.useCallback(
         ([col, row]: Item): GridCell => {
-            const rowData = processedData[row];
+            const rowData = finalData[row];
 
             if (!rowData) {
                 return { kind: "text", data: "", displayData: "", allowOverlay: false };
@@ -177,6 +182,20 @@ export const SearchDataEditor: React.VFC = () => {
 
             const column = cols[col];
             const colId = column.id ?? column.title;
+
+            if ((rowData as any).isTotalSummary) {
+                const totalSummaryRow = rowData as any;
+                const totalValue = totalSummaryRow[colId];
+
+                return {
+                    kind: "text",
+                    data: totalValue !== undefined ? String(totalValue) : "",
+                    displayData: totalValue !== undefined ? String(totalValue) : "",
+                    allowOverlay: false,
+                    readonly: true,
+                    themeOverride: { bgCell: "#f7f7f7", textDark: "#000000", bgCellMedium: "#f0f0f0" },
+                };
+            }
 
             if ((rowData as any).isGroupSummary) {
                 const summaryRow = rowData as GroupSummaryRow;
@@ -215,20 +234,26 @@ export const SearchDataEditor: React.VFC = () => {
                 allowOverlay: false,
             };
         },
-        [cols, getCellContent, processedData, groupingState]
+        [cols, getCellContent, finalData, groupingState]
     );
 
     const getRowThemeOverride = React.useCallback(
         (row: number): Partial<Theme> | undefined => {
-            const rowData = processedData[row];
+            const rowData = finalData[row];
             if (rowData && (rowData as any).isGroupSummary) {
                 return {
                     bgCell: "#e0e0e0",
                 };
             }
+            if (rowData && (rowData as any).isTotalSummary) {
+                return {
+                    bgCell: "#f7f7f7",
+                    bgCellMedium: "#f0f0f0",
+                };
+            }
             return undefined;
         },
-        [processedData]
+        [finalData]
     );
 
     return (
@@ -240,6 +265,10 @@ export const SearchDataEditor: React.VFC = () => {
                     <Description>
                         01. DataGrid respects the theme provided by the <PropName>search</PropName> prop.
                     </Description>
+                    <div>
+                        <input type="checkbox" checked={showTotals} onChange={e => setShowTotals(e.target.checked)} />
+                        합계 보이기
+                    </div>
                     <table>
                         <thead>
                             <tr>
@@ -356,8 +385,9 @@ export const SearchDataEditor: React.VFC = () => {
                 height="100%"
                 getCellContent={getCell}
                 columns={cols}
-                rows={processedData.length}
+                rows={finalData.length}
                 getRowThemeOverride={getRowThemeOverride}
+                freezeTrailingRows={1}
             />
         </BeautifulWrapperHeight>
     );

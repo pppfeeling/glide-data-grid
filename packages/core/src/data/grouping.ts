@@ -2,7 +2,13 @@
 export interface GroupSummaryRow {
     readonly isGroupSummary: true;
     readonly groupName: string;
+    readonly count: number;
     readonly level: number;
+    [key: string]: any;
+}
+
+export interface TotalSummaryRow {
+    readonly isTotalSummary: true;
     [key: string]: any;
 }
 
@@ -29,11 +35,11 @@ function recursiveGroup<T extends Record<string, any>>(
     }
 
     for (const groupRows of groups.values()) {
-        const summary = createSummary(groupRows, currentKey, aggregation, level);
-        result.push(summary);
-
         const recursiveResult = recursiveGroup(groupRows, remainingKeys, aggregation, level + 1);
         result.push(...recursiveResult);
+
+        const summary = createSummary(groupRows, currentKey, aggregation, level);
+        result.push(summary);
     }
 
     return result;
@@ -74,6 +80,7 @@ function createSummary<T extends Record<string, any>>(
     const summary: any = {
         isGroupSummary: true,
         groupName: groupName,
+        count: group.length,
         level: level,
     };
 
@@ -101,4 +108,33 @@ function createSummary<T extends Record<string, any>>(
     }
 
     return summary as GroupSummaryRow;
+}
+
+export function createTotalSummary<T extends Record<string, any>>(
+    data: readonly T[],
+    aggregation: { id: string; column: string; type: "sum" | "count" | "label" | "avg" | "min" | "max"; label?: string }[]
+): TotalSummaryRow {
+    const summary: any = {
+        isTotalSummary: true,
+    };
+
+    
+    for (const agg of aggregation) {
+        if (agg.type === "label") {
+          summary[agg.id] = agg.label ?? "총합계"
+        } else if (agg.type === "sum" || agg.type === "avg" || agg.type === "min" || agg.type === "max") {
+            const numericValues = data.map(x => x[agg.column]).filter(x => typeof x === "number") as number[];
+            if (numericValues.length > 0) {
+                if (agg.type === "sum") summary[agg.id] = numericValues.reduce((a, b) => a + b, 0);
+                if (agg.type === "avg")
+                    summary[agg.id] = numericValues.reduce((a, b) => a + b, 0) / numericValues.length;
+                if (agg.type === "min") summary[agg.id] = Math.min(...numericValues);
+                if (agg.type === "max") summary[agg.id] = Math.max(...numericValues);
+            }
+        } else if (agg.type === "count") {
+            summary[agg.id] = data.length;
+        }
+    }
+
+    return summary as TotalSummaryRow;
 }
