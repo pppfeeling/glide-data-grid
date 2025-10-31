@@ -258,16 +258,15 @@ export const SearchDataEditor: React.VFC = () => {
 
     return (
         <BeautifulWrapperHeight
-            height={500}
-            title="Search"
+            scale={{height:'500px'}}
+            title="Sort, filter, grouping"
+            height={"400px"}
             description={
                 <>
-                    <Description>
-                        01. DataGrid respects the theme provided by the <PropName>search</PropName> prop.
-                    </Description>
+                    
                     <div>
                         <input type="checkbox" checked={showTotals} onChange={e => setShowTotals(e.target.checked)} />
-                        합계 보이기
+                        총 합계 보이기 (제일 마지막열)
                     </div>
                     <table>
                         <thead>
@@ -393,4 +392,4 @@ export const SearchDataEditor: React.VFC = () => {
     );
 };
 
-SearchDataEditor.storyName = "05. Search";
+SearchDataEditor.storyName = "05. Sort, filter, grouping";

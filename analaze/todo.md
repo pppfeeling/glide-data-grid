@@ -1,6 +1,7 @@
 # TODO List
 
 ## 할일 (To-do)
+- [ ] grouping시 border없애고 데이터도 한개만 나오게 하기
 - [ ] marker선택 확인..선택된 row가 어떤것인지...확인하는 방법
 - [ ] marker가 radio로 하는 방법 확인
 - [ ] data copy & paste 기능 
