@@ -3176,7 +3176,13 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
             const [movX, movY] = movement;
             if (gridSelection.current !== undefined && (movX !== 0 || movY !== 0)) {
-                const isEditingLastRow = gridSelection.current.cell[1] === mangledRows - 1 && newValue !== undefined;
+                const isEditingLastRow = gridSelection.current.cell[1] === mangledRows - 1;
+
+                if (isEditingLastRow && movY === 1) {
+                    onFinishedEditing?.(newValue, [0, 0]);
+                    return;
+                }
+
                 const isEditingLastCol =
                     gridSelection.current.cell[0] === mangledCols.length - 1 && newValue !== undefined;
                 let updateSelected = true;
@@ -3194,24 +3200,8 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 if (updateSelected) {
                     const newCol = clamp(gridSelection.current.cell[0] + movX, 0, mangledCols.length - 1);
                     const newRow = clamp(gridSelection.current.cell[1] + movY, 0, mangledRows - 1);
-                    updateSelectedCell(
-                        newCol,
-                        newRow,
-                        isEditingLastRow,
-                        false
-                    );
-                    
-                    // Auto-activate editing when moving with Enter key (movement [0, 1])
-                    /*
-                    이 코드 블록은 `onFinishEditing` 함수 내에 있으며, 
-                    `movX === 0 && movY === 1` 조건(Enter 키를 눌렀을 때의 이동 방향)을 통해 Enter 키로 인한 셀 이동을 감지합니다. 
-                    이후 `window.setTimeout`을 사용하여 약간의 지연 후 다음 작업을 수행합니다.
-                    
-                    1.  새로 선택된 셀의 내용을 가져옵니다 (`getCellContent`).
-                    2.  해당 셀이 편집 가능하고 오버레이 편집기를 허용하는지 확인합니다 (`isReadWriteCell(cell)` 및 `cell.allowOverlay`).
-                    3.  `setOverlaySimple` 함수를 호출하여 `DataGridOverlayEditor` 컴포넌트를 렌더링하고, 새 셀에 대한 편집 모드를 활성화합니다. 
-                      이때 `activationEvent`를 통해 키보드(Enter)에 의한 활성화임을 명시합니다.
-                    */
+                    updateSelectedCell(newCol, newRow, isEditingLastRow, false);
+
                     if (isActivationOnEnter && ((movX === 0 && movY === 1) || (movX === 1 && movY === 0))) {
                         window.setTimeout(() => {
                             const cell = getCellContent([newCol - rowMarkerOffset, newRow]);

@@ -62,12 +62,7 @@ export const AddData: React.VFC = () => {
             rowMarkers={"both"}
             onPaste={true} // we want to allow paste to just call onCellEdited
             onCellEdited={setCellValue} // Sets the mock cell content
-            trailingRowOptions={{
-                // How to get the trailing row to look right
-                sticky: false,
-                tint: true,
-                hint: "New row...",
-            }}
+            
             rows={numRows}
             onRowAppended={onRowAppended}
         />
