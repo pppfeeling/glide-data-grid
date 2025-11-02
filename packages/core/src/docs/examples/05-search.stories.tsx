@@ -2,6 +2,13 @@ import React from "react";
 import type { Theme } from "../../common/styles.js";
 import { DataEditorAll as DataEditor } from "../../data-editor-all.js";
 import {
+    GridCellKind,
+    type GridCell,
+    type GridColumn,
+    type Item,
+    isEditableGridCell,
+} from "../../internal/data-grid/data-grid-types.js";
+import {
     BeautifulWrapperHeight,
     Description,
     MoreInfo,
@@ -10,7 +17,6 @@ import {
     useStaticMockData,
 } from "../../data-editor/stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
-import type { GridCell, GridColumn, Item } from "../../internal/data-grid/data-grid-types.js";
 import { type SortConfig, multiColumnSort } from "../../data/sort.js";
 import {
     type FilterConfig,
@@ -20,7 +26,7 @@ import {
     multiColumnFilter,
 } from "../../data/filter.js";
 import { groupData, type GroupSummaryRow } from "../../data/grouping.js";
-import {useGridDataProcessing,  type ProcessingOptions } from "../../data/useGridDataProcessing.ts";
+import { useGridDataProcessing, type ProcessingOptions } from "../../data/useGridDataProcessing.js";
 import type { RowGroupingOptions } from "../../data-editor/row-grouping.js";
 
 export default {
@@ -35,8 +41,6 @@ export default {
     ],
 };
 
-
-
 interface ColumnInput {
     filterCondition: FilterCondition;
     filterOperator: FilterOperator;
@@ -45,23 +49,36 @@ interface ColumnInput {
     groupingFunction: string;
 }
 
-export const SearchDataEditor: React.VFC = () => {
+export const SearchDataEditor = () => {
     const { cols, getCellContent, rows } = useStaticMockData();
-    const initialData = React.useMemo(
-        () => {
-            const data: any[] = [];
-            for (let i = 0; i < rows; i++) {
-                const row: any = { originalIndex: i };
-                for (let j = 0; j < cols.length; j++) {
-                    const colKey = cols[j].id ?? cols[j].title;
-                    row[colKey] = getCellContent([j, i]).data;
+    const initialData = React.useMemo(() => {
+        const data: any[] = [];
+        for (let i = 0; i < rows; i++) {
+            const row: any = { originalIndex: i };
+            for (let j = 0; j < cols.length; j++) {
+                const colKey = cols[j].id ?? cols[j].title;
+                const cell = getCellContent([j, i]);
+
+                if (isEditableGridCell(cell)) {
+                    switch (cell.kind) {
+                        case GridCellKind.Number:
+                        case GridCellKind.Text:
+                        case GridCellKind.Uri:
+                        case GridCellKind.Markdown:
+                            row[colKey] = cell.data;
+                            break;
+                        case GridCellKind.Boolean:
+                            row[colKey] = cell.data?.toString();
+                            break;
+                        default:
+                            row[colKey] = cell.copyData;
+                    }
                 }
-                data.push(row);
             }
-            return data;
-        },
-        [cols, getCellContent, rows]
-    );
+            data.push(row);
+        }
+        return data;
+    }, [cols, getCellContent, rows]);
 
     const [columnInputs, setColumnInputs] = React.useState<Map<string, Partial<ColumnInput>>>(() => new Map());
     const [sortState, setSortState] = React.useState<{ key: string; order: "asc" | "desc" }[]>([]);
@@ -144,8 +161,7 @@ export const SearchDataEditor: React.VFC = () => {
 
             if (existingIndex !== -1) {
                 newGroupingState.splice(existingIndex, 1);
-            }
-            else {
+            } else {
                 newGroupingState.push(columnTitle);
             }
             return newGroupingState;
@@ -177,7 +193,7 @@ export const SearchDataEditor: React.VFC = () => {
             const rowData = finalData[row];
 
             if (!rowData) {
-                return { kind: "text", data: "", displayData: "", allowOverlay: false };
+                return { kind: GridCellKind.Text, data: "", displayData: "", allowOverlay: false };
             }
 
             const column = cols[col];
@@ -188,7 +204,7 @@ export const SearchDataEditor: React.VFC = () => {
                 const totalValue = totalSummaryRow[colId];
 
                 return {
-                    kind: "text",
+                    kind: GridCellKind.Text,
                     data: totalValue !== undefined ? String(totalValue) : "",
                     displayData: totalValue !== undefined ? String(totalValue) : "",
                     allowOverlay: false,
@@ -203,7 +219,7 @@ export const SearchDataEditor: React.VFC = () => {
                 const summaryValue = summaryRow[colId];
                 if (summaryValue !== undefined) {
                     return {
-                        kind: "text",
+                        kind: GridCellKind.Text,
                         data: String(summaryValue),
                         displayData: String(summaryValue),
                         allowOverlay: false,
@@ -213,7 +229,7 @@ export const SearchDataEditor: React.VFC = () => {
                 }
 
                 return {
-                    kind: "text",
+                    kind: GridCellKind.Text,
                     data: "",
                     displayData: "",
                     allowOverlay: false,
@@ -228,7 +244,7 @@ export const SearchDataEditor: React.VFC = () => {
             }
 
             return {
-                kind: "text",
+                kind: GridCellKind.Text,
                 data: "Error",
                 displayData: "Error",
                 allowOverlay: false,
@@ -258,15 +274,13 @@ export const SearchDataEditor: React.VFC = () => {
 
     return (
         <BeautifulWrapperHeight
-            scale={{height:'500px'}}
             title="Sort, filter, grouping"
             height={"400px"}
             description={
                 <>
-                    
                     <div>
-                        <input type="checkbox" checked={showTotals} onChange={e => setShowTotals(e.target.checked)} />
-                        총 합계 보이기 (제일 마지막열)
+                        <input type="checkbox" checked={showTotals} onChange={e => setShowTotals(e.target.checked)} />총
+                        합계 보이기 (제일 마지막열)
                     </div>
                     <table>
                         <thead>
@@ -339,7 +353,12 @@ export const SearchDataEditor: React.VFC = () => {
                                             </button>
                                         </td>
                                         <td>
-                                            <button onClick={() => { /* We dont need apply filter button anymore */ }}>필터링</button>
+                                            <button
+                                                onClick={() => {
+                                                    /* We dont need apply filter button anymore */
+                                                }}>
+                                                필터링
+                                            </button>
                                         </td>
                                         <td>
                                             <button onClick={() => handleGroupingClick(col.title)}>
@@ -360,7 +379,11 @@ export const SearchDataEditor: React.VFC = () => {
                                             <select
                                                 value={inputs.groupingFunction ?? ""}
                                                 onChange={e =>
-                                                    handleColumnInputChange(col.title, "groupingFunction", e.target.value)
+                                                    handleColumnInputChange(
+                                                        col.title,
+                                                        "groupingFunction",
+                                                        e.target.value
+                                                    )
                                                 }>
                                                 <option value="">없음</option>
                                                 <option value="label">label</option>

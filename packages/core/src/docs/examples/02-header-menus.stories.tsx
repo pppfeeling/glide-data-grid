@@ -9,10 +9,17 @@ import {
     defaultProps,
     useAllMockedKinds,
 } from "../../data-editor/stories/utils.js";
-import { GridColumnIcon, type GridColumn, type Rectangle } from "../../internal/data-grid/data-grid-types.js";
+import {
+    GridColumnIcon,
+    type DrawHeaderCallback,
+    type GridColumn,
+    type Rectangle,
+} from "../../internal/data-grid/data-grid-types.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 import { getActionBoundsForGroup } from "../../internal/data-grid/render/data-grid-render.header.js";
 import { pointInRect } from "../../common/math.js";
+import type { GroupHeaderClickedEventArgs } from "../../internal/data-grid/event-args.js";
+import type { SpriteMap } from "../../internal/data-grid/data-grid-sprites.js";
 
 export default {
     title: "Glide-Data-Grid/DataEditor Demos",
@@ -52,8 +59,9 @@ const SimpleMenu = styled.div`
     background-color: white;
     font-size: 13px;
     font-weight: 600;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-        "Helvetica Neue", sans-serif;
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+        sans-serif;
 
     .danger {
         color: rgba(255, 40, 40, 0.8);
@@ -74,10 +82,10 @@ const SimpleMenu = styled.div`
     }
 `;
 
-export const HeaderMenus: React.VFC = () => {
+export const HeaderMenus = () => {
     const { cols, getCellContent } = useAllMockedKinds();
 
-    const realCols = React.useMemo(():GridColumn[] => {
+    const realCols = React.useMemo((): GridColumn[] => {
         return cols.map((c, index) => {
             if (index === 2) {
                 return {
@@ -87,9 +95,9 @@ export const HeaderMenus: React.VFC = () => {
                     menuIcon: "dots",
                     overlayIcon: "rowOwnerOverlay",
                     themeOverride: {
-                        accentColor: "red",  //overlayIcon text 변경
-                        bgHeader: "blue",    //overlayIcon bg 변경
-                        bgHeaderHasFocus: "green" //select시 head색상 변경
+                        accentColor: "red", //overlayIcon text 변경
+                        bgHeader: "blue", //overlayIcon bg 변경
+                        bgHeaderHasFocus: "green", //select시 head색상 변경
                     },
                 };
             } else if (index === 3) {
@@ -108,10 +116,10 @@ export const HeaderMenus: React.VFC = () => {
                     title: "CUSTOM",
                     icon: "custom",
                     themeOverride: {
-                       bgHeader: "#212121",      // 헤더 배경색을 짙은 회색으로
-                       textHeader: "#ffffff",    // 헤더 텍스트 색상을 흰색으로
-                       fgIconHeader: "#00ff00",
-                       bgIconHeader: "#ffff00",
+                        bgHeader: "#212121", // 헤더 배경색을 짙은 회색으로
+                        textHeader: "#ffffff", // 헤더 텍스트 색상을 흰색으로
+                        fgIconHeader: "#00ff00",
+                        bgIconHeader: "#ffff00",
                     },
                 };
             }
@@ -122,9 +130,9 @@ export const HeaderMenus: React.VFC = () => {
                 hasMenu: false,
                 required: true,
                 themeOverride: {
-                       bgHeader: "#ff0000",      // 헤더 배경색을 짙은 회색으로
-                       textHeader: "#ffffff",    // 헤더 텍스트 색상을 흰색으로
-                    },
+                    bgHeader: "#ff0000", // 헤더 배경색을 짙은 회색으로
+                    textHeader: "#ffffff", // 헤더 텍스트 색상을 흰색으로
+                },
             };
         });
     }, [cols]);
@@ -155,39 +163,34 @@ export const HeaderMenus: React.VFC = () => {
     });
 
     const drawHeader: DrawHeaderCallback = React.useCallback((args, draw) => {
-      // 먼저 기본 헤더를 그립니다.
-      draw();
+        // 먼저 기본 헤더를 그립니다.
+        draw();
 
-      
+        // required 속성이 없으면 아무것도 하지 않습니다.
+        if (args.column.required !== true) {
+            return;
+        }
 
-      // required 속성이 없으면 아무것도 하지 않습니다.
-      const col = realCols[args.column.sourceIndex];
-    
-      if (col.required !== true) {
-        return;
-      }
+        // 빨간색 삼각형을 그립니다.
+        const { ctx, rect } = args;
+        const size = 7; // 삼각형 크기
 
-      // 빨간색 삼각형을 그립니다.
-      const { ctx, rect } = args;
-      const size = 7; // 삼각형 크기
+        ctx.beginPath();
+        // 헤더의 오른쪽 상단 코너로 이동
+        ctx.moveTo(rect.x + rect.width - size, rect.y);
+        // 오른쪽 상단 코너에 삼각형 그리기
+        ctx.lineTo(rect.x + rect.width, rect.y);
+        ctx.lineTo(rect.x + rect.width, rect.y + size);
+        ctx.closePath();
 
-      ctx.beginPath();
-      // 헤더의 오른쪽 상단 코너로 이동
-      ctx.moveTo(rect.x + rect.width - size, rect.y);
-      // 오른쪽 상단 코너에 삼각형 그리기
-      ctx.lineTo(rect.x + rect.width, rect.y);
-      ctx.lineTo(rect.x + rect.width, rect.y + size);
-      ctx.closePath();
-
-      // 삼각형을 빨간색으로 채웁니다.
-      ctx.fillStyle = "red";
-      ctx.fill();
-            
-    }, [realCols]);
+        // 삼각형을 빨간색으로 채웁니다.
+        ctx.fillStyle = "red";
+        ctx.fill();
+    }, []);
 
     const headerIcons = React.useMemo<SpriteMap>(() => {
-            return {
-                custom: p => `<svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        return {
+            custom: p => `<svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="2.00015" y="2" width="16" height="16" rx="4" fill="${p.bgColor}"/>
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M4.69759 6.00977C4.23735 6.00977 3.86426 6.38286 3.86426 6.8431C3.86426 7.30334 4.23735 7.67643 4.69759 7.67643H8.86426C9.3245 7.67643 9.69759 7.30334 9.69759 6.8431C9.69759 6.38286 9.32449 6.00977 8.86426 6.00977H4.69759Z" fill="${p.fgColor}"/>
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M7.61426 4.76009C7.61426 4.29985 7.24116 3.92676 6.78092 3.92676C6.32069 3.92676 5.94759 4.29985 5.94759 4.76009L5.94759 8.92676C5.94759 9.387 6.32069 9.76009 6.78092 9.76009C7.24116 9.76009 7.61426 9.38699 7.61426 8.92676L7.61426 4.76009Z" fill="${p.fgColor}"/>
@@ -197,8 +200,8 @@ export const HeaderMenus: React.VFC = () => {
                     <path d="M10.2003 11.804C10.2003 11.3438 10.5734 10.9707 11.0336 10.9707H15.2003C15.6605 10.9707 16.0336 11.3438 16.0336 11.804C16.0336 12.2643 15.6605 12.6374 15.2003 12.6374H11.0336C10.5734 12.6374 10.2003 12.2643 10.2003 11.804Z" fill="${p.fgColor}"/>
                     <path d="M10.2003 14.304C10.2003 13.8438 10.5734 13.4707 11.0336 13.4707H15.2003C15.6605 13.4707 16.0336 13.8438 16.0336 14.304C16.0336 14.7643 15.6605 15.1374 15.2003 15.1374H11.0336C10.5734 15.1374 10.2003 14.7643 10.2003 14.304Z" fill="${p.fgColor}"/>
                 </svg>`,
-            };
-        }, []);
+        };
+    }, []);
 
     const onHeaderMenuClick = React.useCallback((col: number, bounds: Rectangle) => {
         setMenu({ col, bounds });
@@ -210,26 +213,24 @@ export const HeaderMenus: React.VFC = () => {
     }, []);
 
     const getGroupDetails = React.useCallback((groupName: string) => {
-       if (groupName === "Details") {
-           return {
-               name: "상세",
-               actions: [
-                   {
-                       title: "클릭테스트",
-                       icon: GridColumnIcon.HeaderArray,
-                       onClick: (e: GroupHeaderClickedEventArgs) => {
-                           console.log("click", e);
-                       },
-                   },
-               ],
-           };
-       }
-       return {
-           name: groupName,
-       };
-     }, []);
-
-
+        if (groupName === "Details") {
+            return {
+                name: "상세",
+                actions: [
+                    {
+                        title: "클릭테스트",
+                        icon: GridColumnIcon.HeaderArray,
+                        onClick: (e: GroupHeaderClickedEventArgs) => {
+                            console.log("click", e);
+                        },
+                    },
+                ],
+            };
+        }
+        return {
+            name: groupName,
+        };
+    }, []);
 
     return (
         <>
@@ -268,14 +269,14 @@ HeaderMenus.storyName = "02. Header Menus";
        // 'Details' 그룹에 대해서만 특별한 설정을 적용
        if (groupName === "Details") {
            return {
-               name: "상세 정보", // . 표시 이름을 "상세 정보"로 지정        
-               icon: GridColumnIcon.HeaderCode, // . 이름 옆에 아이콘 추가   
+               name: "상세 정보", // . 표시 이름을 "상세 정보"로 지정
+               icon: GridColumnIcon.HeaderCode, // . 이름 옆에 아이콘 추가
                actions: [ // . 액션 버튼 추가
                   {
                       title: "그룹 설정 열기",
                       icon: GridColumnIcon.HeaderSettings,
                       onClick: (e) => {
-                          alert(`'상세 정보' 그룹의 설정을 엽니다.`);        
+                          alert(`'상세 정보' 그룹의 설정을 엽니다.`);
                           console.log(e);
                       },
                   },

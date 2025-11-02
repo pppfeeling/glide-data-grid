@@ -262,7 +262,7 @@ export const BeautifulWrapper: React.FC<React.PropsWithChildren<BeautifulProps>>
     );
 };
 
-export const BeautifulWrapperHeight: React.FC<React.PropsWithChildren<BeautifulProps>> = p => {
+export const BeautifulWrapperHeight: React.FC<React.PropsWithChildren<BeautifulProps & { height: string }>> = p => {
     const { title, children, description, className, scale } = p;
 
     const { ref, width, height } = useResizeDetector();
@@ -838,7 +838,7 @@ export function useAllMockedKinds() {
                 const copied = lossyCopyData(val, current);
                 cache.current.set(col, row, {
                     ...copied,
-                    displayData: noDisplay === true ? undefined : copied.data?.toString() ?? "",
+                    displayData: noDisplay === true ? undefined : (copied.data?.toString() ?? ""),
                 } as any);
 
                 if (forceUpdate === true) {
@@ -854,10 +854,12 @@ export function useAllMockedKinds() {
 
 const numRows = 1000;
 
-let staticDataCache: {
-    cols: GridColumnWithMockingInfo[];
-    data: ContentCache;
-} | undefined;
+let staticDataCache:
+    | {
+          cols: GridColumnWithMockingInfo[];
+          data: ContentCache;
+      }
+    | undefined;
 
 function getStaticData() {
     if (staticDataCache === undefined) {

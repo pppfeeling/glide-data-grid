@@ -153,33 +153,47 @@ export const AddData = () => {
         [cols.length, numRows, getCellContent, setCellValue, processRow]
     );
 
+    const onAddRow = React.useCallback(() => {
+        setNumRows(prev => prev + 1);
+    }, []);
+
+    const onDeleteRow = React.useCallback(() => {
+        setNumRows(prev => Math.max(0, prev - 1));
+    }, []);
+
     return (
-        <DataEditor
-            {...defaultProps}
-            ref={gridRef}
-            columns={cols}
-            rows={numRows}
-            getCellContent={getCellContentWithHighlight}
-            isActivationOnEnter={true}
-            rowSelect="single"
-            rowSelectionMode="multi"
-            rowMarkers={{
-                kind: "checkbox-visible",
-                checkboxStyle: "square",
-                headerAlwaysVisible: true,
-                headerDisabled: false,
-                headerTheme: {
-                    textMedium: "rgba(51, 51, 51, 0.50)",
-                },
-            }}
-            fillHandle={{ size: 6 }}
-            onCellEdited={(cell, newValue) => {
-                setCellValue(cell, newValue);
-                processRow(cell[1]); // 개별 셀 수정 후에도 로직 실행
-            }}
-            onFillPattern={onFillPattern}
-            onPaste={onPaste}
-        />
+        <>
+            <div>
+                <button onClick={onAddRow}>열추가</button>
+                <button onClick={onDeleteRow}>열삭제</button>
+            </div>
+            <DataEditor
+                {...defaultProps}
+                ref={gridRef}
+                columns={cols}
+                rows={numRows}
+                getCellContent={getCellContentWithHighlight}
+                isActivationOnEnter={true}
+                rowSelect="single"
+                rowSelectionMode="multi"
+                rowMarkers={{
+                    kind: "checkbox-visible",
+                    checkboxStyle: "square",
+                    headerAlwaysVisible: true,
+                    headerDisabled: false,
+                    headerTheme: {
+                        textMedium: "rgba(51, 51, 51, 0.50)",
+                    },
+                }}
+                fillHandle={{ size: 6 }}
+                onCellEdited={(cell, newValue) => {
+                    setCellValue(cell, newValue);
+                    processRow(cell[1]); // 개별 셀 수정 후에도 로직 실행
+                }}
+                onFillPattern={onFillPattern}
+                onPaste={onPaste}
+            />
+        </>
     );
 };
 
