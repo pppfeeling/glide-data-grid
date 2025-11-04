@@ -176,8 +176,7 @@ AddColumns.storyName = "01. Column";
  * targetColumn: number | GridColumn (선택 사항) - 새 행이 추가될 편집 가능한 열에 포커스가 가도록 할 수 있습니다.
  * themeOverride: Partial<Theme> (선택 사항) - 테마 재정의입니다.
  * disabled: boolean (선택 사항) - 비활성화 여부입니다.
- * `rowGroupBorder`: boolean (선택 사항) - 행 그룹 경계선을 표시할지 여부입니다.  신규
- * `required`: boolean (선택 사항) - 컬럼이 필수 입력 필드인지 여부를 나타냅니다.  신규
+  * `required`: boolean (선택 사항) - 컬럼이 필수 입력 필드인지 여부를 나타냅니다.  신규
  */
 
 /**
