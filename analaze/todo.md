@@ -2,13 +2,6 @@
 
 ## 할일 (To-do)
 
-- [ ] data copy & paste 기능
-- [ ] marker선택 확인..선택된 row가 어떤것인지...확인하는 방법
-- [ ] marker가 radio로 하는 방법 확인
-- [ ] fill handler 조정해서 data 채우기
-- [ ] row add, delete
-- [ ] excel csv 다운로드, 업로드
-- [ ] grouping시 border없애고 데이터도 한개만 나오게 하기
 - [ ] itemClick (row_data, click_column)
     - 그리드 리스트 -> 상세보기로 이동
     - 팝업생성 -> 선택한 팝업 row의 column에 넣기
@@ -37,3 +30,10 @@
 - [x] enter, tab 편집 -> 이동 -> 편집 또는 편집 -> 이동 -> 네비 이렇게 될수 있게 prop추가
 - [x] 문자 편집모드 금지 어디서 막았는지 확인
 - [x] 제일 마지막 row에서 엔터시 편집모드에서 네비모드로 전환
+- [x] data copy & paste 기능
+- [x] marker선택 확인..선택된 row가 어떤것인지...확인하는 방법
+- [x] marker가 radio로 하는 방법 확인
+- [x] fill handler 조정해서 data 채우기
+- [x] row add, delete
+- [x] excel csv 다운로드, 업로드
+- [x] grouping시 border없애고 데이터도 한개만 나오게 하기
