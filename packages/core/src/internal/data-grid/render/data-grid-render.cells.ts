@@ -120,7 +120,6 @@ export function drawCells(
     let result: Rectangle[] | undefined;
     let handledSpans: Set<string> | undefined = undefined;
 
-
     const rowSpannedCells = new CellSet();
     const handledRowSpans = new Set<string>();
 
@@ -221,16 +220,16 @@ export function drawCells(
                     let skipContents = false;
 
                     if (cell.rowspan !== undefined) {
-                        const [startRow, endRow] = cell.rowspan;
-                        const spanKey = `${c.sourceIndex}|${startRow}`;
+                        const [startRowX, endRow] = cell.rowspan;
+                        const spanKey = `${c.sourceIndex}|${startRowX}`;
                         if (!handledRowSpans.has(spanKey)) {
                             let spanY = drawY;
-                            for (let i = startRow; i < row; i++) {
+                            for (let i = startRowX; i < row; i++) {
                                 spanY -= getRowHeight(i);
                             }
 
                             let spanHeight = 0;
-                            for (let i = startRow; i < endRow; i++) {
+                            for (let i = startRowX; i < endRow; i++) {
                                 spanHeight += getRowHeight(i);
                             }
 
@@ -238,7 +237,7 @@ export function drawCells(
                                 cellY = spanY;
                                 cellHeight = spanHeight;
                                 handledRowSpans.add(spanKey);
-                                for (let i = startRow; i < endRow; i++) {
+                                for (let i = startRowX; i < endRow; i++) {
                                     if (i !== row) {
                                         rowSpannedCells.add([c.sourceIndex, i]);
                                     }
@@ -246,7 +245,7 @@ export function drawCells(
                                 drawingSpan = true;
                             } else {
                                 handledRowSpans.add(spanKey);
-                                for (let i = startRow; i < endRow; i++) {
+                                for (let i = startRowX; i < endRow; i++) {
                                     rowSpannedCells.add([c.sourceIndex, i]);
                                 }
                                 toDraw--;
@@ -280,7 +279,6 @@ export function drawCells(
                         }
                     }
 
-                    
                     if (drawingSpan) {
                         ctx.restore();
                         prepResult = undefined;
@@ -413,8 +411,7 @@ export function drawCells(
                                 cellWidth - (isLastColumn ? 2 : 1),
                                 cellHeight - (isLastRow ? 2 : 1)
                             );
-                        }
-                        else {
+                        } else {
                             ctx.fillRect(cellX, cellY, cellWidth, cellHeight);
                         }
                     }
@@ -444,7 +441,7 @@ export function drawCells(
                             if (pos === "top") {
                                 vtrans = rh / 2 - cellHeight / 2;
                             } else if (pos === "bottom") {
-                                const [startRow, endRow] = cell.rowspan;
+                                const [_, endRow] = cell.rowspan;
                                 const lastRowHeight = getRowHeight(endRow - 1);
                                 vtrans = cellHeight / 2 - lastRowHeight / 2;
                             }
