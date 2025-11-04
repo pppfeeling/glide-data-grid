@@ -120,6 +120,10 @@ export function drawCells(
     let result: Rectangle[] | undefined;
     let handledSpans: Set<string> | undefined = undefined;
 
+
+    const rowSpannedCells = new CellSet();
+    const handledRowSpans = new Set<string>();
+
     const skipPoint = getSkipPoint(drawRegions);
 
     walkColumns(
@@ -183,22 +187,12 @@ export function drawCells(
 
                     cellIndex[0] = c.sourceIndex;
                     cellIndex[1] = row;
-                    // if (damage !== undefined && !damage.some(d => d[0] === c.sourceIndex && d[1] === row)) {
-                    //     return;
-                    // }
-                    // if (
-                    //     drawRegions.length > 0 &&
-                    //     !drawRegions.some(dr => intersectRect(drawX, drawY, c.width, rh, dr.x, dr.y, dr.width, dr.height))
-                    // ) {
-                    //     return;
-                    // }
 
-                    // These are dumb versions of the above. I cannot for the life of believe that this matters but this is
-                    // the tightest part of the draw loop and the allocations above actually has a very measurable impact
-                    // on performance. For the love of all that is unholy please keep checking this again in the future.
-                    // As soon as this doesn't have any impact of note go back to the saner looking code. The smoke test
-                    // here is to scroll to the bottom of a test case first, then scroll back up while profiling and see
-                    // how many major GC collections you get. These allocate a lot of objects.
+                    if (rowSpannedCells.has(cellIndex)) {
+                        toDraw--;
+                        return;
+                    }
+
                     if (damage !== undefined && !damage.has(cellIndex)) {
                         return;
                     }
@@ -221,8 +215,49 @@ export function drawCells(
 
                     let cellX = drawX;
                     let cellWidth = c.width;
+                    let cellY = drawY;
+                    let cellHeight = rh;
                     let drawingSpan = false;
                     let skipContents = false;
+
+                    if (cell.rowspan !== undefined) {
+                        const [startRow, endRow] = cell.rowspan;
+                        const spanKey = `${c.sourceIndex}|${startRow}`;
+                        if (!handledRowSpans.has(spanKey)) {
+                            let spanY = drawY;
+                            for (let i = startRow; i < row; i++) {
+                                spanY -= getRowHeight(i);
+                            }
+
+                            let spanHeight = 0;
+                            for (let i = startRow; i < endRow; i++) {
+                                spanHeight += getRowHeight(i);
+                            }
+
+                            if (spanY < colDrawY + colHeight && spanY + spanHeight > colDrawY) {
+                                cellY = spanY;
+                                cellHeight = spanHeight;
+                                handledRowSpans.add(spanKey);
+                                for (let i = startRow; i < endRow; i++) {
+                                    if (i !== row) {
+                                        rowSpannedCells.add([c.sourceIndex, i]);
+                                    }
+                                }
+                                drawingSpan = true;
+                            } else {
+                                handledRowSpans.add(spanKey);
+                                for (let i = startRow; i < endRow; i++) {
+                                    rowSpannedCells.add([c.sourceIndex, i]);
+                                }
+                                toDraw--;
+                                return;
+                            }
+                        } else {
+                            toDraw--;
+                            return;
+                        }
+                    }
+
                     if (cell.span !== undefined) {
                         const [startCol, endCol] = cell.span;
                         const spanKey = `${row},${startCol},${endCol},${c.sticky}`; //alloc
@@ -237,28 +272,32 @@ export function drawCells(
                                 cellX = area.x;
                                 cellWidth = area.width;
                                 handledSpans.add(spanKey);
-                                ctx.restore();
-                                prepResult = undefined;
-                                ctx.save();
-                                ctx.beginPath();
-                                const d = Math.max(0, clipX - area.x);
-                                ctx.rect(area.x + d, drawY, area.width - d, rh);
-                                if (result === undefined) {
-                                    result = [];
-                                }
-                                result.push({
-                                    x: area.x + d,
-                                    y: drawY,
-                                    width: area.width - d,
-                                    height: rh,
-                                });
-                                ctx.clip();
                                 drawingSpan = true;
                             }
                         } else {
                             toDraw--;
                             return;
                         }
+                    }
+
+                    
+                    if (drawingSpan) {
+                        ctx.restore();
+                        prepResult = undefined;
+                        ctx.save();
+                        ctx.beginPath();
+                        const d = Math.max(0, clipX - cellX);
+                        ctx.rect(cellX + d, cellY, cellWidth - d, cellHeight);
+                        if (result === undefined) {
+                            result = [];
+                        }
+                        result.push({
+                            x: cellX + d,
+                            y: cellY,
+                            width: cellWidth - d,
+                            height: cellHeight,
+                        });
+                        ctx.clip();
                     }
 
                     const rowTheme = getRowThemeOverride?.(row);
@@ -343,7 +382,8 @@ export function drawCells(
                         const h = bottom - top;
 
                         // however, not clipping at all is even better. We want to clip if we are the left most col
-                        // or overlapping the bottom clip area.
+                        // or overlapping the bottom clip area. If we are not clipping at all, we can skip the clip
+                        // and restore calls.
                         if (h !== rh - 1 || cellX + 1 <= clipX) {
                             didDamageClip = true;
                             ctx.save();
@@ -369,12 +409,13 @@ export function drawCells(
                             // because technically the bottom right corner of the outline are on other cells.
                             ctx.fillRect(
                                 cellX + 1,
-                                drawY + 1,
+                                cellY + 1,
                                 cellWidth - (isLastColumn ? 2 : 1),
-                                rh - (isLastRow ? 2 : 1)
+                                cellHeight - (isLastRow ? 2 : 1)
                             );
-                        } else {
-                            ctx.fillRect(cellX, drawY, cellWidth, rh);
+                        }
+                        else {
+                            ctx.fillRect(cellX, cellY, cellWidth, cellHeight);
                         }
                     }
 
@@ -397,6 +438,17 @@ export function drawCells(
                             ctx.font = cellFont;
                             font = cellFont;
                         }
+                        let vtrans = 0;
+                        if (cell.rowspan !== undefined) {
+                            const pos = cell.rowSpanPosition ?? "top";
+                            if (pos === "top") {
+                                vtrans = rh / 2 - cellHeight / 2;
+                            } else if (pos === "bottom") {
+                                const [startRow, endRow] = cell.rowspan;
+                                const lastRowHeight = getRowHeight(endRow - 1);
+                                vtrans = cellHeight / 2 - lastRowHeight / 2;
+                            }
+                        }
                         prepResult = drawCell(
                             ctx,
                             cell,
@@ -405,9 +457,9 @@ export function drawCells(
                             isLastColumn,
                             isLastRow,
                             cellX,
-                            drawY,
+                            cellY,
                             cellWidth,
-                            rh,
+                            cellHeight,
                             accentCount > 0,
                             theme,
                             fill ?? theme.bgCell,
@@ -422,7 +474,8 @@ export function drawCells(
                             enqueue,
                             renderStateProvider,
                             getCellRenderer,
-                            overrideCursor
+                            overrideCursor,
+                            vtrans
                         );
                     }
 
@@ -452,6 +505,7 @@ export function drawCells(
             return toDraw <= 0;
         }
     );
+    if (result === undefined) return;
     return result;
 }
 
@@ -489,7 +543,8 @@ export function drawCell(
     enqueue: EnqueueCallback | undefined,
     renderStateProvider: RenderStateProvider,
     getCellRenderer: GetCellRendererCallback,
-    overrideCursor: (cursor: React.CSSProperties["cursor"]) => void
+    overrideCursor: (cursor: React.CSSProperties["cursor"]) => void,
+    vtrans: number
 ): PrepResult | undefined {
     let hoverX: number | undefined;
     let hoverY: number | undefined;
@@ -542,11 +597,14 @@ export function drawCell(
             lastPrep = undefined;
         }
         const partialPrepResult = r.drawPrep?.(args, lastPrep);
+        ctx.save();
+        ctx.translate(0, vtrans);
         if (drawCellCallback !== undefined && !isInnerOnlyCell(args.cell)) {
             drawCellCallback(args as DrawArgs<GridCell>, () => r.draw(args, cell));
         } else {
             r.draw(args, cell);
         }
+        ctx.restore();
         result =
             partialPrepResult === undefined
                 ? undefined
