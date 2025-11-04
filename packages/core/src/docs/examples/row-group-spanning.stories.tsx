@@ -96,21 +96,19 @@ export const RowGroupSpanning = () => {
                 allowOverlay: true,
                 displayData: data ?? "",
             };
+            
+            if (field === "company" ) {
+             console.log("dataRow",row,dataRow.company, dataRow.rowspan)
+            
+              if(dataRow.hasOwnProperty("rowspan")) {
+                basicCell.rowspan = dataRow.rowspan;
+                basicCell.rowSpanPosition = "center";
+                return basicCell
+              }
+            
 
-           if (field === "company" && row >= 4 &&  row <= 9) {
-              return {
-                  ...basicCell,
-                  rowspan: [4, 9],
-                  rowSpanPosition: "center",
-              };
-            }
-
-            if (field === "company" && row >= 17 &&  row < 21) {
-              return {
-                  ...basicCell,
-                  rowspan: [17, 21],
-              };
-            }
+              
+           }
 
          
 

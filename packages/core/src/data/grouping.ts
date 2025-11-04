@@ -16,9 +16,16 @@ function recursiveGroup<T extends Record<string, any>>(
     data: readonly T[],
     groupKeys: (keyof T & string)[],
     aggregation: { id: string; column: string; type: "sum" | "count" | "label" | "avg" | "min" | "max"; label?: string }[],
-    level: number
+    level: number,
+    offset: number
 ): (T | GroupSummaryRow)[] {
     if (groupKeys.length === 0 || data.length === 0) {
+        if (data.length >= 2) {
+            return data.map((row, index) => ({
+                ...row,
+                rowspan: [offset, offset + data.length],
+            }));
+        }
         return [...data];
     }
 
@@ -34,12 +41,25 @@ function recursiveGroup<T extends Record<string, any>>(
         groups.get(groupVal)!.push(row);
     }
 
+    let currentLocalOffset = 0;
     for (const groupRows of groups.values()) {
-        const recursiveResult = recursiveGroup(groupRows, remainingKeys, aggregation, level + 1);
+        const groupStart = offset + currentLocalOffset;
+        const recursiveResult = recursiveGroup(groupRows, remainingKeys, aggregation, level + 1, groupStart);
+
+        if (groupRows.length >= 2) {
+            const groupEnd = groupStart + recursiveResult.length;
+            for (const r of recursiveResult) {
+                if (!("isGroupSummary" in r) && (r as any).rowspan === undefined) {
+                    (r as any).rowspan = [groupStart, groupEnd];
+                }
+            }
+        }
+
         result.push(...recursiveResult);
 
         const summary = createSummary(groupRows, currentKey, aggregation, level);
         result.push(summary);
+        currentLocalOffset = result.length;
     }
 
     return result;
@@ -54,8 +74,7 @@ export function groupData<T extends Record<string, any>>(
         return { groupedData: [...data], groupHeaderIndexes: [] };
     }
 
-    const groupedData = recursiveGroup(data, groupKeys, aggregation, 0);
-
+    const groupedData = recursiveGroup(data, groupKeys, aggregation, 0, 0);
     const groupHeaderIndexes: number[] = [];
     for (let i = 0; i < groupedData.length; i++) {
         const row = groupedData[i];
