@@ -6,17 +6,25 @@ import { multiColumnFilter } from "./filter.js";
 import { groupData, type GroupSummaryRow, createTotalSummary, type TotalSummaryRow } from "./grouping.js";
 
 export interface ProcessingOptions {
-    filterConfig: FilterConfig<any> | null;
-    sortState: { key: string; order: "asc" | "desc" }[];
-    groupingState: string[];
-    groupingFunctions: Map<string, string>;
-    groupingLabels: Map<string, string>;
-    showTotals: boolean;
+    filterConfig?: FilterConfig<any> | null;
+    sortState?: { key: string; order: "asc" | "desc" }[];
+    groupingState?: string[];
+    groupingFunctions?: Map<string, string>;
+    groupingLabels?: Map<string, string> | null;
+    showTotals?: boolean;
     cols: readonly GridColumn[];
 }
 
 export const useGridDataProcessing = (initialData: readonly any[], options: ProcessingOptions) => {
-    const { filterConfig, sortState, groupingState, groupingFunctions, groupingLabels, showTotals, cols } = options;
+    const {
+        filterConfig = null,
+        sortState = [],
+        groupingState = [],
+        groupingFunctions = new Map(),
+        groupingLabels = new Map(),
+        showTotals = false,
+        cols,
+    } = options;
 
     const { processedData, totalSummaryRow } = React.useMemo(() => {
         console.log("[useGridDataProcessing] Options:", options);
