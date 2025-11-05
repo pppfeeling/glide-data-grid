@@ -5,6 +5,7 @@ import {
     type EditableGridCell,
     type GridCell,
     GridCellKind,
+    GridColumnIcon,
     type GridSelection,
     type Item,
     isEditableGridCell,
@@ -45,12 +46,41 @@ export default {
     ],
 };
 
+
+
+const cols = [
+        {
+            title: "First name",
+            id: "First name",
+        },
+        {
+            title: "Last name",
+            id: "Last name",
+        },
+        {
+            title: "Avatar",
+            id: "Avatar",
+        },
+        {
+            title: "Email",
+            id: "Email",
+        },
+        {
+            title: "Title",
+            id: "Title",
+        },
+        {
+            title: "More Info",
+            id: "More Info",
+        },
+    ];
+
 const generateNewCell = (colIndex: number): GridCell => {
     switch (colIndex) {
         case 0: return { kind: GridCellKind.Text, displayData: faker.name.firstName(), data: faker.name.firstName(), allowOverlay: true, readonly: false };
         case 1: return { kind: GridCellKind.Text, displayData: faker.name.lastName(), data: faker.name.lastName(), allowOverlay: true, readonly: true };
         case 2: return { kind: GridCellKind.Image, data: [`https://picsum.photos/id/${Math.round(Math.random() * 100)}/900/900`], displayData: [`https://picsum.photos/id/${Math.round(Math.random() * 100)}/40/40`], allowOverlay: true, readonly: true };
-        case 3: return { kind: GridCellKind.Text, displayData: faker.internet.email(), data: faker.internet.email(), allowOverlay: true, readonly: true };
+        case 3: return { kind: GridCellKind.Number, displayData: faker.datatype.number().toString(), data: faker.datatype.number(), allowOverlay: true, readonly: false };
         case 4: return { kind: GridCellKind.Text, displayData: faker.name.jobTitle(), data: faker.name.jobTitle(), allowOverlay: true, readonly: true };
         case 5: return { kind: GridCellKind.Uri, displayData: faker.internet.url(), data: faker.internet.url(), hoverEffect: true, allowOverlay: true, readonly: true, onClickUri: a => { window.open(faker.internet.url(), "_blank"); a.preventDefault(); } };
         default: return { kind: GridCellKind.Text, displayData: "", data: "", allowOverlay: true, readonly: false };
@@ -69,7 +99,7 @@ export const AddData = () => {
                 rows: CompactSelection.empty(),
             });
 
-    const { cols, onColumnResize } = useMockDataGenerator(6); // 6 columns for the example
+    const {  onColumnResize } = useMockDataGenerator(6); // 6 columns for the example
 
     const initialRows = 10;
     const [data, setData] = React.useState<GridCell[][]>(() => {
@@ -92,7 +122,7 @@ export const AddData = () => {
             const emailCell = data[row]?.[3];
 
             const firstName = firstNameCell && "data" in firstNameCell ? (firstNameCell.data as string) : "";
-            const email = emailCell && "data" in emailCell ? (emailCell.data as string) : "";
+            const email = emailCell && "data" in emailCell ? (emailCell.data + "") : "";
 
             if (email?.includes("gmail")) {
                 setHighlightedRows(prev => new Set(prev).add(row));

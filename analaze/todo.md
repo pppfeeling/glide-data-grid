@@ -1,19 +1,8 @@
 # TODO List
 
 ## 할일 (To-do)
-
-- [ ] itemClick (row_data, click_column)
-    - 그리드 리스트 -> 상세보기로 이동
-    - 팝업생성 -> 선택한 팝업 row의 column에 넣기
-- [ ] selectionAbleFunction (row_data):boolean
-    - marker column이 선택가능한지 여부 return
-- [ ] onItemEditEnd (row_data, item(rowindex,columnidex), new_value)
-    - 입력된 값으로 다른셀의 값을 채우기 위해 사용
-    - 입력된 값으로 팝업에서 값 찾기 ()
 - [ ] column check
-- [ ] column radio
 - [ ] column masked input
-- [ ] column number
 - [ ] column date
 - [ ] column select
 - [ ] column relational select (대중소) itemList -> column select에서 구현
@@ -37,3 +26,13 @@
 - [x] row add, delete
 - [x] excel csv 다운로드, 업로드
 - [x] grouping시 border없애고 데이터도 한개만 나오게 하기
+- [x] selectionAbleFunction (row_data):boolean
+    - marker column이 선택가능한지 여부 return
+- [x] itemClick (row_data, click_column)
+    - 그리드 리스트 -> 상세보기로 이동
+    - 팝업생성 -> 선택한 팝업 row의 column에 넣기
+- [x] onItemEditEnd (row_data, item(rowindex,columnidex), new_value)
+    - 입력된 값으로 다른셀의 값을 채우기 위해 사용
+    - 입력된 값으로 팝업에서 값 찾기 ()
+- [x] column number
+
