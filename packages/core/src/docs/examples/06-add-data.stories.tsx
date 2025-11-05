@@ -73,6 +73,11 @@ const cols = [
             title: "More Info",
             id: "More Info",
         },
+        {
+            title: "Date",
+            id: "Date",
+            width: 200,
+        },
     ];
 
 const generateNewCell = (colIndex: number): GridCell => {
@@ -80,10 +85,10 @@ const generateNewCell = (colIndex: number): GridCell => {
         case 0: return { kind: GridCellKind.Text, displayData: faker.name.firstName(), data: faker.name.firstName(), allowOverlay: true, readonly: false };
         case 1: return { kind: GridCellKind.Text, displayData: faker.name.lastName(), data: faker.name.lastName(), allowOverlay: true, readonly: true };
         case 2: return { kind: GridCellKind.Image, data: [`https://picsum.photos/id/${Math.round(Math.random() * 100)}/900/900`], displayData: [`https://picsum.photos/id/${Math.round(Math.random() * 100)}/40/40`], allowOverlay: true, readonly: true };
-        case 3: return { kind: GridCellKind.Number, displayData: faker.datatype.number().toString(), data: faker.datatype.number(), allowOverlay: true, readonly: false };
-        case 4: return { kind: GridCellKind.Text, displayData: faker.name.jobTitle(), data: faker.name.jobTitle(), allowOverlay: true, readonly: true };
-        case 5: return { kind: GridCellKind.Uri, displayData: faker.internet.url(), data: faker.internet.url(), hoverEffect: true, allowOverlay: true, readonly: true, onClickUri: a => { window.open(faker.internet.url(), "_blank"); a.preventDefault(); } };
-        default: return { kind: GridCellKind.Text, displayData: "", data: "", allowOverlay: true, readonly: false };
+        case 3: return { kind: GridCellKind.Number, displayData: faker.datatype.number().toLocaleString(), data: faker.datatype.number(), allowOverlay: true, readonly: false, contentAlign: 'right' };
+        case 4: return { kind: GridCellKind.Boolean, displayData: faker.datatype.boolean(), data: faker.datatype.boolean(), allowOverlay: false, readonly: false };
+        case 5: return { kind: GridCellKind.Uri, displayData: faker.internet.url(), data: faker.internet.url(), hoverEffect: true, allowOverlay: true, readonly: true, onClickUri: a => { alert(JSON.stringify(a)); a.preventDefault(); } };
+        default: return { kind: GridCellKind.Text, displayData: faker.date.recent().toISOString().slice(0, 10), data: faker.date.recent().toISOString().slice(0, 10), allowOverlay: true, readonly: false, contentAlign:'center' };
     }
 };
 

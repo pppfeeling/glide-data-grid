@@ -1,7 +1,6 @@
 # TODO List
 
 ## 할일 (To-do)
-- [ ] column check
 - [ ] column masked input
 - [ ] column date
 - [ ] column select
@@ -35,4 +34,5 @@
     - 입력된 값으로 다른셀의 값을 채우기 위해 사용
     - 입력된 값으로 팝업에서 값 찾기 ()
 - [x] column number
+- [x] column check
 
