@@ -243,11 +243,46 @@ export const AddData = () => {
         });
     }, [gridSelection.rows]);
 
+     const onCsvDownload = React.useCallback(() => {
+        if (data.length === 0) return;
+
+        const headers = cols.map(c => c.title).join(",");
+        const csvRows = data.map(row =>
+            row.map(cell => {
+                let cellData = "";
+                if (cell.kind === GridCellKind.Text || cell.kind === GridCellKind.Number || cell.kind === GridCellKind.Uri || cell.kind === GridCellKind.Markdown) {
+                    cellData = cell.displayData ?? cell.data?.toString() ?? "";
+                } else if (cell.kind === GridCellKind.Image || cell.kind === GridCellKind.Drilldown || cell.kind === GridCellKind.Bubble) {
+                    cellData = Array.isArray(cell.data) ? cell.data.join(";") : "";
+                } else if (cell.kind === GridCellKind.Boolean) {
+                    cellData = cell.data?.toString() ?? "false";
+                }
+                // Escape commas and quotes
+                const escaped = cellData.replace(/"/g, '""');
+                return `"${escaped}"`;
+            }).join(",")
+        );
+
+        const csvString = "\uFEFF" + [headers, ...csvRows].join("\n");
+
+        const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "grid-data.csv");
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+     },[data, cols])
+
+
     return (
         <>
             <div>
                 <button onClick={onAddRow}>열추가</button>
                 <button onClick={onDeleteRow}>열삭제</button>
+                <button onClick={onCsvDownload}>CSV다운로드</button>
             </div>
             <DataEditor
                 {...defaultProps}
@@ -275,6 +310,9 @@ export const AddData = () => {
                 onPaste={true}
                 onGridSelectionChange={setGridSelection}
                 gridSelection={gridSelection}
+                disabledRows={(row) => {
+                  return row % 3 === 0
+                }}
             />
         </>
     );

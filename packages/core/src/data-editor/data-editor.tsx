@@ -701,6 +701,7 @@ export interface DataEditorProps extends Props, Pick<DataGridSearchProps, "image
      * 편집모드에서 Enter, Tab키 입력시 다음셀로 이동한 후 편집모드로 전환할지 여부
      */
     readonly isActivationOnEnter?: Boolean;
+    readonly disabledRows?: (row: number) => boolean;
 }
 
 type ScrollToFn = (
@@ -1331,6 +1332,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     row: rowMarkerStartIndex + mappedRow,
                     drawHandle: onRowMoved !== undefined,
                     cursor: rowMarkers === "clickable-number" ? "pointer" : undefined,
+                    disabled: p.disabledRows?.(row) === true,
                 };
             } else if (isTrailing) {
                 //If the grid is empty, we will return text
@@ -1868,6 +1870,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     if (markerCell.kind !== InnerGridCellKind.Marker) {
                         return;
                     }
+                    if (markerCell.disabled === true) return;
 
                     if (onRowMoved !== undefined) {
                         const renderer = getCellRenderer(markerCell);

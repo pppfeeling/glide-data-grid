@@ -17,7 +17,8 @@ export function drawCheckbox(
     hoverY: number = -20,
     maxSize: number | undefined = undefined,
     alignment: BaseGridCell["contentAlign"] = "center",
-    style: "circle" | "square" = "square"
+    style: "circle" | "square" = "square",
+    disabled: boolean = false
 ) {
     const centerY = Math.floor(y + height / 2);
     const rectBordRadius = style === "circle" ? 10_000 : (theme.roundingRadius ?? 4);
@@ -44,7 +45,7 @@ export function drawCheckbox(
                 checkBoxWidth *= 0.8;
             }
 
-            ctx.fillStyle = highlighted ? theme.accentColor : theme.textMedium;
+            ctx.fillStyle = disabled ? theme.bgCellMedium : highlighted ? theme.accentColor : theme.textMedium;
             ctx.fill();
 
             ctx.beginPath();
@@ -61,7 +62,7 @@ export function drawCheckbox(
                 centerY - checkBoxHalfWidth + checkBoxWidth / 3.25
             );
 
-            ctx.strokeStyle = theme.bgCell;
+            ctx.strokeStyle = disabled ? theme.textLight : theme.bgCell;
             ctx.lineJoin = "round";
             ctx.lineCap = "round";
             ctx.lineWidth = 1.9;
@@ -82,7 +83,11 @@ export function drawCheckbox(
             );
 
             ctx.lineWidth = 1;
-            ctx.strokeStyle = hovered ? theme.textDark : theme.textMedium;
+            ctx.strokeStyle = disabled
+                ? theme.textLight
+                : hovered
+                ? theme.textDark
+                : theme.textMedium;
             ctx.stroke();
             break;
         }
@@ -98,7 +103,7 @@ export function drawCheckbox(
                 rectBordRadius
             );
 
-            ctx.fillStyle = hovered ? theme.textMedium : theme.textLight;
+            ctx.fillStyle = disabled ? theme.bgCellMedium : hovered ? theme.textMedium : theme.textLight;
             ctx.fill();
 
             if (style === "circle") {
@@ -109,7 +114,7 @@ export function drawCheckbox(
             ctx.beginPath();
             ctx.moveTo(posX - checkBoxWidth / 3, centerY);
             ctx.lineTo(posX + checkBoxWidth / 3, centerY);
-            ctx.strokeStyle = theme.bgCell;
+            ctx.strokeStyle = disabled ? theme.textLight : theme.bgCell;
             ctx.lineCap = "round";
             ctx.lineWidth = 1.9;
             ctx.stroke();

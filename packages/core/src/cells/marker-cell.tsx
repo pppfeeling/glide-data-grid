@@ -11,9 +11,10 @@ export const markerCellRenderer: InternalCellRenderer<MarkerCell> = {
     drawPrep: prepMarkerRowCell,
     measure: () => 44,
     draw: a =>
-        drawMarkerRowCell(a, a.cell.row, a.cell.checked, a.cell.markerKind, a.cell.drawHandle, a.cell.checkboxStyle),
+        drawMarkerRowCell(a, a.cell.row, a.cell.checked, a.cell.markerKind, a.cell.drawHandle, a.cell.checkboxStyle, a.cell.disabled),
     onClick: e => {
         const { bounds, cell, posX: x, posY: y } = e;
+        if (cell.disabled === true) return;
         const { width, height } = bounds;
 
         const centerX = cell.drawHandle ? 7 + (width - 7) / 2 : width / 2;
@@ -54,8 +55,58 @@ function drawMarkerRowCell(
     checked: boolean,
     markerKind: "checkbox" | "both" | "number" | "checkbox-visible",
     drawHandle: boolean,
-    style: "circle" | "square"
+    style: "circle" | "square",
+    disabled?: boolean
 ) {
+    if (disabled) {
+        const { ctx, rect, theme } = args;
+        const { x, y, width, height } = rect;
+        const mKind = markerKind === "checkbox" ? "checkbox-visible" : markerKind;
+        if (mKind !== "number") {
+            ctx.globalAlpha = checked ? 1 : 0.4;
+            drawCheckbox(
+                ctx,
+                theme,
+                checked,
+                drawHandle ? x + 7 : x,
+                y,
+                drawHandle ? width - 7 : width,
+                height,
+                false, // highlighted
+                -20, // hoverX
+                -20, // hoverY
+                theme.checkboxMaxSize,
+                "center",
+                style,
+                true // disabled
+            );
+            ctx.globalAlpha = 1;
+        }
+        if (mKind === "number" || (mKind === "both" && !checked)) {
+            const text = index.toString();
+            const fontStyle = theme.markerFontFull;
+            const start = x + width / 2;
+            ctx.fillStyle = "#cccccc";
+            ctx.font = fontStyle;
+            ctx.fillText(text, start, y + height / 2 + getMiddleCenterBias(ctx, fontStyle));
+        }
+        if (drawHandle) {
+            ctx.globalAlpha = 0.4;
+            ctx.beginPath();
+            for (const xOffset of [3, 6]) {
+                for (const yOffset of [-5, -1, 3]) {
+                    ctx.rect(x + xOffset, y + height / 2 + yOffset, 2, 2);
+                }
+            }
+
+            ctx.fillStyle = "#cccccc";
+            ctx.fill();
+            ctx.beginPath();
+            ctx.globalAlpha = 1;
+        }
+        return;
+    }
+
     const { ctx, rect, hoverAmount, theme } = args;
     const { x, y, width, height } = rect;
     const checkedboxAlpha = checked ? 1 : markerKind === "checkbox-visible" ? 0.6 + 0.4 * hoverAmount : hoverAmount;
@@ -75,7 +126,8 @@ function drawMarkerRowCell(
             undefined,
             theme.checkboxMaxSize,
             "center",
-            style
+            style,
+            disabled
         );
         if (drawHandle) {
             ctx.globalAlpha = hoverAmount;
