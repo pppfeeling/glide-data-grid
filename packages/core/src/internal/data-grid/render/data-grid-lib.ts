@@ -494,6 +494,8 @@ export function getEmHeight(ctx: CanvasRenderingContext2D, fontStyle: string): n
 }
 
 function truncateString(data: string, w: number): string {
+    data = String(data);
+
     if (data.includes("\n")) {
         // new lines are rare and split is relatively expensive compared to the search
         // it pays off to not do the split contantly. More accurately... it pays off not to run the regex.
