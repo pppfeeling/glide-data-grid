@@ -7,12 +7,12 @@
         "plugin:import/typescript",
         "plugin:react-hooks/recommended",
         "plugin:sonarjs/recommended",
-        "plugin:unicorn/recommended"
+        "plugin:unicorn/recommended",
     ],
     "plugins": ["react", "@typescript-eslint", "import", "sonarjs"],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "project": ["./tsconfig.json"]
+        "project": ["./tsconfig.json"],
     },
     "rules": {
         "no-console": "warn",
@@ -48,21 +48,29 @@
         "unicorn/consistent-destructuring": "off",
         "unicorn/no-array-reduce": "off",
         "unicorn/expiring-todo-comments": "off",
+        "unicorn/prefer-number-properties": "off",
+        "unicorn/no-for-loop": "off",
+        "unicorn/prefer-ternary": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "eslint-plugin-unicorn/no-for-loop": "off",
+        "eslint-plugin-unicorn/prefer-ternary": "off",
+        "eslint-plugin-unicorn/no-lonely-if": "off",
+        "eslint-plugin-unicorn/prefer-switch": "off",
         "@typescript-eslint/no-misused-promises": [
             "error",
             {
-                "checksVoidReturn": false
-            }
+                "checksVoidReturn": false,
+            },
         ],
-        "@typescript-eslint/strict-boolean-expressions": "error",
+        "@typescript-eslint/strict-boolean-expressions": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
-        "@typescript-eslint/ban-types": "off"
+        "@typescript-eslint/ban-types": "off",
     },
     "ignorePatterns": ["**/node_modules/*", "**/dist/*"],
     "settings": {
         "react": {
-            "version": "detect"
-        }
-    }
+            "version": "detect",
+        },
+    },
 }

@@ -1,6 +1,15 @@
-import type { GridCell } from "../internal/data-grid/data-grid-types";
-
-export type FilterOperator = "Contain" | "Not Contain" | "Equals" | "NotEqual" | "StartWith" | "EndWith" | "Great" | "GreatWithEqual" | "Less" | "LessWithEqual" | "Between";
+export type FilterOperator =
+    | "Contain"
+    | "Not Contain"
+    | "Equals"
+    | "NotEqual"
+    | "StartWith"
+    | "EndWith"
+    | "Great"
+    | "GreatWithEqual"
+    | "Less"
+    | "LessWithEqual"
+    | "Between";
 export type FilterCondition = "AND" | "OR";
 
 export interface FilterOption<T> {
@@ -57,10 +66,7 @@ const evaluateCondition = (cellValue: any, operator: FilterOperator, filterValue
     }
 };
 
-export const multiColumnFilter = <T extends Record<string, any>>(
-    data: T[],
-    config: FilterConfig<T>
-): T[] => {
+export const multiColumnFilter = <T extends Record<string, any>>(data: T[], config: FilterConfig<T>): T[] => {
     const { filterOptions } = config;
 
     if (!filterOptions || filterOptions.length === 0) {

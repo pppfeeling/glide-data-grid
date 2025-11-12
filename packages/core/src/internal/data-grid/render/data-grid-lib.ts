@@ -49,6 +49,7 @@ export function useMappedColumns(
                     headerRowMarkerAlwaysVisible: c.headerRowMarkerAlwaysVisible,
                     headerRowMarkerDisabled: c.headerRowMarkerDisabled,
                     rowGroupBorder: c.rowGroupBorder,
+                    required: c.required,
                 })
             ),
         [columns, freezeColumns]

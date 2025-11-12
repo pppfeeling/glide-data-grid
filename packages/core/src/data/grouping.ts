@@ -1,4 +1,3 @@
-
 export interface GroupSummaryRow {
     readonly isGroupSummary: true;
     readonly groupName: string;
@@ -15,7 +14,12 @@ export interface TotalSummaryRow {
 function recursiveGroup<T extends Record<string, any>>(
     data: readonly T[],
     groupKeys: (keyof T & string)[],
-    aggregation: { id: string; column: string; type: "sum" | "count" | "label" | "avg" | "min" | "max"; label?: string }[],
+    aggregation: {
+        id: string;
+        column: string;
+        type: "sum" | "count" | "label" | "avg" | "min" | "max";
+        label?: string;
+    }[],
     level: number,
     offset: number
 ): (T | GroupSummaryRow)[] {
@@ -68,7 +72,12 @@ function recursiveGroup<T extends Record<string, any>>(
 export function groupData<T extends Record<string, any>>(
     data: readonly T[],
     groupKeys: (keyof T & string)[],
-    aggregation: { id: string; column: string; type: "sum" | "count" | "label" | "avg" | "min" | "max"; label?: string }[]
+    aggregation: {
+        id: string;
+        column: string;
+        type: "sum" | "count" | "label" | "avg" | "min" | "max";
+        label?: string;
+    }[]
 ): { groupedData: (T | GroupSummaryRow)[]; groupHeaderIndexes: number[] } {
     if (groupKeys.length === 0 || data.length === 0) {
         return { groupedData: [...data], groupHeaderIndexes: [] };
@@ -76,12 +85,9 @@ export function groupData<T extends Record<string, any>>(
 
     const groupedData = recursiveGroup(data, groupKeys, aggregation, 0, 0);
     const groupHeaderIndexes: number[] = [];
-    for (let i = 0; i < groupedData.length; i++) {
-        const row = groupedData[i];
-        if ("isGroupSummary" in row && row.isGroupSummary) {
-            if (row.level === 0) {
-                groupHeaderIndexes.push(i);
-            }
+    for (const [i, row] of groupedData.entries()) {
+        if ("isGroupSummary" in row && row.isGroupSummary && row.level === 0) {
+            groupHeaderIndexes.push(i);
         }
     }
 
@@ -91,7 +97,12 @@ export function groupData<T extends Record<string, any>>(
 function createSummary<T extends Record<string, any>>(
     group: readonly T[],
     groupKey: string,
-    aggregation: { id: string; column: string; type: "sum" | "count" | "label" | "avg" | "min" | "max"; label?: string }[],
+    aggregation: {
+        id: string;
+        column: string;
+        type: "sum" | "count" | "label" | "avg" | "min" | "max";
+        label?: string;
+    }[],
     level: number
 ): GroupSummaryRow {
     const groupName = String(group[0][groupKey]);
@@ -107,22 +118,42 @@ function createSummary<T extends Record<string, any>>(
         const values = group.map(x => x[agg.column]);
         const numericValues = values.filter(x => typeof x === "number") as number[];
 
-        if (agg.type === "sum") {
-            summary[agg.id] = numericValues.reduce((a, b) => a + b, 0);
-        } else if (agg.type === "avg") {
-            if (numericValues.length > 0) {
-                summary[agg.id] = numericValues.reduce((a, b) => a + b, 0) / numericValues.length;
-            } else {
-                summary[agg.id] = 0;
+        switch (agg.type) {
+            case "sum": {
+                summary[agg.id] = numericValues.reduce((a, b) => a + b, 0);
+
+                break;
             }
-        } else if (agg.type === "min") {
-            summary[agg.id] = Math.min(...numericValues);
-        } else if (agg.type === "max") {
-            summary[agg.id] = Math.max(...numericValues);
-        } else if (agg.type === "count") {
-            summary[agg.id] = group.length;
-        } else if (agg.type === "label") {
-            summary[agg.id] = agg.label ?? groupName;
+            case "avg": {
+                if (numericValues.length > 0) {
+                    summary[agg.id] = numericValues.reduce((a, b) => a + b, 0) / numericValues.length;
+                } else {
+                    summary[agg.id] = 0;
+                }
+
+                break;
+            }
+            case "min": {
+                summary[agg.id] = Math.min(...numericValues);
+
+                break;
+            }
+            case "max": {
+                summary[agg.id] = Math.max(...numericValues);
+
+                break;
+            }
+            case "count": {
+                summary[agg.id] = group.length;
+
+                break;
+            }
+            case "label": {
+                summary[agg.id] = agg.label ?? groupName;
+
+                break;
+            }
+            // No default
         }
     }
 
@@ -131,27 +162,45 @@ function createSummary<T extends Record<string, any>>(
 
 export function createTotalSummary<T extends Record<string, any>>(
     data: readonly T[],
-    aggregation: { id: string; column: string; type: "sum" | "count" | "label" | "avg" | "min" | "max"; label?: string }[]
+    aggregation: {
+        id: string;
+        column: string;
+        type: "sum" | "count" | "label" | "avg" | "min" | "max";
+        label?: string;
+    }[]
 ): TotalSummaryRow {
     const summary: any = {
         isTotalSummary: true,
     };
 
-    
     for (const agg of aggregation) {
-        if (agg.type === "label") {
-          summary[agg.id] = agg.label ?? "총합계"
-        } else if (agg.type === "sum" || agg.type === "avg" || agg.type === "min" || agg.type === "max") {
-            const numericValues = data.map(x => x[agg.column]).filter(x => typeof x === "number") as number[];
-            if (numericValues.length > 0) {
-                if (agg.type === "sum") summary[agg.id] = numericValues.reduce((a, b) => a + b, 0);
-                if (agg.type === "avg")
-                    summary[agg.id] = numericValues.reduce((a, b) => a + b, 0) / numericValues.length;
-                if (agg.type === "min") summary[agg.id] = Math.min(...numericValues);
-                if (agg.type === "max") summary[agg.id] = Math.max(...numericValues);
+        switch (agg.type) {
+            case "label": {
+                summary[agg.id] = agg.label ?? "총합계";
+
+                break;
             }
-        } else if (agg.type === "count") {
-            summary[agg.id] = data.length;
+            case "sum":
+            case "avg":
+            case "min":
+            case "max": {
+                const numericValues = data.map(x => x[agg.column]).filter(x => typeof x === "number") as number[];
+                if (numericValues.length > 0) {
+                    if (agg.type === "sum") summary[agg.id] = numericValues.reduce((a, b) => a + b, 0);
+                    if (agg.type === "avg")
+                        summary[agg.id] = numericValues.reduce((a, b) => a + b, 0) / numericValues.length;
+                    if (agg.type === "min") summary[agg.id] = Math.min(...numericValues);
+                    if (agg.type === "max") summary[agg.id] = Math.max(...numericValues);
+                }
+
+                break;
+            }
+            case "count": {
+                summary[agg.id] = data.length;
+
+                break;
+            }
+            // No default
         }
     }
 

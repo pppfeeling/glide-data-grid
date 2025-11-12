@@ -1567,7 +1567,8 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
                                     undefined,
                                     renderStateProvider,
                                     getCellRenderer,
-                                    () => undefined
+                                    () => undefined,
+                                    0
                                 );
                             }
                         }

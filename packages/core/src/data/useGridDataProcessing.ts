@@ -27,7 +27,6 @@ export const useGridDataProcessing = (initialData: readonly any[], options: Proc
     } = options;
 
     const { processedData, totalSummaryRow } = React.useMemo(() => {
-        console.log("[useGridDataProcessing] Options:", options);
         let currentData = [...initialData];
 
         // 1. Filtering
@@ -44,7 +43,7 @@ export const useGridDataProcessing = (initialData: readonly any[], options: Proc
                             id: c.id ?? c.title,
                             column: c.id ?? c.title,
                             type: "label",
-                            label: groupingLabels.get(c.title),
+                            label: groupingLabels?.get(c.title),
                         };
                     }
                     return {

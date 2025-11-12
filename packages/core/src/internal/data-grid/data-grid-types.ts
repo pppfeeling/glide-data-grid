@@ -322,7 +322,7 @@ export interface BaseGridCell {
     readonly cursor?: CSSProperties["cursor"];
     readonly copyData?: string;
     readonly activationBehaviorOverride?: CellActivationBehavior;
- }
+}
 
 /** @category Cells */
 export interface LoadingCell extends BaseGridCell {
@@ -522,6 +522,7 @@ export interface MarkerCell extends BaseGridCell {
     readonly checked: boolean;
     readonly checkboxStyle: "square" | "circle";
     readonly markerKind: "checkbox" | "number" | "both" | "checkbox-visible";
+    readonly disabled?: boolean;
 }
 
 /** @category Selection */
