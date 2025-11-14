@@ -286,6 +286,23 @@ const protectedColumnOverlay = (props: SpriteProps) => {
 `;
 };
 
+const headerArrowDown =  (props: SpriteProps) => {
+    const fg = props.fgColor;
+    const bg = props.bgColor;
+    return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="${fg}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-icon lucide-arrow-down"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+  `;
+};
+
+const headerArrowUp =  (props: SpriteProps) => {
+    const fg = props.fgColor;
+    const bg = props.bgColor;
+    return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="${fg}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-icon lucide-arrow-up"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+`;
+};
+
+
 export const sprites = {
     headerRowID,
     headerNumber,
@@ -316,6 +333,8 @@ export const sprites = {
     rowOwnerOverlay,
     protectedColumnOverlay,
     renameIcon,
+    headerArrowDown,
+    headerArrowUp,
 };
 
 export type HeaderIconMap = Readonly<typeof sprites>;
