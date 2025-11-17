@@ -13,16 +13,13 @@
     "exports": {
         ".": {
             "types": "./dist/dts/index.d.ts",
-            "import": "./dist/esm/index.js",
-            "require": "./dist/cjs/index.js"
+            "import": "./dist/esm/index.js"
         },
         "./dist/index.css": {
-            "import": "./dist/index.css",
-            "require": "./dist/index.css"
+            "import": "./dist/index.css"
         },
         "./index.css": {
-            "import": "./dist/index.css",
-            "require": "./dist/index.css"
+            "import": "./dist/index.css"
         }
     },
     "scripts": {

@@ -11,3 +11,4 @@ coverage/
 gen-docs/
 .env
 .gemini/settings.json
+packages/core/nul

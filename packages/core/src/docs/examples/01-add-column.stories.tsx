@@ -117,9 +117,10 @@ export const AddColumns = (p: AddColumnsProps) => {
                         bgHeaderHovered: theme.accentColor,
                         textHeader: theme.accentFg,
                     },
+                    indicatorIcon:"headerArrowDown",
                 };
             }
-            return { ...rest, themeOverride: undefined };
+            return { ...rest, themeOverride: undefined, indicatorIcon:"headerArrowDown" };
         });
     }, [cols, selectedColumn, theme]);
 

@@ -121,6 +121,8 @@ export enum GridColumnIcon {
     HeaderArray = "headerArray",
     RowOwnerOverlay = "rowOwnerOverlay",
     ProtectedColumnOverlay = "protectedColumnOverlay",
+    HeaderArrowDown = "headerArrowDown",
+    HeaderArrowUp= "headerArrowUp"
 }
 
 /** @category Columns */
