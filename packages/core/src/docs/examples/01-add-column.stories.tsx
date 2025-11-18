@@ -120,7 +120,7 @@ export const AddColumns = (p: AddColumnsProps) => {
                     indicatorIcon:"headerArrowDown",
                 };
             }
-            return { ...rest, themeOverride: undefined, indicatorIcon:"headerArrowDown" };
+            return { ...rest, themeOverride: undefined, hasMenu: true, menuIcon: "dots",indicatorIcon:"headerArrowDown" };
         });
     }, [cols, selectedColumn, theme]);
 

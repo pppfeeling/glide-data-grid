@@ -378,23 +378,33 @@ export function computeHeaderLayout(
         drawX += Math.ceil(headerIconSize * 1.3);
     }
 
+    // 텍스트 너비 측정
+    const textWidth =
+        ctx === undefined
+            ? (getMeasuredTextCache(c.title, theme.headerFontFull)?.width ?? 0)
+            : measureTextCached(c.title, ctx, theme.headerFontFull).width;
+
+    // 메뉴가 있는 경우 오른쪽 공간 확보
+    const menuWidth = c.hasMenu === true ? 35 : 0;
+    const indicatorWidth = c.indicatorIcon !== undefined ? headerIconSize + xPad : 0;
+
+    // 텍스트+indicator를 중앙 정렬하기 위한 계산
+    const contentWidth = textWidth + indicatorWidth;
+    const availableWidth = width - (iconBounds !== undefined ? Math.ceil(headerIconSize * 1.3) + xPad : xPad) - menuWidth - xPad;
+    const centeredStartX = x + (iconBounds !== undefined ? Math.ceil(headerIconSize * 1.3) + xPad : xPad) + (availableWidth - contentWidth) / 2;
+
+    // textBounds를 중앙 정렬된 위치로 설정
     const textBounds = {
-        x: drawX,
+        x: Math.max(drawX, centeredStartX),  // 아이콘과 겹치지 않도록
         y: y,
-        width: width - drawX,
+        width: textWidth,
         height: height,
     };
 
     let indicatorIconBounds: Rectangle | undefined = undefined;
     if (c.indicatorIcon !== undefined) {
-        const textWidth =
-            ctx === undefined
-                ? (getMeasuredTextCache(c.title, theme.headerFontFull)?.width ?? 0)
-                : measureTextCached(c.title, ctx, theme.headerFontFull).width;
-        textBounds.width = textWidth;
-        drawX += textWidth + xPad;
         indicatorIconBounds = {
-            x: drawX,
+            x: textBounds.x + textWidth + xPad,
             y: y + (height - headerIconSize) / 2,
             width: headerIconSize,
             height: headerIconSize,
@@ -514,6 +524,7 @@ function drawHeaderInner(
     if (isRtl) {
         ctx.textAlign = "right";
     }
+
     if (headerLayout.textBounds !== undefined) {
         ctx.fillText(
             c.title,
@@ -521,6 +532,7 @@ function drawHeaderInner(
             y + height / 2 + getMiddleCenterBias(ctx, theme.headerFontFull)
         );
     }
+
     if (isRtl) {
         ctx.textAlign = "left";
     }
