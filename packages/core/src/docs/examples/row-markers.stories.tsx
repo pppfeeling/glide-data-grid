@@ -35,6 +35,7 @@ export default {
 interface RowMarkersProps {
     markers: RowMarkerOptions["kind"];
     headerDisabled: boolean;
+    rowNumber: boolean;
 }
 
 export const RowMarkers: React.FC<RowMarkersProps> = p => {
@@ -47,6 +48,7 @@ export const RowMarkers: React.FC<RowMarkersProps> = p => {
             verticalBorder={false}
             rowMarkers={{
                 kind: p.markers,
+                rowNumber: p.rowNumber,
                 checkboxStyle: "square",
                 headerAlwaysVisible: true,
                 headerDisabled: p.headerDisabled,
@@ -60,15 +62,19 @@ export const RowMarkers: React.FC<RowMarkersProps> = p => {
     );
 };
 (RowMarkers as any).args = {
-    markers: "both",
+    markers: "checkbox",
     headerDisabled: false,
+    rowNumber: true,
 };
 (RowMarkers as any).argTypes = {
     markers: {
         control: { type: "select" },
-        options: ["both", "checkbox", "number", "none", "clickable-number", "checkbox-visible"],
+        options: ["checkbox", "number", "none", "clickable-number", "checkbox-visible", "both", "checkbox-and-number"],
     },
     headerDisabled: {
+        control: { type: "boolean" },
+    },
+    rowNumber: {
         control: { type: "boolean" },
     },
 };
