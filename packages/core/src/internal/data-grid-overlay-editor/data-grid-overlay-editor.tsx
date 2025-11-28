@@ -127,6 +127,9 @@ const DataGridOverlayEditor: React.FunctionComponent<DataGridOverlayEditorProps>
 
     const onKeyDown = React.useCallback(
         async (event: React.KeyboardEvent) => {
+            if (event.nativeEvent.isComposing) {
+                return;
+            }
             let save = false;
             if (event.key === "Escape") {
                 event.stopPropagation();

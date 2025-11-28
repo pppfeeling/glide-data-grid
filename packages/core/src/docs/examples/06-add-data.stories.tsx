@@ -49,68 +49,79 @@ export default {
 
 
 const cols = [
-        {
-            title: "First name",
-            id: "First name",
-        },
-        {
-            title: "Last name",
-            id: "Last name",
-        },
-        {
-            title: "Avatar",
-            id: "Avatar",
-        },
-        {
-            title: "Email",
-            id: "Email",
-        },
-        {
-            title: "Title",
-            id: "Title",
-        },
-        {
-            title: "More Info",
-            id: "More Info",
-        },
-        {
-            title: "Date",
-            id: "Date",
-            width: 200,
-        },
-    ];
+    {
+        title: "First name",
+        id: "First name",
+    },
+    {
+        title: "Last name",
+        id: "Last name",
+    },
+    {
+        title: "Avatar",
+        id: "Avatar",
+    },
+    {
+        title: "Email",
+        id: "Email",
+    },
+    {
+        title: "Title",
+        id: "Title",
+    },
+    {
+        title: "More Info",
+        id: "More Info",
+    },
+    {
+        title: "Date",
+        id: "Date",
+        width: 200,
+    },
+];
 
-const generateNewCell = (colIndex: number): GridCell => {
+const sampleFirstNames = ["John", "Jane", "Bob", "Alice", "Charlie", "Diana", "Evan", "Fiona", "George", "Hannah"];
+const sampleLastNames = ["Doe", "Smith", "Johnson", "Brown", "Williams", "Jones", "Miller", "Davis", "Garcia", "Rodriguez"];
+const sampleImages = [
+    "https://picsum.photos/id/10/900/900",
+    "https://picsum.photos/id/20/900/900",
+    "https://picsum.photos/id/30/900/900",
+    "https://picsum.photos/id/40/900/900",
+    "https://picsum.photos/id/50/900/900",
+];
+const sampleTitles = ["Engineer", "Designer", "Manager", "Director", "Sales", "Marketing", "Support", "HR", "Finance", "Legal"];
+
+const generateNewCell = (colIndex: number, rowIndex: number = 0): GridCell => {
     switch (colIndex) {
-        case 0: return { kind: GridCellKind.Text, displayData: faker.name.firstName(), data: faker.name.firstName(), allowOverlay: true, readonly: false };
-        case 1: return { kind: GridCellKind.Text, displayData: faker.name.lastName(), data: faker.name.lastName(), allowOverlay: true, readonly: true };
-        case 2: return { kind: GridCellKind.Image, data: [`https://picsum.photos/id/${Math.round(Math.random() * 100)}/900/900`], displayData: [`https://picsum.photos/id/${Math.round(Math.random() * 100)}/40/40`], allowOverlay: true, readonly: true };
-        case 3: return { kind: GridCellKind.Number, displayData: faker.datatype.number().toLocaleString(), data: faker.datatype.number(), allowOverlay: true, readonly: false, contentAlign: 'right' };
-        case 4: return { kind: GridCellKind.Boolean, displayData: faker.datatype.boolean(), data: faker.datatype.boolean(), allowOverlay: false, readonly: false };
-        case 5: return { kind: GridCellKind.Uri, displayData: faker.internet.url(), data: faker.internet.url(), hoverEffect: true, allowOverlay: true, readonly: true, onClickUri: a => { alert(JSON.stringify(a)); a.preventDefault(); } };
-        default: return { kind: GridCellKind.Text, displayData: faker.date.recent().toISOString().slice(0, 10), data: faker.date.recent().toISOString().slice(0, 10), allowOverlay: true, readonly: false, contentAlign:'center' };
+        case 0: return { kind: GridCellKind.Text, displayData: sampleFirstNames[rowIndex % sampleFirstNames.length], data: sampleFirstNames[rowIndex % sampleFirstNames.length], allowOverlay: true, readonly: false };
+        case 1: return { kind: GridCellKind.Text, displayData: sampleLastNames[rowIndex % sampleLastNames.length], data: sampleLastNames[rowIndex % sampleLastNames.length], allowOverlay: true, readonly: true };
+        case 2: return { kind: GridCellKind.Image, data: [sampleImages[rowIndex % sampleImages.length]], displayData: [sampleImages[rowIndex % sampleImages.length]], allowOverlay: true, readonly: true };
+        case 3: return { kind: GridCellKind.Number, displayData: (1000 + rowIndex * 100).toLocaleString(), data: 1000 + rowIndex * 100, allowOverlay: true, readonly: false, contentAlign: 'right' };
+        case 4: return { kind: GridCellKind.Boolean, displayData: rowIndex % 2 === 0, data: rowIndex % 2 === 0, allowOverlay: false, readonly: false };
+        case 5: return { kind: GridCellKind.Uri, displayData: `https://example.com/${rowIndex}`, data: `https://example.com/${rowIndex}`, hoverEffect: true, allowOverlay: true, readonly: true, onClickUri: a => { alert(JSON.stringify(a)); a.preventDefault(); } };
+        default: return { kind: GridCellKind.Text, displayData: "2024-01-01", data: "2024-01-01", allowOverlay: true, readonly: false, contentAlign: 'center' };
     }
 };
 
-const generateNewRow = (cols: any[]): GridCell[] => {
-    return cols.map((_, colIndex) => generateNewCell(colIndex));
+const generateNewRow = (cols: any[], rowIndex: number = 0): GridCell[] => {
+    return cols.map((_, colIndex) => generateNewCell(colIndex, rowIndex));
 };
 
 export const AddData = () => {
     const gridRef = React.useRef<DataEditorRef>(null);
 
     const [gridSelection, setGridSelection] = React.useState<GridSelection>({
-                columns: CompactSelection.empty(),
-                rows: CompactSelection.empty(),
-            });
+        columns: CompactSelection.empty(),
+        rows: CompactSelection.empty(),
+    });
 
-    const {  onColumnResize } = useMockDataGenerator(6); // 6 columns for the example
+    const { onColumnResize } = useMockDataGenerator(6); // 6 columns for the example
 
     const initialRows = 10;
     const [data, setData] = React.useState<GridCell[][]>(() => {
         const initialData: GridCell[][] = [];
         for (let r = 0; r < initialRows; r++) {
-            initialData.push(generateNewRow(cols));
+            initialData.push(generateNewRow(cols, r));
         }
         return initialData;
     });
@@ -142,8 +153,8 @@ export const AddData = () => {
         [data]
     );
 
-     // 4. getCellContentWithHighlight 수정
-     const getCellContentWithHighlight = React.useCallback(
+    // 4. getCellContentWithHighlight 수정
+    const getCellContentWithHighlight = React.useCallback(
         ([col, row]: Item): GridCell => {
             const content = data[row]?.[col];
             if (content === undefined) {
@@ -191,7 +202,7 @@ export const AddData = () => {
                 for (let r = 0; r < fillDestination.height; r++) {
                     const targetRowIndex = fillDestination.y + r;
                     if (!newData[targetRowIndex]) {
-                        newData[targetRowIndex] = generateNewRow(cols);
+                        newData[targetRowIndex] = generateNewRow(cols, targetRowIndex);
                     }
                     const newRow = [...newData[targetRowIndex]];
                     for (let c = 0; c < fillDestination.width; c++) {
@@ -224,7 +235,7 @@ export const AddData = () => {
                 values.forEach((row, rowIndex) => {
                     const writeRowIndex = targetRow + rowIndex;
                     if (!newData[writeRowIndex]) {
-                        newData[writeRowIndex] = generateNewRow(cols);
+                        newData[writeRowIndex] = generateNewRow(cols, writeRowIndex);
                     }
                     const newRow = [...newData[writeRowIndex]];
                     row.forEach((val, colIndex) => {
@@ -254,7 +265,7 @@ export const AddData = () => {
     const onAddRow = React.useCallback(() => {
         setData(prevData => {
             const newData = [...prevData];
-            const newRow = generateNewRow(cols);
+            const newRow = generateNewRow(cols, newData.length);
             const firstSelectedIndex = gridSelection.rows.first();
 
             if (firstSelectedIndex !== undefined) {
@@ -278,7 +289,7 @@ export const AddData = () => {
         });
     }, [gridSelection.rows]);
 
-     const onCsvDownload = React.useCallback(() => {
+    const onCsvDownload = React.useCallback(() => {
         if (data.length === 0) return;
 
         const headers = cols.map(c => c.title).join(",");
@@ -309,7 +320,7 @@ export const AddData = () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-     },[data, cols])
+    }, [data, cols])
 
 
     return (
@@ -346,7 +357,7 @@ export const AddData = () => {
                 onGridSelectionChange={setGridSelection}
                 gridSelection={gridSelection}
                 disabledRows={(row) => {
-                  return row % 3 === 0
+                    return row % 3 === 0
                 }}
             />
         </>

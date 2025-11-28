@@ -56,17 +56,19 @@ compile() {
     # replace dist/$1 (if it exists) with dist/$1-tmp
     if [ -d "dist/$1" ]; then
         mv dist/$1 dist/$1-remove
-        rm -rf dist/$1-remove &
+        rm -rf dist/$1-remove
     fi
+    echo "Moving dist/$1-tmp to dist/$1..."
+    sleep 1
     mv dist/$1-tmp dist/$1
 
-    
+
 
     # if it's esm, move the dts folder
     if [ "$2" = true ]; then
         if [ -d "dist/dts" ]; then
             mv dist/dts dist/dts-remove
-            rm -rf dist/dts-remove &
+            rm -rf dist/dts-remove
         fi
         mv dist/dts-tmp dist/dts
     fi
