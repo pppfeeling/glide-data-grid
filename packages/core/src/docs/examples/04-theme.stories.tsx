@@ -233,7 +233,7 @@ const ThemeEditor: React.FC<ThemeEditorProps> = ({ theme, setTheme }) => {
     );
 };
 
-export const ThemeS: React.VFC = () => {
+export const ThemeS = () => {
     let { cols, getCellContent, onColumnResize, setCellValue } = useAllMockedKinds();
 
     cols = cols.map((col, index) => {

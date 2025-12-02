@@ -94,11 +94,8 @@ const sampleTitles = ["Engineer", "Designer", "Manager", "Director", "Sales", "M
 const generateNewCell = (colIndex: number, rowIndex: number = 0): GridCell => {
     switch (colIndex) {
         case 0: return { kind: GridCellKind.Text, displayData: sampleFirstNames[rowIndex % sampleFirstNames.length], data: sampleFirstNames[rowIndex % sampleFirstNames.length], allowOverlay: true, readonly: false };
-        case 1: return { kind: GridCellKind.Text, displayData: sampleLastNames[rowIndex % sampleLastNames.length], data: sampleLastNames[rowIndex % sampleLastNames.length], allowOverlay: true, readonly: true };
-        case 2: return { kind: GridCellKind.Image, data: [sampleImages[rowIndex % sampleImages.length]], displayData: [sampleImages[rowIndex % sampleImages.length]], allowOverlay: true, readonly: true };
-        case 3: return { kind: GridCellKind.Number, displayData: (1000 + rowIndex * 100).toLocaleString(), data: 1000 + rowIndex * 100, allowOverlay: true, readonly: false, contentAlign: 'right' };
-        case 4: return { kind: GridCellKind.Boolean, displayData: rowIndex % 2 === 0, data: rowIndex % 2 === 0, allowOverlay: false, readonly: false };
-        case 5: return { kind: GridCellKind.Uri, displayData: `https://example.com/${rowIndex}`, data: `https://example.com/${rowIndex}`, hoverEffect: true, allowOverlay: true, readonly: true, onClickUri: a => { alert(JSON.stringify(a)); a.preventDefault(); } };
+        case 1: return { kind: GridCellKind.Text, displayData: sampleLastNames[rowIndex % sampleLastNames.length], data: sampleLastNames[rowIndex % sampleLastNames.length], allowOverlay: true, readonly: false };
+        case 2: return { kind: GridCellKind.Number, displayData: (1000 + rowIndex * 100).toLocaleString(), data: 1000 + rowIndex * 100, allowOverlay: true, readonly: false, contentAlign: 'right' };
         default: return { kind: GridCellKind.Text, displayData: "2024-01-01", data: "2024-01-01", allowOverlay: true, readonly: false, contentAlign: 'center' };
     }
 };
@@ -115,9 +112,9 @@ export const AddData = () => {
         rows: CompactSelection.empty(),
     });
 
-    const { onColumnResize } = useMockDataGenerator(6); // 6 columns for the example
+    const { onColumnResize } = useMockDataGenerator(4); // 6 columns for the example
 
-    const initialRows = 10;
+    const initialRows = 100;
     const [data, setData] = React.useState<GridCell[][]>(() => {
         const initialData: GridCell[][] = [];
         for (let r = 0; r < initialRows; r++) {
@@ -189,7 +186,7 @@ export const AddData = () => {
 
             const sourceData: GridCell[][] = [];
             for (let r = 0; r < patternSource.height; r++) {
-                const row = [];
+                const row: GridCell[] = [];
                 for (let c = 0; c < patternSource.width; c++) {
                     row.push(getCellContentWithHighlight([patternSource.x + c, patternSource.y + r]));
                 }
@@ -296,7 +293,7 @@ export const AddData = () => {
         const csvRows = data.map(row =>
             row.map(cell => {
                 let cellData = "";
-                if (cell.kind === GridCellKind.Text || cell.kind === GridCellKind.Number || cell.kind === GridCellKind.Uri || cell.kind === GridCellKind.Markdown) {
+                if (cell.kind === GridCellKind.Text || cell.kind === GridCellKind.Number ) {
                     cellData = cell.displayData ?? cell.data?.toString() ?? "";
                 } else if (cell.kind === GridCellKind.Image || cell.kind === GridCellKind.Drilldown || cell.kind === GridCellKind.Bubble) {
                     cellData = Array.isArray(cell.data) ? cell.data.join(";") : "";
@@ -330,8 +327,11 @@ export const AddData = () => {
                 <button onClick={onDeleteRow}>열삭제</button>
                 <button onClick={onCsvDownload}>CSV다운로드</button>
             </div>
+            
             <DataEditor
                 {...defaultProps}
+                width="100%"
+                height="500px"
                 ref={gridRef}
                 columns={cols}
                 rows={numRows}
@@ -347,19 +347,19 @@ export const AddData = () => {
                     headerTheme: {
                         textMedium: "rgba(51, 51, 51, 0.50)",
                     },
+                    rowNumber:true
                 }}
                 fillHandle={{ size: 6 }}
                 onCellEdited={(cell, newValue) => {
                     setCellValue(cell, newValue);
                 }}
                 onFillPattern={onFillPattern}
-                onPaste={true}
+                onPaste={onPaste}
                 onGridSelectionChange={setGridSelection}
                 gridSelection={gridSelection}
-                disabledRows={(row) => {
-                    return row % 3 === 0
-                }}
+
             />
+            
         </>
     );
 };

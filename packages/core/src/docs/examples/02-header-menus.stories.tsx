@@ -18,7 +18,7 @@ import {
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 import { getActionBoundsForGroup } from "../../internal/data-grid/render/data-grid-render.header.js";
 import { pointInRect } from "../../common/math.js";
-import type { GroupHeaderClickedEventArgs } from "../../internal/data-grid/event-args.js";
+import type { GridMouseGroupHeaderEventArgs } from "../../internal/data-grid/event-args.js";
 import type { SpriteMap } from "../../internal/data-grid/data-grid-sprites.js";
 
 export default {
@@ -220,7 +220,7 @@ export const HeaderMenus = () => {
                     {
                         title: "클릭테스트",
                         icon: GridColumnIcon.HeaderArray,
-                        onClick: (e: GroupHeaderClickedEventArgs) => {
+                        onClick: (e: GridMouseGroupHeaderEventArgs) => {
                             console.log("click", e);
                         },
                     },
