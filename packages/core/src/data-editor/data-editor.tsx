@@ -1793,7 +1793,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 }
 
                 const row = typeof r === "number" ? r : bottom ? rows : 0;
-                scrollToRef.current(col - rowMarkerOffset, row, "both", 0, 0, behavior ? { behavior } : undefined);
+                scrollToRef.current(col - rowMarkerOffset, row, "both", 0, 20, behavior ? { behavior } : undefined);
                 setCurrent(
                     {
                         cell: [col, row],
@@ -3222,7 +3222,9 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             }
 
             if (scrollToActiveCellRef.current) {
-                scrollTo(col - rowMarkerOffset, row);
+                // Add padding to ensure the row is fully visible, especially for the last row
+                const paddingY = 20;
+                scrollTo(col - rowMarkerOffset, row, "both", 0, paddingY);
             }
 
             return true;
@@ -3278,33 +3280,45 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     void appendColumn(row, false);
                 }
                 if (updateSelected) {
-                    const newCol = clamp(gridSelection.current.cell[0] + movX, 0, mangledCols.length - 1);
-                    const newRow = clamp(gridSelection.current.cell[1] + movY, 0, mangledRows - 1);
+                    let newCol = gridSelection.current.cell[0] + movX;
+                    let newRow = gridSelection.current.cell[1] + movY;
+                    let shouldActivateNextCell = false;
+
+                    // Handle Tab key: move to next row when reaching the last column (only when isActivationOnEnter is enabled)
+                    if (isActivationOnEnter && movX === 1 && movY === 0) {
+                        // If moving beyond the last column
+                        if (newCol >= mangledCols.length) {
+                            // Check if we're at the last row
+                            if (newRow >= mangledRows - 1) {
+                                // Stay at the current position and exit edit mode
+                                newCol = gridSelection.current.cell[0];
+                                newRow = gridSelection.current.cell[1];
+                                shouldActivateNextCell = false;
+                            } else {
+                                // Move to first column of next row
+                                newCol = rowMarkerOffset;
+                                newRow += 1;
+                                shouldActivateNextCell = true;
+                            }
+                        } else {
+                            shouldActivateNextCell = true;
+                        }
+                        // Don't apply clamp for Tab navigation - we want exact position
+                    } else {
+                        // For Enter key and other movements, clamp to valid range
+                        newCol = clamp(newCol, rowMarkerOffset, mangledCols.length - 1);
+                        newRow = clamp(newRow, 0, mangledRows - 1);
+                        shouldActivateNextCell = isActivationOnEnter === true && movX === 0 && movY === 1;
+                    }
+
                     updateSelectedCell(newCol, newRow, isEditingLastRow, false);
 
-                    if (isActivationOnEnter && ((movX === 0 && movY === 1) || (movX === 1 && movY === 0))) {
+                    if (shouldActivateNextCell) {
                         window.setTimeout(() => {
                             const cell = getCellContent([newCol - rowMarkerOffset, newRow]);
                             if (isReadWriteCell(cell)) {
                                 const bounds = gridRef.current?.getBounds(newCol, newRow);
                                 if (bounds && cell.allowOverlay) {
-                                    // Ensure focus is maintained on the grid
-                                    if (gridRef.current) {
-                                        gridRef.current.focus();
-                                    }
-
-                                    // Update selection to the new cell
-                                    const newSelection: GridSelection = {
-                                        current: {
-                                            cell: [newCol, newRow],
-                                            range: { x: newCol, y: newRow, width: 1, height: 1 },
-                                            rangeStack: [],
-                                        },
-                                        columns: CompactSelection.empty(),
-                                        rows: CompactSelection.empty(),
-                                    };
-                                    onGridSelectionChange?.(newSelection);
-
                                     const activationEvent: CellActivatedEventArgs = {
                                         inputType: "keyboard",
                                         key: "Enter",
@@ -3323,7 +3337,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                                     });
                                 }
                             }
-                        }, 50); // Increased delay to ensure selection is updated
+                        }, 50);
                     }
                 }
             }
@@ -3343,12 +3357,11 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             onRowAppended,
             onColumnAppended,
             getCustomNewRowTargetColumn,
-            gridRef,
             getCellContent,
             rowMarkerOffset,
             onCellActivated,
-            reselect,
             setOverlaySimple,
+            isActivationOnEnter,
         ]
     );
 
@@ -3563,7 +3576,29 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 } else if (isHotkey(keys.goUpCell, event, details)) {
                     row -= 1;
                 } else if (isHotkey(keys.goRightCell, event, details)) {
-                    col += 1;
+                    // Check if this is a Tab key press (not Shift+Tab)
+                    const isTabKey = event.key === "Tab" && !event.shiftKey;
+
+                    // Handle Tab key in navigation mode: move to next row when reaching the last column
+                    if (isActivationOnEnter === true && isTabKey) {
+                        // maxCol should be the last valid column index (already includes rowMarkerOffset in col)
+                        const maxCol = mangledCols.length - 1;
+                        // If we're at the last column
+                        if (col >= maxCol) {
+                            // Check if we're not at the last row
+                            if (row < mangledRows - 1) {
+                                // Move to first column of next row
+                                col = rowMarkerOffset;
+                                row += 1;
+                            }
+                            // else: Stay at current position (last column of last row)
+                            // Don't increment col, so we stay in place
+                        } else {
+                            col += 1;
+                        }
+                    } else {
+                        col += 1;
+                    }
                 } else if (isHotkey(keys.goLeftCell, event, details)) {
                     col -= 1;
                 } else if (isHotkey(keys.goDownCellRetainSelection, event, details)) {
@@ -3668,7 +3703,11 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
             const didMatch = details.didMatch;
 
-            if (didMatch && (moved || !cancelOnlyOnMove || trapFocus)) {
+            // Check if Tab key was pressed - always prevent default to keep focus in grid when isActivationOnEnter is enabled
+            const isTabKey = event.key === "Tab";
+            const shouldTrapTab = isActivationOnEnter === true && isTabKey;
+
+            if (didMatch && (moved || !cancelOnlyOnMove || trapFocus || shouldTrapTab)) {
                 cancel();
             }
 
@@ -3702,6 +3741,9 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             fillDown,
             fillRight,
             adjustSelection,
+            isActivationOnEnter,
+            mangledCols.length,
+            mangledRows,
         ]
     );
 
