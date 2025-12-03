@@ -63,6 +63,7 @@ export { drilldownCellRenderer } from "./cells/drilldown-cell.js";
 export { loadingCellRenderer } from "./cells/loading-cell.js";
 export { newRowCellRenderer } from "./cells/new-row-cell.js";
 export { markerCellRenderer } from "./cells/marker-cell.js";
+export { rowStatusCellRenderer } from "./cells/row-status-cell.js";
 export { bubbleCellRenderer } from "./cells/bubble-cell.js";
 export { protectedCellRenderer } from "./cells/protected-cell.js";
 export { rowIDCellRenderer } from "./cells/row-id-cell.js";

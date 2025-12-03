@@ -99,6 +99,12 @@ export interface RowMarkerOptions {
     checkboxStyle?: "circle" | "square";
     /** When true, displays row numbers alongside the primary marker (checkbox, etc.) */
     rowNumber?: boolean;
+    /** When true, displays row status (A/U/D) column */
+    rowStatus?: boolean;
+    /** Width of the row status column in pixels */
+    rowStatusWidth?: number;
+    /** Theme override for the row status column */
+    rowStatusTheme?: Partial<Theme>;
     startIndex?: number;
     width?: number;
     theme?: Partial<Theme>;
@@ -704,6 +710,14 @@ export interface DataEditorProps extends Props, Pick<DataGridSearchProps, "image
      */
     readonly isActivationOnEnter?: Boolean;
     readonly disabledRows?: (row: number) => boolean;
+
+    /**
+     * Callback to get the row status for a given row index.
+     * Only called when rowMarkers.rowStatus is true.
+     * @param rowIndex - The row index
+     * @returns "A" (Added), "U" (Updated), "D" (Deleted), or undefined (no status)
+     */
+    readonly onRowStatus?: (rowIndex: number) => "A" | "U" | "D" | undefined;
 }
 
 type ScrollToFn = (
@@ -913,6 +927,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         drawFocusRing: drawFocusRingIn = true,
         portalElementRef,
         isActivationOnEnter,
+        onRowStatus,
     } = p;
 
     const drawFocusRing = drawFocusRingIn === "no-editor" ? overlay === undefined : drawFocusRingIn;
@@ -938,6 +953,11 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     const headerRowMarkerAlwaysVisible = rowMarkersObj?.headerAlwaysVisible;
     const headerRowMarkerDisabled = rowSelect !== "multi" || rowMarkersObj?.headerDisabled === true;
     const rowMarkerCheckboxStyle = rowMarkersObj?.checkboxStyle ?? "square";
+
+    // Extract rowStatus options
+    const rowStatusOption = rowMarkersObj?.rowStatus ?? false;
+    const rowStatusWidth = rowMarkersObj?.rowStatusWidth ?? 40;
+    const rowStatusTheme = rowMarkersObj?.rowStatusTheme;
 
     const minColumnWidth = Math.max(minColumnWidthIn, 20);
     const maxColumnWidth = Math.max(maxColumnWidthIn, minColumnWidth);
@@ -971,8 +991,12 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
     const rowMarkerWidth = rowMarkerWidthRaw ?? (rowsIn > 10_000 ? 48 : rowsIn > 1000 ? 44 : rowsIn > 100 ? 36 : 32);
     const hasRowMarkers = rowMarkers !== "none";
+    const hasRowStatus = rowStatusOption === true;
+    // Calculate offset: rowStatus (if enabled) + rowMarkers (checkbox/number)
     // When showRowNumber is true, we need 2 columns: one for checkbox, one for number
-    const rowMarkerOffset = hasRowMarkers ? (showRowNumber ? 2 : 1) : 0;
+    const rowMarkerOffset =
+        (hasRowStatus ? 1 : 0) +
+        (hasRowMarkers ? (showRowNumber ? 2 : 1) : 0);
     const showTrailingBlankRow = trailingRowOptions !== undefined;
     const lastRowSticky = trailingRowOptions?.sticky === true;
 
@@ -1159,12 +1183,28 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         rowMarkers === "none" ? undefined : numSelectedRows === 0 ? false : numSelectedRows === rows ? true : undefined;
 
     const mangledCols = React.useMemo(() => {
-        if (rowMarkers === "none") return columns;
-
         const markerColumns: any[] = [];
 
-        // First column: number (when showRowNumber is true)
-        if (showRowNumber) {
+        // Add rowMarker columns if enabled
+        if (rowMarkers !== "none") {
+            // rowNumber column (when showRowNumber is true)
+            if (showRowNumber) {
+                markerColumns.push({
+                    title: "",
+                    width: rowMarkerWidth,
+                    icon: undefined,
+                    hasMenu: false,
+                    style: "normal" as const,
+                    themeOverride: rowMarkerTheme,
+                    rowMarker: rowMarkerCheckboxStyle,
+                    rowMarkerChecked: false,
+                    headerRowMarkerTheme,
+                    headerRowMarkerAlwaysVisible: false,
+                    headerRowMarkerDisabled: true,
+                });
+            }
+
+            // checkbox column (or primary marker when showRowNumber is false)
             markerColumns.push({
                 title: "",
                 width: rowMarkerWidth,
@@ -1173,33 +1213,33 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 style: "normal" as const,
                 themeOverride: rowMarkerTheme,
                 rowMarker: rowMarkerCheckboxStyle,
-                rowMarkerChecked: false,
+                rowMarkerChecked,
                 headerRowMarkerTheme,
-                headerRowMarkerAlwaysVisible: false,
-                headerRowMarkerDisabled: true,
+                headerRowMarkerAlwaysVisible,
+                headerRowMarkerDisabled,
             });
         }
 
-        // Second column: checkbox (or primary marker when showRowNumber is false)
-        markerColumns.push({
-            title: "",
-            width: rowMarkerWidth,
-            icon: undefined,
-            hasMenu: false,
-            style: "normal" as const,
-            themeOverride: rowMarkerTheme,
-            rowMarker: rowMarkerCheckboxStyle,
-            rowMarkerChecked,
-            headerRowMarkerTheme,
-            headerRowMarkerAlwaysVisible,
-            headerRowMarkerDisabled,
-        });
+        // Last: rowStatus column (if enabled)
+        if (hasRowStatus) {
+            markerColumns.push({
+                title: "",
+                width: rowStatusWidth,
+                icon: undefined,
+                hasMenu: false,
+                style: "normal" as const,
+                themeOverride: rowStatusTheme,
+            });
+        }
 
         return [
             ...markerColumns,
             ...columns,
         ];
     }, [
+        hasRowStatus,
+        rowStatusWidth,
+        rowStatusTheme,
         rowMarkers,
         columns,
         rowMarkerWidth,
@@ -1353,23 +1393,46 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     const getMangledCellContent = React.useCallback(
         ([col, row]: Item, forceStrict: boolean = false): InnerGridCell => {
             const isTrailing = showTrailingBlankRow && row === mangledRows - 1;
-            const isFirstRowMarkerCol = col === 0 && hasRowMarkers;
-            const isSecondRowMarkerCol = col === 1 && hasRowMarkers && showRowNumber;
 
-            // Handle first row marker column (number when showRowNumber is true, or primary marker)
-            if (isFirstRowMarkerCol) {
+            // Calculate column positions based on new order: rowNumber, checkbox, rowStatus
+            let currentColIndex = 0;
+            const rowNumberColIndex = hasRowMarkers && showRowNumber ? currentColIndex++ : -1;
+            const checkboxColIndex = hasRowMarkers ? currentColIndex++ : -1;
+            const rowStatusColIndex = hasRowStatus ? currentColIndex++ : -1;
+
+            // Handle rowNumber column (first if enabled)
+            if (col === rowNumberColIndex) {
                 if (isTrailing) {
                     return loadingCell;
                 }
                 const mappedRow = rowNumberMapper(row);
                 if (mappedRow === undefined) return loadingCell;
 
-                // When showRowNumber is true, first column is number
-                // When showRowNumber is false, use the original rowMarkers kind
+                return {
+                    kind: InnerGridCellKind.Marker,
+                    allowOverlay: false,
+                    checkboxStyle: rowMarkerCheckboxStyle,
+                    checked: false,
+                    markerKind: "number",
+                    row: rowMarkerStartIndex + mappedRow,
+                    drawHandle: false,
+                    cursor: undefined,
+                    disabled: p.disabledRows?.(row) === true,
+                };
+            }
+
+            // Handle checkbox column
+            if (col === checkboxColIndex) {
+                if (isTrailing) {
+                    return loadingCell;
+                }
+                const mappedRow = rowNumberMapper(row);
+                if (mappedRow === undefined) return loadingCell;
+
+                // When showRowNumber is false, this is the only marker column
                 let markerKind: "checkbox" | "number" | "both" | "checkbox-visible";
                 if (showRowNumber) {
-                    // First column shows number when we have two columns
-                    markerKind = "number";
+                    markerKind = rowMarkers === "checkbox-visible" ? "checkbox-visible" : "checkbox";
                 } else if (rowMarkers === "clickable-number") {
                     markerKind = "number";
                 } else {
@@ -1380,35 +1443,33 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     kind: InnerGridCellKind.Marker,
                     allowOverlay: false,
                     checkboxStyle: rowMarkerCheckboxStyle,
-                    checked: showRowNumber ? false : gridSelection?.rows.hasIndex(row) === true,
+                    checked: gridSelection?.rows.hasIndex(row) === true,
                     markerKind,
                     row: rowMarkerStartIndex + mappedRow,
-                    drawHandle: showRowNumber ? false : onRowMoved !== undefined,
+                    drawHandle: onRowMoved !== undefined,
                     cursor: showRowNumber ? undefined : (rowMarkers === "clickable-number" ? "pointer" : undefined),
                     disabled: p.disabledRows?.(row) === true,
                 };
             }
 
-            // Handle second row marker column (checkbox when showRowNumber is true)
-            if (isSecondRowMarkerCol) {
+            // Handle rowStatus column (last marker column if enabled)
+            if (col === rowStatusColIndex) {
                 if (isTrailing) {
                     return loadingCell;
                 }
-                const mappedRow = rowNumberMapper(row);
-                if (mappedRow === undefined) return loadingCell;
+
+                // Call onRowStatus callback to get the status
+                const status = onRowStatus?.(row);
 
                 return {
-                    kind: InnerGridCellKind.Marker,
+                    kind: InnerGridCellKind.RowStatus,
                     allowOverlay: false,
-                    checkboxStyle: rowMarkerCheckboxStyle,
-                    checked: gridSelection?.rows.hasIndex(row) === true,
-                    markerKind: rowMarkers === "checkbox-visible" ? "checkbox-visible" : "checkbox",
-                    row: rowMarkerStartIndex + mappedRow,
-                    drawHandle: onRowMoved !== undefined,
-                    cursor: undefined,
-                    disabled: p.disabledRows?.(row) === true,
+                    status,
+                    themeOverride: rowStatusTheme,
                 };
-            } else if (isTrailing) {
+            }
+
+            if (isTrailing) {
                 //If the grid is empty, we will return text
                 const isFirst = col === rowMarkerOffset;
 
@@ -1465,6 +1526,9 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         [
             showTrailingBlankRow,
             mangledRows,
+            hasRowStatus,
+            onRowStatus,
+            rowStatusTheme,
             hasRowMarkers,
             rowNumberMapper,
             rowMarkerCheckboxStyle,
@@ -1477,6 +1541,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             trailingRowOptions?.addIcon,
             experimental?.strict,
             getCellContent,
+            showRowNumber,
         ]
     );
 
@@ -1932,8 +1997,9 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
                 lastMouseSelectLocation.current = [col, row];
 
-                // Determine which column is the checkbox column
-                const isCheckboxCol = showRowNumber ? col === 1 : col === 0;
+                // Determine which column is the checkbox column based on new order: rowNumber, checkbox, rowStatus
+                const checkboxColIndex = showRowNumber ? 1 : 0;
+                const isCheckboxCol = col === checkboxColIndex;
 
                 if (isCheckboxCol && hasRowMarkers) {
                     if (

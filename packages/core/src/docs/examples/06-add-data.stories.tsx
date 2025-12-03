@@ -128,6 +128,9 @@ export const AddData = () => {
     // FirstName이 'D'로 시작하고 Email에 'gmail'이 포함된 행의 인덱스를 저장하는 Set
     const [highlightedRows, setHighlightedRows] = React.useState<Set<number>>(new Set());
 
+    // Row status tracking: A (Added), U (Updated), D (Deleted)
+    const [rowStatuses, setRowStatuses] = React.useState<Map<number, "A" | "U" | "D">>(new Map());
+
     // 1. 데이터 처리 로직
     const processRow = React.useCallback(
         (row: number) => {
@@ -174,6 +177,16 @@ export const AddData = () => {
                 newData[row] = newRow;
                 return newData;
             });
+
+            // Mark row as Updated (unless it's already Added)
+            setRowStatuses(prev => {
+                const newStatuses = new Map(prev);
+                if (newStatuses.get(row) !== "A") {
+                    newStatuses.set(row, "U");
+                }
+                return newStatuses;
+            });
+
             processRow(row);
         },
         [processRow]
@@ -265,11 +278,36 @@ export const AddData = () => {
             const newRow = generateNewRow(cols, newData.length);
             const firstSelectedIndex = gridSelection.rows.first();
 
+            let insertIndex: number;
             if (firstSelectedIndex !== undefined) {
-                newData.splice(firstSelectedIndex + 1, 0, newRow);
+                insertIndex = firstSelectedIndex + 1;
+                newData.splice(insertIndex, 0, newRow);
             } else {
+                insertIndex = newData.length;
                 newData.push(newRow);
             }
+
+            // Mark the new row as Added
+            setRowStatuses(prev => {
+                const newStatuses = new Map(prev);
+                // Shift statuses for rows after the insert point
+                if (firstSelectedIndex !== undefined) {
+                    const shiftedStatuses = new Map<number, "A" | "U" | "D">();
+                    prev.forEach((status, row) => {
+                        if (row >= insertIndex) {
+                            shiftedStatuses.set(row + 1, status);
+                        } else {
+                            shiftedStatuses.set(row, status);
+                        }
+                    });
+                    shiftedStatuses.set(insertIndex, "A");
+                    return shiftedStatuses;
+                } else {
+                    newStatuses.set(insertIndex, "A");
+                    return newStatuses;
+                }
+            });
+
             setNumRows(newData.length);
             return newData;
         });
@@ -278,8 +316,22 @@ export const AddData = () => {
     const onDeleteRow = React.useCallback(() => {
         if (gridSelection.rows.length === 0) return;
 
-        setData(prevData => prevData.filter((_, index) => !gridSelection.rows.hasIndex(index)));
-        setNumRows(prevNum => prevNum - gridSelection.rows.length);
+        // Mark selected rows as Deleted (or remove if they were Added)
+        setRowStatuses(prev => {
+            const newStatuses = new Map(prev);
+            gridSelection.rows.toArray().forEach(rowIndex => {
+                const currentStatus = prev.get(rowIndex);
+                if (currentStatus === "A") {
+                    // If row was just added, remove it completely
+                    newStatuses.delete(rowIndex);
+                } else {
+                    // Otherwise mark as Deleted
+                    newStatuses.set(rowIndex, "D");
+                }
+            });
+            return newStatuses;
+        });
+
         setGridSelection({
             columns: CompactSelection.empty(),
             rows: CompactSelection.empty(),
@@ -317,7 +369,15 @@ export const AddData = () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-    }, [data, cols])
+    }, [data, cols]);
+
+    // Callback to provide row status for each row
+    const onRowStatus = React.useCallback(
+        (rowIndex: number): "A" | "U" | "D" | undefined => {
+            return rowStatuses.get(rowIndex);
+        },
+        [rowStatuses]
+    );
 
 
     return (
@@ -347,7 +407,13 @@ export const AddData = () => {
                     headerTheme: {
                         textMedium: "rgba(51, 51, 51, 0.50)",
                     },
-                    rowNumber:true
+                    rowNumber: true,
+                    rowStatus: true,
+                    rowStatusWidth: 40,
+                    rowStatusTheme: {
+                        bgCell: "#f5f5f5",
+                        textDark: "#333",
+                    }
                 }}
                 fillHandle={{ size: 6 }}
                 onCellEdited={(cell, newValue) => {
@@ -357,6 +423,7 @@ export const AddData = () => {
                 onPaste={onPaste}
                 onGridSelectionChange={setGridSelection}
                 gridSelection={gridSelection}
+                onRowStatus={onRowStatus}
 
             />
             

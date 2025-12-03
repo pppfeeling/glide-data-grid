@@ -258,7 +258,7 @@ export function isTextEditableGridCell(cell: GridCell): cell is ReadWriteGridCel
 
 /** @category Cells */
 export function isInnerOnlyCell(cell: InnerGridCell): cell is InnerOnlyGridCell {
-    return cell.kind === InnerGridCellKind.Marker || cell.kind === InnerGridCellKind.NewRow;
+    return cell.kind === InnerGridCellKind.Marker || cell.kind === InnerGridCellKind.NewRow || cell.kind === InnerGridCellKind.RowStatus;
 }
 
 /** @category Cells */
@@ -288,7 +288,7 @@ export type GridCell =
     | DrilldownCell
     | CustomCell;
 
-type InnerOnlyGridCell = NewRowCell | MarkerCell;
+type InnerOnlyGridCell = NewRowCell | MarkerCell | RowStatusCell;
 /** @category Cells */
 export type InnerGridCell = GridCell | InnerOnlyGridCell;
 
@@ -503,6 +503,7 @@ export interface UriCell extends BaseGridCell {
 export enum InnerGridCellKind {
     NewRow = "new-row",
     Marker = "marker",
+    RowStatus = "row-status",
 }
 
 export type EditListItem = { location: Item; value: EditableGridCell };
@@ -525,6 +526,13 @@ export interface MarkerCell extends BaseGridCell {
     readonly checkboxStyle: "square" | "circle";
     readonly markerKind: "checkbox" | "number" | "both" | "checkbox-visible";
     readonly disabled?: boolean;
+}
+
+/** @category Cells */
+export interface RowStatusCell extends BaseGridCell {
+    readonly kind: InnerGridCellKind.RowStatus;
+    readonly allowOverlay: false;
+    readonly status?: "A" | "U" | "D";
 }
 
 /** @category Selection */
