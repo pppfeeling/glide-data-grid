@@ -105,6 +105,12 @@ export interface RowMarkerOptions {
     rowStatusWidth?: number;
     /** Theme override for the row status column */
     rowStatusTheme?: Partial<Theme>;
+    /** When true, displays row ID column */
+    rowId?: boolean;
+    /** Width of the row ID column in pixels */
+    rowIdWidth?: number;
+    /** Theme override for the row ID column */
+    rowIdTheme?: Partial<Theme>;
     startIndex?: number;
     width?: number;
     theme?: Partial<Theme>;
@@ -718,6 +724,14 @@ export interface DataEditorProps extends Props, Pick<DataGridSearchProps, "image
      * @returns "A" (Added), "U" (Updated), "D" (Deleted), or undefined (no status)
      */
     readonly onRowStatus?: (rowIndex: number) => "A" | "U" | "D" | undefined;
+
+    /**
+     * Callback to get the row ID for a given row index.
+     * Only called when rowMarkers.rowId is true.
+     * @param rowIndex - The row index
+     * @returns Row ID string or undefined
+     */
+    readonly onRowId?: (rowIndex: number) => string | undefined;
 }
 
 type ScrollToFn = (
@@ -928,6 +942,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         portalElementRef,
         isActivationOnEnter,
         onRowStatus,
+        onRowId,
     } = p;
 
     const drawFocusRing = drawFocusRingIn === "no-editor" ? overlay === undefined : drawFocusRingIn;
@@ -958,6 +973,11 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     const rowStatusOption = rowMarkersObj?.rowStatus ?? false;
     const rowStatusWidth = rowMarkersObj?.rowStatusWidth ?? 40;
     const rowStatusTheme = rowMarkersObj?.rowStatusTheme;
+
+    // Extract rowId options
+    const rowIdOption = rowMarkersObj?.rowId ?? false;
+    const rowIdWidth = rowMarkersObj?.rowIdWidth ?? 80;
+    const rowIdTheme = rowMarkersObj?.rowIdTheme;
 
     const minColumnWidth = Math.max(minColumnWidthIn, 20);
     const maxColumnWidth = Math.max(maxColumnWidthIn, minColumnWidth);
@@ -992,11 +1012,13 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     const rowMarkerWidth = rowMarkerWidthRaw ?? (rowsIn > 10_000 ? 48 : rowsIn > 1000 ? 44 : rowsIn > 100 ? 36 : 32);
     const hasRowMarkers = rowMarkers !== "none";
     const hasRowStatus = rowStatusOption === true;
-    // Calculate offset: rowStatus (if enabled) + rowMarkers (checkbox/number)
-    // When showRowNumber is true, we need 2 columns: one for checkbox, one for number
+    const hasRowId = rowIdOption === true;
+    // Calculate offset: rowMarkers (checkbox/number) + rowStatus (if enabled) + rowId (if enabled)
+    // When showRowNumber is true, we need 2 columns: one for rowNumber, one for checkbox
     const rowMarkerOffset =
+        (hasRowMarkers ? (showRowNumber ? 2 : 1) : 0) +
         (hasRowStatus ? 1 : 0) +
-        (hasRowMarkers ? (showRowNumber ? 2 : 1) : 0);
+        (hasRowId ? 1 : 0);
     const showTrailingBlankRow = trailingRowOptions !== undefined;
     const lastRowSticky = trailingRowOptions?.sticky === true;
 
@@ -1185,7 +1207,9 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     const mangledCols = React.useMemo(() => {
         const markerColumns: any[] = [];
 
-        // Add rowMarker columns if enabled
+        // Column order: rowNumber → checkbox → rowStatus → rowId → user columns
+
+        // 1. rowMarker columns (rowNumber + checkbox, if enabled)
         if (rowMarkers !== "none") {
             // rowNumber column (when showRowNumber is true)
             if (showRowNumber) {
@@ -1220,7 +1244,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             });
         }
 
-        // Last: rowStatus column (if enabled)
+        // 2. rowStatus column (third, if enabled)
         if (hasRowStatus) {
             markerColumns.push({
                 title: "",
@@ -1232,6 +1256,18 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             });
         }
 
+        // 3. rowId column (fourth, if enabled)
+        if (hasRowId) {
+            markerColumns.push({
+                title: "ID",
+                width: rowIdWidth,
+                icon: undefined,
+                hasMenu: false,
+                style: "normal" as const,
+                themeOverride: rowIdTheme,
+            });
+        }
+
         return [
             ...markerColumns,
             ...columns,
@@ -1240,6 +1276,9 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         hasRowStatus,
         rowStatusWidth,
         rowStatusTheme,
+        hasRowId,
+        rowIdWidth,
+        rowIdTheme,
         rowMarkers,
         columns,
         rowMarkerWidth,
@@ -1394,13 +1433,36 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         ([col, row]: Item, forceStrict: boolean = false): InnerGridCell => {
             const isTrailing = showTrailingBlankRow && row === mangledRows - 1;
 
-            // Calculate column positions based on new order: rowNumber, checkbox, rowStatus
+            // Calculate column positions based on actual order in mangledCols: rowNumber, checkbox, rowStatus, rowId
             let currentColIndex = 0;
-            const rowNumberColIndex = hasRowMarkers && showRowNumber ? currentColIndex++ : -1;
-            const checkboxColIndex = hasRowMarkers ? currentColIndex++ : -1;
-            const rowStatusColIndex = hasRowStatus ? currentColIndex++ : -1;
 
-            // Handle rowNumber column (first if enabled)
+            // Must match the order in mangledCols exactly
+            let rowNumberColIndex = -1;
+            let checkboxColIndex = -1;
+            let rowStatusColIndex = -1;
+            let rowIdColIndex = -1;
+
+            // 1. rowNumber column (first if enabled)
+            if (hasRowMarkers && showRowNumber) {
+                rowNumberColIndex = currentColIndex++;
+            }
+
+            // 2. checkbox column (second if hasRowMarkers)
+            if (hasRowMarkers) {
+                checkboxColIndex = currentColIndex++;
+            }
+
+            // 3. rowStatus column (third if enabled)
+            if (hasRowStatus) {
+                rowStatusColIndex = currentColIndex++;
+            }
+
+            // 4. rowId column (fourth if enabled)
+            if (hasRowId) {
+                rowIdColIndex = currentColIndex++;
+            }
+
+            // 1. Handle rowNumber column (first if enabled)
             if (col === rowNumberColIndex) {
                 if (isTrailing) {
                     return loadingCell;
@@ -1421,7 +1483,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 };
             }
 
-            // Handle checkbox column
+            // 2. Handle checkbox column (second if enabled)
             if (col === checkboxColIndex) {
                 if (isTrailing) {
                     return loadingCell;
@@ -1452,7 +1514,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 };
             }
 
-            // Handle rowStatus column (last marker column if enabled)
+            // 3. Handle rowStatus column (third if enabled)
             if (col === rowStatusColIndex) {
                 if (isTrailing) {
                     return loadingCell;
@@ -1466,6 +1528,23 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     allowOverlay: false,
                     status,
                     themeOverride: rowStatusTheme,
+                };
+            }
+
+            // 4. Handle rowId column (fourth if enabled)
+            if (col === rowIdColIndex) {
+                if (isTrailing) {
+                    return loadingCell;
+                }
+
+                // Call onRowId callback to get the ID
+                const rowId = onRowId?.(row);
+
+                return {
+                    kind: InnerGridCellKind.RowId,
+                    allowOverlay: false,
+                    rowId,
+                    themeOverride: rowIdTheme,
                 };
             }
 
@@ -1529,6 +1608,9 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             hasRowStatus,
             onRowStatus,
             rowStatusTheme,
+            hasRowId,
+            onRowId,
+            rowIdTheme,
             hasRowMarkers,
             rowNumberMapper,
             rowMarkerCheckboxStyle,

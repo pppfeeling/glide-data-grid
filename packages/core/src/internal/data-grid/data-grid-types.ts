@@ -288,7 +288,7 @@ export type GridCell =
     | DrilldownCell
     | CustomCell;
 
-type InnerOnlyGridCell = NewRowCell | MarkerCell | RowStatusCell;
+type InnerOnlyGridCell = NewRowCell | MarkerCell | RowStatusCell | RowIdCell;
 /** @category Cells */
 export type InnerGridCell = GridCell | InnerOnlyGridCell;
 
@@ -504,6 +504,7 @@ export enum InnerGridCellKind {
     NewRow = "new-row",
     Marker = "marker",
     RowStatus = "row-status",
+    RowId = "row-id",
 }
 
 export type EditListItem = { location: Item; value: EditableGridCell };
@@ -533,6 +534,13 @@ export interface RowStatusCell extends BaseGridCell {
     readonly kind: InnerGridCellKind.RowStatus;
     readonly allowOverlay: false;
     readonly status?: "A" | "U" | "D";
+}
+
+/** @category Cells */
+export interface RowIdCell extends BaseGridCell {
+    readonly kind: InnerGridCellKind.RowId;
+    readonly allowOverlay: false;
+    readonly rowId?: string;
 }
 
 /** @category Selection */

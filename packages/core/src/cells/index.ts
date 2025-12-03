@@ -11,6 +11,7 @@ import { newRowCellRenderer } from "./new-row-cell.js";
 import { numberCellRenderer } from "./number-cell.js";
 import { protectedCellRenderer } from "./protected-cell.js";
 import { rowIDCellRenderer } from "./row-id-cell.js";
+import { rowIdMarkerCellRenderer } from "./row-id-marker-cell.js";
 import { rowStatusCellRenderer } from "./row-status-cell.js";
 import { textCellRenderer } from "./text-cell.js";
 import { uriCellRenderer } from "./uri-cell.js";
@@ -19,6 +20,7 @@ export const AllCellRenderers = [
     markerCellRenderer,
     newRowCellRenderer,
     rowStatusCellRenderer,
+    rowIdMarkerCellRenderer,
     booleanCellRenderer,
     bubbleCellRenderer,
     drilldownCellRenderer,

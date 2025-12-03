@@ -131,6 +131,15 @@ export const AddData = () => {
     // Row status tracking: A (Added), U (Updated), D (Deleted)
     const [rowStatuses, setRowStatuses] = React.useState<Map<number, "A" | "U" | "D">>(new Map());
 
+    // Row ID tracking: Generate unique ID for each row
+    const [rowIds, setRowIds] = React.useState<Map<number, string>>(() => {
+        const ids = new Map<number, string>();
+        for (let i = 0; i < initialRows; i++) {
+            ids.set(i, `ROW-${String(i + 1).padStart(4, '0')}`);
+        }
+        return ids;
+    });
+
     // 1. 데이터 처리 로직
     const processRow = React.useCallback(
         (row: number) => {
@@ -308,6 +317,33 @@ export const AddData = () => {
                 }
             });
 
+            // Generate new row ID
+            setRowIds(prev => {
+                const newIds = new Map(prev);
+                const maxId = Math.max(0, ...Array.from(prev.values()).map(id => {
+                    const match = id.match(/ROW-(\d+)/);
+                    return match ? parseInt(match[1]) : 0;
+                }));
+                const newId = `ROW-${String(maxId + 1).padStart(4, '0')}`;
+
+                // Shift IDs for rows after the insert point
+                if (firstSelectedIndex !== undefined) {
+                    const shiftedIds = new Map<number, string>();
+                    prev.forEach((id, row) => {
+                        if (row >= insertIndex) {
+                            shiftedIds.set(row + 1, id);
+                        } else {
+                            shiftedIds.set(row, id);
+                        }
+                    });
+                    shiftedIds.set(insertIndex, newId);
+                    return shiftedIds;
+                } else {
+                    newIds.set(insertIndex, newId);
+                    return newIds;
+                }
+            });
+
             setNumRows(newData.length);
             return newData;
         });
@@ -379,6 +415,14 @@ export const AddData = () => {
         [rowStatuses]
     );
 
+    // Callback to provide row ID for each row
+    const onRowId = React.useCallback(
+        (rowIndex: number): string | undefined => {
+            return rowIds.get(rowIndex);
+        },
+        [rowIds]
+    );
+
 
     return (
         <>
@@ -413,6 +457,12 @@ export const AddData = () => {
                     rowStatusTheme: {
                         bgCell: "#f5f5f5",
                         textDark: "#333",
+                    },
+                    rowId: true,
+                    rowIdWidth: 100,
+                    rowIdTheme: {
+                        bgCell: "#f0f8ff",
+                        textDark: "#0066cc",
                     }
                 }}
                 fillHandle={{ size: 6 }}
@@ -424,6 +474,7 @@ export const AddData = () => {
                 onGridSelectionChange={setGridSelection}
                 gridSelection={gridSelection}
                 onRowStatus={onRowStatus}
+                onRowId={onRowId}
 
             />
             
