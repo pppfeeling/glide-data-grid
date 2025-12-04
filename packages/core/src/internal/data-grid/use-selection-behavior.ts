@@ -56,7 +56,8 @@ export function useSelectionBehavior(
             const rangeMixable =
                 (rangeBehavior === "mixed" && (append || trigger === "drag")) || rangeBehavior === "additive";
             const allowColumnCoSelect = (columnBehavior === "mixed" || columnBehavior === "additive") && rangeMixable;
-            const allowRowCoSelect = (rowBehavior === "mixed" || rowBehavior === "additive") && rangeMixable;
+            // Keep row selection when append is true (e.g., when clicking cells after selecting rows via checkbox)
+            const allowRowCoSelect = append || ((rowBehavior === "mixed" || rowBehavior === "additive") && rangeMixable);
             let newVal: GridSelection = {
                 current:
                     value === undefined

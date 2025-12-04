@@ -441,7 +441,7 @@ export const AddData = () => {
                 rows={numRows}
                 getCellContent={getCellContentWithHighlight}
                 isActivationOnEnter={true}
-                rowSelect="single"
+                rowSelect="multi"
                 rowSelectionMode="multi"
                 rowMarkers={{
                     kind: "checkbox-visible",

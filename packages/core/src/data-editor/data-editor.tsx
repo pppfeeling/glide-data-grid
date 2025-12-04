@@ -2210,13 +2210,15 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                             lastSelectedRowRef.current = undefined;
                             focus();
                         } else {
+                            // Keep row selection when clicking on other cells
+                            const hasRowSelection = gridSelection.rows.length > 0;
                             setCurrent(
                                 {
                                     cell: [col, row],
                                     range: { x: col, y: row, width: 1, height: 1 },
                                 },
                                 true,
-                                isMultiKey,
+                                isMultiKey || hasRowSelection,
                                 "click"
                             );
                             lastSelectedRowRef.current = undefined;
