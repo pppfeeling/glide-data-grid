@@ -7,44 +7,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Glide Data Grid is a canvas-based React data grid component that supports millions of rows with fast scrolling performance. The project is built using a monorepo structure with three packages:
 
 - **`packages/core`** - Main data grid component (`@glideapps/glide-data-grid`)
-- **`packages/cells`** - Additional cell renderers (`@glideapps/glide-data-grid-cells`)  
-- **`packages/source`** - Data source utilities (`@glideapps/glide-data-grid-source`)
 
 ## Development Commands
 
 ### Primary Commands
-- **`npm run storybook`** - Start development environment with Storybook and watch mode
+- **`npm run start`** - Start development environment with Storybook and watch mode
 - **`npm run build`** - Build all packages and run linting
-- **`npm test`** - Run tests for core package
-- **`npm run test-18`** - Run tests with React 18
-- **`npm run test-19`** - Run tests with React 19
+
 
 ### Package-Specific Commands
 ```bash
 # Core package
 cd packages/core
 npm run build        # Build the core package
-npm run lint         # Run ESLint and cycle checks
-npm run test         # Run tests with Vitest
-npm run watch        # Watch for changes and rebuild
-
-# Cells package  
-cd packages/cells
-npm run build        # Build cells package
-npm run lint         # Run ESLint
-npm run test         # Run tests
-
-# Source package
-cd packages/source  
-npm run build        # Build source package
-npm run lint         # Run ESLint
-npm run test         # Run tests
 ```
 
-### Testing Commands
-- **`npm run test-source`** - Test source package
-- **`npm run test-cells`** - Test cells package  
-- **`npm run test-projects`** - Test integration projects
 
 ## Architecture
 
@@ -68,56 +45,34 @@ packages/core/src/
 └── stories/            # Storybook stories
 ```
 
-### Build System
-- Uses **TypeScript** with dual ESM/CJS output
-- **Linaria** for CSS-in-JS with zero-runtime CSS extraction
-- **Vitest** for testing
-- Custom build scripts in `config/build-util.sh` for parallel ESM/CJS compilation
+## Analysis Documents
 
-### Cell System
-Custom cells must use Canvas rendering. Built-in cells include:
-- Text, Number, Boolean, Image
-- Markdown, URI, Drilldown
-- Bubble, Loading, Protected
-- Row ID, Marker, New Row
+코드 수정 전 `/analyze` 폴더의 관련 문서를 참조하세요:
 
-New cells should be added to the `packages/cells` package with React.lazy for code splitting when requiring third-party dependencies.
+### Quick Reference
+- 전체 구조: `/analyze/00-overview.md`
+- 타입 정의: `/analyze/01-types.md`
+- 빠른 참조: `/analyze/quick-reference.md`
 
-## Code Style
+### Reference by Modification Area
+| 수정 대상 | 참조 문서 |
+|-----------|----------|
+| DataEditor Props/이벤트 | `/analyze/02-data-editor.md` |
+| 캔버스 컨트롤러 | `/analyze/03-data-grid.md` |
+| 렌더링 파이프라인 | `/analyze/04-rendering.md` |
+| 셀 렌더러 추가/수정 | `/analyze/05-cells.md` |
+| 선택 동작 변경 | `/analyze/06-selection.md` |
+| 편집/복사/붙여넣기 | `/analyze/07-editing.md` |
+| 이벤트 처리 | `/analyze/08-events.md` |
+| 테마 커스터마이징 | `/analyze/09-theming.md` |
+| 데이터 처리 (필터/정렬/그룹) | `/analyze/10-data-processing.md` |
+| 확장 포인트 | `/analyze/11-extension-points.md` |
 
-### Linting
-- **ESLint** with TypeScript, React, SonarJS, and Unicorn plugins
-- **Prettier** with 4-space indentation, 120 character line width
-- Strict TypeScript configuration with `noImplicitAny` and `strict: true`
+### When to Use
+1. **새 기능 추가 전**: 관련 문서에서 기존 패턴 확인
+2. **버그 수정 시**: 해당 모듈의 데이터 흐름과 의존성 파악
+3. **타입 에러 발생 시**: `01-types.md`에서 정확한 타입 확인
+4. **코드 위치 찾기**: `quick-reference.md`의 파일:라인 참조
 
-### Key ESLint Rules
-- `@typescript-eslint/no-floating-promises: error` - Async promises must be handled
-- `@typescript-eslint/strict-boolean-expressions: error` - Strict boolean checks
-- `eqeqeq: always` - Always use strict equality
-- `no-console: warn` - Console usage discouraged
 
-## Testing
 
-The project uses **Vitest** for testing with **React Testing Library**. Canvas rendering tests use `vitest-canvas-mock`.
-
-### Test Structure
-```bash
-# Run all tests
-npm test
-
-# Test specific React versions  
-npm run test-18  # React 18
-npm run test-19  # React 19
-
-# Test individual packages
-npm run test-source
-npm run test-cells
-```
-
-## Integration Projects
-
-Test projects demonstrate integration with different frameworks:
-- `test-projects/cra5-gdg` - Create React App 5
-- `test-projects/next-gdg` - Next.js integration
-
-Run with: `npm run test-projects`

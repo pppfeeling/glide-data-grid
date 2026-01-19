@@ -25,7 +25,7 @@
         "dist"
     ],
     "scripts": {
-        "build": "./build.sh",
+        "build": "bash build.sh",
         "lint": "eslint src --ext .ts,.tsx",
         "test": "vitest"
     },

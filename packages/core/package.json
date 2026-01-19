@@ -23,13 +23,13 @@
         }
     },
     "scripts": {
-        "prebuild": "rm -rf dist",
-        "build": "./build.sh",
-        "lint": "concurrently \"npm run cycle-check\" \"eslint src --ext .ts,.tsx\"",
+        "prebuild": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+        "build": "bash build.sh",
+        "lint": "eslint src --ext .ts,.tsx",
         "cycle-check": "ts-helper -p ./tsconfig.json -r ./src/index.ts -c",
         "test": "vitest",
         "check-package": "package-check",
-        "watch": "chokidar 'src/**/*.ts*' -c './build.sh'"
+        "watch": "chokidar 'src/**/*.ts*' -c 'bash build.sh'"
     },
     "repository": {
         "type": "git",

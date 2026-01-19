@@ -300,7 +300,7 @@ export const SearchDataEditor = () => {
                             {cols.map(col => {
                                 const inputs = columnInputs.get(col.title) || {};
                                 return (
-                                    <tr key={col.id}>
+                                    <tr key={col.id ?? col.title}>
                                         <td>{col.title}</td>
                                         <td>
                                             <select
