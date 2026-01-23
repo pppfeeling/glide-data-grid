@@ -109,7 +109,7 @@ describe("data-editor", () => {
         render(
             <DataEditor
                 {...basicProps}
-                rowMarkers="both"
+                rowMarkers="checkbox"
                 onCellContextMenu={spy}
                 onGridSelectionChange={spySelection}
             />,
@@ -311,7 +311,7 @@ describe("data-editor", () => {
         render(
             <DataEditor
                 {...basicProps}
-                rowMarkers={"both"}
+                rowMarkers={"checkbox"}
                 onCellContextMenu={spy}
                 onGridSelectionChange={spySelection}
             />,
@@ -678,7 +678,7 @@ describe("data-editor", () => {
         expect(spy).toHaveBeenCalledWith([1, 1], expect.anything());
     });
 
-    test("Emits activated event when typing", async () => {
+    test("Emits activated event when pressing Enter", async () => {
         const spy = vi.fn();
 
         vi.useFakeTimers();
@@ -694,7 +694,7 @@ describe("data-editor", () => {
         });
 
         fireEvent.keyDown(canvas, {
-            key: "A",
+            key: "Enter",
         });
 
         act(() => {
@@ -821,14 +821,16 @@ describe("data-editor", () => {
             clientY: 36 + 32 + 16, // Row 1 (0 indexed)
         });
 
+        // Use Enter key to activate editing (character input editing is disabled)
         fireEvent.keyDown(canvas, {
-            keyCode: 74,
-            key: "j",
+            key: "Enter",
         });
 
         await act(() => new Promise(r => window.setTimeout(r, 500)));
 
-        const overlay = screen.getByDisplayValue("j");
+        // Find the overlay input and type 'j'
+        const overlay = document.querySelector(".gdg-input") as HTMLInputElement;
+        fireEvent.change(overlay, { target: { value: "j" } });
 
         vi.useFakeTimers();
         fireEvent.keyDown(overlay, {
@@ -858,14 +860,16 @@ describe("data-editor", () => {
             clientY: 36 + 32 + 16, // Row 1 (0 indexed)
         });
 
+        // Use Enter key to activate editing (character input editing is disabled)
         fireEvent.keyDown(canvas, {
-            keyCode: 74,
-            key: "j",
+            key: "Enter",
         });
 
         await act(() => new Promise(r => window.setTimeout(r, 500)));
 
-        const overlay = screen.getByDisplayValue("j");
+        // Find the overlay input and type 'j'
+        const overlay = document.querySelector(".gdg-input") as HTMLInputElement;
+        fireEvent.change(overlay, { target: { value: "j" } });
 
         vi.useFakeTimers();
         fireEvent.keyDown(overlay, {
@@ -925,7 +929,7 @@ describe("data-editor", () => {
         const spy = vi.fn();
 
         vi.useFakeTimers();
-        render(<DataEditor {...basicProps} rowMarkers="both" onHeaderClicked={spy} />, {
+        render(<DataEditor {...basicProps} rowMarkers="checkbox" onHeaderClicked={spy} />, {
             wrapper: Context,
         });
         prep();
@@ -1088,7 +1092,7 @@ describe("data-editor", () => {
             <DataEditor
                 {...basicProps}
                 columns={basicProps.columns.map(c => ({ ...c, group: "Main" }))}
-                rowMarkers="both"
+                rowMarkers="checkbox"
                 onGroupHeaderClicked={spy}
             />,
             {
@@ -1115,7 +1119,7 @@ describe("data-editor", () => {
         const spy = vi.fn();
 
         vi.useFakeTimers();
-        render(<DataEditor {...basicProps} rowMarkers="both" onItemHovered={spy} />, {
+        render(<DataEditor {...basicProps} rowMarkers="checkbox" onItemHovered={spy} />, {
             wrapper: Context,
         });
         prep();
@@ -1134,7 +1138,7 @@ describe("data-editor", () => {
         const spy = vi.fn();
 
         vi.useFakeTimers();
-        render(<DataEditor {...basicProps} rowMarkers="both" onMouseMove={spy} />, {
+        render(<DataEditor {...basicProps} rowMarkers="checkbox" onMouseMove={spy} />, {
             wrapper: Context,
         });
         prep();
@@ -1171,7 +1175,7 @@ describe("data-editor", () => {
                         rangeStack: [],
                     },
                 }}
-                rowMarkers="both"
+                rowMarkers="checkbox"
             />,
             {
                 wrapper: Context,
@@ -1223,7 +1227,7 @@ describe("data-editor", () => {
                         rangeStack: [],
                     },
                 }}
-                rowMarkers="both"
+                rowMarkers="checkbox"
             />,
             {
                 wrapper: Context,
@@ -1275,7 +1279,7 @@ describe("data-editor", () => {
                         rangeStack: [],
                     },
                 }}
-                rowMarkers="both"
+                rowMarkers="checkbox"
             />,
             {
                 wrapper: Context,
@@ -1304,7 +1308,7 @@ describe("data-editor", () => {
                     rows: CompactSelection.fromSingleSelection(2),
                     current: undefined,
                 }}
-                rowMarkers="both"
+                rowMarkers="checkbox"
             />,
             {
                 wrapper: Context,
@@ -1337,7 +1341,7 @@ describe("data-editor", () => {
                         rangeStack: [],
                     },
                 }}
-                rowMarkers="both"
+                rowMarkers="checkbox"
             />,
             {
                 wrapper: Context,
@@ -1428,12 +1432,12 @@ describe("data-editor", () => {
         expect(document.body.contains(overlay)).toBe(false);
     });
 
-    test("Open overlay with keypress", async () => {
+    test("Open overlay with Enter key", async () => {
         vi.useFakeTimers();
         render(<DataEditor {...basicProps} />, {
             wrapper: Context,
         });
-        prep();
+        prep(false);
 
         const canvas = screen.getByTestId("data-grid-canvas");
         sendClick(canvas, {
@@ -1441,54 +1445,31 @@ describe("data-editor", () => {
             clientY: 36 + 32 + 16, // Row 1 (0 indexed)
         });
 
-        const testKeys = [
-            {
-                keyCode: 74,
-                key: "j",
-            },
-            {
-                keyCode: 381,
-                key: "ž",
-            },
-            {
-                keyCode: 246,
-                key: "ö",
-            },
-            {
-                keyCode: 1096,
-                key: "ш",
-            },
-            {
-                keyCode: 187,
-                key: "+",
-            },
-            {
-                keyCode: 222,
-                key: "'",
-            },
-        ];
+        // Character input editing is disabled - use Enter key to open overlay
+        fireEvent.keyDown(canvas, { key: "Enter" });
+        fireEvent.keyUp(canvas, { key: "Enter" });
 
-        for (const key of testKeys) {
-            fireEvent.keyDown(canvas, key);
-            fireEvent.keyUp(canvas, key);
+        act(() => {
+            vi.runAllTimers();
+        });
 
-            const overlay = screen.getByDisplayValue(key.key);
-            expect(document.body.contains(overlay)).toBe(true);
+        // Check that overlay is open by finding the input
+        const overlay = document.querySelector(".gdg-input");
+        expect(overlay).not.toBeNull();
+        expect(document.body.contains(overlay)).toBe(true);
 
-            vi.useFakeTimers();
-            fireEvent.keyDown(overlay, {
-                key: "Escape",
-            });
+        fireEvent.keyDown(overlay!, {
+            key: "Escape",
+        });
 
-            act(() => {
-                vi.runAllTimers();
-            });
+        act(() => {
+            vi.runAllTimers();
+        });
 
-            expect(document.body.contains(overlay)).toBe(false);
-        }
+        expect(document.body.contains(overlay)).toBe(false);
     });
 
-    test("Open overlay with keypress when prior is disabled", async () => {
+    test("Open overlay with Enter key when prior cell is disabled", async () => {
         vi.useFakeTimers();
         render(
             <DataEditor
@@ -1510,7 +1491,7 @@ describe("data-editor", () => {
                 wrapper: Context,
             }
         );
-        prep();
+        prep(false);
 
         const canvas = screen.getByTestId("data-grid-canvas");
         sendClick(canvas, {
@@ -1518,21 +1499,24 @@ describe("data-editor", () => {
             clientY: 36 + 32 + 16, // Row 1 (0 indexed)
         });
 
+        // Character input editing is disabled - use Enter key to open overlay
         fireEvent.keyDown(canvas, {
-            keyCode: 74,
-            key: "j",
+            key: "Enter",
         });
 
         fireEvent.keyUp(canvas, {
-            keyCode: 74,
-            key: "j",
+            key: "Enter",
         });
 
-        const overlay = screen.getByDisplayValue("j");
+        act(() => {
+            vi.runAllTimers();
+        });
+
+        const overlay = document.querySelector(".gdg-input");
+        expect(overlay).not.toBeNull();
         expect(document.body.contains(overlay)).toBe(true);
 
-        vi.useFakeTimers();
-        fireEvent.keyDown(overlay, {
+        fireEvent.keyDown(overlay!, {
             key: "Escape",
         });
 
@@ -1591,22 +1575,24 @@ describe("data-editor", () => {
             vi.runAllTimers();
         });
 
+        // Character input editing is disabled - use Enter key to open overlay
         fireEvent.keyDown(canvas, {
-            keyCode: 74,
-            key: "j",
+            key: "Enter",
         });
 
         fireEvent.keyUp(canvas, {
-            keyCode: 74,
-            key: "j",
+            key: "Enter",
         });
 
         act(() => {
             vi.runAllTimers();
         });
 
-        const overlay = screen.getByDisplayValue("j");
+        const overlay = document.querySelector(".gdg-input") as HTMLInputElement;
         expect(document.body.contains(overlay)).toBe(true);
+
+        // Type 'j' in the overlay
+        fireEvent.change(overlay, { target: { value: "j" } });
 
         fireEvent.keyDown(overlay, {
             key: "Enter",
@@ -1638,26 +1624,28 @@ describe("data-editor", () => {
             vi.runAllTimers();
         });
 
+        // Character input editing is disabled - use Enter key to open overlay
         fireEvent.keyDown(canvas, {
-            keyCode: 74,
-            key: "j",
+            key: "Enter",
         });
 
         fireEvent.keyUp(canvas, {
-            keyCode: 74,
-            key: "j",
+            key: "Enter",
         });
 
         act(() => {
             vi.runAllTimers();
         });
 
-        const overlay = screen.getByDisplayValue("j");
+        const overlay = document.querySelector(".gdg-input") as HTMLInputElement;
         expect(document.body.contains(overlay)).toBe(true);
+
+        // Type 'j' in the overlay
+        fireEvent.change(overlay, { target: { value: "j" } });
 
         sendClick(canvas, {
             clientX: 300, // Col B
-            clientY: 36 + 32 * 5 + 16, // Row 1 (0 indexed)
+            clientY: 36 + 32 * 5 + 16, // Row 5 (0 indexed)
         });
 
         act(() => {
@@ -1686,28 +1674,30 @@ describe("data-editor", () => {
             vi.runAllTimers();
         });
 
+        // Character input editing is disabled - use Enter key to open overlay
         fireEvent.keyDown(canvas, {
-            keyCode: 74,
-            key: "j",
+            key: "Enter",
         });
 
         fireEvent.keyUp(canvas, {
-            keyCode: 74,
-            key: "j",
+            key: "Enter",
         });
 
         act(() => {
             vi.runAllTimers();
         });
 
-        const overlay = screen.getByDisplayValue("j");
+        const overlay = document.querySelector(".gdg-input") as HTMLInputElement;
         expect(document.body.contains(overlay)).toBe(true);
+
+        // Type 'j' in the overlay
+        fireEvent.change(overlay, { target: { value: "j" } });
 
         sendTouchClick(canvas, {
             touches: [
                 {
                     clientX: 300, // Col B
-                    clientY: 36 + 32 * 5 + 16, // Row 1 (0 indexed)}
+                    clientY: 36 + 32 * 5 + 16, // Row 5 (0 indexed)
                 },
             ],
         });
@@ -1836,7 +1826,7 @@ describe("data-editor", () => {
         const spy = vi.fn();
         vi.useFakeTimers();
         const ref = React.createRef<DataEditorRef>();
-        render(<DataEditor {...basicProps} onCellEdited={spy} ref={ref} rowMarkers="both" />, {
+        render(<DataEditor {...basicProps} onCellEdited={spy} ref={ref} rowMarkers="checkbox" />, {
             wrapper: Context,
         });
         prep(false);
@@ -1858,7 +1848,7 @@ describe("data-editor", () => {
         const spy = vi.fn();
         vi.useFakeTimers();
         const ref = React.createRef<DataEditorRef>();
-        render(<DataEditor {...basicProps} onCellEdited={spy} ref={ref} rowMarkers="both" />, {
+        render(<DataEditor {...basicProps} onCellEdited={spy} ref={ref} rowMarkers="checkbox" />, {
             wrapper: Context,
         });
         const scroller = prep(false);
@@ -2682,7 +2672,7 @@ describe("data-editor", () => {
                         draw: spy,
                     } as InternalCellRenderer<InnerGridCell>,
                 ]}
-                rowMarkers="both"
+                rowMarkers="checkbox"
             />,
             {
                 wrapper: Context,
@@ -2802,7 +2792,7 @@ describe("data-editor", () => {
         render(
             <EventedDataEditor
                 {...basicProps}
-                rowMarkers="both"
+                rowMarkers="checkbox"
                 gridSelection={{
                     current: undefined,
                     rows: CompactSelection.fromSingleSelection([3, 4]),
@@ -2854,7 +2844,7 @@ describe("data-editor", () => {
         const spy = vi.fn(basicProps.getCellContent);
 
         vi.useFakeTimers();
-        render(<DataEditor {...basicProps} rowMarkers="both" getCellContent={spy} />, {
+        render(<DataEditor {...basicProps} rowMarkers="checkbox" getCellContent={spy} />, {
             wrapper: Context,
         });
         prep();
@@ -3040,7 +3030,7 @@ describe("data-editor", () => {
     test("Click row marker", async () => {
         const spy = vi.fn();
         vi.useFakeTimers();
-        render(<EventedDataEditor {...basicProps} onGridSelectionChange={spy} rowMarkers="both" />, {
+        render(<EventedDataEditor {...basicProps} onGridSelectionChange={spy} rowMarkers="checkbox" />, {
             wrapper: Context,
         });
         prep();
@@ -3062,7 +3052,7 @@ describe("data-editor", () => {
     test("Shift click row marker", async () => {
         const spy = vi.fn();
         vi.useFakeTimers();
-        render(<EventedDataEditor {...basicProps} onGridSelectionChange={spy} rowMarkers="both" />, {
+        render(<EventedDataEditor {...basicProps} onGridSelectionChange={spy} rowMarkers="checkbox" />, {
             wrapper: Context,
         });
         prep();
@@ -3091,7 +3081,7 @@ describe("data-editor", () => {
     test("Drag click row marker", async () => {
         const spy = vi.fn();
         vi.useFakeTimers();
-        render(<EventedDataEditor {...basicProps} onGridSelectionChange={spy} rowMarkers="both" />, {
+        render(<EventedDataEditor {...basicProps} onGridSelectionChange={spy} rowMarkers="checkbox" />, {
             wrapper: Context,
         });
         prep();
@@ -3128,7 +3118,7 @@ describe("data-editor", () => {
         const spy = vi.fn();
         vi.useFakeTimers();
         render(
-            <EventedDataEditor {...basicProps} rowSelect={"single"} onGridSelectionChange={spy} rowMarkers="both" />,
+            <EventedDataEditor {...basicProps} rowSelect={"single"} onGridSelectionChange={spy} rowMarkers="checkbox" />,
             {
                 wrapper: Context,
             }
@@ -3159,7 +3149,7 @@ describe("data-editor", () => {
     test("Ctrl click row marker", async () => {
         const spy = vi.fn();
         vi.useFakeTimers();
-        render(<EventedDataEditor {...basicProps} onGridSelectionChange={spy} rowMarkers="both" />, {
+        render(<EventedDataEditor {...basicProps} onGridSelectionChange={spy} rowMarkers="checkbox" />, {
             wrapper: Context,
         });
         prep();
@@ -3203,7 +3193,7 @@ describe("data-editor", () => {
         const spy = vi.fn();
         vi.useFakeTimers();
         render(
-            <EventedDataEditor {...basicProps} rowSelect={"single"} onGridSelectionChange={spy} rowMarkers="both" />,
+            <EventedDataEditor {...basicProps} rowSelect={"single"} onGridSelectionChange={spy} rowMarkers="checkbox" />,
             {
                 wrapper: Context,
             }
@@ -3389,10 +3379,15 @@ describe("data-editor", () => {
             key: "Escape",
         });
 
+        // Escape now clears rows/columns but keeps current cell position
         expect(spy).toBeCalledWith({
             columns: CompactSelection.empty(),
             rows: CompactSelection.empty(),
-            current: undefined,
+            current: {
+                cell: [1, 2],
+                range: { x: 1, y: 2, width: 1, height: 1 },
+                rangeStack: [],
+            },
         });
     });
 
@@ -3644,7 +3639,7 @@ describe("data-editor", () => {
             <EventedDataEditor
                 {...basicProps}
                 experimental={{ renderStrategy: "double-buffer" }}
-                rowMarkers="both"
+                rowMarkers="checkbox"
                 onGridSelectionChange={spy}
             />,
             {
@@ -3683,7 +3678,7 @@ describe("data-editor", () => {
         render(
             <EventedDataEditor
                 {...basicProps}
-                rowMarkers="both"
+                rowMarkers="checkbox"
                 onDragStart={e => {
                     spy(e);
                     e.setData("text/plain", "payload");
@@ -3743,9 +3738,15 @@ describe("data-editor", () => {
             key: "Escape",
         });
 
+        // Escape now clears rows/columns but keeps current cell position
         expect(gridSelectionSpy).toBeCalledWith({
             rows: CompactSelection.empty(),
             columns: CompactSelection.empty(),
+            current: {
+                cell: [1, 2],
+                range: { x: 1, y: 2, width: 1, height: 1 },
+                rangeStack: [],
+            },
         });
     });
 
@@ -4816,7 +4817,7 @@ describe("data-editor", () => {
                     rows: CompactSelection.empty(),
                     columns: CompactSelection.empty(),
                 }}
-                rowMarkers="both"
+                rowMarkers="checkbox"
                 rowSelectionBlending="additive"
                 rangeSelectionBlending="additive"
                 onGridSelectionChange={spy}
@@ -4829,7 +4830,7 @@ describe("data-editor", () => {
 
         const canvas = screen.getByTestId("data-grid-canvas");
         sendClick(canvas, {
-            clientX: 10, // Row marker
+            clientX: 10, // Row marker (checkbox column)
             clientY: 36 + 32 * 3 + 16, // Row 3 (0 indexed)
         });
 
@@ -4894,7 +4895,7 @@ describe("data-editor", () => {
             <EventedDataEditor
                 {...basicProps}
                 onGridSelectionChange={spy}
-                rowMarkers="both"
+                rowMarkers="checkbox"
                 rangeSelect="multi-rect"
                 rowSelectionBlending="additive"
             />,
@@ -4919,7 +4920,7 @@ describe("data-editor", () => {
 
         spy.mockClear();
 
-        // Now drag on the row marker from row 2 to row 5
+        // Now drag on the row marker (checkbox column) from row 2 to row 5
         fireEvent.pointerDown(canvas, {
             clientX: 10,
             clientY: 36 + 32 * 1 + 16,

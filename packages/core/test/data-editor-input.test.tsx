@@ -354,6 +354,7 @@ a new line char ""more quotes"" plus a tab  ."	https://google.com`)
         render(
             <EventedDataEditor
                 {...basicProps}
+                rowMarkers="checkbox"
                 gridSelection={{
                     current: {
                         cell: [1, 2],
@@ -410,6 +411,7 @@ a new line char ""more quotes"" plus a tab  ."	https://google.com`)
         render(
             <EventedDataEditor
                 {...basicProps}
+                rowMarkers="checkbox"
                 gridSelection={{
                     current: {
                         cell: [1, 2],
@@ -467,6 +469,7 @@ a new line char ""more quotes"" plus a tab  ."	https://google.com`)
         render(
             <EventedDataEditor
                 {...basicProps}
+                rowMarkers="checkbox"
                 gridSelection={{
                     current: {
                         cell: [1, 2],
@@ -523,6 +526,7 @@ a new line char ""more quotes"" plus a tab  ."	https://google.com`)
         render(
             <EventedDataEditor
                 {...basicProps}
+                rowMarkers="checkbox"
                 gridSelection={{
                     current: {
                         cell: [1, 2],
@@ -580,6 +584,7 @@ a new line char ""more quotes"" plus a tab  ."	https://google.com`)
         render(
             <EventedDataEditor
                 {...basicProps}
+                rowMarkers="checkbox"
                 gridSelection={{
                     current: {
                         cell: [1, 2],
@@ -634,6 +639,7 @@ a new line char ""more quotes"" plus a tab  ."	https://google.com`)
         render(
             <EventedDataEditor
                 {...basicProps}
+                rowMarkers="checkbox"
                 gridSelection={{
                     current: {
                         cell: [1, 2],

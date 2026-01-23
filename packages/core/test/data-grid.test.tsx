@@ -308,13 +308,21 @@ describe("data-grid", () => {
         const spy = vi.fn();
 
         render(
-            <DataGrid {...basicProps} groupHeaderHeight={32} enableGroups={true} cellYOffset={10} onItemHovered={spy} />
+            <DataGrid
+                {...basicProps}
+                groupHeaderHeight={32}
+                groupLevels={1}
+                groupHeaderHeights={[32]}
+                enableGroups={true}
+                cellYOffset={10}
+                onItemHovered={spy}
+            />
         );
 
         const el = screen.getByTestId(dataGridCanvasId);
         fireEvent.pointerMove(el, {
             clientX: 350, // Col C
-            clientY: 46, // Header
+            clientY: 46, // Header (32 group header + 14 into header area)
         });
 
         expect(spy).toBeCalledWith(
@@ -328,12 +336,21 @@ describe("data-grid", () => {
     test("Group header hovered", () => {
         const spy = vi.fn();
 
-        render(<DataGrid {...basicProps} onItemHovered={spy} enableGroups={true} groupHeaderHeight={28} />);
+        render(
+            <DataGrid
+                {...basicProps}
+                onItemHovered={spy}
+                enableGroups={true}
+                groupHeaderHeight={28}
+                groupLevels={1}
+                groupHeaderHeights={[28]}
+            />
+        );
 
         const el = screen.getByTestId(dataGridCanvasId);
         fireEvent.pointerMove(el, {
             clientX: 350, // Col C
-            clientY: 14, // Header
+            clientY: 14, // Group header area (within 0-28 range)
         });
 
         expect(spy).toBeCalledWith(
