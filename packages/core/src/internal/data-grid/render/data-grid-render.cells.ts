@@ -21,6 +21,7 @@ import {
     cellIsInRange,
     getFreezeTrailingHeight,
     drawLastUpdateUnderlay,
+    getGroupName,
 } from "./data-grid-lib.js";
 import type { SpriteManager } from "../data-grid-sprites.js";
 import { mergeAndRealizeTheme, type FullTheme, type Theme } from "../../../common/styles.js";
@@ -159,7 +160,7 @@ export function drawCells(
 
             const colSelected = selection.columns.hasIndex(c.sourceIndex);
 
-            const groupTheme = getGroupDetails(c.group ?? "").overrideTheme;
+            const groupTheme = getGroupDetails(getGroupName(c.group)).overrideTheme;
             const colTheme =
                 c.themeOverride === undefined && groupTheme === undefined
                     ? outerTheme

@@ -139,17 +139,40 @@ export type CellArray = readonly (readonly GridCell[])[];
  * a cell or header within the dataset: positive row
  * numbers identify cells.
  *
- * - `-1`: Header
- * - `-2`: Group header
+ * - `-1`: Column Header
+ * - `-2`: Group header level 0 (topmost, closest to top of screen)
+ * - `-3`: Group header level 1
+ * - `-(n+2)`: Group header level n
  * - `0 and higher`: Row index
  *
  * @category Types
  */
 export type Item = readonly [col: number, row: number];
 
+/**
+ * Represents a hierarchical group path from topmost to innermost level.
+ * Example: ["Region", "Country", "City"] creates 3 levels of group headers.
+ * @category Types
+ */
+export type GroupPath = readonly string[];
+
 export interface BaseGridColumn {
     readonly title: string;
-    readonly group?: string;
+    /**
+     * Group name for column grouping. Can be a single string for one level of grouping,
+     * or an array of strings for multi-level hierarchical grouping.
+     *
+     * @example
+     * // Single level (backward compatible)
+     * { title: "Name", group: "Personal" }
+     *
+     * // Multi-level grouping
+     * { title: "Name", group: ["Region", "Country", "Personal"] }
+     * // Level 0 (topmost): "Region"
+     * // Level 1: "Country"
+     * // Level 2 (closest to column header): "Personal"
+     */
+    readonly group?: string | readonly string[];
     readonly icon?: GridColumnIcon | string;
     readonly overlayIcon?: GridColumnIcon | string;
     readonly menuIcon?: GridColumnMenuIcon | string;

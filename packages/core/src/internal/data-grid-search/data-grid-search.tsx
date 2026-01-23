@@ -498,6 +498,8 @@ const DataGridSearch: React.FunctionComponent<DataGridSearchProps> = p => {
                 columns={p.columns}
                 disabledRows={p.disabledRows}
                 enableGroups={p.enableGroups}
+                groupLevels={p.groupLevels}
+                groupHeaderHeights={p.groupHeaderHeights}
                 fillHandle={p.fillHandle}
                 firstColAccessible={p.firstColAccessible}
                 nonGrowWidth={p.nonGrowWidth}

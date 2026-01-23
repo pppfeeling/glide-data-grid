@@ -28,7 +28,7 @@ function clipHeaderDamage(
     ctx: CanvasRenderingContext2D,
     effectiveColumns: readonly MappedGridColumn[],
     width: number,
-    groupHeaderHeight: number,
+    totalGroupHeaderHeight: number,
     totalHeaderHeight: number,
     translateX: number,
     translateY: number,
@@ -39,18 +39,7 @@ function clipHeaderDamage(
 
     ctx.beginPath();
 
-    walkGroups(effectiveColumns, width, translateX, groupHeaderHeight, (span, _group, x, y, w, h) => {
-        const hasItemInSpan = damage.hasItemInRectangle({
-            x: span[0],
-            y: -2,
-            width: span[1] - span[0] + 1,
-            height: 1,
-        });
-        if (hasItemInSpan) {
-            ctx.rect(x, y, w, h);
-        }
-    });
-
+    // For column header damage (row -1), only clip the column header area (below group headers)
     walkColumns(
         effectiveColumns,
         cellYOffset,
@@ -63,7 +52,8 @@ function clipHeaderDamage(
             const finalX = drawX + diff + 1;
             const finalWidth = c.width - diff - 1;
             if (damage.has([c.sourceIndex, -1])) {
-                ctx.rect(finalX, groupHeaderHeight, finalWidth, totalHeaderHeight - groupHeaderHeight);
+                // Only clip column header area, not group headers
+                ctx.rect(finalX, totalGroupHeaderHeight, finalWidth, totalHeaderHeight - totalGroupHeaderHeight);
             }
         }
     );
@@ -130,6 +120,8 @@ export function drawGrid(arg: DrawGridArg, lastArg: DrawGridArg | undefined) {
         drawFocus,
         headerHeight,
         groupHeaderHeight,
+        groupLevels,
+        groupHeaderHeights,
         disabledRows,
         rowHeight,
         verticalBorder,
@@ -185,7 +177,8 @@ export function drawGrid(arg: DrawGridArg, lastArg: DrawGridArg | undefined) {
     }
 
     const overlayCanvas = headerCanvasCtx.canvas;
-    const totalHeaderHeight = enableGroups ? groupHeaderHeight + headerHeight : headerHeight;
+    const totalGroupHeaderHeight = groupHeaderHeights.reduce((a, b) => a + b, 0);
+    const totalHeaderHeight = headerHeight + totalGroupHeaderHeight;
 
     const overlayHeight = totalHeaderHeight + 1; // border
     if (overlayCanvas.width !== width * dpr || overlayCanvas.height !== overlayHeight * dpr) {
@@ -268,9 +261,15 @@ export function drawGrid(arg: DrawGridArg, lastArg: DrawGridArg | undefined) {
         }
     }
     const drawHeaderTexture = () => {
+        // Fill with opaque background instead of clearing to transparent
+        // This prevents the main canvas content from showing through
+        overlayCtx.fillStyle = theme.bgHeader;
+        overlayCtx.fillRect(0, 0, width, totalHeaderHeight + 1);
+
         drawGridHeaders(
             overlayCtx,
             effectiveCols,
+            mappedColumns,
             enableGroups,
             hoverInfo,
             width,
@@ -287,7 +286,9 @@ export function drawGrid(arg: DrawGridArg, lastArg: DrawGridArg | undefined) {
             getGroupDetails,
             damage,
             drawHeaderCallback,
-            touchMode
+            touchMode,
+            groupLevels,
+            groupHeaderHeights
         );
 
         drawGridLines(
@@ -300,7 +301,7 @@ export function drawGrid(arg: DrawGridArg, lastArg: DrawGridArg | undefined) {
             height,
             undefined,
             undefined,
-            groupHeaderHeight,
+            totalGroupHeaderHeight,
             totalHeaderHeight,
             getRowHeight,
             getRowThemeOverride,
@@ -332,7 +333,7 @@ export function drawGrid(arg: DrawGridArg, lastArg: DrawGridArg | undefined) {
                 mappedColumns,
                 freezeColumns,
                 headerHeight,
-                groupHeaderHeight,
+                totalGroupHeaderHeight,
                 rowHeight,
                 freezeTrailingRows,
                 rows,
@@ -486,7 +487,7 @@ export function drawGrid(arg: DrawGridArg, lastArg: DrawGridArg | undefined) {
                     overlayCtx,
                     effectiveCols,
                     width,
-                    groupHeaderHeight,
+                    totalGroupHeaderHeight,
                     totalHeaderHeight,
                     translateX,
                     translateY,
@@ -506,7 +507,9 @@ export function drawGrid(arg: DrawGridArg, lastArg: DrawGridArg | undefined) {
     if (
         canBlit !== true ||
         cellXOffset !== last?.cellXOffset ||
+        cellYOffset !== last?.cellYOffset ||
         translateX !== last?.translateX ||
+        translateY !== last?.translateY ||
         mustDrawFocusOnHeader !== last?.mustDrawFocusOnHeader ||
         mustDrawHighlightRingsOnHeader !== last?.mustDrawHighlightRingsOnHeader
     ) {
@@ -577,7 +580,7 @@ export function drawGrid(arg: DrawGridArg, lastArg: DrawGridArg | undefined) {
         mappedColumns,
         freezeColumns,
         headerHeight,
-        groupHeaderHeight,
+        totalGroupHeaderHeight,
         rowHeight,
         freezeTrailingRows,
         rows,
@@ -709,7 +712,7 @@ export function drawGrid(arg: DrawGridArg, lastArg: DrawGridArg | undefined) {
         height,
         drawRegions,
         spans,
-        groupHeaderHeight,
+        totalGroupHeaderHeight,
         totalHeaderHeight,
         getRowHeight,
         getRowThemeOverride,

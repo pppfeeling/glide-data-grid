@@ -70,8 +70,70 @@ export function gridSelectionHasItem(sel: GridSelection, item: Item): boolean {
     return false;
 }
 
-export function isGroupEqual(left: string | undefined, right: string | undefined): boolean {
-    return (left ?? "") === (right ?? "");
+/**
+ * Normalizes a group value to a string for comparison.
+ * For multi-level groups (arrays), returns the last (innermost) level by default,
+ * or a specific level if provided.
+ */
+export function getGroupName(group: string | readonly string[] | undefined, level?: number): string {
+    if (group === undefined) return "";
+    if (typeof group === "string") return group;
+    if (level !== undefined && level >= 0 && level < group.length) {
+        return group[level];
+    }
+    // Default: return the last (innermost) level for backward compatibility
+    return group.length > 0 ? group[group.length - 1] : "";
+}
+
+/**
+ * Gets the group name at a specific level for multi-level grouping.
+ * @param group The group value (string or array)
+ * @param level The level index (0 = topmost)
+ * @param totalLevels Total number of group levels
+ * @returns The group name at the specified level, or undefined if not defined
+ */
+export function getGroupAtLevel(
+    group: string | readonly string[] | undefined,
+    level: number,
+    totalLevels: number
+): string | undefined {
+    if (group === undefined) return undefined;
+    if (typeof group === "string") {
+        // Legacy single-level groups appear at the bottom level (closest to column headers)
+        return level === totalLevels - 1 ? group : undefined;
+    }
+    // Array: direct level mapping
+    return level < group.length ? group[level] : undefined;
+}
+
+export function isGroupEqual(
+    left: string | readonly string[] | undefined,
+    right: string | readonly string[] | undefined
+): boolean {
+    const leftStr = getGroupName(left);
+    const rightStr = getGroupName(right);
+    return leftStr === rightStr;
+}
+
+/**
+ * Checks if two columns have the same group at a specific level.
+ * For proper hierarchical grouping, all levels from 0 to the specified level must match.
+ */
+export function isGroupEqualAtLevel(
+    left: string | readonly string[] | undefined,
+    right: string | readonly string[] | undefined,
+    level: number,
+    totalLevels: number
+): boolean {
+    // Check all levels from 0 to the current level
+    for (let l = 0; l <= level; l++) {
+        const leftStr = getGroupAtLevel(left, l, totalLevels) ?? "";
+        const rightStr = getGroupAtLevel(right, l, totalLevels) ?? "";
+        if (leftStr !== rightStr) {
+            return false;
+        }
+    }
+    return true;
 }
 
 export function cellIsSelected(location: Item, cell: InnerGridCell, selection: GridSelection): boolean {
@@ -273,10 +335,28 @@ export function getRowIndexForY(
     rowHeight: number | ((index: number) => number),
     cellYOffset: number,
     translateY: number,
-    freezeTrailingRows: number
+    freezeTrailingRows: number,
+    groupLevels?: number,
+    groupHeaderHeights?: readonly number[]
 ): number | undefined {
-    const totalHeaderHeight = headerHeight + groupHeaderHeight;
-    if (hasGroups && targetY <= groupHeaderHeight) return -2;
+    // Multi-level group handling
+    const effectiveGroupLevels = groupLevels ?? (hasGroups ? 1 : 0);
+    const effectiveGroupHeaderHeights = groupHeaderHeights ?? (hasGroups ? [groupHeaderHeight] : []);
+    const totalGroupHeaderHeight = effectiveGroupHeaderHeights.reduce((a, b) => a + b, 0);
+    const totalHeaderHeight = headerHeight + totalGroupHeaderHeight;
+
+    // Check if click is in multi-level group headers
+    if (hasGroups && effectiveGroupLevels > 0) {
+        let accumulatedHeight = 0;
+        for (let level = 0; level < effectiveGroupLevels; level++) {
+            accumulatedHeight += effectiveGroupHeaderHeights[level] ?? 0;
+            if (targetY <= accumulatedHeight) {
+                // Return -(level + 2): level 0 -> -2, level 1 -> -3, etc.
+                return -(level + 2);
+            }
+        }
+    }
+
     if (targetY <= totalHeaderHeight) return -1;
 
     let y = height;
@@ -775,7 +855,9 @@ export function computeBounds(
     freezeColumns: number,
     freezeTrailingRows: number,
     mappedColumns: readonly MappedGridColumn[],
-    rowHeight: number | ((index: number) => number)
+    rowHeight: number | ((index: number) => number),
+    groupLevels?: number,
+    groupHeaderHeights?: readonly number[]
 ): Rectangle {
     const result: Rectangle = {
         x: 0,
@@ -784,11 +866,18 @@ export function computeBounds(
         height: 0,
     };
 
-    if (col >= mappedColumns.length || row >= rows || row < -2 || col < 0) {
+    // Multi-level: minimum valid row is -(groupLevels + 1) instead of -2
+    const effectiveGroupLevels = groupLevels ?? (groupHeaderHeight > 0 ? 1 : 0);
+    const minValidRow = -(effectiveGroupLevels + 1);
+
+    if (col >= mappedColumns.length || row >= rows || row < minValidRow || col < 0) {
         return result;
     }
 
-    const headerHeight = totalHeaderHeight - groupHeaderHeight;
+    // For multi-level groups, compute totalGroupHeaderHeight from groupHeaderHeights
+    const effectiveGroupHeaderHeights = groupHeaderHeights ?? (groupHeaderHeight > 0 ? [groupHeaderHeight] : []);
+    const totalGroupHeaderHeight = effectiveGroupHeaderHeights.reduce((a, b) => a + b, 0);
+    const headerHeight = totalHeaderHeight - totalGroupHeaderHeight;
 
     if (col >= freezeColumns) {
         const dir = cellXOffset > col ? -1 : 1;
@@ -805,18 +894,30 @@ export function computeBounds(
     result.width = mappedColumns[col].width + 1;
 
     if (row === -1) {
-        result.y = groupHeaderHeight;
+        // Column header row
+        result.y = totalGroupHeaderHeight;
         result.height = headerHeight;
-    } else if (row === -2) {
-        result.y = 0;
-        result.height = groupHeaderHeight;
+    } else if (row <= -2) {
+        // Group header row: row -2 = level 0, row -3 = level 1, etc.
+        const level = -(row + 2);
 
+        // Calculate y position for this level
+        let levelY = 0;
+        for (let i = 0; i < level; i++) {
+            levelY += effectiveGroupHeaderHeights[i] ?? 0;
+        }
+        result.y = levelY;
+        result.height = effectiveGroupHeaderHeights[level] ?? groupHeaderHeight;
+
+        // For group span calculation, use the appropriate level comparison
         let start = col;
         const group = mappedColumns[col].group;
         const sticky = mappedColumns[col].sticky;
+
+        // Use level-aware comparison for multi-level groups
         while (
             start > 0 &&
-            isGroupEqual(mappedColumns[start - 1].group, group) &&
+            isGroupEqualAtLevel(mappedColumns[start - 1].group, group, level, effectiveGroupLevels) &&
             mappedColumns[start - 1].sticky === sticky
         ) {
             const c = mappedColumns[start - 1];
@@ -828,7 +929,7 @@ export function computeBounds(
         let end = col;
         while (
             end + 1 < mappedColumns.length &&
-            isGroupEqual(mappedColumns[end + 1].group, group) &&
+            isGroupEqualAtLevel(mappedColumns[end + 1].group, group, level, effectiveGroupLevels) &&
             mappedColumns[end + 1].sticky === sticky
         ) {
             const c = mappedColumns[end + 1];

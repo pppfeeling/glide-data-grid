@@ -1,6 +1,13 @@
 import type { GridSelection, DataEditorProps, Theme } from "@glideapps/glide-data-grid";
 import React from "react";
 
+// Helper function to get the group name as a string
+function getGroupNameString(group: string | readonly string[] | undefined): string {
+    if (group === undefined) return "";
+    if (typeof group === "string") return group;
+    return group.length > 0 ? group[group.length - 1] : "";
+}
+
 type Props = Pick<
     DataEditorProps,
     "columns" | "onGroupHeaderClicked" | "onGridSelectionChange" | "getGroupDetails" | "gridSelection" | "freezeColumns"
@@ -33,7 +40,7 @@ export function useCollapsingGroups(props: Props): Result {
         let lastGroup: string | undefined;
         for (let i = freezeColumns; i < columnsIn.length; i++) {
             const c = columnsIn[i];
-            const group = c.group ?? "";
+            const group = getGroupNameString(c.group);
             const isCollapsed = collapsed.includes(group);
 
             if (lastGroup !== group && current[0] !== -1) {
@@ -49,7 +56,7 @@ export function useCollapsingGroups(props: Props): Result {
                 result.push(current);
                 current = [-1, -1];
             }
-            lastGroup = group;
+            lastGroup = getGroupNameString(c.group);
         }
         if (current[0] !== -1) result.push(current);
         return result;
@@ -80,7 +87,7 @@ export function useCollapsingGroups(props: Props): Result {
         (index, a) => {
             onGroupHeaderClickedIn?.(index, a);
 
-            const group = columns[index]?.group ?? "";
+            const group = getGroupNameString(columns[index]?.group);
             if (group === "") return;
             a.preventDefault();
             setCollapsed(cv => (cv.includes(group) ? cv.filter(x => x !== group) : [...cv, group]));
@@ -93,9 +100,10 @@ export function useCollapsingGroups(props: Props): Result {
             if (s.current !== undefined) {
                 const col = s.current.cell[0];
                 const column = columns[col];
+                const groupName = getGroupNameString(column?.group);
                 setCollapsed(cv => {
-                    if (cv.includes(column?.group ?? "")) {
-                        return cv.filter(g => g !== column.group);
+                    if (cv.includes(groupName)) {
+                        return cv.filter(g => g !== groupName);
                     }
                     return cv;
                 });
@@ -112,11 +120,12 @@ export function useCollapsingGroups(props: Props): Result {
     const getGroupDetails = React.useCallback<NonNullable<Props["getGroupDetails"]>>(
         group => {
             const result = getGroupDetailsIn?.(group);
+            const groupStr = group ?? "";
 
             return {
                 ...result,
-                name: group,
-                overrideTheme: collapsed.includes(group ?? "")
+                name: groupStr,
+                overrideTheme: collapsed.includes(groupStr)
                     ? {
                           bgHeader: theme.bgHeaderHasFocus,
                       }

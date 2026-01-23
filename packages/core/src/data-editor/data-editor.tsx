@@ -47,6 +47,7 @@ import type { DataGridRef } from "../internal/data-grid/data-grid.js";
 import { getScrollBarWidth, useEventListener, whenDefined } from "../common/utils.js";
 import {
     isGroupEqual,
+    isGroupEqualAtLevel,
     itemsAreEqual,
     itemIsInRect,
     gridSelectionHasItem,
@@ -1194,11 +1195,28 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     );
     if (rowMarkers !== "none") nonGrowWidth += rowMarkerWidth;
 
-    const enableGroups = React.useMemo(() => {
-        return columns.some(c => c.group !== undefined);
+    const groupLevels = React.useMemo(() => {
+        let maxLevel = 0;
+        for (const col of columns) {
+            if (col.group === undefined) continue;
+            if (typeof col.group === "string") {
+                maxLevel = Math.max(maxLevel, 1);
+            } else {
+                maxLevel = Math.max(maxLevel, col.group.length);
+            }
+        }
+        return maxLevel;
     }, [columns]);
 
-    const totalHeaderHeight = enableGroups ? headerHeight + groupHeaderHeight : headerHeight;
+    const enableGroups = groupLevels > 0;
+
+    const groupHeaderHeights = React.useMemo(() => {
+        if (groupLevels === 0) return [];
+        return Array(groupLevels).fill(groupHeaderHeight) as number[];
+    }, [groupLevels, groupHeaderHeight]);
+
+    const totalGroupHeaderHeight = groupHeaderHeights.reduce((a, b) => a + b, 0);
+    const totalHeaderHeight = headerHeight + totalGroupHeaderHeight;
 
     const numSelectedRows = gridSelection.rows.length;
     const rowMarkerChecked =
@@ -2379,7 +2397,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 return;
             }
             const isMultiKey = browserIsOSX.value ? args.metaKey : args.ctrlKey;
-            const [col] = args.location;
+            const [col, row] = args.location;
             const selectedColumns = gridSelection.columns;
 
             if (col < rowMarkerOffset) return;
@@ -2387,13 +2405,27 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             const needle = mangledCols[col];
             let start = col;
             let end = col;
+
+            // For multi-level groups, determine which level was clicked
+            // row -2 = level 0, row -3 = level 1, etc.
+            const clickedLevel = row <= -2 ? -(row + 2) : 0;
+            const totalLevels = Array.isArray(needle.group) ? needle.group.length : 1;
+
+            // Use level-aware comparison for multi-level groups
+            const compareGroups = (g1: string | readonly string[] | undefined, g2: string | readonly string[] | undefined) => {
+                if (totalLevels > 1) {
+                    return isGroupEqualAtLevel(g1, g2, clickedLevel, totalLevels);
+                }
+                return isGroupEqual(g1, g2);
+            };
+
             for (let i = col - 1; i >= rowMarkerOffset; i--) {
-                if (!isGroupEqual(needle.group, mangledCols[i].group)) break;
+                if (!compareGroups(needle.group, mangledCols[i].group)) break;
                 start--;
             }
 
             for (let i = col + 1; i < mangledCols.length; i++) {
-                if (!isGroupEqual(needle.group, mangledCols[i].group)) break;
+                if (!compareGroups(needle.group, mangledCols[i].group)) break;
                 end++;
             }
 
@@ -4691,6 +4723,8 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     headerHeight={headerHeight}
                     isFocused={isFocused}
                     groupHeaderHeight={enableGroups ? groupHeaderHeight : 0}
+                    groupLevels={groupLevels}
+                    groupHeaderHeights={groupHeaderHeights}
                     freezeTrailingRows={
                         freezeTrailingRows + (showTrailingBlankRow && trailingRowOptions?.sticky === true ? 1 : 0)
                     }

@@ -85,6 +85,8 @@ export function Simplenotest() {
             onMouseMove={() => undefined}
             rows={10_000}
             enableGroups={false}
+            groupLevels={0}
+            groupHeaderHeights={[]}
             clientSize={[1000, 1000, 0]}
             resizeIndicator="full"
             cellXOffset={x}

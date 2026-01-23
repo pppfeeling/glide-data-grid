@@ -13,15 +13,17 @@ import {
     measureTextCached,
     roundedPoly,
     type MappedGridColumn,
+    getGroupName,
 } from "./data-grid-lib.js";
 import type { GroupDetails, GroupDetailsCallback } from "./data-grid-render.cells.js";
-import { walkColumns, walkGroups } from "./data-grid-render.walk.js";
+import { walkColumns, walkGroups, walkMultiLevelGroups } from "./data-grid-render.walk.js";
 import { drawCheckbox } from "./draw-checkbox.js";
 import type { DragAndDropState, HoverInfo } from "./draw-grid-arg.js";
 
 export function drawGridHeaders(
     ctx: CanvasRenderingContext2D,
     effectiveCols: readonly MappedGridColumn[],
+    allColumns: readonly MappedGridColumn[],
     enableGroups: boolean,
     hovered: HoverInfo | undefined,
     width: number,
@@ -38,13 +40,28 @@ export function drawGridHeaders(
     getGroupDetails: GroupDetailsCallback,
     damage: CellSet | undefined,
     drawHeaderCallback: DrawHeaderCallback | undefined,
-    touchMode: boolean
+    touchMode: boolean,
+    groupLevels?: number,
+    groupHeaderHeights?: readonly number[]
 ) {
-    const totalHeaderHeight = headerHeight + groupHeaderHeight;
+    // Calculate total group header height
+    const effectiveGroupLevels = groupLevels ?? (enableGroups ? 1 : 0);
+    const effectiveGroupHeaderHeights = groupHeaderHeights ?? (enableGroups ? [groupHeaderHeight] : []);
+    const totalGroupHeaderHeight = effectiveGroupHeaderHeights.reduce((a, b) => a + b, 0);
+    const totalHeaderHeight = headerHeight + totalGroupHeaderHeight;
+
     if (totalHeaderHeight <= 0) return;
 
     ctx.fillStyle = outerTheme.bgHeader;
-    ctx.fillRect(0, 0, width, totalHeaderHeight);
+    // Only fill the column header area when damage is defined (partial redraw)
+    // to avoid overwriting the group header text
+    if (damage !== undefined && enableGroups && (groupLevels ?? 1) > 1) {
+        // For multi-level groups, only fill column header area to preserve group headers
+        // Start from totalGroupHeaderHeight (not +1) to cover the bottom border of group headers
+        ctx.fillRect(0, totalGroupHeaderHeight, width, headerHeight);
+    } else {
+        ctx.fillRect(0, 0, width, totalHeaderHeight);
+    }
 
     const hCol = hovered?.[0]?.[0];
     const hRow = hovered?.[0]?.[1];
@@ -59,10 +76,10 @@ export function drawGridHeaders(
         const diff = Math.max(0, clipX - x);
         ctx.save();
         ctx.beginPath();
-        ctx.rect(x + diff, groupHeaderHeight, c.width - diff, headerHeight);
+        ctx.rect(x + diff, totalGroupHeaderHeight, c.width - diff, headerHeight);
         ctx.clip();
 
-        const groupTheme = getGroupDetails(c.group ?? "").overrideTheme;
+        const groupTheme = getGroupDetails(getGroupName(c.group)).overrideTheme;
         const theme =
             c.themeOverride === undefined && groupTheme === undefined
                 ? outerTheme
@@ -87,7 +104,7 @@ export function drawGridHeaders(
 
         const bgFillStyle = selected ? theme.accentColor : hasSelectedCell ? theme.bgHeaderHasFocus : theme.bgHeader;
 
-        const y = enableGroups ? groupHeaderHeight : 0;
+        const y = enableGroups ? totalGroupHeaderHeight : 0;
         const xOffset = c.sourceIndex === 0 ? 0 : 1;
 
         if (selected) {
@@ -130,20 +147,52 @@ export function drawGridHeaders(
     });
 
     if (enableGroups) {
-        drawGroups(
-            ctx,
-            effectiveCols,
-            width,
-            translateX,
-            groupHeaderHeight,
-            hovered,
-            outerTheme,
-            spriteManager,
-            hoverValues,
-            verticalBorder,
-            getGroupDetails,
-            damage
-        );
+        if (effectiveGroupLevels > 1) {
+            // Multi-level groups
+            drawMultiLevelGroups(
+                ctx,
+                effectiveCols,
+                width,
+                translateX,
+                effectiveGroupHeaderHeights,
+                effectiveGroupLevels,
+                hovered,
+                outerTheme,
+                spriteManager,
+                hoverValues,
+                verticalBorder,
+                getGroupDetails,
+                damage
+            );
+
+        } else {
+            // Single-level groups (backward compatible)
+            drawGroups(
+                ctx,
+                effectiveCols,
+                width,
+                translateX,
+                groupHeaderHeight,
+                hovered,
+                outerTheme,
+                spriteManager,
+                hoverValues,
+                verticalBorder,
+                getGroupDetails,
+                damage
+            );
+        }
+    }
+
+    // Draw border between group headers and column headers for multi-level groups
+    // This must be drawn last to ensure it's visible after partial redraws
+    if (enableGroups && (groupLevels ?? 1) > 1) {
+        ctx.beginPath();
+        ctx.moveTo(0, totalGroupHeaderHeight + 0.5);
+        ctx.lineTo(width, totalGroupHeaderHeight + 0.5);
+        ctx.strokeStyle = outerTheme.borderColor;
+        ctx.lineWidth = 1;
+        ctx.stroke();
     }
 }
 
@@ -283,6 +332,194 @@ export function drawGroups(
     ctx.strokeStyle = theme.borderColor;
     ctx.lineWidth = 1;
     ctx.stroke();
+}
+
+export function drawMultiLevelGroups(
+    ctx: CanvasRenderingContext2D,
+    effectiveCols: readonly MappedGridColumn[],
+    width: number,
+    translateX: number,
+    groupHeaderHeights: readonly number[],
+    groupLevels: number,
+    hovered: HoverInfo | undefined,
+    theme: FullTheme,
+    spriteManager: SpriteManager,
+    _hoverValues: HoverValues,
+    verticalBorder: (col: number) => boolean,
+    getGroupDetails: GroupDetailsCallback,
+    damage: CellSet | undefined
+) {
+    const xPad = 8;
+    const [hCol, hRow] = hovered?.[0] ?? [];
+
+    // Set font for text rendering
+    ctx.font = theme.headerFontFull;
+
+    // Calculate total group header height for border drawing
+    const totalGroupHeaderHeight = groupHeaderHeights.reduce((a, b) => a + b, 0);
+
+    // Fill the entire group header area with background color first (when not doing partial redraw)
+    if (damage === undefined) {
+        ctx.fillStyle = theme.bgHeader;
+        ctx.fillRect(0, 0, width, totalGroupHeaderHeight);
+    }
+
+    // Track the rightmost x position for final border
+    let finalX = 0;
+
+    walkMultiLevelGroups(effectiveCols, width, translateX, groupHeaderHeights, groupLevels, (span, groupName, x, y, w, h, level) => {
+        // Check damage for this group area
+        // Group header level n corresponds to row = -(n+2)
+        const damageRow = -(level + 2);
+        if (
+            damage !== undefined &&
+            !damage.hasItemInRectangle({
+                x: span[0],
+                y: damageRow,
+                width: span[1] - span[0] + 1,
+                height: 1,
+            })
+        )
+            return;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(x, y, w, h);
+        ctx.clip();
+
+        const group = getGroupDetails(groupName);
+        const groupTheme =
+            group?.overrideTheme === undefined ? theme : mergeAndRealizeTheme(theme, group.overrideTheme);
+
+        // Check if this group cell is hovered
+        // hRow === -(level + 2) means this level is hovered
+        const isHovered = hRow === damageRow && hCol !== undefined && hCol >= span[0] && hCol <= span[1];
+        const fillColor = isHovered
+            ? (groupTheme.bgGroupHeaderHovered ?? groupTheme.bgHeaderHovered)
+            : (groupTheme.bgGroupHeader ?? groupTheme.bgHeader);
+
+        // Always fill background to ensure proper rendering
+        ctx.fillStyle = fillColor;
+        ctx.fillRect(x, y, w, h);
+
+        ctx.fillStyle = groupTheme.textGroupHeader ?? groupTheme.textHeader;
+        const displayName = group?.name ?? groupName;
+        const textMetrics = ctx.measureText(displayName);
+        const textWidth = textMetrics.width;
+        const iconWidth = group?.icon !== undefined ? 26 : 0;
+        const totalContentWidth = iconWidth + textWidth;
+        const centerX = x + (w - totalContentWidth) / 2;
+
+        if (group?.icon !== undefined) {
+            spriteManager.drawSprite(
+                group.icon,
+                "normal",
+                ctx,
+                centerX,
+                y + (h - 20) / 2,
+                20,
+                groupTheme
+            );
+        }
+        ctx.fillText(
+            displayName,
+            centerX + iconWidth,
+            y + h / 2 + getMiddleCenterBias(ctx, theme.headerFontFull)
+        );
+
+        if (group !== undefined) {
+
+            // Draw actions if hovered (similar to single-level groups)
+            if (group.actions !== undefined && isHovered) {
+                const actionBoxes = getActionBoundsForGroup({ x, y, width: w, height: h }, group.actions);
+
+                ctx.beginPath();
+                const fadeStartX = actionBoxes[0].x - 10;
+                const fadeWidth = x + w - fadeStartX;
+                ctx.rect(fadeStartX, y, fadeWidth, h);
+                const grad = ctx.createLinearGradient(fadeStartX, 0, fadeStartX + fadeWidth, 0);
+                const trans = withAlpha(fillColor, 0);
+                grad.addColorStop(0, trans);
+                grad.addColorStop(10 / fadeWidth, fillColor);
+                grad.addColorStop(1, fillColor);
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                ctx.globalAlpha = 0.6;
+
+                const [mouseX, mouseY] = hovered?.[1] ?? [-1, -1];
+                for (let i = 0; i < group.actions.length; i++) {
+                    const action = group.actions[i];
+                    const box = actionBoxes[i];
+                    const actionHovered = pointInRect(box, mouseX + x, mouseY);
+                    if (actionHovered) {
+                        ctx.globalAlpha = 1;
+                    }
+                    spriteManager.drawSprite(
+                        action.icon,
+                        "normal",
+                        ctx,
+                        box.x + box.width / 2 - 10,
+                        box.y + box.height / 2 - 10,
+                        20,
+                        groupTheme
+                    );
+                    if (actionHovered) {
+                        ctx.globalAlpha = 0.6;
+                    }
+                }
+
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        // Draw borders for this cell
+        ctx.strokeStyle = theme.borderColor;
+        ctx.lineWidth = 1;
+
+        // Left vertical border
+        if (x !== 0 && verticalBorder(span[0])) {
+            ctx.beginPath();
+            ctx.moveTo(x + 0.5, y);
+            ctx.lineTo(x + 0.5, y + h);
+            ctx.stroke();
+        }
+
+        // Bottom horizontal border
+        // For the last level, only draw when not doing partial redraw (damage === undefined)
+        // to avoid border appearing when hovering column headers
+        if (level < groupLevels - 1 || damage === undefined) {
+            ctx.beginPath();
+            ctx.moveTo(x, y + h + 0.5);
+            ctx.lineTo(x + w, y + h + 0.5);
+            ctx.stroke();
+        }
+
+        ctx.restore();
+
+        finalX = Math.max(finalX, x + w);
+    });
+
+    // Draw borders (only when not doing partial redraw to avoid drawing over column headers)
+    if (damage === undefined) {
+        ctx.beginPath();
+
+        // Right border
+        ctx.moveTo(finalX + 0.5, 0);
+        ctx.lineTo(finalX + 0.5, totalGroupHeaderHeight);
+
+        // Horizontal borders between levels (not at the bottom - that's handled by column header area)
+        let borderY = 0;
+        for (let level = 0; level < groupLevels - 1; level++) {
+            borderY += groupHeaderHeights[level];
+            ctx.moveTo(0, borderY + 0.5);
+            ctx.lineTo(width, borderY + 0.5);
+        }
+
+        ctx.strokeStyle = theme.borderColor;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
 }
 
 const menuButtonSize = 30;

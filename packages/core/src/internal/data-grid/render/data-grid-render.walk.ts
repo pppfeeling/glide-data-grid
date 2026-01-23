@@ -1,5 +1,5 @@
 import { type Item, type Rectangle } from "../data-grid-types.js";
-import { type MappedGridColumn, isGroupEqual } from "./data-grid-lib.js";
+import { type MappedGridColumn, isGroupEqual, getGroupName, getGroupAtLevel, isGroupEqualAtLevel } from "./data-grid-lib.js";
 
 export function getSkipPoint(drawRegions: readonly Rectangle[]): number | undefined {
     if (drawRegions.length === 0) return undefined;
@@ -132,7 +132,7 @@ export function walkGroups(
         const w = Math.min(boxWidth - delta, width - (localX + delta));
         cb(
             [startCol.sourceIndex, effectiveCols[end - 1].sourceIndex],
-            startCol.group ?? "",
+            getGroupName(startCol.group),
             localX + delta,
             0,
             w,
@@ -140,6 +140,120 @@ export function walkGroups(
         );
 
         x += boxWidth;
+    }
+}
+
+// Multi-level groups callback
+export type WalkMultiLevelGroupsCallback = (
+    colSpan: Item,
+    group: string,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    level: number
+) => void;
+
+/**
+ * Walks through multi-level group headers, calling the callback for each group span at each level.
+ * @param effectiveCols The columns to walk
+ * @param width Total width available
+ * @param translateX Translation offset
+ * @param groupHeaderHeights Array of heights for each group level
+ * @param groupLevels Number of group levels
+ * @param cb Callback called for each group span
+ */
+export function walkMultiLevelGroups(
+    effectiveCols: readonly MappedGridColumn[],
+    width: number,
+    translateX: number,
+    groupHeaderHeights: readonly number[],
+    groupLevels: number,
+    cb: WalkMultiLevelGroupsCallback
+): void {
+    if (groupLevels === 0) return;
+
+    // Calculate y offset for each level
+    const levelYOffsets: number[] = [];
+    let yOffset = 0;
+    for (let level = 0; level < groupLevels; level++) {
+        levelYOffsets.push(yOffset);
+        yOffset += groupHeaderHeights[level] ?? 0;
+    }
+
+    // Pre-calculate x positions for all columns
+    const colXPositions: number[] = [];
+    let accX = 0;
+    for (const col of effectiveCols) {
+        colXPositions.push(accX);
+        accX += col.width;
+    }
+
+    // Walk each level
+    for (let level = 0; level < groupLevels; level++) {
+        const levelY = levelYOffsets[level];
+        const levelHeight = groupHeaderHeights[level] ?? 0;
+
+        let clipX = 0;
+        let index = 0;
+
+        while (index < effectiveCols.length) {
+            const startCol = effectiveCols[index];
+            const startGroupName = getGroupAtLevel(startCol.group, level, groupLevels);
+
+            // Skip if this column has no group at this level
+            if (startGroupName === undefined) {
+                if (startCol.sticky) {
+                    clipX += startCol.width;
+                }
+                index++;
+                continue;
+            }
+
+            const startX = colXPositions[index];
+            let end = index + 1;
+            let boxWidth = startCol.width;
+
+            if (startCol.sticky) {
+                clipX += startCol.width;
+            }
+
+            // Find contiguous columns with the same group at this level
+            while (end < effectiveCols.length) {
+                const endCol = effectiveCols[end];
+                const isEqual = isGroupEqualAtLevel(endCol.group, startCol.group, level, groupLevels);
+                const sameSticky = endCol.sticky === startCol.sticky;
+
+                if (!isEqual || !sameSticky) {
+                    break;
+                }
+
+                boxWidth += endCol.width;
+                if (endCol.sticky) {
+                    clipX += endCol.width;
+                }
+                end++;
+            }
+
+            const t = startCol.sticky ? 0 : translateX;
+            const localX = startX + t;
+            const delta = startCol.sticky ? 0 : Math.max(0, clipX - localX);
+            const w = Math.min(boxWidth - delta, width - (localX + delta));
+
+            if (w > 0) {
+                cb(
+                    [startCol.sourceIndex, effectiveCols[end - 1].sourceIndex],
+                    startGroupName,
+                    localX + delta,
+                    levelY,
+                    w,
+                    levelHeight,
+                    level
+                );
+            }
+
+            index = end;
+        }
     }
 }
 

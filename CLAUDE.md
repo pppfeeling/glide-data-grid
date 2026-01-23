@@ -10,12 +10,24 @@ Glide Data Grid is a canvas-based React data grid component that supports millio
 
 ## Development Commands
 
-### Primary Commands
-- **`npm run start`** - Start development environment with Storybook and watch mode
-- **`npm run build`** - Build all packages and run linting
+### Test Command (Storybook 시각적 테스트)
+새로운 기능을 구현한 후 Storybook 예제를 작성하여 시각적으로 확인합니다.
+
+```bash
+# 루트 디렉토리에서 Storybook 실행
+npm run start
+```
+
+packages/core/src/docs/ - 문서화된 예제
+packages/core/src/stories/ - 일반 스토리
+예제 파일 작성 후:
+
+Storybook 실행 (npm run start)
+브라우저에서 http://localhost:9009 접속
+사이드바에서 새로 추가한 스토리 선택하여 확인
 
 
-### Package-Specific Commands
+### build Commands
 ```bash
 # Core package
 cd packages/core
@@ -67,6 +79,7 @@ packages/core/src/
 | 테마 커스터마이징 | `/analyze/09-theming.md` |
 | 데이터 처리 (필터/정렬/그룹) | `/analyze/10-data-processing.md` |
 | 확장 포인트 | `/analyze/11-extension-points.md` |
+| **다중 레벨 그룹 헤더** | `/analyze/12-multi-level-header.md` |
 
 ### When to Use
 1. **새 기능 추가 전**: 관련 문서에서 기존 패턴 확인
@@ -74,5 +87,10 @@ packages/core/src/
 3. **타입 에러 발생 시**: `01-types.md`에서 정확한 타입 확인
 4. **코드 위치 찾기**: `quick-reference.md`의 파일:라인 참조
 
+## Important: Before Starting Any Task
 
+**반드시 먼저 이 파일(CLAUDE.md)과 관련 분석 문서를 읽으세요:**
 
+1. Plan 모드 진입 전에 `/analyze/` 폴더의 관련 문서 확인
+2. 기존 분석 내용이 있으면 중복 조사 방지
+3. 문서가 없거나 outdated면 직접 조사 후 문서 업데이트

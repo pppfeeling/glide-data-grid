@@ -34,6 +34,8 @@ function makeCol(title: string, sourceIndex: number, sticky: boolean, width: num
         growOffset: undefined,
         rowMarker: undefined,
         rowMarkerChecked: undefined,
+        rowGroupBorder: undefined,
+        required: undefined,
     };
 }
 

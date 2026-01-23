@@ -93,6 +93,8 @@ const basicProps: DataGridProps = {
         displayData: `${cell[0]},${cell[1]}`,
     }),
     groupHeaderHeight: 0,
+    groupLevels: 0,
+    groupHeaderHeights: [],
     headerHeight: 36,
     accessibilityHeight: 50,
     height: 1000,

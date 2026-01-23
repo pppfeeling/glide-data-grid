@@ -45,6 +45,8 @@ export interface DrawGridArg {
     readonly theme: FullTheme;
     readonly headerHeight: number;
     readonly groupHeaderHeight: number;
+    readonly groupLevels: number;
+    readonly groupHeaderHeights: readonly number[];
     readonly disabledRows: CompactSelection;
     readonly rowHeight: number | ((index: number) => number);
     readonly verticalBorder: (col: number) => boolean;
