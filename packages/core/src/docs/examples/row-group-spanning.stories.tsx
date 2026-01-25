@@ -1,11 +1,11 @@
 import React from "react";
 
 import {
-    CompactSelection,
     GridCellKind,
     type GridCell,
     type GridColumn,
     type Item,
+    type TextCell,
 } from "../../internal/data-grid/data-grid-types.js";
 import { DataEditorAll as DataEditor } from "../../data-editor-all.js";
 
@@ -86,31 +86,28 @@ export const RowGroupSpanning = () => {
         (item: Item): GridCell => {
             const [col, row] = item;
             const dataRow = processedData[row];
-           
-            const field = customCols[col].id ;
-            const data = dataRow[field];
 
-            const basicCell = {
+            const field = customCols[col]?.id ?? "";
+            const data = dataRow[field as keyof typeof dataRow];
+
+            const basicCell: TextCell = {
                 kind: GridCellKind.Text,
-                data: data ?? "",
+                data: String(data ?? ""),
                 allowOverlay: true,
-                displayData: data ?? "",
+                displayData: String(data ?? ""),
             };
-            
+
             if (field === "company" ) {
-             console.log("dataRow",row,dataRow.company, dataRow.rowspan)
-            
-              if(dataRow.hasOwnProperty("rowspan")) {
-                basicCell.rowspan = dataRow.rowspan;
-                basicCell.rowSpanPosition = "center";
-                return basicCell
-              }
-            
+                console.log("dataRow",row,dataRow.company, dataRow.rowspan)
 
-              
-           }
-
-         
+                if(Object.hasOwn(dataRow, "rowspan")) {
+                    return {
+                        ...basicCell,
+                        rowspan: dataRow.rowspan,
+                        rowSpanPosition: "middle",
+                    };
+                }
+            }
 
             return basicCell;
         },

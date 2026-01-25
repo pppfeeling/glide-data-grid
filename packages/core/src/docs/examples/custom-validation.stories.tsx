@@ -68,7 +68,7 @@ export const CustomValidation: React.VFC = () => {
                     }
                     break;
                 case "email":
-                    if (!/^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$/.test(newValue.data)) {
+                    if (!/^[\w.-]+@[\w.-]+\.[A-Za-z]{2,6}$/.test(newValue.data)) {
                         isValid = false;
                     }
                     break;

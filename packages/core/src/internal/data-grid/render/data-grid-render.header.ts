@@ -427,10 +427,8 @@ export function drawMultiLevelGroups(
             y + h / 2 + getMiddleCenterBias(ctx, theme.headerFontFull)
         );
 
-        if (group !== undefined) {
-
-            // Draw actions if hovered (similar to single-level groups)
-            if (group.actions !== undefined && isHovered) {
+        if (group !== undefined && // Draw actions if hovered (similar to single-level groups)
+            group.actions !== undefined && isHovered) {
                 const actionBoxes = getActionBoundsForGroup({ x, y, width: w, height: h }, group.actions);
 
                 ctx.beginPath();
@@ -471,7 +469,6 @@ export function drawMultiLevelGroups(
 
                 ctx.globalAlpha = 1;
             }
-        }
 
         // Draw borders for this cell
         ctx.strokeStyle = theme.borderColor;

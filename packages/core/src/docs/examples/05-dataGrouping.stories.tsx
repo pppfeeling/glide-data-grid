@@ -96,8 +96,8 @@ export const SearchDataEditor = () => {
 
     const { filterConfig, groupingFunctions, groupingLabels } = React.useMemo(() => {
         const filterOptions: FilterOption<any>[] = [];
-        const groupingLabels = new Map<string, string>();
-        const groupingFunctions = new Map<string, string>();
+        const labelsMap = new Map<string, string>();
+        const functionsMap = new Map<string, string>();
 
         columnInputs.forEach((input, key) => {
             if (input.filterValue) {
@@ -109,14 +109,14 @@ export const SearchDataEditor = () => {
                 });
             }
             if (input.groupingLabel) {
-                groupingLabels.set(key, input.groupingLabel);
+                labelsMap.set(key, input.groupingLabel);
             }
             if (input.groupingFunction) {
-                groupingFunctions.set(key, input.groupingFunction);
+                functionsMap.set(key, input.groupingFunction);
             }
         });
 
-        const derivedConfigs = { filterConfig: { filterOptions }, groupingFunctions, groupingLabels };
+        const derivedConfigs = { filterConfig: { filterOptions }, groupingFunctions: functionsMap, groupingLabels: labelsMap };
         console.log("[SearchDataEditor] Derived Configs:", derivedConfigs);
         return derivedConfigs;
     }, [columnInputs]);
@@ -185,7 +185,8 @@ export const SearchDataEditor = () => {
         const sortOption = sortState[sortIndex];
         const orderLabel = sortOption.order === "asc" ? "오름차순" : "내림차순";
         const priority = sortIndex + 1;
-        return `${orderLabel} ${sortState.length > 1 ? `(${priority})` : ""}`.trim();
+        const priorityText = sortState.length > 1 ? `(${priority})` : "";
+        return `${orderLabel} ${priorityText}`.trim();
     };
 
     const getCell = React.useCallback(
@@ -200,8 +201,8 @@ export const SearchDataEditor = () => {
             const colId = column.id ?? column.title;
 
             if ((rowData as any).isTotalSummary) {
-                const totalSummaryRow = rowData as any;
-                const totalValue = totalSummaryRow[colId];
+                const summaryRowData = rowData as any;
+                const totalValue = summaryRowData[colId];
 
                 return {
                     kind: GridCellKind.Text,

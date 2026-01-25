@@ -48,7 +48,7 @@ export const OverrideMarkerRenderer: React.VFC = () => {
                     const { ctx, rect } = args;
                     ctx.fillStyle = "#ffe0e0";
                     ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
-                    markerCellRenderer.draw(args as any);
+                    markerCellRenderer.draw(args as any, args.cell as any);
                 },
             } as InternalCellRenderer<InnerGridCell>,
         ];

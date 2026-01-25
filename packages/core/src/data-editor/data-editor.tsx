@@ -3611,13 +3611,13 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             if (!overlayOpen && isHotkey(keys.clear, event, details)) {
                 //setGridSelection(emptyGridSelection, false);
 
-                const currentCell = gridSelection.current?.cell ?? [rowMarkerOffset, 0];
+                const clearedCell = gridSelection.current?.cell ?? [rowMarkerOffset, 0];
                 setGridSelection({
                     columns: CompactSelection.empty(),
                     rows: CompactSelection.empty(),
                     current: {
-                        cell: currentCell,
-                        range: { x: currentCell[0], y: currentCell[1], width: 1, height: 1 },
+                        cell: clearedCell,
+                        range: { x: clearedCell[0], y: clearedCell[1], width: 1, height: 1 },
                         rangeStack: [],
                     },
                 }, false);

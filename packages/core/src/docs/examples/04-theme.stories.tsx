@@ -126,7 +126,7 @@ const themeKeys = [
     "fontFamily",
 ];
 
-const colorThemeKeys = [
+const colorThemeKeys = new Set([
     "accentColor",
     "accentLight",
     "textDark",
@@ -148,12 +148,36 @@ const colorThemeKeys = [
     "borderColor",
     "drilldownBorder",
     "linkColor",
-];
+]);
 
 interface ThemeEditorProps {
     theme: Partial<Theme>;
     setTheme: React.Dispatch<React.SetStateAction<Partial<Theme>>>;
 }
+
+const getColorPickerValue = (val: string | undefined): string => {
+    if (val === undefined || val === null) return "#000000";
+    if (val.startsWith("#") && (/^#[\da-f]{6}$/i.test(val) || /^#[\da-f]{3}$/i.test(val))) {
+        return val;
+    }
+    if (val.startsWith("rgb")) {
+        try {
+            const parts = val.match(/(\d+)/g);
+            if (parts && parts.length >= 3) {
+                const r = parseInt(parts[0]);
+                const g = parseInt(parts[1]);
+                const b = parseInt(parts[2]);
+                if (r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
+                    const toHex = (c: number) => c.toString(16).padStart(2, "0");
+                    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+                }
+            }
+        } catch {
+            return "#000000";
+        }
+    }
+    return "#000000";
+};
 
 const ThemeEditor: React.FC<ThemeEditorProps> = ({ theme, setTheme }) => {
     const [localTheme, setLocalTheme] = React.useState(theme);
@@ -168,32 +192,6 @@ const ThemeEditor: React.FC<ThemeEditorProps> = ({ theme, setTheme }) => {
 
     const handleChange = (key: string, value: string) => {
         setLocalTheme(prevTheme => ({ ...prevTheme, [key]: value }));
-    };
-
-    const getColorPickerValue = (val: string | undefined): string => {
-        if (val === undefined || val === null) return "#000000";
-        if (val.startsWith("#")) {
-            if (/^#[0-9A-F]{6}$/i.test(val) || /^#[0-9A-F]{3}$/i.test(val)) {
-                return val;
-            }
-        }
-        if (val.startsWith("rgb")) {
-            try {
-                const parts = val.match(/(\d+)/g);
-                if (parts && parts.length >= 3) {
-                    const r = parseInt(parts[0]);
-                    const g = parseInt(parts[1]);
-                    const b = parseInt(parts[2]);
-                    if (r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
-                        const toHex = (c: number) => c.toString(16).padStart(2, "0");
-                        return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-                    }
-                }
-            } catch (e) {
-                return "#000000";
-            }
-        }
-        return "#000000"; // default for invalid values or formats like color names
     };
 
     return (
@@ -213,7 +211,7 @@ const ThemeEditor: React.FC<ThemeEditorProps> = ({ theme, setTheme }) => {
                                     onChange={e => handleChange(key, e.target.value)}
                                     onBlur={e => handleBlur(key, e.target.value)}
                                 />
-                                {colorThemeKeys.includes(key) && (
+                                {colorThemeKeys.has(key) && (
                                     <input
                                         type="color"
                                         value={getColorPickerValue((localTheme as any)[key])}
@@ -233,10 +231,17 @@ const ThemeEditor: React.FC<ThemeEditorProps> = ({ theme, setTheme }) => {
     );
 };
 
-export const ThemeS = () => {
-    let { cols, getCellContent, onColumnResize, setCellValue } = useAllMockedKinds();
+const getValueTheme = (columnId: string, value: any) => {
+    if (columnId === "Number") {
+        return value > 50 ? { bgCell: "#fffce7", textDark: "#14532d" } : { bgCell: "#eeece2", textDark: "#7f1d1d" };
+    }
+    return undefined;
+};
 
-    cols = cols.map((col, index) => {
+export const ThemeS = () => {
+    const { cols: initialCols, getCellContent } = useAllMockedKinds();
+
+    const cols = initialCols.map((col, index) => {
         if (index === 0) {
             return {
                 ...col,
@@ -257,13 +262,6 @@ export const ThemeS = () => {
         }
         return col;
     });
-
-    const getValueTheme = (columnId: string, value: any) => {
-        if (columnId === "Number") {
-            return value > 50 ? { bgCell: "#fffce7", textDark: "#14532d" } : { bgCell: "#eeece2", textDark: "#7f1d1d" };
-        }
-        return undefined;
-    };
 
     const getCellContentWithTheme = React.useCallback(
         (item: Item) => {

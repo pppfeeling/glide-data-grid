@@ -24,7 +24,7 @@ export const AllCellKinds = () => {
     const { cols, getCellContent, onColumnResize, setCellValue } = useAllMockedKinds();
 
     const getCellContentNew = (cell: Item): GridCell => {
-        let ret: GridCell = getCellContent(cell);
+        const ret: GridCell = getCellContent(cell);
         return ret;
     };
 

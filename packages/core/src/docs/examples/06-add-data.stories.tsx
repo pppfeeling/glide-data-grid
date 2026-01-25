@@ -100,8 +100,8 @@ const generateNewCell = (colIndex: number, rowIndex: number = 0): GridCell => {
     }
 };
 
-const generateNewRow = (cols: any[], rowIndex: number = 0): GridCell[] => {
-    return cols.map((_, colIndex) => generateNewCell(colIndex, rowIndex));
+const generateNewRow = (columns: any[], rowIndex: number = 0): GridCell[] => {
+    return columns.map((_, colIndex) => generateNewCell(colIndex, rowIndex));
 };
 
 export const AddData = () => {
@@ -320,7 +320,7 @@ export const AddData = () => {
             // Generate new row ID
             setRowIds(prev => {
                 const newIds = new Map(prev);
-                const maxId = Math.max(0, ...Array.from(prev.values()).map(id => {
+                const maxId = Math.max(0, ...[...prev.values()].map(id => {
                     const match = id.match(/ROW-(\d+)/);
                     return match ? parseInt(match[1]) : 0;
                 }));
@@ -402,9 +402,9 @@ export const AddData = () => {
         link.setAttribute("href", url);
         link.setAttribute("download", "grid-data.csv");
         link.style.visibility = "hidden";
-        document.body.appendChild(link);
+        document.body.append(link);
         link.click();
-        document.body.removeChild(link);
+        link.remove();
     }, [data, cols]);
 
     // Callback to provide row status for each row
