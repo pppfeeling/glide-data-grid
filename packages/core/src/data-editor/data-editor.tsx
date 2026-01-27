@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { assert, assertNever, maybe } from "../common/support.js";
 import clamp from "lodash/clamp.js";
 import uniq from "lodash/uniq.js";
@@ -87,6 +88,7 @@ import { useRowGroupingInner, type RowGroupingOptions } from "./row-grouping.js"
 import { useRowGrouping } from "./row-grouping-api.js";
 import { useInitialScrollOffset } from "./use-initial-scroll-offset.js";
 import type { VisibleRegion } from "./visible-region.js";
+import { GhostInput, type GhostInputRef } from "../internal/ghost-input/index.js";
 
 const DataGridOverlayEditor = React.lazy(
     async () => await import("../internal/data-grid-overlay-editor/data-grid-overlay-editor.js")
@@ -712,10 +714,6 @@ export interface DataEditorProps extends Props, Pick<DataGridSearchProps, "image
      */
     readonly portalElementRef?: React.RefObject<HTMLElement>;
 
-    /**
-     * 편집모드에서 Enter, Tab키 입력시 다음셀로 이동한 후 편집모드로 전환할지 여부
-     */
-    readonly isActivationOnEnter?: Boolean;
     readonly disabledRows?: (row: number) => boolean;
 
     /**
@@ -824,6 +822,17 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
     const [mouseState, setMouseState] = React.useState<MouseState>();
     const lastSent = React.useRef<[number, number]>(undefined);
+
+    // Ghost Input state for IME support
+    const ghostInputRef = React.useRef<GhostInputRef>(null);
+    // ghostInputVisible tracks whether GhostInput is visible over the overlay editor
+    const [ghostInputVisible, setGhostInputVisible] = React.useState(false);
+    // Ref to access ghostInputVisible without causing stale closure issues
+    const ghostInputVisibleRef = React.useRef(ghostInputVisible);
+    ghostInputVisibleRef.current = ghostInputVisible;
+    // Ref to access overlay without causing handler re-creation (prevents GhostInput re-render during IME)
+    const overlayRef = React.useRef(overlay);
+    overlayRef.current = overlay;
 
     const safeWindow = typeof window === "undefined" ? null : window;
 
@@ -941,7 +950,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         scrollToActiveCell = true,
         drawFocusRing: drawFocusRingIn = true,
         portalElementRef,
-        isActivationOnEnter,
         onRowStatus,
         onRowId,
     } = p;
@@ -1334,11 +1342,12 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     const gridRef = React.useRef<DataGridRef | null>(null);
 
     const focus = React.useCallback((immediate?: boolean) => {
+        // Always focus on GhostInput for IME support
         if (immediate === true) {
-            gridRef.current?.focus();
+            ghostInputRef.current?.focus();
         } else {
             window.requestAnimationFrame(() => {
-                gridRef.current?.focus();
+                ghostInputRef.current?.focus();
             });
         }
     }, []);
@@ -1347,6 +1356,8 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
     const mangledOnCellsEdited = React.useCallback<NonNullable<typeof onCellsEdited>>(
         (items: readonly EditListItem[]) => {
+            console.log("[mangledOnCellsEdited] items:", items);
+            console.log("[mangledOnCellsEdited] rowMarkerOffset:", rowMarkerOffset);
             const mangledItems =
                 rowMarkerOffset === 0
                     ? items
@@ -1354,10 +1365,17 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                           ...x,
                           location: [x.location[0] - rowMarkerOffset, x.location[1]] as const,
                       }));
+            console.log("[mangledOnCellsEdited] mangledItems:", mangledItems);
+            console.log("[mangledOnCellsEdited] onCellsEdited:", onCellsEdited);
             const r = onCellsEdited?.(mangledItems);
+            console.log("[mangledOnCellsEdited] onCellsEdited result:", r);
 
             if (r !== true) {
-                for (const i of mangledItems) onCellEdited?.(i.location, i.value);
+                console.log("[mangledOnCellsEdited] calling onCellEdited for each item, onCellEdited:", onCellEdited);
+                for (const i of mangledItems) {
+                    console.log("[mangledOnCellsEdited] calling onCellEdited with:", i.location, i.value);
+                    onCellEdited?.(i.location, i.value);
+                }
             }
 
             return r;
@@ -1727,6 +1745,24 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     forceEditMode: initialValue !== undefined,
                     activation,
                 });
+
+                // Use GhostInput for character/IME input (not Enter key)
+                // - initialValue !== undefined: character input or IME composition start
+                // - initialValue === undefined: Enter key (use GrowingEntry)
+                const useGhostMode = initialValue !== undefined;
+
+                if (useGhostMode) {
+                    // Set GhostInput position and value for IME support (direct DOM manipulation)
+                    // For IME composition, initialValue is "" - don't overwrite with setValue
+                    // as the composition is already in progress in GhostInput
+                    ghostInputRef.current?.setPosition(bounds.x, bounds.y, bounds.width, bounds.height);
+                    if (initialValue.length > 0) {
+                        // Only set value for non-IME character input
+                        ghostInputRef.current?.setValue(initialValue);
+                    }
+                    ghostInputRef.current?.setVisible(true);
+                    setGhostInputVisible(true);
+                }
             } else if (c.kind === GridCellKind.Boolean && activation.inputType === "keyboard" && c.readonly !== true) {
                 mangledOnCellsEdited([
                     {
@@ -3425,17 +3461,80 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
     const onFinishEditing = React.useCallback(
         (newValue: GridCell | undefined, movement: readonly [-1 | 0 | 1, -1 | 0 | 1]) => {
-            if (overlay?.cell !== undefined && newValue !== undefined && isEditableGridCell(newValue)) {
-                mangledOnCellsEdited([{ location: overlay.cell, value: newValue }]);
+            // Use refs to get current state (avoids stale closure issues)
+            const currentOverlay = overlayRef.current;
+            const isGhostMode = ghostInputVisibleRef.current;
+
+            // DEBUG: Log state for troubleshooting
+            console.log("[onFinishEditing] isGhostMode:", isGhostMode);
+            console.log("[onFinishEditing] currentOverlay:", currentOverlay);
+            console.log("[onFinishEditing] ghostInputRef.current:", ghostInputRef.current);
+            console.log("[onFinishEditing] ghostText:", ghostInputRef.current?.getValue());
+
+            // Read value from GhostInput if available (even if isGhostMode is false)
+            // This handles cases where editing is completed by clicking outside
+            let finalValue = newValue;
+            const ghostText = ghostInputRef.current?.getValue() ?? "";
+            console.log("[onFinishEditing] ghostText from GhostInput:", ghostText);
+
+            if (currentOverlay?.cell !== undefined && ghostText.length > 0 && currentOverlay.content !== undefined) {
+                console.log("[onFinishEditing] Using ghostText from GhostInput");
+                // Create a new cell value based on the GhostInput text
+                // Important: Update both 'data' and 'displayData' for proper display
+                const cellContent = currentOverlay.content;
+                console.log("[onFinishEditing] cellContent.kind:", cellContent.kind);
+                if (cellContent.kind === GridCellKind.Text) {
+                    finalValue = { ...cellContent, data: ghostText, displayData: ghostText };
+                } else if (cellContent.kind === GridCellKind.Number) {
+                    const num = Number.parseFloat(ghostText);
+                    const numVal = Number.isNaN(num) ? 0 : num;
+                    finalValue = { ...cellContent, data: numVal, displayData: numVal.toLocaleString() };
+                } else if (cellContent.kind === GridCellKind.Uri) {
+                    finalValue = { ...cellContent, data: ghostText, displayData: ghostText };
+                } else if (cellContent.kind === GridCellKind.Markdown) {
+                    finalValue = { ...cellContent, data: ghostText };
+                }
+            }
+
+            // When GhostInput is empty but newValue comes from overlay editor (e.g., Enter/double-click edit mode),
+            // ensure displayData matches data for text cells to fix display issues
+            if (finalValue !== undefined && ghostText.length === 0) {
+                if (finalValue.kind === GridCellKind.Text && finalValue.data !== finalValue.displayData) {
+                    finalValue = { ...finalValue, displayData: finalValue.data };
+                } else if (finalValue.kind === GridCellKind.Number) {
+                    const formatted = finalValue.data !== undefined ? finalValue.data.toLocaleString() : "0";
+                    if (finalValue.displayData !== formatted) {
+                        finalValue = { ...finalValue, displayData: formatted };
+                    }
+                } else if (finalValue.kind === GridCellKind.Uri && finalValue.data !== finalValue.displayData) {
+                    finalValue = { ...finalValue, displayData: finalValue.data };
+                }
+            }
+            console.log("[onFinishEditing] finalValue:", finalValue);
+            console.log("[onFinishEditing] isEditableGridCell:", finalValue !== undefined ? isEditableGridCell(finalValue) : "N/A");
+            console.log("[onFinishEditing] condition check - cell:", currentOverlay?.cell, "finalValue:", finalValue !== undefined, "isEditable:", finalValue !== undefined && isEditableGridCell(finalValue));
+
+            if (currentOverlay?.cell !== undefined && finalValue !== undefined && isEditableGridCell(finalValue)) {
+                console.log("[onFinishEditing] CALLING mangledOnCellsEdited with:", { location: currentOverlay.cell, value: finalValue });
+                mangledOnCellsEdited([{ location: currentOverlay.cell, value: finalValue }]);
                 window.requestAnimationFrame(() => {
                     gridRef.current?.damage([
                         {
-                            cell: overlay.cell,
+                            cell: currentOverlay.cell,
                         },
                     ]);
                 });
             }
+            // Clear GhostInput and hide it (direct DOM manipulation to avoid re-render)
+            ghostInputRef.current?.clear();
+            ghostInputRef.current?.setVisible(false);
+            setGhostInputVisible(false);
+
             focus(true);
+            // CRITICAL: Reset overlayRef.current immediately (before React re-render)
+            // This ensures onGhostCompositionStart sees undefined when checking
+            // overlayRef.current === undefined for the next cell edit
+            overlayRef.current = undefined;
             setOverlay(undefined);
 
             const [movX, movY] = movement;
@@ -3462,71 +3561,21 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     void appendColumn(row, false);
                 }
                 if (updateSelected) {
-                    let newCol = gridSelection.current.cell[0] + movX;
-                    let newRow = gridSelection.current.cell[1] + movY;
-                    let shouldActivateNextCell = false;
-
-                    // Handle Tab key: move to next row when reaching the last column (only when isActivationOnEnter is enabled)
-                    if (isActivationOnEnter && movX === 1 && movY === 0) {
-                        // If moving beyond the last column
-                        if (newCol >= mangledCols.length) {
-                            // Check if we're at the last row
-                            if (newRow >= mangledRows - 1) {
-                                // Stay at the current position and exit edit mode
-                                newCol = gridSelection.current.cell[0];
-                                newRow = gridSelection.current.cell[1];
-                                shouldActivateNextCell = false;
-                            } else {
-                                // Move to first column of next row
-                                newCol = rowMarkerOffset;
-                                newRow += 1;
-                                shouldActivateNextCell = true;
-                            }
-                        } else {
-                            shouldActivateNextCell = true;
-                        }
-                        // Don't apply clamp for Tab navigation - we want exact position
-                    } else {
-                        // For Enter key and other movements, clamp to valid range
-                        newCol = clamp(newCol, rowMarkerOffset, mangledCols.length - 1);
-                        newRow = clamp(newRow, 0, mangledRows - 1);
-                        shouldActivateNextCell = isActivationOnEnter === true && movX === 0 && movY === 1;
-                    }
+                    const newCol = clamp(gridSelection.current.cell[0] + movX, rowMarkerOffset, mangledCols.length - 1);
+                    const newRow = clamp(gridSelection.current.cell[1] + movY, 0, mangledRows - 1);
 
                     updateSelectedCell(newCol, newRow, isEditingLastRow, false);
 
-                    if (shouldActivateNextCell) {
-                        window.setTimeout(() => {
-                            const cell = getCellContent([newCol - rowMarkerOffset, newRow]);
-                            if (isReadWriteCell(cell)) {
-                                const bounds = gridRef.current?.getBounds(newCol, newRow);
-                                if (bounds && cell.allowOverlay) {
-                                    const activationEvent: CellActivatedEventArgs = {
-                                        inputType: "keyboard",
-                                        key: "Enter",
-                                    };
-                                    onCellActivated?.([newCol - rowMarkerOffset, newRow], activationEvent);
-
-                                    // Start editing with the correct cell content
-                                    setOverlaySimple({
-                                        target: bounds,
-                                        content: cell,
-                                        initialValue: undefined,
-                                        cell: [newCol, newRow],
-                                        highlight: true,
-                                        forceEditMode: true,
-                                        activation: activationEvent,
-                                    });
-                                }
-                            }
-                        }, 50);
-                    }
+                    // Re-focus GhostInput after cell selection update
+                    // This ensures IME input works immediately after navigation
+                    window.requestAnimationFrame(() => {
+                        ghostInputRef.current?.focus();
+                    });
                 }
             }
             onFinishedEditing?.(newValue, movement);
         },
         [
-            overlay?.cell,
             focus,
             gridSelection,
             onFinishedEditing,
@@ -3539,11 +3588,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             onRowAppended,
             onColumnAppended,
             getCustomNewRowTargetColumn,
-            getCellContent,
             rowMarkerOffset,
-            onCellActivated,
-            setOverlaySimple,
-            isActivationOnEnter,
         ]
     );
 
@@ -3758,29 +3803,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 } else if (isHotkey(keys.goUpCell, event, details)) {
                     row -= 1;
                 } else if (isHotkey(keys.goRightCell, event, details)) {
-                    // Check if this is a Tab key press (not Shift+Tab)
-                    const isTabKey = event.key === "Tab" && !event.shiftKey;
-
-                    // Handle Tab key in navigation mode: move to next row when reaching the last column
-                    if (isActivationOnEnter === true && isTabKey) {
-                        // maxCol should be the last valid column index (already includes rowMarkerOffset in col)
-                        const maxCol = mangledCols.length - 1;
-                        // If we're at the last column
-                        if (col >= maxCol) {
-                            // Check if we're not at the last row
-                            if (row < mangledRows - 1) {
-                                // Move to first column of next row
-                                col = rowMarkerOffset;
-                                row += 1;
-                            }
-                            // else: Stay at current position (last column of last row)
-                            // Don't increment col, so we stay in place
-                        } else {
-                            col += 1;
-                        }
-                    } else {
-                        col += 1;
-                    }
+                    col += 1;
                 } else if (isHotkey(keys.goLeftCell, event, details)) {
                     col -= 1;
                 } else if (isHotkey(keys.goDownCellRetainSelection, event, details)) {
@@ -3885,11 +3908,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
             const didMatch = details.didMatch;
 
-            // Check if Tab key was pressed - always prevent default to keep focus in grid when isActivationOnEnter is enabled
-            const isTabKey = event.key === "Tab";
-            const shouldTrapTab = isActivationOnEnter === true && isTabKey;
-
-            if (didMatch && (moved || !cancelOnlyOnMove || trapFocus || shouldTrapTab)) {
+            if (didMatch && (moved || !cancelOnlyOnMove || trapFocus)) {
                 cancel();
             }
 
@@ -3923,9 +3942,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             fillDown,
             fillRight,
             adjustSelection,
-            isActivationOnEnter,
-            mangledCols.length,
-            mangledRows,
         ]
     );
 
@@ -3949,35 +3965,54 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             if (handleFixedKeybindings(event)) return;
 
             if (gridSelection.current === undefined) return;
-            // const [col, row] = gridSelection.current.cell;
-            // const vr = visibleRegionRef.current;
 
-            // Character input editing disabled - only double-click and Enter key will activate editing
-            // if (
-            //     editOnType &&
-            //     !event.metaKey &&
-            //     !event.ctrlKey &&
-            //     gridSelection.current !== undefined &&
-            //     event.key.length === 1 &&
-            //     /[\p{L}\p{M}\p{N}\p{S}\p{P}]/u.test(event.key) &&
-            //     event.bounds !== undefined &&
-            //     isReadWriteCell(getCellContent([col - rowMarkerOffset, Math.max(0, Math.min(row, rows - 1))]))
-            // ) {
-            //     if (
-            //         (!showTrailingBlankRow || row !== rows) &&
-            //         (vr.y > row || row > vr.y + vr.height || vr.x > col || col > vr.x + vr.width)
-            //     ) {
-            //         return;
-            //     }
-            //     const activationEvent: CellActivatedEventArgs = {
-            //         inputType: "keyboard",
-            //         key: event.key,
-            //     };
-            //     onCellActivated?.([col - rowMarkerOffset, row], activationEvent);
-            //     reselect(event.bounds, activationEvent, event.key);
-            //     event.stopPropagation();
-            //     event.preventDefault();
-            // }
+            const [col, row] = gridSelection.current.cell;
+            const vr = visibleRegionRef.current;
+
+            // IME input detection (keyCode 229) or single character input - use GhostInput for IME support
+            const isIMEInput = event.keyCode === 229;
+            const isCharacterInput =
+                editOnType &&
+                !event.metaKey &&
+                !event.ctrlKey &&
+                event.key.length === 1 &&
+                /[\p{L}\p{M}\p{N}\p{S}\p{P}]/u.test(event.key);
+
+            if (
+                (isIMEInput || isCharacterInput) &&
+                event.bounds !== undefined &&
+                isReadWriteCell(getCellContent([col - rowMarkerOffset, Math.max(0, Math.min(row, rows - 1))]))
+            ) {
+                if (
+                    (!showTrailingBlankRow || row !== rows) &&
+                    (vr.y > row || row > vr.y + vr.height || vr.x > col || col > vr.x + vr.width)
+                ) {
+                    return;
+                }
+
+                event.stopPropagation();
+                event.preventDefault();
+
+                if (isIMEInput) {
+                    // For IME input, open overlay and let GrowingEntry handle IME composition
+                    // Don't set isComposing to true - let GrowingEntry get autofocus
+                    const activationEvent: CellActivatedEventArgs = {
+                        inputType: "keyboard",
+                        key: "",
+                    };
+                    onCellActivated?.([col - rowMarkerOffset, row], activationEvent);
+                    reselect(event.bounds, activationEvent, "");
+                    // Note: First keystroke is lost, but subsequent IME composition works correctly
+                } else {
+                    // For regular character input, start editing directly
+                    const activationEvent: CellActivatedEventArgs = {
+                        inputType: "keyboard",
+                        key: event.key,
+                    };
+                    onCellActivated?.([col - rowMarkerOffset, row], activationEvent);
+                    reselect(event.bounds, activationEvent, event.key);
+                }
+            }
         },
         [
             editOnType,
@@ -3992,6 +4027,236 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             reselect,
         ]
     );
+
+    // GhostInput handlers for IME support
+    const onGhostInput = React.useCallback(
+        (value: string, composing: boolean) => {
+            console.log("[onGhostInput] value:", value, "composing:", composing, "overlay:", overlayRef.current !== undefined);
+
+            // IMPORTANT: Do NOT call setGhostValue during IME composition!
+            // Any React state update during composition will cause re-render
+            // which breaks the IME composition session.
+            // GhostInput is the visible editor, so no need to sync value to GrowingEntry.
+
+            // If overlay is already open, GhostInput is visible and handling input directly
+            // Use overlayRef to avoid re-creating this callback when overlay changes
+            if (overlayRef.current !== undefined) {
+                console.log("[onGhostInput] overlay already open, returning");
+                return;
+            }
+
+            // If not composing and we have a value, start editing (for non-IME input like English)
+            if (!composing && value.length > 0 && gridSelection.current !== undefined) {
+                const [col, row] = gridSelection.current.cell;
+                const cell = getMangledCellContent([col, row]);
+
+                if (cell.allowOverlay && isReadWriteCell(cell) && cell.readonly !== true) {
+                    const bounds = gridRef.current?.getBounds(col, row);
+                    if (bounds !== undefined) {
+                        const activation: CellActivatedEventArgs = {
+                            inputType: "keyboard",
+                            key: value,
+                        };
+                        onCellActivated?.([col - rowMarkerOffset, row], activation);
+                        reselect(bounds, activation, value);
+                        // Note: reselect sets the value in GhostInput via setValue()
+                    }
+                }
+            }
+        },
+        [gridSelection, getMangledCellContent, rowMarkerOffset, onCellActivated, reselect]
+    );
+
+    const onGhostCompositionStart = React.useCallback(() => {
+        // IMPORTANT: Minimize React state updates during IME composition!
+        // Only open the overlay if not already open. The overlay opening is necessary
+        // but we avoid any other state updates to prevent re-renders.
+        // Use overlayRef to avoid re-creating this callback when overlay changes
+
+        console.log("[onGhostCompositionStart] called");
+        console.log("[onGhostCompositionStart] gridSelection.current:", gridSelection.current);
+        console.log("[onGhostCompositionStart] overlayRef.current:", overlayRef.current);
+
+        if (gridSelection.current === undefined) return;
+
+        const [col, row] = gridSelection.current.cell;
+        const currentOverlayCell = overlayRef.current?.cell;
+
+        // Check if overlay is open for a DIFFERENT cell
+        // This happens when user moves to a new cell and starts typing before previous overlay closes
+        if (currentOverlayCell !== undefined &&
+            (currentOverlayCell[0] !== col || currentOverlayCell[1] !== row)) {
+            console.log("[onGhostCompositionStart] Different cell detected, closing previous overlay");
+            // Close current overlay immediately without saving (composition just started for new cell)
+            ghostInputRef.current?.clear();
+            ghostInputRef.current?.setVisible(false);
+            setGhostInputVisible(false);
+            overlayRef.current = undefined;
+            setOverlay(undefined);
+        }
+
+        // Start editing when composition starts (for IME like Korean/Japanese/Chinese)
+        if (overlayRef.current === undefined) {
+            const cell = getMangledCellContent([col, row]);
+
+            if (cell.allowOverlay && isReadWriteCell(cell) && cell.readonly !== true) {
+                const bounds = gridRef.current?.getBounds(col, row);
+                if (bounds !== undefined) {
+                    // IMPORTANT: Clear GhostInput before opening new overlay
+                    // This prevents previous cell's value from being carried over
+                    ghostInputRef.current?.clear();
+
+                    const activation: CellActivatedEventArgs = {
+                        inputType: "keyboard",
+                        key: "",
+                    };
+                    onCellActivated?.([col - rowMarkerOffset, row], activation);
+                    reselect(bounds, activation, "");
+                }
+            }
+        }
+    }, [gridSelection, getMangledCellContent, rowMarkerOffset, onCellActivated, reselect]);
+
+    const onGhostCompositionEnd = React.useCallback(
+        (_finalValue: string) => {
+            // Composition ended. The final value is already in GhostInput.
+            // No state update needed here - value will be read from GhostInput
+            // when user confirms (Enter) or moves to another cell.
+        },
+        []
+    );
+
+    const onGhostKeyDown = React.useCallback(
+        (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            console.log("[onGhostKeyDown] key:", event.key, "isComposing:", event.nativeEvent.isComposing);
+
+            // IMPORTANT: Ignore key events during IME composition
+            // This prevents Enter/Tab from interrupting IME input
+            if (event.nativeEvent.isComposing) {
+                console.log("[onGhostKeyDown] IGNORED due to isComposing");
+                return;
+            }
+
+            // Handle Enter, Tab, Escape when overlay is open (GhostMode editing)
+            // These keys should complete the editing and call onFinishEditing
+            // Use ref to avoid stale closure issues
+            if (overlayRef.current !== undefined && ghostInputVisibleRef.current) {
+                const key = event.key;
+
+                if (key === "Escape") {
+                    // Cancel editing - don't save value
+                    event.preventDefault();
+                    event.stopPropagation();
+                    onFinishEditing(undefined, [0, 0]);
+                    return;
+                }
+
+                if (key === "Enter" && !event.shiftKey) {
+                    // Complete editing and move down
+                    event.preventDefault();
+                    event.stopPropagation();
+                    onFinishEditing(undefined, [0, 1]);
+                    return;
+                }
+
+                if (key === "Tab") {
+                    // Complete editing and move right (or left with shift)
+                    event.preventDefault();
+                    event.stopPropagation();
+                    onFinishEditing(undefined, event.shiftKey ? [-1, 0] : [1, 0]);
+                    return;
+                }
+            }
+
+            // Printable characters should NEVER be passed to the grid's key handler.
+            // They are handled by GhostInput natively (textarea) and processed via onGhostInput (input event).
+            // Passing them to handleFixedKeybindings would cause duplicate overlay opening.
+            {
+                const key = event.key;
+                const isPrintable = key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey;
+
+                if (isPrintable) {
+                    return;
+                }
+            }
+
+            // If overlay is open (GhostMode editing), let GhostInput handle editing/cursor keys directly
+            if (overlayRef.current !== undefined && ghostInputVisibleRef.current) {
+                const key = event.key;
+                const isEditingKey = key === "Backspace" || key === "Delete";
+                const isCursorKey = key === "ArrowLeft" || key === "ArrowRight" ||
+                                   key === "ArrowUp" || key === "ArrowDown" ||
+                                   key === "Home" || key === "End";
+
+                if (isEditingKey || isCursorKey) {
+                    return;
+                }
+            }
+
+            // Convert to GridKeyEventArgs format for other keys
+            const cell = gridSelection.current?.cell;
+            const bounds = cell !== undefined ? gridRef.current?.getBounds(cell[0], cell[1]) : undefined;
+
+            let cancelled = false;
+            const args: GridKeyEventArgs = {
+                bounds,
+                cancel: () => {
+                    cancelled = true;
+                },
+                stopPropagation: () => event.stopPropagation(),
+                preventDefault: () => event.preventDefault(),
+                ctrlKey: event.ctrlKey,
+                metaKey: event.metaKey,
+                shiftKey: event.shiftKey,
+                altKey: event.altKey,
+                key: event.key,
+                keyCode: event.keyCode,
+                rawEvent: event as any,
+                location: cell,
+            };
+
+            onKeyDown(args);
+
+            if (cancelled) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        },
+        [gridSelection, onKeyDown, onFinishEditing]
+    );
+
+    const onGhostKeyUp = React.useCallback(
+        (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            const cell = gridSelection.current?.cell;
+            const bounds = cell !== undefined ? gridRef.current?.getBounds(cell[0], cell[1]) : undefined;
+
+            const args: GridKeyEventArgs = {
+                bounds,
+                cancel: () => {},
+                stopPropagation: () => event.stopPropagation(),
+                preventDefault: () => event.preventDefault(),
+                ctrlKey: event.ctrlKey,
+                metaKey: event.metaKey,
+                shiftKey: event.shiftKey,
+                altKey: event.altKey,
+                key: event.key,
+                keyCode: event.keyCode,
+                rawEvent: event as any,
+                location: cell,
+            };
+
+            onKeyUpIn?.(args);
+        },
+        [gridSelection, onKeyUpIn]
+    );
+
+    const onGhostFocus = React.useCallback(() => {
+        setIsFocused(true);
+    }, []);
+
+    const onGhostBlur = React.useCallback(() => {
+        setIsFocused(false);
+    }, []);
 
     const onContextMenu = React.useCallback(
         (args: GridMouseEventArgs, preventDefault: () => void) => {
@@ -4780,10 +5045,29 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                             markdownDivCreateNode={markdownDivCreateNode}
                             isOutsideClick={isOutsideClick}
                             customEventTarget={experimental?.eventTarget}
+                            isGhostMode={ghostInputVisible}
                         />
                     </React.Suspense>
                 )}
             </DataEditorContainer>
+            {(() => {
+                // Render GhostInput to the same portal as overlay editor
+                const portalElement = portalElementRef?.current ?? document.getElementById("portal");
+                if (portalElement === null) return null;
+                return createPortal(
+                    <GhostInput
+                        ref={ghostInputRef}
+                        onInput={onGhostInput}
+                        onCompositionStart={onGhostCompositionStart}
+                        onCompositionEnd={onGhostCompositionEnd}
+                        onKeyDown={onGhostKeyDown}
+                        onKeyUp={onGhostKeyUp}
+                        onFocus={onGhostFocus}
+                        onBlur={onGhostBlur}
+                    />,
+                    portalElement
+                );
+            })()}
         </ThemeContext.Provider>
     );
 };

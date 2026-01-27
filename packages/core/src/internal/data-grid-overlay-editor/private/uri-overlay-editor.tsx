@@ -3,6 +3,7 @@ import * as React from "react";
 import { GrowingEntry } from "../../growing-entry/growing-entry.js";
 import { UriOverlayEditorStyle } from "./uri-overlay-editor-style.js";
 import type { SelectionRange } from "../../data-grid/data-grid-types.js";
+import { GhostModeContext } from "../data-grid-overlay-editor.js";
 
 interface Props {
     readonly uri: string;
@@ -15,6 +16,7 @@ interface Props {
 
 const UriOverlayEditor: React.FunctionComponent<Props> = p => {
     const { uri, onChange, forceEditMode, readonly, validatedSelection, preview } = p;
+    const { isGhostMode } = React.useContext(GhostModeContext);
 
     const [editMode, setEditMode] = React.useState<boolean>(!readonly && (uri === "" || forceEditMode));
 
@@ -27,7 +29,7 @@ const UriOverlayEditor: React.FunctionComponent<Props> = p => {
             <GrowingEntry
                 validatedSelection={validatedSelection}
                 highlight={true}
-                autoFocus={true}
+                autoFocus={!isGhostMode}
                 value={uri}
                 onChange={onChange}
             />
@@ -44,7 +46,7 @@ const UriOverlayEditor: React.FunctionComponent<Props> = p => {
                     <EditPencil />
                 </div>
             )}
-            <textarea className="gdg-input" autoFocus={true} />
+            <textarea className="gdg-input" autoFocus={!isGhostMode} />
         </UriOverlayEditorStyle>
     );
 };

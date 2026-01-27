@@ -4,6 +4,7 @@ import { GrowingEntry } from "../../growing-entry/growing-entry.js";
 import { MarkdownOverlayEditorStyle } from "./markdown-overlay-editor-style.js";
 import { EditPencil, Checkmark } from "../../../common/utils.js";
 import type { MarkdownCell, Rectangle, SelectionRange } from "../../data-grid/data-grid-types.js";
+import { GhostModeContext } from "../data-grid-overlay-editor.js";
 
 interface Props {
     readonly targetRect: Rectangle;
@@ -19,6 +20,7 @@ interface Props {
 
 export const MarkdownOverlayEditor: React.FunctionComponent<Props> = p => {
     const { value, onChange, forceEditMode, createNode, targetRect, onFinish, validatedSelection } = p;
+    const { isGhostMode } = React.useContext(GhostModeContext);
 
     const markdown = value.data;
     const readonly = value.readonly === true;
@@ -33,7 +35,7 @@ export const MarkdownOverlayEditor: React.FunctionComponent<Props> = p => {
         return (
             <MarkdownOverlayEditorStyle targetWidth={targetRect.width - 20}>
                 <GrowingEntry
-                    autoFocus={true}
+                    autoFocus={!isGhostMode}
                     highlight={false}
                     validatedSelection={validatedSelection}
                     value={markdown}
@@ -59,7 +61,7 @@ export const MarkdownOverlayEditor: React.FunctionComponent<Props> = p => {
                     </div>
                 </>
             )}
-            <textarea className="gdg-md-edit-textarea gdg-input" autoFocus={true} />
+            <textarea className="gdg-md-edit-textarea gdg-input" autoFocus={!isGhostMode} />
         </MarkdownOverlayEditorStyle>
     );
 };

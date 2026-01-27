@@ -96,6 +96,8 @@ const generateNewCell = (colIndex: number, rowIndex: number = 0): GridCell => {
         case 0: return { kind: GridCellKind.Text, displayData: sampleFirstNames[rowIndex % sampleFirstNames.length], data: sampleFirstNames[rowIndex % sampleFirstNames.length], allowOverlay: true, readonly: false };
         case 1: return { kind: GridCellKind.Text, displayData: sampleLastNames[rowIndex % sampleLastNames.length], data: sampleLastNames[rowIndex % sampleLastNames.length], allowOverlay: true, readonly: false };
         case 2: return { kind: GridCellKind.Number, displayData: (1000 + rowIndex * 100).toLocaleString(), data: 1000 + rowIndex * 100, allowOverlay: true, readonly: false, contentAlign: 'right' };
+        case 3: return { kind: GridCellKind.Boolean, data: false, allowOverlay: false, readonly: false, contentAlign: 'center' };
+        case 4: return { kind: GridCellKind.Markdown, data: "**굵은 텍스트**와 *기울임 텍스트*", allowOverlay: true, readonly: false };
         default: return { kind: GridCellKind.Text, displayData: "2024-01-01", data: "2024-01-01", allowOverlay: true, readonly: false, contentAlign: 'center' };
     }
 };
@@ -440,7 +442,6 @@ export const AddData = () => {
                 columns={cols}
                 rows={numRows}
                 getCellContent={getCellContentWithHighlight}
-                isActivationOnEnter={true}
                 rowSelect="multi"
                 rowSelectionMode="multi"
                 rowMarkers={{

@@ -3,6 +3,7 @@ import { NumberOverlayEditorStyle } from "./number-overlay-editor-style.js";
 import { NumericFormat } from "react-number-format";
 import type { SelectionRange } from "../../data-grid/data-grid-types.js";
 import type { NumberFormatValues } from "react-number-format/types/types.js";
+import { GhostModeContext } from "../data-grid-overlay-editor.js";
 
 interface Props {
     readonly value: number | undefined;
@@ -43,6 +44,7 @@ const NumberOverlayEditor: React.FunctionComponent<Props> = p => {
     } = p;
 
     const inputRef = React.useRef<HTMLInputElement>();
+    const { isGhostMode } = React.useContext(GhostModeContext);
 
     React.useLayoutEffect(() => {
         if (validatedSelection !== undefined) {
@@ -51,10 +53,14 @@ const NumberOverlayEditor: React.FunctionComponent<Props> = p => {
         }
     }, [validatedSelection]);
 
+    const ghostStyle: React.CSSProperties | undefined = isGhostMode
+        ? { visibility: "hidden" as const }
+        : undefined;
+
     return (
-        <NumberOverlayEditorStyle>
+        <NumberOverlayEditorStyle style={ghostStyle}>
             <NumericFormat
-                autoFocus={true}
+                autoFocus={!isGhostMode}
                 getInputRef={inputRef}
                 className="gdg-input"
                 onFocus={(e: React.FocusEvent<HTMLInputElement>) =>

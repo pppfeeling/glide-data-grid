@@ -1,0 +1,42 @@
+import { styled } from "@linaria/react";
+
+export const GhostInputBox = styled.textarea`
+    /* Box model */
+    box-sizing: border-box;
+    margin: 0;
+    padding: 6px 8.5px;
+    resize: none;
+    overflow: visible;
+    white-space: pre;
+
+    /* Position - initial hidden state (will be changed via direct DOM manipulation) */
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+
+    /* Appearance - matches overlay editor style */
+    background: var(--gdg-bg-cell, #ffffff);
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    box-shadow:
+        0 0 0 1px var(--gdg-accent-color, #4F5DFF),
+        0px 0px 1px rgba(62, 65, 86, 0.4),
+        0px 6px 12px rgba(62, 65, 86, 0.15);
+
+    /* Typography */
+    font-size: var(--gdg-editor-font-size, 13px);
+    font-family: var(--gdg-font-family, sans-serif);
+    line-height: 16px;
+    color: var(--gdg-text-dark, #313139);
+    caret-color: var(--gdg-text-dark, #313139);
+
+    /* IME support */
+    ime-mode: active;
+    -webkit-ime-mode: active;
+`;

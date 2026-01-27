@@ -1953,7 +1953,7 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
         <>
             <canvas
                 data-testid="data-grid-canvas"
-                tabIndex={0}
+                tabIndex={-1}
                 onKeyDown={onKeyDownImpl}
                 onKeyUp={onKeyUpImpl}
                 onFocus={onCanvasFocused}

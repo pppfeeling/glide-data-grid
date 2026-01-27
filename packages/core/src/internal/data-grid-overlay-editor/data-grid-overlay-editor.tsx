@@ -24,6 +24,17 @@ import { useStayOnScreen } from "./use-stay-on-screen.js";
 
 type ImageEditorType = React.ComponentType<OverlayImageEditorProps>;
 
+// Context for Ghost Input mode - used by GrowingEntry to disable autofocus
+interface GhostModeContextValue {
+    isGhostMode: boolean;
+    ghostValue: string;
+}
+
+export const GhostModeContext = React.createContext<GhostModeContextValue>({
+    isGhostMode: false,
+    ghostValue: "",
+});
+
 interface DataGridOverlayEditorProps {
     readonly target: Rectangle;
     readonly cell: Item;
@@ -49,6 +60,9 @@ interface DataGridOverlayEditorProps {
     ) => boolean | ValidatedGridCell;
     readonly isOutsideClick?: (e: MouseEvent | TouchEvent) => boolean;
     readonly customEventTarget?: HTMLElement | Window | Document;
+    // Ghost Input mode props for IME support
+    readonly ghostValue?: string;
+    readonly isGhostMode?: boolean;
 }
 
 const DataGridOverlayEditor: React.FunctionComponent<DataGridOverlayEditorProps> = p => {
@@ -73,6 +87,8 @@ const DataGridOverlayEditor: React.FunctionComponent<DataGridOverlayEditorProps>
         isOutsideClick,
         customEventTarget,
         activation,
+        ghostValue,
+        isGhostMode,
     } = p;
 
     const [tempValue, setTempValueRaw] = React.useState<GridCell | undefined>(forceEditMode ? content : undefined);
@@ -234,29 +250,39 @@ const DataGridOverlayEditor: React.FunctionComponent<DataGridOverlayEditorProps>
     const bloomX = bloom?.[0] ?? 1;
     const bloomY = bloom?.[1] ?? 1;
 
+    const ghostModeContextValue = React.useMemo(
+        () => ({
+            isGhostMode: isGhostMode ?? false,
+            ghostValue: ghostValue ?? "",
+        }),
+        [isGhostMode, ghostValue]
+    );
+
     return createPortal(
         <ThemeContext.Provider value={theme}>
-            <ClickOutsideContainer
-                style={makeCSSStyle(theme)}
-                className={className}
-                onClickOutside={onClickOutside}
-                isOutsideClick={isOutsideClick}
-                customEventTarget={customEventTarget}>
-                <DataGridOverlayEditorStyle
-                    ref={ref}
-                    id={id}
-                    className={classWrap}
-                    style={styleOverride}
-                    as={useLabel === true ? "label" : undefined}
-                    targetX={target.x - bloomX}
-                    targetY={target.y - bloomY}
-                    targetWidth={target.width + bloomX * 2}
-                    targetHeight={target.height + bloomY * 2}>
-                    <div className="gdg-clip-region" onKeyDown={onKeyDown}>
-                        {editor}
-                    </div>
-                </DataGridOverlayEditorStyle>
-            </ClickOutsideContainer>
+            <GhostModeContext.Provider value={ghostModeContextValue}>
+                <ClickOutsideContainer
+                    style={makeCSSStyle(theme)}
+                    className={className}
+                    onClickOutside={onClickOutside}
+                    isOutsideClick={isOutsideClick}
+                    customEventTarget={customEventTarget}>
+                    <DataGridOverlayEditorStyle
+                        ref={ref}
+                        id={id}
+                        className={classWrap}
+                        style={isGhostMode ? { ...styleOverride, visibility: "hidden" as const } : styleOverride}
+                        as={useLabel === true ? "label" : undefined}
+                        targetX={target.x - bloomX}
+                        targetY={target.y - bloomY}
+                        targetWidth={target.width + bloomX * 2}
+                        targetHeight={target.height + bloomY * 2}>
+                        <div className="gdg-clip-region" onKeyDown={onKeyDown}>
+                            {editor}
+                        </div>
+                    </DataGridOverlayEditorStyle>
+                </ClickOutsideContainer>
+            </GhostModeContext.Provider>
         </ThemeContext.Provider>,
         portalElement
     );
