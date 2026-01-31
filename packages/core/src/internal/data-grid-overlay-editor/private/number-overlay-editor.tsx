@@ -9,6 +9,7 @@ interface Props {
     readonly value: number | undefined;
     readonly disabled?: boolean;
     readonly onChange: (values: NumberFormatValues) => void;
+    readonly onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     readonly highlight: boolean;
     readonly validatedSelection?: SelectionRange;
     readonly fixedDecimals?: number;
@@ -34,6 +35,7 @@ const NumberOverlayEditor: React.FunctionComponent<Props> = p => {
     const {
         value,
         onChange,
+        onKeyDown,
         disabled,
         highlight,
         validatedSelection,
@@ -66,6 +68,7 @@ const NumberOverlayEditor: React.FunctionComponent<Props> = p => {
                 onFocus={(e: React.FocusEvent<HTMLInputElement>) =>
                     e.target.setSelectionRange(highlight ? 0 : e.target.value.length, e.target.value.length)
                 }
+                onKeyDown={onKeyDown}
                 disabled={disabled === true}
                 decimalScale={fixedDecimals}
                 allowNegative={allowNegative}

@@ -31,7 +31,7 @@ export const numberCellRenderer: InternalCellRenderer<NumberCell> = {
         data: undefined,
     }),
     provideEditor: () => p => {
-        const { isHighlighted, onChange, value, validatedSelection } = p;
+        const { isHighlighted, onChange, onFinishedEditing, value, validatedSelection } = p;
         return (
             <React.Suspense fallback={null}>
                 <NumberOverlayEditor
@@ -49,6 +49,18 @@ export const numberCellRenderer: InternalCellRenderer<NumberCell> = {
                             data: Number.isNaN(x.floatValue ?? 0) ? 0 : x.floatValue,
                         })
                     }
+                    onKeyDown={e => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            onFinishedEditing(value, [0, 1]);
+                        } else if (e.key === "Tab") {
+                            e.preventDefault();
+                            onFinishedEditing(value, [e.shiftKey ? -1 : 1, 0]);
+                        } else if (e.key === "Escape") {
+                            e.preventDefault();
+                            onFinishedEditing(undefined, [0, 0]);
+                        }
+                    }}
                 />
             </React.Suspense>
         );

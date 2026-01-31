@@ -32,7 +32,7 @@ const SimpleWrapper = styled.div`
     }
 `;
 
-const SimpleThemeWrapper: React.FC = p => {
+const SimpleThemeWrapper: React.FC<React.PropsWithChildren> = p => {
     return (
         <SimpleWrapper>
             <div className="content">{p.children}</div>
@@ -95,6 +95,7 @@ const BeautifulStyle = styled.div`
 interface BeautifulProps {
     title: string;
     description?: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 const BeautifulWrapper: React.FC<BeautifulProps> = p => {
@@ -168,7 +169,7 @@ const possibleTags = [
     },
 ];
 
-export const CustomCells: React.VFC = () => {
+export const CustomCells: React.FC = () => {
     return (
         <BeautifulWrapper title="Custom cells" description={<Description>Some of our extension cells.</Description>}>
             <DataEditor
@@ -556,7 +557,7 @@ export const CustomCells: React.VFC = () => {
     },
 };
 
-export const CustomCellEditing: React.VFC = () => {
+export const CustomCellEditing: React.FC = () => {
     const data = React.useRef<any[][]>([[]]);
 
     return (
@@ -590,14 +591,14 @@ export const CustomCellEditing: React.VFC = () => {
                 getCellContent={cell => {
                     const [col, row] = cell;
                     if (col === 0) {
-                        const val = data.current?.[col]?.[row] ?? "A";
+                        const val = data.current?.[col]?.[row] ?? "한글";
                         return {
                             kind: GridCellKind.Custom,
                             allowOverlay: true,
                             copyData: val,
                             data: {
                                 kind: "dropdown-cell",
-                                allowedValues: ["A", "B", "C"],
+                                allowedValues: ["한글", "영어", "일어"],
                                 value: val,
                             },
                         } as DropdownCell;

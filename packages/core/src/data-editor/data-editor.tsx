@@ -3514,7 +3514,29 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             console.log("[onFinishEditing] isEditableGridCell:", finalValue !== undefined ? isEditableGridCell(finalValue) : "N/A");
             console.log("[onFinishEditing] condition check - cell:", currentOverlay?.cell, "finalValue:", finalValue !== undefined, "isEditable:", finalValue !== undefined && isEditableGridCell(finalValue));
 
-            if (currentOverlay?.cell !== undefined && finalValue !== undefined && isEditableGridCell(finalValue)) {
+            // Check if the value actually changed by comparing data fields
+            const originalContent = currentOverlay?.content;
+            const hasValueChanged = (): boolean => {
+                if (finalValue === undefined || originalContent === undefined) return false;
+                if (finalValue.kind !== originalContent.kind) return true;
+
+                // Compare based on cell type
+                switch (finalValue.kind) {
+                    case GridCellKind.Text:
+                    case GridCellKind.Uri:
+                    case GridCellKind.Markdown:
+                        return (finalValue as any).data !== (originalContent as any).data;
+                    case GridCellKind.Number:
+                        return (finalValue as any).data !== (originalContent as any).data;
+                    case GridCellKind.Boolean:
+                        return (finalValue as any).data !== (originalContent as any).data;
+                    default:
+                        // For other cell types, assume changed
+                        return true;
+                }
+            };
+
+            if (currentOverlay?.cell !== undefined && finalValue !== undefined && isEditableGridCell(finalValue) && hasValueChanged()) {
                 console.log("[onFinishEditing] CALLING mangledOnCellsEdited with:", { location: currentOverlay.cell, value: finalValue });
                 mangledOnCellsEdited([{ location: currentOverlay.cell, value: finalValue }]);
                 window.requestAnimationFrame(() => {
@@ -3772,8 +3794,39 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                         inputType: "keyboard",
                         key: event.key,
                     };
-                    onCellActivated?.([col - rowMarkerOffset, row], activationEvent);
-                    reselect(bounds, activationEvent);
+
+                    // For Boolean cells: Space toggles, Enter moves down
+                    const cellContent = getMangledCellContent([col, row]);
+                    console.log("[handleFixedKeybindings] activateCell triggered", {
+                        cellKind: cellContent.kind,
+                        isBoolean: cellContent.kind === GridCellKind.Boolean,
+                        readonly: (cellContent as any).readonly,
+                        eventKey: event.key,
+                    });
+                    if (cellContent.kind === GridCellKind.Boolean && cellContent.readonly !== true) {
+                        console.log("[handleFixedKeybindings] Boolean cell detected, handling Space/Enter");
+                        onCellActivated?.([col - rowMarkerOffset, row], activationEvent);
+                        if (event.key === " ") {
+                            console.log("[handleFixedKeybindings] Space key on Boolean cell - toggling value");
+                            // Space on Boolean cell: toggle value
+                            mangledOnCellsEdited([
+                                {
+                                    location: [col, row],
+                                    value: {
+                                        ...cellContent,
+                                        data: toggleBoolean(cellContent.data),
+                                    },
+                                },
+                            ]);
+                            gridRef.current?.damage([{ cell: [col, row] }]);
+                        } else if (event.key === "Enter") {
+                            // Enter on Boolean cell: move down
+                            row += 1;
+                        }
+                    } else {
+                        onCellActivated?.([col - rowMarkerOffset, row], activationEvent);
+                        reselect(bounds, activationEvent);
+                    }
                 }
             } else if (gridSelection.current.range.height > 1 && isHotkey(keys.downFill, event, details)) {
                 fillDown();
@@ -3942,6 +3995,8 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             fillDown,
             fillRight,
             adjustSelection,
+            getMangledCellContent,
+            mangledOnCellsEdited,
         ]
     );
 
@@ -4046,9 +4101,16 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             }
 
             // If not composing and we have a value, start editing (for non-IME input like English)
-            if (!composing && value.length > 0 && gridSelection.current !== undefined) {
+            // Skip if value is only whitespace (e.g., space key in navigation mode should not start editing)
+            // Skip CustomCell - they have their own editors and don't use GhostInput for typing
+            if (!composing && value.length > 0 && value.trim().length > 0 && gridSelection.current !== undefined) {
                 const [col, row] = gridSelection.current.cell;
                 const cell = getMangledCellContent([col, row]);
+
+                // Skip CustomCell - they have their own editors (e.g., react-select for DropdownCell)
+                if (cell.kind === GridCellKind.Custom) {
+                    return;
+                }
 
                 if (cell.allowOverlay && isReadWriteCell(cell) && cell.readonly !== true) {
                     const bounds = gridRef.current?.getBounds(col, row);
@@ -4096,8 +4158,14 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         }
 
         // Start editing when composition starts (for IME like Korean/Japanese/Chinese)
+        // Skip CustomCell - they have their own editors and don't use GhostInput for IME
         if (overlayRef.current === undefined) {
             const cell = getMangledCellContent([col, row]);
+
+            // Skip CustomCell - they have their own editors (e.g., react-select for DropdownCell)
+            if (cell.kind === GridCellKind.Custom) {
+                return;
+            }
 
             if (cell.allowOverlay && isReadWriteCell(cell) && cell.readonly !== true) {
                 const bounds = gridRef.current?.getBounds(col, row);
@@ -4171,12 +4239,24 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             // Printable characters should NEVER be passed to the grid's key handler.
             // They are handled by GhostInput natively (textarea) and processed via onGhostInput (input event).
             // Passing them to handleFixedKeybindings would cause duplicate overlay opening.
+            // EXCEPTION: Space key on Boolean cells should be passed through for toggle functionality.
             {
                 const key = event.key;
                 const isPrintable = key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey;
 
                 if (isPrintable) {
-                    return;
+                    // Space key on Boolean cell should pass through to handleFixedKeybindings for toggle
+                    if (key === " " && gridSelection.current !== undefined) {
+                        const cell = gridSelection.current.cell;
+                        const cellContent = getMangledCellContent(cell);
+                        if (cellContent.kind === GridCellKind.Boolean && cellContent.readonly !== true) {
+                            // Don't return - let Space pass through to handleFixedKeybindings
+                        } else {
+                            return;
+                        }
+                    } else {
+                        return;
+                    }
                 }
             }
 
@@ -4222,7 +4302,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 event.stopPropagation();
             }
         },
-        [gridSelection, onKeyDown, onFinishEditing]
+        [gridSelection, onKeyDown, onFinishEditing, getMangledCellContent]
     );
 
     const onGhostKeyUp = React.useCallback(

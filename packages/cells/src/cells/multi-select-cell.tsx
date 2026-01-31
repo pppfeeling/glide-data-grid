@@ -311,6 +311,12 @@ const Editor: ReturnType<ProvideEditorCallback<MultiSelectCell>> = p => {
     );
 
     const handleKeyDown: React.KeyboardEventHandler = event => {
+        // Ignore key events during IME composition (e.g., Korean, Japanese, Chinese input)
+        // The first Enter during composition completes the composition, not the action
+        if (event.nativeEvent.isComposing) {
+            return;
+        }
+
         switch (event.key) {
             case "Enter":
             case "Tab":
