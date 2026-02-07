@@ -81,3 +81,85 @@
            * HTML Canvas 엘리먼트를 사용하여 셀, 헤더, 구분선, 포커스 링 등 그리드의 모든 시각적 요소를 직접 그립니다.
            * 마우스 클릭, 키보드 입력과 같은 로우 레벨(low-level)의 사용자 입력 이벤트를 직접 처리하고, 관련 이벤트 인자(EventArgs)를 생성하여 상위 컴포넌트로 전달합니다.
            * render 디렉토리의 함수들(data-grid-render.ts, data-grid-render.cells.ts 등)을 호출하여 실제 렌더링을 수행합니다.
+
+# DataEditor 컴포넌트 분석
+이 파일은 glide-data-grid 라이브러리의 최상위 컴포넌트로, 총 5,212줄의 대규모 React 컴포넌트입니다. 스프레드시트와 유사한 고성능 데이터 그리드를 제공합니다.
+
+## 전체 구조
+
+DataEditor (React.forwardRef)
+  └─ ThemeContext.Provider
+       ├─ DataEditorContainer (레이아웃 래퍼)
+       │    ├─ DataGridSearch (캔버스 기반 그리드 + 검색 기능)
+       │    ├─ GroupRename (그룹 헤더 이름 변경 UI)
+       │    └─ DataGridOverlayEditor (셀 편집 오버레이, React.lazy)
+       └─ GhostInput (IME 입력 지원용 숨겨진 textarea, Portal)
+## 핵심 개념: "Mangling" (내부 좌표 변환)
+이 컴포넌트에서 가장 중요한 개념은 rowMarkerOffset입니다.
+
+    - 사용자가 보는 컬럼 인덱스와 내부 컬럼 인덱스가 다릅니다
+    - 왼쪽에 row marker 컬럼들 (checkbox, rowNumber, rowStatus, rowId)이 추가되면, 사용자 컬럼 0은 내부적으로 rowMarkerOffset 만큼 밀립니다
+    - rowMarkerOffset 계산 (라인 1027-1030):
+
+    rowMarkerOffset = (hasRowMarkers ? (showRowNumber ? 2 : 1) : 0) 
+                    + (hasRowStatus ? 1 : 0) 
+                    + (hasRowId ? 1 : 0)
+    - 모든 외부 콜백 호출 시 -rowMarkerOffset, 내부 처리 시 +rowMarkerOffset으로 변환합니다
+### 주요 기능별 분류
+    1. 셀 렌더링 & 데이터
+        - getMangledCellContent (라인 1468-1664): 핵심 함수. 좌표에 따라 marker 셀, status 셀, ID 셀, 또는 사용자 데이터 셀을 반환
+        - mangledCols (라인 1233-1318): marker 컬럼들을 사용자 컬럼 앞에 추가한 전체 컬럼 배열
+    2. 선택(Selection) 시스템
+        - gridSelection: 현재 선택 상태 (셀, 범위, 행, 열)
+        - handleSelect (라인 2130-2386): 클릭 시 셀/행/열 선택 처리
+        - adjustSelection (라인 3239-3404): Shift+화살표로 범위 확장
+        - setCurrent / setSelectedRows / setSelectedColumns: useSelectionBehavior 훅에서 제공하는 선택 조작 함수
+        - 선택 모드: rangeSelect, columnSelect, rowSelect, blending 옵션 등
+    3. 편집 시스템
+        - Overlay Editor: 셀 클릭/Enter 시 DataGridOverlayEditor가 열림
+        - GhostInput: IME(한글/일본어/중국어) 입력을 위한 숨겨진 textarea
+            - onGhostInput: 일반 문자 입력 처리
+            - onGhostCompositionStart/End: IME 조합 시작/종료
+            - onGhostKeyDown: Enter/Tab/Escape로 편집 완료
+        - onFinishEditing (라인 3471-3637): 편집 완료 시 값 저장, GhostInput/overlay 정리, 셀 이동
+        - mangledOnCellsEdited (라인 1357-1384): 좌표 변환 후 onCellEdited/onCellsEdited 콜백 호출
+    4. 키보드 네비게이션
+        - handleFixedKeybindings (라인 3683-4023): 대부분의 키보드 동작 처리
+            - 화살표 키: 셀 이동
+            - Ctrl+Home/End: 처음/마지막 셀로
+            - PageUp/Down: 페이지 단위 이동
+            - Shift+화살표: 범위 선택
+            - Enter/Space: 셀 활성화 (Boolean 셀은 Space로 토글)
+            - Delete: 선택 영역 삭제
+            - Ctrl+D/R: Fill Down/Right
+            - Escape: 오버레이 닫기
+    5. 마우스 이벤트
+        - onMouseDown (라인 2395-2432): 마우스 상태 초기화, fill handle 감지
+        - onMouseUp (라인 2645-2854): 클릭/더블클릭 판정, 셀 활성화, fill pattern 실행
+        - onItemHoveredImpl (라인 3113-3209): 드래그 선택, fill handle 드래그 처리
+    6. 복사/붙여넣기/잘라내기
+        - onCopy (라인 4618-4721): 선택 영역을 클립보드에 복사 (HTML + 텍스트)
+        - onPasteInternal (라인 4429-4611): 클립보드에서 데이터 파싱 후 셀에 붙여넣기
+        - onCut (라인 4725-4752): 복사 후 선택 영역 삭제
+    7. 스크롤 & 가시 영역
+        - scrollTo (라인 1816-1965): 프로그래밍 방식 스크롤 (frozen 컬럼/행 고려)
+        - onVisibleRegionChangedImpl (라인 2957-3042): 스크롤 시 가시 영역 업데이트, 오버레이 자동 닫기
+        - useAutoscroll: 드래그 선택 시 자동 스크롤
+    8. 컬럼 관리
+        - useColumnSizer: 컬럼 너비 자동 계산
+        - normalSizeColumn (라인 2506-2554): 더블클릭 시 컬럼 자동 크기 조정
+        - onColumnResize/End/Start, onColumnMoved: 컬럼 리사이즈/이동 이벤트
+    9. 행 관리
+        - appendRow (라인 1979-2034): 새 행 추가 (trailing blank row 클릭 시)
+        - rowGrouping: 행 그룹핑 지원 (useRowGroupingInner, useRowGrouping)
+        - fill handle: 드래그로 패턴 채우기 (fillPattern, fillDown, fillRight)
+
+## AI 수정으로 추가된 커스텀 기능들
+원본 glide-data-grid에 없는, AI를 통해 추가된 것으로 보이는 기능들:
+
+    1. Row Status 컬럼 (rowStatus, onRowStatus): A(Added)/U(Updated)/D(Deleted) 상태 표시
+    2. Row ID 컬럼 (rowId, onRowId): 행 ID 표시
+    3. Row Number 분리: showRowNumber 옵션으로 행 번호와 체크박스를 별도 컬럼으로 분리
+    4. GhostInput: IME 지원을 위한 별도 입력 요소 (원본은 canvas 직접 입력 방식)
+    5. 부모 스크롤 감지 (라인 2896-2954): 부모 컨테이너 스크롤 시 오버레이 자동 닫기
+
