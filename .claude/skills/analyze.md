@@ -27,6 +27,7 @@ Glide Data Grid의 사전 분석 문서를 조회하여 코드 수정에 필요�
 | DataEditor Props/상태 | `/analyze/02-data-editor.md` |
 | 캔버스/마우스/키보드 | `/analyze/03-data-grid.md` |
 | 셀 렌더러 | `/analyze/05-cells.md` |
+| **커스텀 렌더러 생성** | `/analyze/15-custom-renderer-guide.md` |
 | 선택/네비게이션 | `/analyze/06-selection.md` |
 | 편집/복사/붙여넣기 | `/analyze/07-editing.md` |
 | 이벤트 핸들링 | `/analyze/08-events.md` |
@@ -50,6 +51,7 @@ Glide Data Grid의 사전 분석 문서를 조회하여 코드 수정에 필요�
      - `grid`, `그리드` → `/analyze/03-data-grid.md`
      - `render`, `렌더링` → `/analyze/04-rendering.md`
      - `cell`, `셀` → `/analyze/05-cells.md`
+     - `custom renderer`, `커스텀렌더러`, `customcell` → `/analyze/15-custom-renderer-guide.md`
      - `selection`, `선택` → `/analyze/06-selection.md`
      - `edit`, `편집`, `paste`, `copy` → `/analyze/07-editing.md`
      - `event`, `이벤트` → `/analyze/08-events.md`
@@ -105,6 +107,8 @@ Glide Data Grid의 사전 분석 문서를 조회하여 코드 수정에 필요�
 | `11-extension-points.md` | 커스텀 셀, 테마, 이벤트 확장 |
 | `12-multi-level-header.md` | 다중 레벨 그룹 헤더, 계층적 헤더 구현 |
 | `13-ghost-input-ime.md` | GhostInput 패턴, IME 입력 처리 설계 |
+| `14-numbercell-keystroke-editing-fix.md` | NumberCell 키 입력 즉시 편집 모드 진입 수정 |
+| **`15-custom-renderer-guide.md`** | **커스텀 렌더러 생성 완전 가이드: CustomCell, CustomRenderer, 데이터 접근, 에디터, 이벤트, 애니메이션, DataGrid 연결** |
 | `quick-reference.md` | 파일 위치, 타입 빠른 조회, 체크리스트 |
 | `boolean-cell-keyboard-navigation.md` | Boolean 셀 Space 토글, Enter 이동 구현 |
 | `number-cell-enter-key-navigation.md` | Number 셀 Enter 키 아래 이동 구현 |

@@ -1749,7 +1749,8 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 // Use GhostInput for character/IME input (not Enter key)
                 // - initialValue !== undefined: character input or IME composition start
                 // - initialValue === undefined: Enter key (use GrowingEntry)
-                const useGhostMode = initialValue !== undefined;
+                const isCustomCell = content.kind === GridCellKind.Custom;
+                const useGhostMode = initialValue !== undefined && !isCustomCell;
 
                 if (useGhostMode) {
                     // Set GhostInput position and value for IME support (direct DOM manipulation)
@@ -1762,6 +1763,14 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     }
                     ghostInputRef.current?.setVisible(true);
                     setGhostInputVisible(true);
+                } else if (isCustomCell && initialValue !== undefined) {
+                    // For Custom cells, hide GhostInput completely so the custom editor
+                    // receives all keyboard events (Enter, Tab, Escape, etc.)
+                    // The custom editor handles input directly via its own input element
+                    ghostInputRef.current?.clear();
+                    ghostInputRef.current?.setVisible(false);
+                    ghostInputRef.current?.blur();
+                    setGhostInputVisible(false);
                 }
             } else if (c.kind === GridCellKind.Boolean && activation.inputType === "keyboard" && c.readonly !== true) {
                 mangledOnCellsEdited([
@@ -3476,9 +3485,17 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             let finalValue = newValue;
             const ghostText = ghostInputRef.current?.getValue() ?? "";
             console.log("[onFinishEditing] ghostText from GhostInput:", ghostText);
+            console.log("[onFinishEditing] newValue:", newValue);
 
-            if (currentOverlay?.cell !== undefined && ghostText.length > 0 && currentOverlay.content !== undefined) {
-                console.log("[onFinishEditing] Using ghostText from GhostInput");
+            // IMPORTANT: For Custom cells, the custom editor provides the value via newValue.
+            // We should NOT try to use ghostText for Custom cells because:
+            // 1. Custom cells have their own editors that handle input directly
+            // 2. ghostText might be stale or contain the initial keystroke only
+            // 3. The custom editor's onFinishedEditing callback provides the correct finalValue
+            const isCustomCell = currentOverlay?.content?.kind === GridCellKind.Custom;
+
+            if (currentOverlay?.cell !== undefined && ghostText.length > 0 && currentOverlay.content !== undefined && !isCustomCell) {
+                console.log("[onFinishEditing] Using ghostText from GhostInput (non-Custom cell)");
                 // Create a new cell value based on the GhostInput text
                 // Important: Update both 'data' and 'displayData' for proper display
                 const cellContent = currentOverlay.content;
@@ -3494,6 +3511,11 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 } else if (cellContent.kind === GridCellKind.Markdown) {
                     finalValue = { ...cellContent, data: ghostText };
                 }
+            } else if (isCustomCell) {
+                console.log("[onFinishEditing] Custom cell - using newValue directly:", newValue);
+                // For Custom cells, use newValue from the custom editor
+                // Don't modify it based on ghostText
+                finalValue = newValue;
             }
 
             // When GhostInput is empty but newValue comes from overlay editor (e.g., Enter/double-click edit mode),
@@ -4108,8 +4130,14 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 const cell = getMangledCellContent([col, row]);
 
                 // Skip CustomCell - they have their own editors (e.g., react-select for DropdownCell)
+                // Exception: number-cell and date-picker-cell support keystroke activation
                 if (cell.kind === GridCellKind.Custom) {
-                    return;
+                    const cellData = cell.data as { kind?: string } | undefined;
+                    const cellKind = cellData?.kind;
+                    // Allow number-cell and date-picker-cell to activate on keystroke
+                    if (cellKind !== 'number-cell' && cellKind !== 'date-picker-cell') {
+                        return;
+                    }
                 }
 
                 if (cell.allowOverlay && isReadWriteCell(cell) && cell.readonly !== true) {
@@ -4163,8 +4191,14 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             const cell = getMangledCellContent([col, row]);
 
             // Skip CustomCell - they have their own editors (e.g., react-select for DropdownCell)
+            // Exception: number-cell and date-picker-cell support keystroke activation
             if (cell.kind === GridCellKind.Custom) {
-                return;
+                const cellData = cell.data as { kind?: string } | undefined;
+                const cellKind = cellData?.kind;
+                // Allow number-cell and date-picker-cell to activate on keystroke
+                if (cellKind !== 'number-cell' && cellKind !== 'date-picker-cell') {
+                    return;
+                }
             }
 
             if (cell.allowOverlay && isReadWriteCell(cell) && cell.readonly !== true) {
@@ -4210,6 +4244,24 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             // Use ref to avoid stale closure issues
             if (overlayRef.current !== undefined && ghostInputVisibleRef.current) {
                 const key = event.key;
+
+                // IMPORTANT: For Custom cells, the custom editor (e.g., NumberInput) handles
+                // Enter/Tab/Escape keys itself. GhostInput should NOT interfere.
+                // Only handle these keys for non-Custom cells (Text, Number, Uri, Markdown).
+                const cellContent = overlayRef.current.content;
+                if (cellContent.kind === GridCellKind.Custom) {
+                    const key = event.key;
+                    // Prevent default behavior (e.g., Enter adding newline in textarea)
+                    // but don't call onFinishEditing - let the custom editor handle it
+                    if (key === "Enter" || key === "Tab" || key === "Escape") {
+                        console.log("[onGhostKeyDown] Custom cell - preventing default for", key);
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    // Don't handle Enter/Tab/Escape for Custom cells
+                    // The custom editor will handle these keys via onFinishedEditing callback
+                    return;
+                }
 
                 if (key === "Escape") {
                     // Cancel editing - don't save value
