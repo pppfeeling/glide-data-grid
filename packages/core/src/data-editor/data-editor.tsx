@@ -1028,6 +1028,13 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         (hasRowMarkers ? (showRowNumber ? 2 : 1) : 0) +
         (hasRowStatus ? 1 : 0) +
         (hasRowId ? 1 : 0);
+    // Total pixel width of all marker columns (rowNumber, checkbox, rowStatus, rowId)
+    // Unlike rowMarkerOffset (column count for coordinate conversion),
+    // this accounts for each column's actual width which may differ.
+    const totalMarkerWidth =
+        (hasRowMarkers ? (showRowNumber ? 2 : 1) * rowMarkerWidth : 0) +
+        (hasRowStatus ? rowStatusWidth : 0) +
+        (hasRowId ? rowIdWidth : 0);
     const showTrailingBlankRow = trailingRowOptions !== undefined;
     const lastRowSticky = trailingRowOptions?.sticky === true;
 
@@ -1194,14 +1201,14 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         columnsIn,
         rows,
         getCellsForSeletionDirect,
-        clientSize[0] - (rowMarkerOffset === 0 ? 0 : rowMarkerWidth) - clientSize[2],
+        clientSize[0] - totalMarkerWidth - clientSize[2],
         minColumnWidth,
         maxColumnAutoWidth,
         mergedTheme,
         getCellRenderer,
         abortControllerRef.current
     );
-    if (rowMarkers !== "none") nonGrowWidth += rowMarkerWidth;
+    nonGrowWidth += totalMarkerWidth;
 
     const groupLevels = React.useMemo(() => {
         let maxLevel = 0;
@@ -1873,7 +1880,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                         }
 
                         // scrollBounds is already scaled
-                        let sLeft = frozenWidth * scale + scrollBounds.left + rowMarkerOffset * rowMarkerWidth * scale;
+                        let sLeft = frozenWidth * scale + scrollBounds.left + totalMarkerWidth * scale;
                         let sRight = scrollBounds.right;
                         let sTop = scrollBounds.top + totalHeaderHeight * scale;
                         let sBottom = scrollBounds.bottom - trailingRowHeight * scale;
@@ -3795,27 +3802,21 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                         key: event.key,
                     };
 
-                    // For Boolean cells: Space toggles, Enter moves down
+                    // For Boolean cells: both Enter and Space toggle the value
                     const cellContent = getMangledCellContent([col, row]);
 
                     if (cellContent.kind === GridCellKind.Boolean && cellContent.readonly !== true) {
                         onCellActivated?.([col - rowMarkerOffset, row], activationEvent);
-                        if (event.key === " ") {
-                            // Space on Boolean cell: toggle value
-                            mangledOnCellsEdited([
-                                {
-                                    location: [col, row],
-                                    value: {
-                                        ...cellContent,
-                                        data: toggleBoolean(cellContent.data),
-                                    },
+                        mangledOnCellsEdited([
+                            {
+                                location: [col, row],
+                                value: {
+                                    ...cellContent,
+                                    data: toggleBoolean(cellContent.data),
                                 },
-                            ]);
-                            gridRef.current?.damage([{ cell: [col, row] }]);
-                        } else if (event.key === "Enter") {
-                            // Enter on Boolean cell: move down
-                            row += 1;
-                        }
+                            },
+                        ]);
+                        gridRef.current?.damage([{ cell: [col, row] }]);
                     } else {
                         onCellActivated?.([col - rowMarkerOffset, row], activationEvent);
                         reselect(bounds, activationEvent);
