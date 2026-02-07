@@ -1356,8 +1356,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
     const mangledOnCellsEdited = React.useCallback<NonNullable<typeof onCellsEdited>>(
         (items: readonly EditListItem[]) => {
-            console.log("[mangledOnCellsEdited] items:", items);
-            console.log("[mangledOnCellsEdited] rowMarkerOffset:", rowMarkerOffset);
             const mangledItems =
                 rowMarkerOffset === 0
                     ? items
@@ -1365,15 +1363,10 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                           ...x,
                           location: [x.location[0] - rowMarkerOffset, x.location[1]] as const,
                       }));
-            console.log("[mangledOnCellsEdited] mangledItems:", mangledItems);
-            console.log("[mangledOnCellsEdited] onCellsEdited:", onCellsEdited);
             const r = onCellsEdited?.(mangledItems);
-            console.log("[mangledOnCellsEdited] onCellsEdited result:", r);
 
             if (r !== true) {
-                console.log("[mangledOnCellsEdited] calling onCellEdited for each item, onCellEdited:", onCellEdited);
                 for (const i of mangledItems) {
-                    console.log("[mangledOnCellsEdited] calling onCellEdited with:", i.location, i.value);
                     onCellEdited?.(i.location, i.value);
                 }
             }
@@ -3474,18 +3467,10 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             const currentOverlay = overlayRef.current;
             const isGhostMode = ghostInputVisibleRef.current;
 
-            // DEBUG: Log state for troubleshooting
-            console.log("[onFinishEditing] isGhostMode:", isGhostMode);
-            console.log("[onFinishEditing] currentOverlay:", currentOverlay);
-            console.log("[onFinishEditing] ghostInputRef.current:", ghostInputRef.current);
-            console.log("[onFinishEditing] ghostText:", ghostInputRef.current?.getValue());
-
             // Read value from GhostInput if available (even if isGhostMode is false)
             // This handles cases where editing is completed by clicking outside
             let finalValue = newValue;
             const ghostText = ghostInputRef.current?.getValue() ?? "";
-            console.log("[onFinishEditing] ghostText from GhostInput:", ghostText);
-            console.log("[onFinishEditing] newValue:", newValue);
 
             // IMPORTANT: For Custom cells, the custom editor provides the value via newValue.
             // We should NOT try to use ghostText for Custom cells because:
@@ -3495,11 +3480,9 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             const isCustomCell = currentOverlay?.content?.kind === GridCellKind.Custom;
 
             if (currentOverlay?.cell !== undefined && ghostText.length > 0 && currentOverlay.content !== undefined && !isCustomCell) {
-                console.log("[onFinishEditing] Using ghostText from GhostInput (non-Custom cell)");
                 // Create a new cell value based on the GhostInput text
                 // Important: Update both 'data' and 'displayData' for proper display
                 const cellContent = currentOverlay.content;
-                console.log("[onFinishEditing] cellContent.kind:", cellContent.kind);
                 if (cellContent.kind === GridCellKind.Text) {
                     finalValue = { ...cellContent, data: ghostText, displayData: ghostText };
                 } else if (cellContent.kind === GridCellKind.Number) {
@@ -3512,7 +3495,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     finalValue = { ...cellContent, data: ghostText };
                 }
             } else if (isCustomCell) {
-                console.log("[onFinishEditing] Custom cell - using newValue directly:", newValue);
                 // For Custom cells, use newValue from the custom editor
                 // Don't modify it based on ghostText
                 finalValue = newValue;
@@ -3532,9 +3514,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     finalValue = { ...finalValue, displayData: finalValue.data };
                 }
             }
-            console.log("[onFinishEditing] finalValue:", finalValue);
-            console.log("[onFinishEditing] isEditableGridCell:", finalValue !== undefined ? isEditableGridCell(finalValue) : "N/A");
-            console.log("[onFinishEditing] condition check - cell:", currentOverlay?.cell, "finalValue:", finalValue !== undefined, "isEditable:", finalValue !== undefined && isEditableGridCell(finalValue));
 
             // Check if the value actually changed by comparing data fields
             const originalContent = currentOverlay?.content;
@@ -3559,7 +3538,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             };
 
             if (currentOverlay?.cell !== undefined && finalValue !== undefined && isEditableGridCell(finalValue) && hasValueChanged()) {
-                console.log("[onFinishEditing] CALLING mangledOnCellsEdited with:", { location: currentOverlay.cell, value: finalValue });
                 mangledOnCellsEdited([{ location: currentOverlay.cell, value: finalValue }]);
                 window.requestAnimationFrame(() => {
                     gridRef.current?.damage([
@@ -3819,17 +3797,10 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
                     // For Boolean cells: Space toggles, Enter moves down
                     const cellContent = getMangledCellContent([col, row]);
-                    console.log("[handleFixedKeybindings] activateCell triggered", {
-                        cellKind: cellContent.kind,
-                        isBoolean: cellContent.kind === GridCellKind.Boolean,
-                        readonly: (cellContent as any).readonly,
-                        eventKey: event.key,
-                    });
+
                     if (cellContent.kind === GridCellKind.Boolean && cellContent.readonly !== true) {
-                        console.log("[handleFixedKeybindings] Boolean cell detected, handling Space/Enter");
                         onCellActivated?.([col - rowMarkerOffset, row], activationEvent);
                         if (event.key === " ") {
-                            console.log("[handleFixedKeybindings] Space key on Boolean cell - toggling value");
                             // Space on Boolean cell: toggle value
                             mangledOnCellsEdited([
                                 {
@@ -4108,7 +4079,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     // GhostInput handlers for IME support
     const onGhostInput = React.useCallback(
         (value: string, composing: boolean) => {
-            console.log("[onGhostInput] value:", value, "composing:", composing, "overlay:", overlayRef.current !== undefined);
 
             // IMPORTANT: Do NOT call setGhostValue during IME composition!
             // Any React state update during composition will cause re-render
@@ -4118,7 +4088,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             // If overlay is already open, GhostInput is visible and handling input directly
             // Use overlayRef to avoid re-creating this callback when overlay changes
             if (overlayRef.current !== undefined) {
-                console.log("[onGhostInput] overlay already open, returning");
                 return;
             }
 
@@ -4163,10 +4132,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         // but we avoid any other state updates to prevent re-renders.
         // Use overlayRef to avoid re-creating this callback when overlay changes
 
-        console.log("[onGhostCompositionStart] called");
-        console.log("[onGhostCompositionStart] gridSelection.current:", gridSelection.current);
-        console.log("[onGhostCompositionStart] overlayRef.current:", overlayRef.current);
-
         if (gridSelection.current === undefined) return;
 
         const [col, row] = gridSelection.current.cell;
@@ -4176,7 +4141,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         // This happens when user moves to a new cell and starts typing before previous overlay closes
         if (currentOverlayCell !== undefined &&
             (currentOverlayCell[0] !== col || currentOverlayCell[1] !== row)) {
-            console.log("[onGhostCompositionStart] Different cell detected, closing previous overlay");
             // Close current overlay immediately without saving (composition just started for new cell)
             ghostInputRef.current?.clear();
             ghostInputRef.current?.setVisible(false);
@@ -4230,12 +4194,10 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
     const onGhostKeyDown = React.useCallback(
         (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-            console.log("[onGhostKeyDown] key:", event.key, "isComposing:", event.nativeEvent.isComposing);
 
             // IMPORTANT: Ignore key events during IME composition
             // This prevents Enter/Tab from interrupting IME input
             if (event.nativeEvent.isComposing) {
-                console.log("[onGhostKeyDown] IGNORED due to isComposing");
                 return;
             }
 
@@ -4254,7 +4216,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     // Prevent default behavior (e.g., Enter adding newline in textarea)
                     // but don't call onFinishEditing - let the custom editor handle it
                     if (key === "Enter" || key === "Tab" || key === "Escape") {
-                        console.log("[onGhostKeyDown] Custom cell - preventing default for", key);
                         event.preventDefault();
                         event.stopPropagation();
                     }
@@ -4441,10 +4402,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 if (!isInnerOnlyCell(inner) && isReadWriteCell(inner) && inner.readonly !== true) {
                     const coerced = coercePasteValue?.(stringifiedRawValue, inner);
                     if (coerced !== undefined && isEditableGridCell(coerced)) {
-                        if (process.env.NODE_ENV !== "production" && coerced.kind !== inner.kind) {
-                            // eslint-disable-next-line no-console
-                            console.warn("Coercion should not change cell kind.");
-                        }
                         return {
                             location: target,
                             value: coerced,
