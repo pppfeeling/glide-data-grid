@@ -1,0 +1,9 @@
+import{R as e}from"./iframe-DfFb5Ign.js";import{D as m}from"./data-editor-all-C-BnK6SF.js";import{B as p,D as c,P as u,M as d,u as C,d as E}from"./utils-k_uFBkax.js";import{S as g}from"./story-utils-DlkJV70N.js";import"./preload-helper-C1FmrZbK.js";import"./index-KG-dsUoR.js";import"./image-window-loader-DuEXGL_L.js";import"./throttle-ByAiyUNP.js";import"./marked.esm-CIUALPyN.js";import"./flatten-By6_WT6j.js";import"./scrolling-data-grid-DuhwYF3j.js";import"./index-D_kXk1yT.js";import"./throttle--dN168Gr.js";const P={title:"Glide-Data-Grid/DataEditor Demos",decorators:[o=>e.createElement(g,null,e.createElement(p,{title:"Copy support",description:e.createElement(e.Fragment,null,e.createElement(c,null,"Large amounts of data can be copied and customized using"," ",e.createElement(u,null,"getCellsForSelection"),"."),e.createElement(d,null,"The data is copied into a format ready to be pasted into Excel or Google Sheets"),e.createElement("textarea",{placeholder:"Copy something below and paste it here...",style:{width:"100%",marginBottom:20,borderRadius:9,minHeight:200,padding:10}}))},e.createElement(o,null)))]},t=()=>{const{cols:o,getCellContent:n,onColumnResize:s,setCellValue:i}=C(10,!1);return e.createElement(m,{...E,getCellContent:n,rowMarkers:"both",columns:o,onCellEdited:i,onColumnResize:s,rows:400})};var r,a,l;t.parameters={...t.parameters,docs:{...(r=t.parameters)==null?void 0:r.docs,source:{originalSource:`() => {
+  const {
+    cols,
+    getCellContent,
+    onColumnResize,
+    setCellValue
+  } = useMockDataGenerator(10, false);
+  return <DataEditor {...defaultProps} getCellContent={getCellContent} rowMarkers="both" columns={cols} onCellEdited={setCellValue} onColumnResize={onColumnResize} rows={400} />;
+}`,...(l=(a=t.parameters)==null?void 0:a.docs)==null?void 0:l.source}}};const B=["CopySupport"];export{t as CopySupport,B as __namedExportsOrder,P as default};
