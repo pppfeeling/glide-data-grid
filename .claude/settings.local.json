@@ -36,7 +36,9 @@
       "Bash(npm install:*)",
       "Bash(ls:*)",
       "Bash(xargs basename:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(wc:*)",
+      "Bash(npx vitest run:*)"
     ],
     "deny": [],
     "ask": []
