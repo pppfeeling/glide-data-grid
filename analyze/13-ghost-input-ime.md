@@ -48,7 +48,9 @@ GhostInput(포커스 유지) → input 이벤트 → ghostValue 업데이트 →
 
 | 파일 | 변경 내용 |
 |------|----------|
-| `data-editor/data-editor.tsx` | GhostInput 통합, 이벤트 핸들러 수정, displayData 동기화 |
+| `data-editor/data-editor.tsx` | GhostInput 통합, 오버레이 관리, displayData 동기화 |
+| `data-editor/use-ghost-input.ts` | GhostInput 이벤트 핸들러 (리팩토링으로 추출됨) |
+| `data-editor/use-keyboard-handlers.ts` | 키보드 네비게이션/키바인딩 (리팩토링으로 추출됨) |
 | `internal/data-grid/data-grid.tsx` | Canvas tabIndex 변경 (`0` → `-1`) |
 | `internal/data-grid-overlay-editor/data-grid-overlay-editor.tsx` | GhostModeContext 제공, ghost mode시 visibility hidden |
 | `internal/growing-entry/growing-entry.tsx` | GhostModeContext 소비, autoFocus 제거, ghostValue 표시 |
@@ -243,3 +245,5 @@ if (updateSelected) {
 3. **displayData 동기화**: 셀 값을 저장할 때 `data`와 `displayData`를 모두 업데이트해야 한다. 그리드는 네비게이션 모드에서 `displayData`를 표시한다.
 
 4. **키 이벤트 분리**: printable character는 항상 GhostInput이 처리, editing/cursor key는 overlay가 열려있을 때만 GhostInput이 처리, 나머지(Enter, Escape, Tab, 방향키 등)는 grid handler가 처리.
+
+5. **리팩토링 후 파일 위치**: GhostInput 관련 이벤트 핸들러는 `use-ghost-input.ts`에 위치. `onGhostInput`, `onGhostKeyDown` 등 핸들러 수정시 이 파일을 참조. `data-editor.tsx`에는 오버레이 관리와 상태 초기화만 남아있음.

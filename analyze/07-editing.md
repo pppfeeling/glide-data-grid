@@ -3,9 +3,12 @@
 ## 개요
 - **역할**: 셀 편집, 복사, 붙여넣기, 삭제 기능
 - **핵심 파일**:
-  - `data-editor/data-editor.tsx` (편집 상태 관리)
+  - `data-editor/data-editor.tsx` (편집 상태 관리, 오버레이 관리)
+  - `data-editor/use-clipboard.ts` (복사/붙여넣기/잘라내기 훅 - 리팩토링)
+  - `data-editor/use-ghost-input.ts` (IME/문자 입력 핸들링 - 리팩토링)
+  - `data-editor/use-keyboard-handlers.ts` (키보드 편집 시작/삭제 - 리팩토링)
   - `data-editor/data-editor-fns.ts` (편집 유틸리티)
-  - `data-editor/copy-paste.ts` (복사/붙여넣기)
+  - `data-editor/copy-paste.ts` (클립보드 데이터 파싱)
   - `internal/data-grid-overlay-editor/` (오버레이 편집기)
 
 ## 편집 오버레이 상태
@@ -175,15 +178,19 @@ const onFinishEditing = useCallback((
 
 ## 복사 (Copy)
 
+> **참고**: 복사/붙여넣기/잘라내기 로직은 `use-clipboard.ts`로 추출되었습니다.
+
 ### 복사 흐름
 ```
 1. Ctrl+C 또는 onKeyDown에서 copy 이벤트
         ↓
-2. getCellsForSelection으로 범위 데이터 가져오기
+2. useClipboard 훅의 onCopy 핸들러 실행 (use-clipboard.ts)
         ↓
-3. 데이터 포맷팅 (TSV 형식)
+3. getCellsForSelection으로 범위 데이터 가져오기
         ↓
-4. clipboard API로 복사
+4. 데이터 포맷팅 (TSV 형식)
+        ↓
+5. clipboard API로 복사
 ```
 
 ### copyToClipboard
@@ -241,17 +248,21 @@ function getCellCopyData(cell: GridCell): string {
 
 ## 붙여넣기 (Paste)
 
+> **참고**: 붙여넣기 로직은 `use-clipboard.ts`의 `onPasteInternal`에 위치합니다.
+
 ### 붙여넣기 흐름
 ```
 1. Ctrl+V 또는 paste 이벤트
         ↓
-2. 클립보드 데이터 파싱
+2. useClipboard 훅의 onPasteInternal 핸들러 실행 (use-clipboard.ts)
         ↓
-3. onPaste 콜백 확인
+3. 클립보드 데이터 파싱 (HTML/텍스트)
         ↓
-4. 대상 셀에 데이터 적용
+4. onPaste 콜백 확인
         ↓
-5. onCellEdited / onCellsEdited 호출
+5. 대상 셀에 데이터 적용 (coercePasteValue 사용)
+        ↓
+6. onCellEdited / onCellsEdited 호출
 ```
 
 ### 클립보드 데이터 파싱
@@ -440,3 +451,6 @@ type ValidateCell = (
 3. **오버레이 위치**: target Rectangle은 화면 좌표
 4. **movement 처리**: Tab/Enter 후 다음 셀 자동 이동
 5. **클립보드 권한**: HTTPS 환경에서만 작동
+6. **리팩토링된 파일 위치**: 복사/붙여넣기 로직은 `use-clipboard.ts`, 키보드 편집 시작은 `use-keyboard-handlers.ts`, IME 입력은 `use-ghost-input.ts`
+7. **삭제 핸들링**: `handleFixedKeybindings` (use-keyboard-handlers.ts)에서 Delete/Backspace 처리
+8. **Fill 연산**: `fillDown`/`fillRight` 함수는 `use-mouse-handlers.ts`에 위치

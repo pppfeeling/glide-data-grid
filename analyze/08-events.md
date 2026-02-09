@@ -5,7 +5,11 @@
 - **핵심 파일**:
   - `internal/data-grid/event-args.ts` (이벤트 타입 정의)
   - `internal/data-grid/data-grid.tsx` (저수준 이벤트 처리)
-  - `data-editor/data-editor.tsx` (고수준 이벤트 핸들링)
+  - `data-editor/data-editor.tsx` (이벤트 오케스트레이션)
+  - `data-editor/use-mouse-handlers.ts` (고수준 마우스 이벤트 - 리팩토링)
+  - `data-editor/use-keyboard-handlers.ts` (고수준 키보드 이벤트 - 리팩토링)
+  - `data-editor/use-ghost-input.ts` (IME/문자 입력 이벤트 - 리팩토링)
+  - `data-editor/use-clipboard.ts` (클립보드 이벤트 - 리팩토링)
 
 ## 이벤트 타입
 
@@ -278,17 +282,30 @@ const onDragStartImpl = useCallback((event: DragEvent) => {
 ## 이벤트 전파 경로
 
 ```
-1. DOM 이벤트 (Canvas)
+1. DOM 이벤트 (Canvas / GhostInput)
         ↓
-2. DataGrid 핸들러
+2. DataGrid 핸들러 (data-grid.tsx)
    - 좌표 → 셀 변환
    - 이벤트 타입 결정
         ↓
-3. DataEditor 핸들러
-   - 선택 상태 업데이트
-   - 비즈니스 로직 처리
+3. 추출된 훅 핸들러 (리팩토링된 구조)
+   ├── 마우스 이벤트 → useMouseHandlers (use-mouse-handlers.ts)
+   │   - 셀 클릭, 드래그, 필 패턴
+   │   - 컨텍스트 메뉴, 터치 이벤트
+   ├── 키보드 이벤트 → useKeyboardHandlers (use-keyboard-handlers.ts)
+   │   - 네비게이션, 키바인딩
+   │   - 셀 활성화, 삭제
+   ├── 문자 입력 → useGhostInput (use-ghost-input.ts)
+   │   - IME 조합, 인쇄 가능 문자
+   │   - GhostInput textarea 이벤트
+   └── 클립보드 → useClipboard (use-clipboard.ts)
+       - 복사/붙여넣기/잘라내기
         ↓
-4. 사용자 콜백
+4. DataEditor 상태 업데이트 (data-editor.tsx)
+   - 선택 상태 업데이트
+   - 오버레이 관리
+        ↓
+5. 사용자 콜백
    - onCellClicked
    - onGridSelectionChange
    - 등
@@ -370,3 +387,9 @@ interface Keybinds {
 3. **preventDefault**: 기본 동작 취소 시점 주의
 4. **터치 이벤트**: isTouch, isLongTouch 구분 처리
 5. **드래그**: isDraggable prop과 함께 사용
+6. **리팩토링된 파일 위치**: 이벤트 핸들러 수정시 해당 훅 파일을 직접 수정
+   - 마우스 이벤트: `use-mouse-handlers.ts`
+   - 키보드 이벤트: `use-keyboard-handlers.ts`
+   - IME/입력: `use-ghost-input.ts`
+   - 클립보드: `use-clipboard.ts`
+7. **DataEditorCoreState**: 훅에 새 상태를 전달해야 하면 `data-editor-state.ts`의 인터페이스 수정 필요

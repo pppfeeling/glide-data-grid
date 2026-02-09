@@ -43,16 +43,30 @@ The data grid uses HTML Canvas for performance, allowing it to handle millions o
 - `packages/core/src/cells/` - Individual cell renderers
 
 ### Key Components
-- **`DataEditor`** (`packages/core/src/data-editor/data-editor.tsx`) - Main component wrapper
+- **`DataEditor`** (`packages/core/src/data-editor/data-editor.tsx`) - Main component orchestrator (3,802 LOC)
 - **`DataEditorAll`** (`packages/core/src/data-editor-all.tsx`) - Full-featured version with all dependencies
 - **Cell Renderers** (`packages/core/src/cells/`) - Built-in cell types (text, number, image, etc.)
+
+### DataEditor Refactored Architecture
+DataEditor는 오케스트레이터 패턴으로 리팩토링되어, 이벤트 처리 로직이 4개의 커스텀 훅으로 추출됨:
+- `data-editor-state.ts` (104 LOC) - 공유 상태 인터페이스 (`DataEditorCoreState`)
+- `use-mouse-handlers.ts` (637 LOC) - 마우스/터치/필 이벤트
+- `use-keyboard-handlers.ts` (523 LOC) - 키보드 네비게이션/키바인딩
+- `use-clipboard.ts` (403 LOC) - 복사/붙여넣기/잘라내기
+- `use-ghost-input.ts` (329 LOC) - IME/GhostInput 핸들러
 
 ### Package Structure
 ```
 packages/core/src/
 ├── cells/              # Built-in cell renderers
 ├── common/             # Shared utilities and styles
-├── data-editor/        # Main DataEditor component
+├── data-editor/        # Main DataEditor component (refactored)
+│   ├── data-editor.tsx           # Orchestrator
+│   ├── data-editor-state.ts      # Shared state interfaces
+│   ├── use-mouse-handlers.ts     # Mouse/touch/fill events
+│   ├── use-keyboard-handlers.ts  # Keyboard navigation
+│   ├── use-clipboard.ts          # Copy/paste/cut
+│   └── use-ghost-input.ts        # IME/character input
 ├── internal/           # Internal components and utilities
 └── stories/            # Storybook stories
 ```
@@ -69,17 +83,21 @@ packages/core/src/
 ### Reference by Modification Area
 | 수정 대상 | 참조 문서 |
 |-----------|----------|
-| DataEditor Props/이벤트 | `/analyze/02-data-editor.md` |
+| DataEditor Props/상태/오케스트레이션 | `/analyze/02-data-editor.md` |
 | 캔버스 컨트롤러 | `/analyze/03-data-grid.md` |
 | 렌더링 파이프라인 | `/analyze/04-rendering.md` |
 | 셀 렌더러 추가/수정 | `/analyze/05-cells.md` |
 | 선택 동작 변경 | `/analyze/06-selection.md` |
 | 편집/복사/붙여넣기 | `/analyze/07-editing.md` |
-| 이벤트 처리 | `/analyze/08-events.md` |
+| 이벤트 처리 (마우스/키보드) | `/analyze/08-events.md` |
 | 테마 커스터마이징 | `/analyze/09-theming.md` |
 | 데이터 처리 (필터/정렬/그룹) | `/analyze/10-data-processing.md` |
 | 확장 포인트 | `/analyze/11-extension-points.md` |
 | **다중 레벨 그룹 헤더** | `/analyze/12-multi-level-header.md` |
+| IME/한글 입력 (GhostInput) | `/analyze/13-ghost-input-ime.md` |
+| NumberCell 키 입력 편집 | `/analyze/14-numbercell-keystroke-editing-fix.md` |
+| 커스텀 렌더러 가이드 | `/analyze/15-custom-renderer-guide.md` |
+| **Row Markers (행 마커/상태/ID)** | `/analyze/16-row-markers.md` |
 
 ### When to Use
 1. **새 기능 추가 전**: 관련 문서에서 기존 패턴 확인

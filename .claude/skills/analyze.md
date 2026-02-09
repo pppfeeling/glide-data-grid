@@ -24,17 +24,25 @@ Glide Data Grid의 사전 분석 문서를 조회하여 코드 수정에 필요�
 
 | 작업 영역 | 문서 |
 |-----------|------|
-| DataEditor Props/상태 | `/analyze/02-data-editor.md` |
-| 캔버스/마우스/키보드 | `/analyze/03-data-grid.md` |
+| DataEditor Props/상태/오케스트레이션 | `/analyze/02-data-editor.md` |
+| 캔버스/저수준 이벤트 | `/analyze/03-data-grid.md` |
 | 셀 렌더러 | `/analyze/05-cells.md` |
 | **커스텀 렌더러 생성** | `/analyze/15-custom-renderer-guide.md` |
 | 선택/네비게이션 | `/analyze/06-selection.md` |
 | 편집/복사/붙여넣기 | `/analyze/07-editing.md` |
-| 이벤트 핸들링 | `/analyze/08-events.md` |
+| 이벤트 핸들링 (마우스/키보드) | `/analyze/08-events.md` |
 | IME/한글 입력 | `/analyze/13-ghost-input-ime.md` |
 | Boolean 셀 키보드 | `/analyze/boolean-cell-keyboard-navigation.md` |
 | Number 셀 Enter | `/analyze/number-cell-enter-key-navigation.md` |
 | 다중 레벨 헤더 | `/analyze/12-multi-level-header.md` |
+| **Row Markers (마커/상태/ID)** | `/analyze/16-row-markers.md` |
+
+**리팩토링 참고**: DataEditor의 이벤트 처리 로직은 다음 파일들로 추출됨:
+- 마우스/터치/필: `use-mouse-handlers.ts`
+- 키보드/키바인딩: `use-keyboard-handlers.ts`
+- 클립보드: `use-clipboard.ts`
+- IME/GhostInput: `use-ghost-input.ts`
+- 공유 상태 타입: `data-editor-state.ts`
 
 
 
@@ -62,6 +70,7 @@ Glide Data Grid의 사전 분석 문서를 조회하여 코드 수정에 필요�
      - `ghost`, `ime`, `한글`, `composition` → `/analyze/13-ghost-input-ime.md`, `/analyze/ghost-input-ime-fixes.md`
      - `boolean`, `체크박스`, `toggle` → `/analyze/boolean-cell-keyboard-navigation.md`
      - `number`, `숫자셀` → `/analyze/number-cell-enter-key-navigation.md`
+     - `rowMarker`, `marker`, `rowStatus`, `rowId`, `행마커` → `/analyze/16-row-markers.md`
      - `quick`, `빠른`, `reference` → `/analyze/quick-reference.md`
    - 해당 문서 읽기
    - 핵심 내용 요약 제공 (주요 타입, 함수, 파일 위치)
@@ -108,7 +117,8 @@ Glide Data Grid의 사전 분석 문서를 조회하여 코드 수정에 필요�
 | `12-multi-level-header.md` | 다중 레벨 그룹 헤더, 계층적 헤더 구현 |
 | `13-ghost-input-ime.md` | GhostInput 패턴, IME 입력 처리 설계 |
 | `14-numbercell-keystroke-editing-fix.md` | NumberCell 키 입력 즉시 편집 모드 진입 수정 |
-| **`15-custom-renderer-guide.md`** | **커스텀 렌더러 생성 완전 가이드: CustomCell, CustomRenderer, 데이터 접근, 에디터, 이벤트, 애니메이션, DataGrid 연결** |
+| `15-custom-renderer-guide.md` | 커스텀 렌더러 생성 가이드: CustomCell, CustomRenderer, 데이터 접근, 에디터, 이벤트, 애니메이션, DataGrid 연결 |
+| `16-row-markers.md` | Row Markers: RowMarkerOptions, 마커 컬럼 종류, rowMarkerOffset, totalMarkerWidth, RowStatus/RowId, 셀 렌더러 |
 | `quick-reference.md` | 파일 위치, 타입 빠른 조회, 체크리스트 |
 | `boolean-cell-keyboard-navigation.md` | Boolean 셀 Space 토글, Enter 이동 구현 |
 | `number-cell-enter-key-navigation.md` | Number 셀 Enter 키 아래 이동 구현 |

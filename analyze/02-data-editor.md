@@ -3,18 +3,43 @@
 ## 개요
 - **역할**: Glide Data Grid의 메인 컴포넌트, 모든 Props와 이벤트 처리
 - **위치**: `packages/core/src/data-editor/data-editor.tsx`
-- **LOC**: 약 4,762 라인
+- **LOC**: 약 3,802 라인 (리팩토링 후, 기존 4,762 라인에서 축소)
 
-## 컴포넌트 구조
+## 리팩토링 아키텍처
+
+DataEditor는 **오케스트레이터 패턴**으로 리팩토링되어, 이벤트 처리 로직이 4개의 커스텀 훅으로 추출되었습니다.
 
 ```
-DataEditor (ForwardRef)
+DataEditor (ForwardRef) - 오케스트레이터
     ├── 상태 관리 (useState, useRef)
     ├── Props 정규화
     ├── 컬럼/행 계산
-    ├── 이벤트 핸들러
+    ├── DataEditorCoreState 생성 (공유 상태 객체)
+    ├── 추출된 훅 호출:
+    │   ├── useMouseHandlers()      → 마우스/터치/필 이벤트 (637 LOC)
+    │   ├── useKeyboardHandlers()   → 키보드 네비게이션/키바인딩 (523 LOC)
+    │   ├── useGhostInput()         → IME/문자 입력 (329 LOC)
+    │   └── useClipboard()          → 복사/붙여넣기/잘라내기 (403 LOC)
     ├── DataGridSearch 렌더링
     └── DataGridOverlayEditor (편집 오버레이)
+```
+
+### DataEditorCoreState (data-editor-state.ts, 104 LOC)
+훅 간 공유 상태를 중앙화하는 인터페이스:
+```typescript
+interface DataEditorCoreState {
+    // 핵심 상태
+    gridSelection: GridSelection;
+    overlay: OverlayState | undefined;
+    // Refs
+    gridRef, ghostInputRef, overlayRef, ghostInputVisibleRef,
+    scrollRef, canvasRef, visibleRegionRef, abortControllerRef
+    // 좌표 데이터
+    rowMarkerOffset, mangledCols, mangledRows, rows
+    // 콜백
+    setGridSelection, getMangledCellContent, mangledOnCellsEdited,
+    setOverlay, focus, setGhostInputVisible, reselect, getCellRenderer
+}
 ```
 
 ## 핵심 Props
@@ -211,6 +236,15 @@ interface DataEditorRef {
 
 ## 주요 커스텀 훅 사용
 
+### 추출된 이벤트 핸들러 훅 (리팩토링)
+| 훅 | 목적 | 파일 | LOC |
+|----|------|------|-----|
+| `useMouseHandlers` | 마우스/터치/필 이벤트 | `use-mouse-handlers.ts` | 637 |
+| `useKeyboardHandlers` | 키보드 네비게이션/키바인딩 | `use-keyboard-handlers.ts` | 523 |
+| `useClipboard` | 복사/붙여넣기/잘라내기 | `use-clipboard.ts` | 403 |
+| `useGhostInput` | IME/문자 입력 | `use-ghost-input.ts` | 329 |
+
+### 기존 유틸리티 훅
 | 훅 | 목적 | 파일 |
 |----|------|------|
 | `useSelectionBehavior` | 선택 로직 | `use-selection-behavior.ts` |
@@ -247,6 +281,9 @@ onFinishedEditing(newValue, [deltaX, deltaY]);
 3. **편집 오버레이**: lazy loading으로 성능 최적화됨
 4. **이벤트 순서**: mouseDown → selection → mouseUp → click
 5. **컬럼 순서**: rowNumber → checkbox → rowStatus → rowId → 사용자 컬럼
+6. **이벤트 핸들러 수정**: 마우스/키보드/클립보드/IME 로직은 각각의 use-*.ts 파일에 위치
+7. **DataEditorCoreState**: 새로운 공유 상태 추가시 data-editor-state.ts 인터페이스 수정 필요
+8. **훅 호출 순서**: data-editor.tsx 내에서 useMouseHandlers → useKeyboardHandlers → useGhostInput → useClipboard 순서로 호출
 
 ## 확장 포인트
 
@@ -257,3 +294,37 @@ onFinishedEditing(newValue, [deltaX, deltaY]);
 | 셀 검증 | `validateCell` prop |
 | 드래그 | `isDraggable` + `onDragStart` |
 | 테마 | `theme` prop |
+
+## 추출된 훅 상세
+
+### useMouseHandlers (use-mouse-handlers.ts)
+- 마우스 down/up/move 이벤트 처리
+- 필 핸들 감지 및 필 패턴 연산
+- 컬럼 헤더 사이징 (더블클릭 자동 맞춤)
+- 다중 레벨 그룹 헤더 선택
+- 셀 클릭 감지 및 활성화
+- 컨텍스트 메뉴, 터치 이벤트 (롱 프레스 감지)
+- 반환: `MouseHandlers { onMouseDown, onMouseUp, onMouseMoveImpl, ... }`
+
+### useKeyboardHandlers (use-keyboard-handlers.ts)
+- 고정 키바인딩 처리 (clear, select all, search, delete)
+- 셀 네비게이션 (화살표, Page Up/Down, Home/End)
+- 선택 조작 (extend, grow, collapse)
+- 셀 활성화 (Enter, Space for Boolean)
+- 필 연산 (fill down, fill right)
+- 행 그룹 네비게이션
+- 반환: `KeyboardHandlers { handleFixedKeybindings, onKeyDown }`
+
+### useGhostInput (use-ghost-input.ts)
+- GhostInput textarea 이벤트 핸들링
+- IME composition 지원 (한글/일본어/중국어)
+- 인쇄 가능 문자 감지로 오버레이 열기
+- Custom Cell 예외 처리 (number-cell, date-picker-cell)
+- 반환: `GhostInputHandlers { onGhostInput, onGhostKeyDown, ... }`
+
+### useClipboard (use-clipboard.ts)
+- 복사/붙여넣기/잘라내기 구현
+- HTML/텍스트 클립보드 포맷 지원
+- 붙여넣기 시 셀 검증 및 coercion
+- 커스텀 렌더러 paste 핸들링
+- 반환: `ClipboardHandlers { onCopy, onPasteInternal, onCut }`

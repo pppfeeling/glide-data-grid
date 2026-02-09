@@ -34,7 +34,9 @@
       "Read(//c/Users/pppfe/OneDrive/바탕 화면/**)",
       "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run storybook)",
       "Bash(npm install:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(xargs basename:*)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []

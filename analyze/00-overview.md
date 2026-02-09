@@ -20,7 +20,7 @@ DataEditorAll (data-editor-all.tsx)
 | 컴포넌트 | 파일 | 역할 |
 |---------|------|------|
 | `DataEditorAll` | `data-editor-all.tsx` | 모든 셀 렌더러 포함 완전한 버전 |
-| `DataEditor` | `data-editor/data-editor.tsx:1-4762` | Props 처리, 이벤트 핸들링, 상태 관리 |
+| `DataEditor` | `data-editor/data-editor.tsx:1-3802` | Props 처리, 상태 관리, 훅 오케스트레이션 |
 | `DataGridSearch` | `internal/data-grid-search/` | 검색 기능 래퍼 |
 | `DataGrid` | `internal/data-grid/data-grid.tsx:1-1950` | 캔버스 직접 제어, 마우스/키보드 이벤트 |
 
@@ -39,7 +39,12 @@ packages/core/src/
 │   ├── utils.ts              # 유틸 함수
 │   └── support.ts            # 타입 헬퍼
 ├── data-editor/              # 메인 컴포넌트
-│   ├── data-editor.tsx       # DataEditor (4,762 LOC)
+│   ├── data-editor.tsx       # DataEditor 오케스트레이터 (3,802 LOC)
+│   ├── data-editor-state.ts  # 공유 상태 인터페이스 (104 LOC)
+│   ├── use-mouse-handlers.ts # 마우스/터치/필 이벤트 (637 LOC)
+│   ├── use-keyboard-handlers.ts # 키보드 네비게이션/키바인딩 (523 LOC)
+│   ├── use-clipboard.ts      # 복사/붙여넣기/잘라내기 (403 LOC)
+│   ├── use-ghost-input.ts    # IME/GhostInput 핸들러 (329 LOC)
 │   ├── use-column-sizer.ts   # 컬럼 크기 계산
 │   ├── use-autoscroll.ts     # 자동 스크롤
 │   └── data-editor-fns.ts    # 편집 유틸리티
@@ -65,11 +70,14 @@ packages/core/src/
    ├── Props 전달 (columns, rows, getCellContent)
    └── 이벤트 콜백 등록 (onCellEdited, onGridSelectionChange)
 
-2. DataEditor 처리 (data-editor.tsx)
-   ├── Props 정규화 및 검증
-   ├── 내부 상태 관리 (selection, scroll position)
-   ├── 이벤트 핸들링 (클릭, 키보드, 드래그)
-   └── 편집 오버레이 관리
+2. DataEditor 처리 (data-editor.tsx + 추출된 훅들)
+   ├── Props 정규화 및 검증 (data-editor.tsx)
+   ├── 내부 상태 관리 (data-editor.tsx → DataEditorCoreState)
+   ├── 마우스/터치 이벤트 (use-mouse-handlers.ts)
+   ├── 키보드 이벤트 (use-keyboard-handlers.ts)
+   ├── IME/문자 입력 (use-ghost-input.ts)
+   ├── 복사/붙여넣기 (use-clipboard.ts)
+   └── 편집 오버레이 관리 (data-editor.tsx)
 
 3. DataGrid 렌더링 (data-grid.tsx)
    ├── 캔버스 컨텍스트 관리
@@ -159,7 +167,12 @@ theme                       → 스타일링
 ## 의존성 관계
 
 ```
-data-editor.tsx
+data-editor.tsx (오케스트레이터)
+    ├── data-editor-state.ts (DataEditorCoreState 인터페이스)
+    ├── use-mouse-handlers.ts (마우스/터치/필 이벤트)
+    ├── use-keyboard-handlers.ts (키보드 네비게이션)
+    ├── use-ghost-input.ts (IME/문자 입력)
+    ├── use-clipboard.ts (복사/붙여넣기)
     ├── data-grid-types.ts (타입)
     ├── styles.ts (테마)
     ├── use-selection-behavior.ts (선택)
@@ -170,10 +183,26 @@ data-editor.tsx
     └── data-grid-overlay-editor.tsx (편집 오버레이)
 ```
 
+### 추출된 훅 의존성 (DataEditorCoreState 기반)
+```
+DataEditorCoreState (data-editor-state.ts)
+    ├── 핵심 상태: gridSelection, overlay
+    ├── Refs: gridRef, ghostInputRef, overlayRef, scrollRef, canvasRef 등
+    ├── 좌표 데이터: rowMarkerOffset, mangledCols, mangledRows, rows
+    └── 콜백: setGridSelection, getMangledCellContent, mangledOnCellsEdited 등
+
+use-mouse-handlers ←── DataEditorCoreState + mouse-specific props
+use-keyboard-handlers ←── DataEditorCoreState + keyboard-specific props
+use-ghost-input ←── DataEditorCoreState + ghost-input-specific props
+use-clipboard ←── DataEditorCoreState + clipboard-specific props
+```
+
 ## 수정 시 주의사항
 
-1. **data-editor.tsx**: 4,762줄의 대형 파일, 수정 전 관련 섹션 파악 필수
-2. **data-grid-types.ts**: 타입 변경시 광범위한 영향
-3. **렌더링 파이프라인**: 성능에 민감, 불필요한 리렌더링 주의
-4. **선택 로직**: `use-selection-behavior.ts`의 블렌딩 규칙 이해 필요
-5. **이벤트 처리**: `event-args.ts`의 타입 구조 준수
+1. **data-editor.tsx**: 3,802줄 (리팩토링 후), 오케스트레이터 역할 - 이벤트 핸들러 수정시 추출된 훅 파일 확인
+2. **추출된 훅 파일**: 마우스/키보드/클립보드/IME 로직은 각각의 use-*.ts 파일에 위치
+3. **DataEditorCoreState**: 훅 간 공유 상태 - 새 상태 추가시 data-editor-state.ts 수정 필요
+4. **data-grid-types.ts**: 타입 변경시 광범위한 영향
+5. **렌더링 파이프라인**: 성능에 민감, 불필요한 리렌더링 주의
+6. **선택 로직**: `use-selection-behavior.ts`의 블렌딩 규칙 이해 필요
+7. **이벤트 처리**: `event-args.ts`의 타입 구조 준수

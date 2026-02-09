@@ -5,7 +5,12 @@
 ### 핵심 파일 (빈번한 수정)
 | 파일 | LOC | 용도 | 수정 사례 |
 |------|-----|------|----------|
-| `data-editor/data-editor.tsx` | 4,762 | 메인 컴포넌트 | Props 추가, 이벤트 핸들링 |
+| `data-editor/data-editor.tsx` | 3,802 | 메인 오케스트레이터 | Props 추가, 상태 관리 |
+| `data-editor/data-editor-state.ts` | 104 | 공유 상태 인터페이스 | 훅 간 공유 상태 추가 |
+| `data-editor/use-mouse-handlers.ts` | 637 | 마우스/터치/필 | 클릭, 드래그, 필 패턴 |
+| `data-editor/use-keyboard-handlers.ts` | 523 | 키보드 네비게이션 | 키바인딩, 셀 이동 |
+| `data-editor/use-clipboard.ts` | 403 | 복사/붙여넣기 | 클립보드 처리 |
+| `data-editor/use-ghost-input.ts` | 329 | IME/문자 입력 | GhostInput, 한글 입력 |
 | `internal/data-grid/data-grid-types.ts` | 748 | 타입 정의 | 새 셀 타입, 속성 추가 |
 | `internal/data-grid/data-grid.tsx` | 1,950 | 캔버스 컨트롤러 | 마우스/키보드 이벤트 |
 | `common/styles.ts` | 215 | 테마 정의 | 색상, 폰트 변경 |
@@ -233,13 +238,19 @@ console.timeEnd('drawGrid');
 - [ ] `data-editor.tsx`: Props 타입에 추가
 - [ ] `data-editor.tsx`: 구조 분해 할당에서 추출
 - [ ] 기본값 설정 (필요시)
-- [ ] 하위 컴포넌트로 전달 (필요시)
+- [ ] 하위 컴포넌트로 전달 또는 `coreState`에 추가 (필요시)
 - [ ] JSDoc 주석 추가
 
 ### 이벤트 핸들러 추가시
 - [ ] `event-args.ts`: 이벤트 타입 정의
 - [ ] `data-editor.tsx`: Props에 콜백 추가
-- [ ] `data-grid.tsx`: 이벤트 발생 로직 (필요시)
+- [ ] 해당 훅 파일에 로직 구현:
+  - 마우스 관련: `use-mouse-handlers.ts`
+  - 키보드 관련: `use-keyboard-handlers.ts`
+  - 클립보드 관련: `use-clipboard.ts`
+  - IME/입력 관련: `use-ghost-input.ts`
+- [ ] `data-editor-state.ts`: 공유 상태가 필요하면 `DataEditorCoreState` 인터페이스 수정
+- [ ] `data-grid.tsx`: 저수준 이벤트 발생 로직 (필요시)
 - [ ] 문서 업데이트
 
 ### 테마 속성 추가시
@@ -254,9 +265,14 @@ console.timeEnd('drawGrid');
 |------|----------|
 | DataEditor Props | `data-editor.tsx:219-735` |
 | DataEditorRef | `data-editor.tsx:751-796` |
+| DataEditorCoreState | `data-editor-state.ts:1-104` |
+| 마우스 이벤트 핸들러 | `use-mouse-handlers.ts` |
+| 키보드 네비게이션 | `use-keyboard-handlers.ts` |
+| 클립보드 처리 | `use-clipboard.ts` |
+| IME/GhostInput 핸들러 | `use-ghost-input.ts` |
 | getCellContent 호출 | `data-grid.tsx:114` |
-| 마우스 이벤트 처리 | `data-grid.tsx:516-727` |
-| 키보드 이벤트 처리 | `data-grid.tsx:1376-1434` |
+| 저수준 마우스 이벤트 | `data-grid.tsx:516-727` |
+| 저수준 키보드 이벤트 | `data-grid.tsx:1376-1434` |
 | 셀 렌더링 | `render/data-grid-render.cells.ts` |
 | 헤더 렌더링 | `render/data-grid-render.header.ts` |
 | 선택 로직 | `use-selection-behavior.ts:16-153` |
