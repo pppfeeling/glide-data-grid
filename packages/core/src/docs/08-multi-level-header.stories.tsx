@@ -61,7 +61,7 @@ export const MultiLevelHeader: React.VFC = () => {
     // Level 0 (top): "Location" or "Product Info" or "Financial"
     // Level 1 (middle): "Geography", "Details", "Metrics"
     // Level 2 (bottom): specific group names
-    const [columns, setColumns] = React.useState<GridColumn[]>([
+    const [columns1, setColumns11] = React.useState<GridColumn[]>([
         {
             title: "Region",
             id: "region",
@@ -109,6 +109,57 @@ export const MultiLevelHeader: React.VFC = () => {
             id: "quantity",
             width: 80,
             group: ["Financial", "Metrics", "Volume"],
+        },
+    ]);
+
+    const [columns, setColumns] = React.useState<GridColumn[]>([
+        {
+            title: "Region",
+            id: "region",
+            width: 120,
+            group: ["Financial",  "Area"],
+        },
+        {
+            title: "Country",
+            id: "country",
+            width: 100,
+            group: ["Financial",  "Area"],
+        },
+        {
+            title: "City",
+            id: "city",
+            width: 100,
+            group: ["Financial",  "Place"],
+        },
+        {
+            title: "Product",
+            id: "product",
+            width: 100,
+            group: ["Financial",  "Item"],
+        },
+        {
+            title: "Category",
+            id: "category",
+            width: 100,
+            group: ["Financial",  "Item"],
+        },
+        {
+            title: "Sales",
+            id: "sales",
+            width: 100,
+            group: ["Financial",  "Revenue"],
+        },
+        {
+            title: "Profit",
+            id: "profit",
+            width: 100,
+            group: ["Financial",  "Revenue"],
+        },
+        {
+            title: "Quantity",
+            id: "quantity",
+            width: 80,
+            group: ["Financial",  "Volume"],
         },
     ]);
 

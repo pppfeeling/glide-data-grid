@@ -210,7 +210,6 @@ export function drawGroups(
     getGroupDetails: GroupDetailsCallback,
     damage: CellSet | undefined
 ) {
-    const xPad = 8;
     const [hCol, hRow] = hovered?.[0] ?? [];
 
     let finalX = 0;
@@ -245,22 +244,27 @@ export function drawGroups(
 
         ctx.fillStyle = groupTheme.textGroupHeader ?? groupTheme.textHeader;
         if (group !== undefined) {
-            let drawX = x;
+            const displayName = group.name;
+            const textMetrics = ctx.measureText(displayName);
+            const textWidth = textMetrics.width;
+            const iconWidth = group.icon !== undefined ? 26 : 0;
+            const totalContentWidth = iconWidth + textWidth;
+            const centerX = x + (w - totalContentWidth) / 2;
+
             if (group.icon !== undefined) {
                 spriteManager.drawSprite(
                     group.icon,
                     "normal",
                     ctx,
-                    drawX + xPad,
+                    centerX,
                     (groupHeaderHeight - 20) / 2,
                     20,
                     groupTheme
                 );
-                drawX += 26;
             }
             ctx.fillText(
-                group.name,
-                drawX + xPad,
+                displayName,
+                centerX + iconWidth,
                 groupHeaderHeight / 2 + getMiddleCenterBias(ctx, theme.headerFontFull)
             );
 
@@ -587,12 +591,24 @@ export function computeHeaderLayout(
     const headerIconSize = theme.headerIconSize;
     const menuBounds = getHeaderMenuBounds(x, y, width, height, false);
 
-    let drawX = x + xPad;
+    // 텍스트 너비 측정
+    const textWidth =
+        ctx === undefined
+            ? (getMeasuredTextCache(c.title, theme.headerFontFull)?.width ?? 0)
+            : measureTextCached(c.title, ctx, theme.headerFontFull).width;
+
+    const iconAreaWidth = c.icon !== undefined ? Math.ceil(headerIconSize * 1.3) : 0;
+
+    // icon + text를 전체 컬럼 폭 기준으로 가운데 정렬
+    // menu와 indicator는 별도 위치에 배치되므로 정렬 계산에서 제외
+    const coreContentWidth = iconAreaWidth + textWidth;
+    const centerStartX = x + Math.max(xPad, (width - coreContentWidth) / 2);
+
     const iconBounds =
         c.icon === undefined
             ? undefined
             : {
-                  x: drawX,
+                  x: centerStartX,
                   y: y + (height - headerIconSize) / 2,
                   width: headerIconSize,
                   height: headerIconSize,
@@ -608,33 +624,14 @@ export function computeHeaderLayout(
                   height: 18,
               };
 
-    if (iconBounds !== undefined) {
-        drawX += Math.ceil(headerIconSize * 1.3);
-    }
-
-    // 텍스트 너비 측정
-    const textWidth =
-        ctx === undefined
-            ? (getMeasuredTextCache(c.title, theme.headerFontFull)?.width ?? 0)
-            : measureTextCached(c.title, ctx, theme.headerFontFull).width;
-
-    // 메뉴가 있는 경우 오른쪽 공간 확보
-    const menuWidth = c.hasMenu === true ? 35 : 0;
-    const indicatorWidth = c.indicatorIcon !== undefined ? headerIconSize + xPad : 0;
-
-    // 텍스트+indicator를 중앙 정렬하기 위한 계산
-    const contentWidth = textWidth + indicatorWidth;
-    const availableWidth = width - (iconBounds !== undefined ? Math.ceil(headerIconSize * 1.3) + xPad : xPad) - menuWidth - xPad;
-    const centeredStartX = x + (iconBounds !== undefined ? Math.ceil(headerIconSize * 1.3) + xPad : xPad) + (availableWidth - contentWidth) / 2;
-
-    // textBounds를 중앙 정렬된 위치로 설정
     const textBounds = {
-        x: Math.max(drawX, centeredStartX),  // 아이콘과 겹치지 않도록
+        x: centerStartX + iconAreaWidth,
         y: y,
         width: textWidth,
         height: height,
     };
 
+    // indicator는 텍스트 바로 뒤에 배치
     let indicatorIconBounds: Rectangle | undefined = undefined;
     if (c.indicatorIcon !== undefined) {
         indicatorIconBounds = {

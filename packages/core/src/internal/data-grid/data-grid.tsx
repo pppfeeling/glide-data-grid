@@ -436,7 +436,8 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
             }),
         [headerIcons]
     );
-    const totalHeaderHeight = enableGroups ? groupHeaderHeight + headerHeight : headerHeight;
+    const totalGroupHeaderHeight = enableGroups ? groupHeaderHeights.reduce((a, b) => a + b, 0) : 0;
+    const totalHeaderHeight = headerHeight + totalGroupHeaderHeight;
 
     const scrollingStopRef = React.useRef(-1);
     const enableFirefoxRescaling = (experimental?.enableFirefoxRescaling ?? false) && browserIsFirefox.value;
@@ -738,6 +739,8 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
             fillHandle,
             selection,
             totalHeaderHeight,
+            groupLevels,
+            groupHeaderHeights,
         ]
     );
 

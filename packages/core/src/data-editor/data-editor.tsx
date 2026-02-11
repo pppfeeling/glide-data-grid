@@ -2442,6 +2442,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         columnSelect,
         columnSelectionMode,
         columns,
+        groupLevels,
         mergedTheme,
         minColumnWidth,
         maxColumnWidth,

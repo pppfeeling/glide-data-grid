@@ -71,6 +71,7 @@ interface UseMouseHandlersArgs {
     readonly columnSelect: "none" | "single" | "multi";
     readonly columnSelectionMode: "auto" | "multi";
     readonly columns: readonly GridColumn[];
+    readonly groupLevels: number;
     readonly mergedTheme: FullTheme;
     readonly minColumnWidth: number;
     readonly maxColumnWidth: number;
@@ -110,6 +111,7 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
         columnSelect,
         columnSelectionMode,
         columns,
+        groupLevels,
         mergedTheme,
         minColumnWidth,
         maxColumnWidth,
@@ -202,12 +204,12 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
             // For multi-level groups, determine which level was clicked
             // row -2 = level 0, row -3 = level 1, etc.
             const clickedLevel = row <= -2 ? -(row + 2) : 0;
-            const totalLevels = Array.isArray(needle.group) ? needle.group.length : 1;
 
             // Use level-aware comparison for multi-level groups
+            // groupLevels is the global max level count across all columns
             const compareGroups = (g1: string | readonly string[] | undefined, g2: string | readonly string[] | undefined) => {
-                if (totalLevels > 1) {
-                    return isGroupEqualAtLevel(g1, g2, clickedLevel, totalLevels);
+                if (groupLevels > 1) {
+                    return isGroupEqualAtLevel(g1, g2, clickedLevel, groupLevels);
                 }
                 return isGroupEqual(g1, g2);
             };
@@ -246,6 +248,7 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
             rowMarkerOffset,
             setSelectedColumns,
             columnSelectionMode,
+            groupLevels,
         ]
     );
 

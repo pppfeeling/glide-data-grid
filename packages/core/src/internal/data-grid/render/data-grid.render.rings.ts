@@ -24,7 +24,9 @@ export function drawHighlightRings(
     freezeTrailingRows: number,
     rows: number,
     allHighlightRegions: readonly Highlight[] | undefined,
-    theme: FullTheme
+    theme: FullTheme,
+    groupLevels?: number,
+    groupHeaderHeights?: readonly number[]
 ): (() => void) | undefined {
     const highlightRegions = allHighlightRegions?.filter(x => x.style !== "no-outline");
 
@@ -56,7 +58,9 @@ export function drawHighlightRings(
                 freezeColumns,
                 freezeTrailingRows,
                 mappedColumns,
-                rowHeight
+                rowHeight,
+                groupLevels,
+                groupHeaderHeights
             );
             const bottomRightBounds =
                 rect.width === 1 && rect.height === 1
@@ -76,7 +80,9 @@ export function drawHighlightRings(
                           freezeColumns,
                           freezeTrailingRows,
                           mappedColumns,
-                          rowHeight
+                          rowHeight,
+                          groupLevels,
+                          groupHeaderHeights
                       );
 
             if (rect.x + rect.width >= mappedColumns.length) {
