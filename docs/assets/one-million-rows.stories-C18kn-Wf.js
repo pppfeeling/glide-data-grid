@@ -1,0 +1,7 @@
+import{R as e}from"./iframe-BcE-c1gF.js";import{D as l}from"./data-editor-all-8E4Os2vs.js";import{B as i,D as m,u as p,d as c}from"./utils-KXRDGTSC.js";import{S as u}from"./story-utils-D7lIIpsB.js";import"./preload-helper-C1FmrZbK.js";import"./index-CwcCJ_pG.js";import"./image-window-loader-BfgbiBNy.js";import"./throttle-DiOeTwrO.js";import"./marked.esm-Cm6jhINK.js";import"./flatten-BzRjj1qx.js";import"./scrolling-data-grid-SYG2q29G.js";import"./index-D_kXk1yT.js";import"./throttle--dN168Gr.js";const h={title:"Glide-Data-Grid/DataEditor Demos",decorators:[t=>e.createElement(u,null,e.createElement(i,{title:"One Million Rows",description:e.createElement(m,null,"Data grid supports over 1 million rows. Your limit is mostly RAM.")},e.createElement(t,null)))]},r=()=>{const{cols:t,getCellContent:n}=p(6);return e.createElement(l,{...c,getCellContent:n,columns:t,rowHeight:31,rows:1e6,rowMarkers:"number"})};var o,s,a;r.parameters={...r.parameters,docs:{...(o=r.parameters)==null?void 0:o.docs,source:{originalSource:`() => {
+  const {
+    cols,
+    getCellContent
+  } = useMockDataGenerator(6);
+  return <DataEditor {...defaultProps} getCellContent={getCellContent} columns={cols} rowHeight={31} rows={1_000_000} rowMarkers="number" />;
+}`,...(a=(s=r.parameters)==null?void 0:s.docs)==null?void 0:a.source}}};const S=["OneMillionRows"];export{r as OneMillionRows,S as __namedExportsOrder,h as default};
