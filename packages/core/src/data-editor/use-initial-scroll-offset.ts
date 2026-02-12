@@ -38,24 +38,19 @@ export function useInitialScrollOffset(
     visibleRegionRef: React.MutableRefObject<VisibleRegion>,
     onDidScroll: () => void
 ) {
-    const [visibleRegionY, visibleRegionTy] = React.useMemo(() => {
-        return [
-            scrollOffsetY !== undefined && typeof rowHeight === "number" ? Math.floor(scrollOffsetY / rowHeight) : 0,
-            scrollOffsetY !== undefined && typeof rowHeight === "number" ? -(scrollOffsetY % rowHeight) : 0,
-        ];
-    }, [scrollOffsetY, rowHeight]);
+    const [visibleRegionY, visibleRegionTy] = [
+        scrollOffsetY !== undefined && typeof rowHeight === "number" ? Math.floor(scrollOffsetY / rowHeight) : 0,
+        scrollOffsetY !== undefined && typeof rowHeight === "number" ? -(scrollOffsetY % rowHeight) : 0,
+    ];
 
-    const visibleRegionInput = React.useMemo<VisibleRegion>(
-        () => ({
-            x: visibleRegionRef.current.x,
-            y: visibleRegionY,
-            width: visibleRegionRef.current.width ?? 1,
-            height: visibleRegionRef.current.height ?? 1,
-            // tx: 'TODO',
-            ty: visibleRegionTy,
-        }),
-        [visibleRegionRef, visibleRegionTy, visibleRegionY]
-    );
+    const visibleRegionInput: VisibleRegion = {
+        x: visibleRegionRef.current.x,
+        y: visibleRegionY,
+        width: visibleRegionRef.current.width ?? 1,
+        height: visibleRegionRef.current.height ?? 1,
+        // tx: 'TODO',
+        ty: visibleRegionTy,
+    };
 
     const [visibleRegion, setVisibleRegion, empty] = useStateWithReactiveInput<VisibleRegion>(visibleRegionInput);
 

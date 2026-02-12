@@ -40,10 +40,10 @@ export function measureColumn(
         selectedData === undefined
             ? []
             : selectedData.map(row => {
-                  const r = measureCell(ctx, row[colIndex], theme, getCellRenderer);
-                  max = Math.max(max, r);
-                  return r;
-              });
+                const r = measureCell(ctx, row[colIndex], theme, getCellRenderer);
+                max = Math.max(max, r);
+                return r;
+            });
 
     if (sizes.length > 5 && removeOutliers) {
         max = 0;
@@ -96,14 +96,14 @@ export function useColumnSizer(
     getCellsForSelectionRef.current = getCellsForSelection;
     themeRef.current = theme;
 
-    const [canvas, ctx] = React.useMemo(() => {
+    const [canvas, ctx] = (() => {
         if (typeof window === "undefined") return [null, null];
         const offscreen = document.createElement("canvas");
         offscreen.style["display"] = "none";
         offscreen.style["opacity"] = "0";
         offscreen.style["position"] = "fixed";
         return [offscreen, offscreen.getContext("2d", { alpha: false })];
-    }, []);
+    })();
 
     React.useLayoutEffect(() => {
         if (canvas) document.documentElement.append(canvas);
@@ -164,90 +164,88 @@ export function useColumnSizer(
         void fn();
     }, [abortController.signal, columns]);
 
-    return React.useMemo(() => {
-        const getRaw = () => {
-            if (columns.every(isSizedGridColumn)) {
-                return columns;
-            }
+    const getRaw = () => {
+        if (columns.every(isSizedGridColumn)) {
+            return columns;
+        }
 
-            if (ctx === null) {
-                return columns.map(c => {
-                    if (isSizedGridColumn(c)) return c;
-
-                    return {
-                        ...c,
-                        width: defaultSize,
-                    };
-                });
-            }
-
-            ctx.font = themeRef.current.baseFontFull;
-
-            return columns.map((c, colIndex) => {
+        if (ctx === null) {
+            return columns.map(c => {
                 if (isSizedGridColumn(c)) return c;
 
-                if (memoMap.current[c.id] !== undefined) {
-                    return {
-                        ...c,
-                        width: memoMap.current[c.id],
-                    };
-                }
-
-                if (selectedData === undefined || lastColumns.current !== columns || c.id === undefined) {
-                    return {
-                        ...c,
-                        width: defaultSize,
-                    };
-                }
-
-                const r = measureColumn(
-                    ctx,
-                    theme,
-                    c,
-                    colIndex,
-                    selectedData,
-                    minColumnWidth,
-                    maxColumnWidth,
-                    true,
-                    getCellRenderer
-                );
-                memoMap.current[c.id] = r.width;
-                return r;
-            });
-        };
-
-        let result: readonly InnerGridColumn[] = getRaw();
-        let totalWidth = 0;
-        let totalGrow = 0;
-        const distribute: number[] = [];
-        for (const [i, c] of result.entries()) {
-            totalWidth += c.width;
-            if (c.grow !== undefined && c.grow > 0) {
-                totalGrow += c.grow;
-                distribute.push(i);
-            }
-        }
-        if (totalWidth < clientWidth && distribute.length > 0) {
-            const writeable = [...result];
-            const extra = clientWidth - totalWidth;
-            let remaining = extra;
-            for (let di = 0; di < distribute.length; di++) {
-                const i = distribute[di];
-                const weighted = (result[i].grow ?? 0) / totalGrow;
-                const toAdd =
-                    di === distribute.length - 1 ? remaining : Math.min(remaining, Math.floor(extra * weighted));
-                writeable[i] = {
-                    ...result[i],
-                    growOffset: toAdd,
-                    width: result[i].width + toAdd,
+                return {
+                    ...c,
+                    width: defaultSize,
                 };
-                remaining -= toAdd;
-            }
-            result = writeable;
+            });
         }
-        return {
-            sizedColumns: result,
-            nonGrowWidth: totalWidth,
-        };
-    }, [clientWidth, columns, ctx, selectedData, theme, minColumnWidth, maxColumnWidth, getCellRenderer]);
+
+        ctx.font = themeRef.current.baseFontFull;
+
+        return columns.map((c, colIndex) => {
+            if (isSizedGridColumn(c)) return c;
+
+            if (memoMap.current[c.id] !== undefined) {
+                return {
+                    ...c,
+                    width: memoMap.current[c.id],
+                };
+            }
+
+            if (selectedData === undefined || lastColumns.current !== columns || c.id === undefined) {
+                return {
+                    ...c,
+                    width: defaultSize,
+                };
+            }
+
+            const r = measureColumn(
+                ctx,
+                theme,
+                c,
+                colIndex,
+                selectedData,
+                minColumnWidth,
+                maxColumnWidth,
+                true,
+                getCellRenderer
+            );
+            memoMap.current[c.id] = r.width;
+            return r;
+        });
+    };
+
+    let result: readonly InnerGridColumn[] = getRaw();
+    let totalWidth = 0;
+    let totalGrow = 0;
+    const distribute: number[] = [];
+    for (const [i, c] of result.entries()) {
+        totalWidth += c.width;
+        if (c.grow !== undefined && c.grow > 0) {
+            totalGrow += c.grow;
+            distribute.push(i);
+        }
+    }
+    if (totalWidth < clientWidth && distribute.length > 0) {
+        const writeable = [...result];
+        const extra = clientWidth - totalWidth;
+        let remaining = extra;
+        for (let di = 0; di < distribute.length; di++) {
+            const i = distribute[di];
+            const weighted = (result[i].grow ?? 0) / totalGrow;
+            const toAdd =
+                di === distribute.length - 1 ? remaining : Math.min(remaining, Math.floor(extra * weighted));
+            writeable[i] = {
+                ...result[i],
+                growOffset: toAdd,
+                width: result[i].width + toAdd,
+            };
+            remaining -= toAdd;
+        }
+        result = writeable;
+    }
+    return {
+        sizedColumns: result,
+        nonGrowWidth: totalWidth,
+    };
 }

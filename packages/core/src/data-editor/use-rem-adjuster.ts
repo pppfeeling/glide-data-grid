@@ -31,7 +31,7 @@ export function useRemAdjuster({
     scaleToRem,
     remSize,
 }: DataEditorProps): DataEditorDimensions {
-    const [rowHeight, headerHeight, groupHeaderHeight, theme, overscrollX, overscrollY] = React.useMemo(() => {
+    const [rowHeight, headerHeight, groupHeaderHeight, theme, overscrollX, overscrollY] = (() => {
         if (!scaleToRem || remSize === 16)
             return [rowHeightIn, headerHeightIn, groupHeaderHeightIn, themeIn, overscrollXIn, overscrollYIn];
         const scaler = remSize / 16;
@@ -50,7 +50,7 @@ export function useRemAdjuster({
             Math.ceil((overscrollXIn ?? 0) * scaler),
             Math.ceil((overscrollYIn ?? 0) * scaler),
         ];
-    }, [groupHeaderHeightIn, headerHeightIn, overscrollXIn, overscrollYIn, remSize, rowHeightIn, scaleToRem, themeIn]);
+    })();
 
     return { rowHeight, headerHeight, groupHeaderHeight, theme, overscrollX, overscrollY };
 }
