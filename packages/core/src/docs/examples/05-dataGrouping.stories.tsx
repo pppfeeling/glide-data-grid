@@ -15,7 +15,7 @@ import {
     PropName,
     defaultProps,
     useStaticMockData,
-} from "../../data-editor/stories/utils.js";
+} from "../stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 import { type SortConfig, multiColumnSort } from "../../data/sort.js";
 import {

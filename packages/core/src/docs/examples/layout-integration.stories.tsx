@@ -1,6 +1,6 @@
 import React from "react";
 import { DataEditorAll as DataEditor } from "../../data-editor-all.js";
-import { Description, useMockDataGenerator, defaultProps, BeautifulStyle } from "../../data-editor/stories/utils.js";
+import { Description, useMockDataGenerator, defaultProps, BeautifulStyle } from "../stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 
 export default {

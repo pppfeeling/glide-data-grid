@@ -2,7 +2,7 @@ import { range } from "lodash";
 import React from "react";
 import { type DataEditorProps } from "../../data-editor/data-editor.js";
 import { DataEditorAll as DataEditor } from "../../data-editor-all.js";
-import { BeautifulWrapper, Description, PropName, defaultProps } from "../../data-editor/stories/utils.js";
+import { BeautifulWrapper, Description, PropName, defaultProps } from "../stories/utils.js";
 import type { GridColumn } from "../../internal/data-grid/data-grid-types.js";
 import { GridCellKind } from "../../internal/data-grid/data-grid-types.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";

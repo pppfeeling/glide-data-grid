@@ -8,7 +8,7 @@ import {
     PropName,
     defaultProps,
     useAllMockedKinds,
-} from "../../data-editor/stories/utils.js";
+} from "../stories/utils.js";
 import type { Item } from "../../internal/data-grid/data-grid-types.js";
 import { GridCellKind } from "../../internal/data-grid/data-grid-types.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";

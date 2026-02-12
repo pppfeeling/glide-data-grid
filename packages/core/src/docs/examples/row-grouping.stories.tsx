@@ -6,7 +6,7 @@ import {
     PropName,
     useMockDataGenerator,
     defaultProps,
-} from "../../data-editor/stories/utils.js";
+} from "../stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 import { GridCellKind, type Item } from "../../internal/data-grid/data-grid-types.js";
 import { type RowGroupingOptions } from "../../data-editor/row-grouping.js";

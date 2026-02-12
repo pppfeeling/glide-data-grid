@@ -1,7 +1,7 @@
 import React from "react";
 import type { Theme } from "../../common/styles.js";
 import { DataEditorAll as DataEditor } from "../../data-editor-all.js";
-import { BeautifulWrapper, Description, useMockDataGenerator, defaultProps } from "../../data-editor/stories/utils.js";
+import { BeautifulWrapper, Description, useMockDataGenerator, defaultProps } from "../stories/utils.js";
 import type { GridSelection } from "../../internal/data-grid/data-grid-types.js";
 import { CompactSelection } from "../../internal/data-grid/data-grid-types.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";

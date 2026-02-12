@@ -6,7 +6,7 @@ import {
     PropName,
     defaultProps,
     useAllMockedKinds,
-} from "../../data-editor/stories/utils.js";
+} from "../stories/utils.js";
 import type { SpriteMap } from "../../internal/data-grid/data-grid-sprites.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 

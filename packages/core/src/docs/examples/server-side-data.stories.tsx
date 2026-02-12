@@ -14,7 +14,7 @@ import { DataEditorAll as DataEditor, type DataEditorAllProps as DataEditorProps
 import range from "lodash/range.js";
 import chunk from "lodash/chunk.js";
 import type { DataEditorRef } from "../../data-editor/data-editor.js";
-import { BeautifulWrapper } from "../../data-editor/stories/utils.js";
+import { BeautifulWrapper } from "../stories/utils.js";
 import { Description } from "../doc-wrapper.js";
 
 export default {

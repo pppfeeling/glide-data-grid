@@ -10,7 +10,7 @@ import {
 import { DataEditorAll as DataEditor } from "../../data-editor-all.js";
 
 import { BeautifulWrapper, Description, useMockDataGenerator, defaultProps } 
-from "../../data-editor/stories/utils.js";
+from "../stories/utils.js";
 import { useGridDataProcessing } from "../../data/useGridDataProcessing.js";
 
 export default {

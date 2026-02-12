@@ -7,7 +7,7 @@ import {
     MoreInfo,
     useMockDataGenerator,
     defaultProps,
-} from "../../data-editor/stories/utils.js";
+} from "../stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 
 export default {

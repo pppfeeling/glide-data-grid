@@ -15,7 +15,7 @@ import {
     Description,
     defaultProps,
     useMockDataGenerator,
-} from "../../data-editor/stories/utils.js";
+} from "../stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 import type { FillPatternEventArgs } from "../../internal/data-grid/event-args.js";
 import type { DataEditorRef } from "../../data-editor/data-editor.js";

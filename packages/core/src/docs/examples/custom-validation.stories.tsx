@@ -7,7 +7,7 @@ import {
     PropName,
     useMockDataGenerator,
     defaultProps,
-} from "../../data-editor/stories/utils.js";
+} from "../stories/utils.js";
 import { GridCellKind,type Item, type EditableGridCell, type GridCell } from "../../internal/data-grid/data-grid-types.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 

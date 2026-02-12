@@ -8,7 +8,7 @@ import {
     useMockDataGenerator,
     defaultProps,
     clearCell,
-} from "../../data-editor/stories/utils.js";
+} from "../stories/utils.js";
 import { GridColumnIcon, type GridColumn } from "../../internal/data-grid/data-grid-types.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 

@@ -6,7 +6,7 @@ import {
     PropName,
     defaultProps,
     useAllMockedKinds,
-} from "../../data-editor/stories/utils.js";
+} from "../stories/utils.js";
 import type { GetRowThemeCallback } from "../../internal/data-grid/render/data-grid-render.cells.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 import type { GridMouseEventArgs } from "../../internal/data-grid/event-args.js";

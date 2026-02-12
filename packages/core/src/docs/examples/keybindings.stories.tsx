@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { DataEditorAll as DataEditor } from "../../data-editor-all.js";
-import { BeautifulWrapper, Description, useMockDataGenerator, defaultProps } from "../../data-editor/stories/utils.js";
+import { BeautifulWrapper, Description, useMockDataGenerator, defaultProps } from "../stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 import { type Keybinds, type Keybind, keybindingDefaults } from "../../data-editor/data-editor-keybindings.js";
 

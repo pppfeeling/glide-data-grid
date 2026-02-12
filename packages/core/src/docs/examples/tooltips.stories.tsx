@@ -8,7 +8,7 @@ import {
     PropName,
     useMockDataGenerator,
     defaultProps,
-} from "../../data-editor/stories/utils.js";
+} from "../stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 import type { GridMouseEventArgs } from "../../internal/data-grid/event-args.js";
 

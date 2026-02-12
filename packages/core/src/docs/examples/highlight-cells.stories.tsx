@@ -7,7 +7,7 @@ import {
     PropName,
     useMockDataGenerator,
     defaultProps,
-} from "../../data-editor/stories/utils.js";
+} from "../stories/utils.js";
 import type { GridSelection } from "../../internal/data-grid/data-grid-types.js";
 import { CompactSelection } from "../../internal/data-grid/data-grid-types.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
