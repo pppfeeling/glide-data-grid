@@ -38,7 +38,8 @@
       "Bash(xargs basename:*)",
       "Bash(git log:*)",
       "Bash(wc:*)",
-      "Bash(npx vitest run:*)"
+      "Bash(npx vitest run:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
