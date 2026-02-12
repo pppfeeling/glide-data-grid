@@ -178,7 +178,6 @@ export function useGhostInput(args: UseGhostInputArgs): GhostInputHandlers {
                 // Only handle these keys for non-Custom cells (Text, Number, Uri, Markdown).
                 const cellContent = overlayRef.current.content;
                 if (cellContent.kind === GridCellKind.Custom) {
-                    const key = event.key;
                     // Prevent default behavior (e.g., Enter adding newline in textarea)
                     // but don't call onFinishEditing - let the custom editor handle it
                     if (key === "Enter" || key === "Tab" || key === "Escape") {
@@ -244,8 +243,8 @@ export function useGhostInput(args: UseGhostInputArgs): GhostInputHandlers {
                 const key = event.key;
                 const isEditingKey = key === "Backspace" || key === "Delete";
                 const isCursorKey = key === "ArrowLeft" || key === "ArrowRight" ||
-                                   key === "ArrowUp" || key === "ArrowDown" ||
-                                   key === "Home" || key === "End";
+                    key === "ArrowUp" || key === "ArrowDown" ||
+                    key === "Home" || key === "End";
 
                 if (isEditingKey || isCursorKey) {
                     return;
@@ -291,7 +290,9 @@ export function useGhostInput(args: UseGhostInputArgs): GhostInputHandlers {
 
             const gridArgs: GridKeyEventArgs = {
                 bounds,
-                cancel: () => {},
+                cancel: () => {
+                    // Do nothing
+                },
                 stopPropagation: () => event.stopPropagation(),
                 preventDefault: () => event.preventDefault(),
                 ctrlKey: event.ctrlKey,

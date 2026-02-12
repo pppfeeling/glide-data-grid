@@ -49,7 +49,11 @@ remove_all_css_imports() {
 }
 
 compile() {
+    # 1. tsc로 기초 컴파일
     npx tsc -p tsconfig.$1.json --outdir ./dist/$1-tmp --declarationDir ./dist/dts-tmp
+    
+    # 2. 생성된 JS 파일들에 React Compiler(Babel) 적용 (추가 부분)
+    npx babel ./dist/$1-tmp --out-dir ./dist/$1-tmp --config-file ../../babel.config.json
     npx wyw-in-js -r dist/$1-tmp/ -m esnext -o dist/$1-tmp/ dist/$1-tmp/**/*.js -t -i dist/$1-tmp -c ../../config/linaria.json > /dev/null
     remove_all_css_imports dist/$1-tmp
 

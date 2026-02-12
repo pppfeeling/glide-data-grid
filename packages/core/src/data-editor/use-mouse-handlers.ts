@@ -148,28 +148,28 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
     const isPrevented = React.useRef(false);
 
     const onMouseDown = React.useCallback(
-        (args: GridMouseEventArgs) => {
+        (mouseArgs: GridMouseEventArgs) => {
             isPrevented.current = false;
             touchDownArgs.current = visibleRegionRef.current;
-            if (args.button !== 0 && args.button !== 1) {
+            if (mouseArgs.button !== 0 && mouseArgs.button !== 1) {
                 mouseDownData.current = undefined;
                 return;
             }
 
             const time = performance.now();
             mouseDownData.current = {
-                button: args.button,
+                button: mouseArgs.button,
                 time,
-                location: args.location,
+                location: mouseArgs.location,
             };
 
-            if (args?.kind === "header") {
+            if (mouseArgs?.kind === "header") {
                 isActivelyDraggingHeader.current = true;
             }
 
-            const fh = args.kind === "cell" && args.isFillHandle;
+            const fh = mouseArgs.kind === "cell" && mouseArgs.isFillHandle;
 
-            if (!fh && args.kind !== "cell" && args.isEdge) return;
+            if (!fh && mouseArgs.kind !== "cell" && mouseArgs.isEdge) return;
 
             setMouseState({
                 previousSelection: gridSelection,
@@ -177,22 +177,22 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
             });
             lastMouseSelectLocation.current = undefined;
 
-            if (!args.isTouch && args.button === 0 && !fh) {
-                handleSelect(args);
-            } else if (!args.isTouch && args.button === 1) {
-                lastMouseSelectLocation.current = args.location;
+            if (!mouseArgs.isTouch && mouseArgs.button === 0 && !fh) {
+                handleSelect(mouseArgs);
+            } else if (!mouseArgs.isTouch && mouseArgs.button === 1) {
+                lastMouseSelectLocation.current = mouseArgs.location;
             }
         },
         [gridSelection, handleSelect]
     );
 
     const handleGroupHeaderSelection = React.useCallback(
-        (args: GridMouseEventArgs) => {
-            if (args.kind !== groupHeaderKind || columnSelect !== "multi") {
+        (mouseArgs: GridMouseEventArgs) => {
+            if (mouseArgs.kind !== groupHeaderKind || columnSelect !== "multi") {
                 return;
             }
-            const isMultiKey = browserIsOSX.value ? args.metaKey : args.ctrlKey;
-            const [col, row] = args.location;
+            const isMultiKey = browserIsOSX.value ? mouseArgs.metaKey : mouseArgs.ctrlKey;
+            const [col, row] = mouseArgs.location;
             const selectedColumns = gridSelection.columns;
 
             if (col < rowMarkerOffset) return;
@@ -226,7 +226,7 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
 
             focus();
 
-            if (isMultiKey || args.isTouch || columnSelectionMode === "multi") {
+            if (isMultiKey || mouseArgs.isTouch || columnSelectionMode === "multi") {
                 if (selectedColumns.hasAll([start, end + 1])) {
                     let newVal = selectedColumns;
                     for (let index = start; index <= end; index++) {
@@ -390,7 +390,7 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
     }, [fillPattern, gridSelection]);
 
     const onMouseUp = React.useCallback(
-        (args: GridMouseEventArgs, isOutside: boolean) => {
+        (mouseArgs: GridMouseEventArgs, isOutside: boolean) => {
             const mouse = mouseState;
             setMouseState(undefined);
             setFillHighlightRegion(undefined);
@@ -417,7 +417,7 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
                 return;
             }
 
-            const [col, row] = args.location;
+            const [col, row] = mouseArgs.location;
             const [lastMouseDownCol, lastMouseDownRow] = lastMouseSelectLocation.current ?? [];
 
             const preventDefault = () => {
@@ -434,7 +434,7 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
                 }
                 if (a.button === 1) return !isPrevented.current;
                 if (!isPrevented.current) {
-                    const c = getMangledCellContent(args.location);
+                    const c = getMangledCellContent(mouseArgs.location);
                     const r = getCellRenderer(c);
                     if (r !== undefined && r.onClick !== undefined && isValidClick) {
                         const newVal = r.onClick({
@@ -443,7 +443,7 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
                             posX: a.localEventX,
                             posY: a.localEventY,
                             bounds: a.bounds,
-                            theme: themeForCell(c, args.location),
+                            theme: themeForCell(c, mouseArgs.location),
                             preventDefault,
                         });
                         if (newVal !== undefined && !isInnerOnlyCell(newVal) && isEditableGridCell(newVal)) {
@@ -494,8 +494,8 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
                 return false;
             };
 
-            const clickLocation = args.location[0] - rowMarkerOffset;
-            if (args.isTouch) {
+            const clickLocation = mouseArgs.location[0] - rowMarkerOffset;
+            if (mouseArgs.isTouch) {
                 const vr = visibleRegionRef.current;
                 const touchVr = touchDownArgs.current;
                 if (vr.x !== touchVr.x || vr.y !== touchVr.y) {
@@ -503,73 +503,73 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
                     return;
                 }
                 // take care of context menus first if long pressed item is already selected
-                if (args.isLongTouch === true) {
-                    if (args.kind === "cell" && itemsAreEqual(gridSelection.current?.cell, args.location)) {
-                        onCellContextMenu?.([clickLocation, args.location[1]], {
-                            ...args,
+                if (mouseArgs.isLongTouch === true) {
+                    if (mouseArgs.kind === "cell" && itemsAreEqual(gridSelection.current?.cell, mouseArgs.location)) {
+                        onCellContextMenu?.([clickLocation, mouseArgs.location[1]], {
+                            ...mouseArgs,
                             preventDefault,
                         });
                         return;
-                    } else if (args.kind === "header" && gridSelection.columns.hasIndex(col)) {
-                        onHeaderContextMenu?.(clickLocation, { ...args, preventDefault });
+                    } else if (mouseArgs.kind === "header" && gridSelection.columns.hasIndex(col)) {
+                        onHeaderContextMenu?.(clickLocation, { ...mouseArgs, preventDefault });
                         return;
-                    } else if (args.kind === groupHeaderKind) {
+                    } else if (mouseArgs.kind === groupHeaderKind) {
                         if (clickLocation < 0) {
                             return;
                         }
 
-                        onGroupHeaderContextMenu?.(clickLocation, { ...args, preventDefault });
+                        onGroupHeaderContextMenu?.(clickLocation, { ...mouseArgs, preventDefault });
                         return;
                     }
                 }
-                if (args.kind === "cell") {
+                if (mouseArgs.kind === "cell") {
                     // click that cell
-                    if (!handleMaybeClick(args)) {
-                        handleSelect(args);
+                    if (!handleMaybeClick(mouseArgs)) {
+                        handleSelect(mouseArgs);
                     }
-                } else if (args.kind === groupHeaderKind) {
-                    onGroupHeaderClicked?.(clickLocation, { ...args, preventDefault });
+                } else if (mouseArgs.kind === groupHeaderKind) {
+                    onGroupHeaderClicked?.(clickLocation, { ...mouseArgs, preventDefault });
                 } else {
-                    if (args.kind === headerKind) {
+                    if (mouseArgs.kind === headerKind) {
                         onHeaderClicked?.(clickLocation, {
-                            ...args,
+                            ...mouseArgs,
                             preventDefault,
                         });
                     }
-                    handleSelect(args);
+                    handleSelect(mouseArgs);
                 }
                 return;
             }
 
-            if (args.kind === "header") {
+            if (mouseArgs.kind === "header") {
                 if (clickLocation < 0) {
                     return;
                 }
 
-                if (args.isEdge) {
-                    if (args.isDoubleClick === true) {
+                if (mouseArgs.isEdge) {
+                    if (mouseArgs.isDoubleClick === true) {
                         void normalSizeColumn(col);
                     }
-                } else if (args.button === 0 && col === lastMouseDownCol && row === lastMouseDownRow) {
-                    onHeaderClicked?.(clickLocation, { ...args, preventDefault });
+                } else if (mouseArgs.button === 0 && col === lastMouseDownCol && row === lastMouseDownRow) {
+                    onHeaderClicked?.(clickLocation, { ...mouseArgs, preventDefault });
                 }
             }
 
-            if (args.kind === groupHeaderKind) {
+            if (mouseArgs.kind === groupHeaderKind) {
                 if (clickLocation < 0) {
                     return;
                 }
 
-                if (args.button === 0 && col === lastMouseDownCol && row === lastMouseDownRow) {
-                    onGroupHeaderClicked?.(clickLocation, { ...args, preventDefault });
+                if (mouseArgs.button === 0 && col === lastMouseDownCol && row === lastMouseDownRow) {
+                    onGroupHeaderClicked?.(clickLocation, { ...mouseArgs, preventDefault });
                     if (!isPrevented.current) {
-                        handleGroupHeaderSelection(args);
+                        handleGroupHeaderSelection(mouseArgs);
                     }
                 }
             }
 
-            if (args.kind === "cell" && (args.button === 0 || args.button === 1)) {
-                handleMaybeClick(args);
+            if (mouseArgs.kind === "cell" && (mouseArgs.button === 0 || mouseArgs.button === 1)) {
+                handleMaybeClick(mouseArgs);
             }
 
             lastMouseSelectLocation.current = undefined;
@@ -601,14 +601,14 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
     );
 
     const onMouseMoveImpl = React.useCallback(
-        (args: GridMouseEventArgs) => {
+        (mouseArgs: GridMouseEventArgs) => {
             const a: GridMouseEventArgs = {
-                ...args,
-                location: [args.location[0] - rowMarkerOffset, args.location[1]] as any,
+                ...mouseArgs,
+                location: [mouseArgs.location[0] - rowMarkerOffset, mouseArgs.location[1]] as any,
             };
             onMouseMove?.(a);
 
-            if (mouseState !== undefined && args.buttons === 0) {
+            if (mouseState !== undefined && mouseArgs.buttons === 0) {
                 setMouseState(undefined);
                 setFillHighlightRegion(undefined);
                 setScrollDir(undefined);
@@ -616,11 +616,11 @@ export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {
             }
 
             setScrollDir(cv => {
-                if (isActivelyDraggingHeader.current) return [args.scrollEdge[0], 0];
-                if (args.scrollEdge[0] === cv?.[0] && args.scrollEdge[1] === cv[1]) return cv;
+                if (isActivelyDraggingHeader.current) return [mouseArgs.scrollEdge[0], 0];
+                if (mouseArgs.scrollEdge[0] === cv?.[0] && mouseArgs.scrollEdge[1] === cv[1]) return cv;
                 return mouseState === undefined || (mouseDownData.current?.location[0] ?? 0) < rowMarkerOffset
                     ? undefined
-                    : args.scrollEdge;
+                    : mouseArgs.scrollEdge;
             });
         },
         [mouseState, onMouseMove, rowMarkerOffset]

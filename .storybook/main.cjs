@@ -13,6 +13,10 @@ module.exports = {
         const wyw = await import("@wyw-in-js/vite");
         return mergeConfig(config, {
             plugins: [wyw.default()],
+            // React Compiler 최적화 포함
+            optimizeDeps: {
+                include: ["babel-plugin-react-compiler"],
+            },
         });
     },
 

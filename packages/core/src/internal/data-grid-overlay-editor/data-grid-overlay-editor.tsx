@@ -232,6 +232,14 @@ const DataGridOverlayEditor: React.FunctionComponent<DataGridOverlayEditorProps>
 
     styleOverride = { ...styleOverride, ...stayOnScreenStyle };
 
+    const ghostModeContextValue = React.useMemo(
+        () => ({
+            isGhostMode: isGhostMode ?? false,
+            ghostValue: ghostValue ?? "",
+        }),
+        [isGhostMode, ghostValue]
+    );
+
     // Consider imperatively creating and adding the element to the dom?
     const portalElement = portalElementRef?.current ?? document.getElementById("portal");
     if (portalElement === null) {
@@ -253,14 +261,6 @@ const DataGridOverlayEditor: React.FunctionComponent<DataGridOverlayEditorProps>
 
     const bloomX = bloom?.[0] ?? 1;
     const bloomY = bloom?.[1] ?? 1;
-
-    const ghostModeContextValue = React.useMemo(
-        () => ({
-            isGhostMode: isGhostMode ?? false,
-            ghostValue: ghostValue ?? "",
-        }),
-        [isGhostMode, ghostValue]
-    );
 
     return createPortal(
         <ThemeContext.Provider value={theme}>
