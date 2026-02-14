@@ -39,7 +39,13 @@
       "Bash(git log:*)",
       "Bash(wc:*)",
       "Bash(npx vitest run:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git -C /Users/pppfeeling/workspace/glide-data-grid log --oneline -20)",
+      "Bash(git -C /Users/pppfeeling/workspace/glide-data-grid show 174ff74 --stat)",
+      "Bash(du -sh:*)",
+      "Bash(while read f)",
+      "Bash(do ls -lh \"$f\")",
+      "Bash(sort:*)"
     ],
     "deny": [],
     "ask": []

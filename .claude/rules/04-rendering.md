@@ -1,3 +1,8 @@
+---
+paths:
+  - "packages/core/src/internal/data-grid/render/**"
+---
+
 # 캔버스 렌더링 파이프라인 분석
 
 ## 개요

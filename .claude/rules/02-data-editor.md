@@ -1,3 +1,8 @@
+---
+paths:
+  - "packages/core/src/data-editor/**"
+---
+
 # DataEditor 컴포넌트 분석
 
 ## 개요

@@ -1,3 +1,4 @@
+> **DEPRECATED**: 타입 관련 내용은 `.claude/rules/01-types.md` 참조.
 
 ## 인덱스 시그니처 [key: string]: any;
 이 객체는 여러 개의 프로퍼티를 가질 수 있으며, 그 프로퍼티의 키는 문자열(string)이고 값은 어떤 타입이든 상관없다.

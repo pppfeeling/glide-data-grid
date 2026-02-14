@@ -1,3 +1,5 @@
+> **DEPRECATED**: 이 문서의 유용한 내용은 `10-data-processing.md`에 머지됨. `.claude/rules/10-data-processing.md` 참조.
+
 1.  rowGrouping Prop
 
 rowGrouping은 <DataEditor /> 컴포넌트에 전달하는 설정 객체(prop) 입니다. 이 객체를 통해 행 그룹의 구조와 동작, 스타일을 정의합니다.

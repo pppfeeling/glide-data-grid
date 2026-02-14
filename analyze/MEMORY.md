@@ -1,37 +1,23 @@
 # Project Memory
 
-## glide-data-grid (packages/core)
-- **Test**: `cd packages/core && npx vitest run --reporter verbose` (395 tests, ~10s)
-- **TypeScript check**: `npx tsc --noEmit -p packages/core/tsconfig.json`
-- **Import pattern**: `.js` extension in imports, no barrel exports
-- **Hook pattern**: Individual files in `src/data-editor/`, helper functions co-located
+> **NOTE**: 핵심 내용은 `.claude/rules/conventions.md`로 이관되었습니다.
+> 이 파일은 이관 이력만 유지합니다.
 
-### DataEditor Refactoring (completed Phase 1-2, analyze docs updated)
-- Original: `data-editor.tsx` was 5,170 lines
-- After refactoring: 3,802 lines (main) + 5 extracted modules (~1,996 lines)
-- Extracted hooks share state via `DataEditorCoreState` interface (data-editor-state.ts)
-- Key files created:
-  - `data-editor-state.ts` (104 lines) - shared types
-  - `use-ghost-input.ts` (329 lines) - IME/GhostInput handlers
-  - `use-clipboard.ts` (403 lines) - Copy/Paste/Cut
-  - `use-keyboard-handlers.ts` (523 lines) - keybindings + key input
-  - `use-mouse-handlers.ts` (637 lines) - mouse events + fill pattern
+## 이관 완료
 
-### Key Learnings
-- `useKeybindingsWithDefaults()` returns `RealizedKeybinds` (strings), not `Keybinds` (boolean|string)
-- `Slice` type is `[number, number]` (mutable), `readonly [number, number]` is NOT assignable to it
-- When extracting hooks, shared refs between parent and hook must be defined in parent and passed as args
-- Declaration order matters in React components - hooks must be called after all dependencies are defined
-- `coreState` object pattern works well for grouping 20+ shared dependencies into one arg
+- 프로젝트 빌드/테스트 명령어 → `.claude/rules/conventions.md`
+- DataEditor 리팩토링 이력 → `.claude/rules/conventions.md`
+- Key Learnings (타입 주의사항, 훅 패턴) → `.claude/rules/conventions.md`
+- AI 커스텀 기능 목록 → `.claude/rules/conventions.md`
+- 분석 문서 (00-16, 보조 fix 문서) → `.claude/rules/` (paths 기반 자동 로드)
+- 새 분석 문서 (17-19) → `.claude/rules/` (paths 기반 자동 로드)
+- analaze/ 유용한 내용 → 번호 문서에 머지 후 `.claude/rules/`로 이관
 
-### Analyze Docs Update Log
+## Analyze Docs Update Log
+
 - 2026-02-09: All analyze docs updated to reflect DataEditor refactoring
-  - `00-overview.md`: Updated LOC, module structure, dependency graph, coreState pattern
-  - `02-data-editor.md`: Updated LOC, added extracted hooks section, coreState docs
-  - `07-editing.md`: Added references to use-clipboard.ts, use-ghost-input.ts
-  - `08-events.md`: Updated event propagation flow with extracted hooks
-  - `quick-reference.md`: Updated file list, LOC, location references, checklists
-  - `13-ghost-input-ime.md`: Added use-ghost-input.ts reference
-  - `14-numbercell-keystroke-editing-fix.md`: Added refactoring note
-  - `CLAUDE.md`: Updated architecture, package structure, reference table
-  - `.claude/skills/analyze.md`: Added refactoring reference
+- 2026-02-15: All analyze docs migrated to `.claude/rules/` with paths frontmatter
+  - analaze/ 4개 파일 머지 (data_editor→02, row-grouping→10, header→12, rowspan→04)
+  - 신규 문서 3개 작성 (17-scrolling, 18-search, 19-animation)
+  - conventions.md 신규 작성 (항상 로드)
+  - CLAUDE.md, skills/analyze.md 경로 업데이트

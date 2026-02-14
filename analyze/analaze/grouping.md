@@ -1,3 +1,5 @@
+> **DEPRECATED**: 그룹핑 관련 내용은 `.claude/rules/10-data-processing.md` 참조.
+
 ### 워크플로우
 
 grouping 할 컬럼에 대해, 각 그룹의 인원수(count)나 특정 숫자 컬럼의 합계(sum)를 그룹 헤더에 표시하려면 다음과 같은 단계를 거쳐야 합니다.

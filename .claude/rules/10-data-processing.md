@@ -1,3 +1,9 @@
+---
+paths:
+  - "packages/core/src/data-editor/row-grouping.ts"
+  - "packages/core/src/data-editor/row-grouping-api.ts"
+---
+
 # 데이터 처리 (필터/정렬/그룹) 분석
 
 ## 개요

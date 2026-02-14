@@ -1,3 +1,8 @@
+---
+paths:
+  - "packages/core/src/internal/data-grid/render/data-grid-render.header.ts"
+---
+
 # Multi-Level Header (다중 레벨 그룹 헤더)
 
 ## 개요

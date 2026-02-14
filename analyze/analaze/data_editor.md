@@ -1,3 +1,5 @@
+> **DEPRECATED**: 이 문서의 유용한 내용은 `02-data-editor.md`에 머지됨. `.claude/rules/02-data-editor.md` 참조.
+
   ## 편집모드에서 enter, tab키 입력시 다음셀로 이동한 후 바로 펹집모드로 변경로직 설명
 
    1. 편집 완료 및 이동 방향 감지:

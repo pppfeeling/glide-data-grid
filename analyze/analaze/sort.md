@@ -1,3 +1,5 @@
+> **DEPRECATED**: 정렬 기능은 제거됨. 관련 내용은 `.claude/rules/10-data-processing.md` 참조.
+
 # 완료된 작업
   1. ../../data/sort.js에서 multiColumnSort와 SortConfig를 가져왔습니다.
    2. 행 수에 접근하기 위해 useAllMockedKinds를 useStaticMockData로 교체했습니다.

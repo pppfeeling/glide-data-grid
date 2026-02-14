@@ -1,3 +1,5 @@
+> **DEPRECATED**: 필터링 기능은 제거됨. 관련 내용은 `.claude/rules/10-data-processing.md` 참조.
+
 # 완료된 작업
   1. `filter.ts` 파일 생성: 필터링 로직을 위한 `filter.ts` 파일을 `data` 폴더에 생성했습니다.
   2. 필터 타입 정의: `FilterOption`, `FilterConfig`, `FilterOperator`, `FilterCondition` 등 필터 관련 타입을 정의했습니다.

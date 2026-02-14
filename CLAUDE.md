@@ -73,42 +73,42 @@ packages/core/src/
 
 ## Analysis Documents
 
-코드 수정 전 `/analyze` 폴더의 관련 문서를 참조하세요:
+분석 문서는 `.claude/rules/`에 위치하며 `paths` frontmatter를 통해 관련 소스 파일 작업 시 **자동으로 로드**됩니다.
 
-### Quick Reference
-- 전체 구조: `/analyze/00-overview.md`
-- 타입 정의: `/analyze/01-types.md`
-- 빠른 참조: `/analyze/quick-reference.md`
+### 항상 로드되는 문서
+- `.claude/rules/00-overview.md` - 전체 아키텍처
+- `.claude/rules/quick-reference.md` - 파일 위치, 체크리스트
+- `.claude/rules/conventions.md` - 프로젝트 컨벤션, 핵심 참고사항
 
-### Reference by Modification Area
+### 조건부 로드 (관련 파일 작업 시 자동)
 | 수정 대상 | 참조 문서 |
 |-----------|----------|
-| DataEditor Props/상태/오케스트레이션 | `/analyze/02-data-editor.md` |
-| 캔버스 컨트롤러 | `/analyze/03-data-grid.md` |
-| 렌더링 파이프라인 | `/analyze/04-rendering.md` |
-| 셀 렌더러 추가/수정 | `/analyze/05-cells.md` |
-| 선택 동작 변경 | `/analyze/06-selection.md` |
-| 편집/복사/붙여넣기 | `/analyze/07-editing.md` |
-| 이벤트 처리 (마우스/키보드) | `/analyze/08-events.md` |
-| 테마 커스터마이징 | `/analyze/09-theming.md` |
-| 데이터 처리 (필터/정렬/그룹) | `/analyze/10-data-processing.md` |
-| 확장 포인트 | `/analyze/11-extension-points.md` |
-| **다중 레벨 그룹 헤더** | `/analyze/12-multi-level-header.md` |
-| IME/한글 입력 (GhostInput) | `/analyze/13-ghost-input-ime.md` |
-| NumberCell 키 입력 편집 | `/analyze/14-numbercell-keystroke-editing-fix.md` |
-| 커스텀 렌더러 가이드 | `/analyze/15-custom-renderer-guide.md` |
-| **Row Markers (행 마커/상태/ID)** | `/analyze/16-row-markers.md` |
+| DataEditor Props/상태/오케스트레이션 | `02-data-editor.md` |
+| 캔버스 컨트롤러 | `03-data-grid.md` |
+| 렌더링 파이프라인 | `04-rendering.md` |
+| 셀 렌더러 추가/수정 | `05-cells.md` |
+| 선택 동작 변경 | `06-selection.md` |
+| 편집/복사/붙여넣기 | `07-editing.md` |
+| 이벤트 처리 (마우스/키보드) | `08-events.md` |
+| 테마 커스터마이징 | `09-theming.md` |
+| 데이터 처리 (그룹) | `10-data-processing.md` |
+| 확장 포인트 | `11-extension-points.md` |
+| 다중 레벨 그룹 헤더 | `12-multi-level-header.md` |
+| IME/한글 입력 (GhostInput) | `13-ghost-input-ime.md` |
+| NumberCell 키 입력 편집 | `14-numbercell-keystroke-editing-fix.md` |
+| 커스텀 렌더러 가이드 | `15-custom-renderer-guide.md` |
+| Row Markers (행 마커/상태/ID) | `16-row-markers.md` |
+| 스크롤링/가상화/DnD | `17-scrolling-and-virtualization.md` |
+| 검색 UI/오버레이 에디터 | `18-search-and-overlay-editor.md` |
+| 애니메이션/Blit/성능 | `19-animation-and-performance.md` |
+
+### analyze/에 남아있는 참고 자료
+- `analyze/API.md` - 전체 API 레퍼런스 (대용량, 필요 시 직접 참조)
+- `analyze/glide-data-grid-core-사용자가이드.md` - 사용자 가이드
+- `analyze/learning/` - 튜토리얼 콘텐츠
 
 ### When to Use
-1. **새 기능 추가 전**: 관련 문서에서 기존 패턴 확인
+1. **새 기능 추가 전**: 관련 문서에서 기존 패턴 확인 (자동 로드됨)
 2. **버그 수정 시**: 해당 모듈의 데이터 흐름과 의존성 파악
 3. **타입 에러 발생 시**: `01-types.md`에서 정확한 타입 확인
 4. **코드 위치 찾기**: `quick-reference.md`의 파일:라인 참조
-
-## Important: Before Starting Any Task
-
-**반드시 먼저 이 파일(CLAUDE.md)과 관련 분석 문서를 읽으세요:**
-
-1. Plan 모드 진입 전에 `/analyze/` 폴더의 관련 문서 확인
-2. 기존 분석 내용이 있으면 중복 조사 방지
-3. 문서가 없거나 outdated면 직접 조사 후 문서 업데이트

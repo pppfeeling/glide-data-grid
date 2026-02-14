@@ -1,3 +1,5 @@
+> **DEPRECATED**: 이 문서의 유용한 내용은 `04-rendering.md`에 머지됨. `.claude/rules/04-rendering.md` 참조.
+
 이번 수정의 핵심 목표는 두 가지였습니다.
    1. rowspan이 스크롤과 관계없이 span(열 병합)처럼 항상 정확하게 그려지도록 로직을 개선.
    2. rowSpanPosition 속성을 새로 추가하여, 병합된 셀 안에서 내용의 수직 정렬(top, middle, bottom)이 가능하도록 구현.

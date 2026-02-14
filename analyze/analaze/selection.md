@@ -1,3 +1,5 @@
+> **DEPRECATED**: 선택 관련 내용은 `.claude/rules/06-selection.md` 참조.
+
 # selection 객체
 - glide-data-grid에서 세 가지 주요 속성을 가지며, 각각 다른 상호작용 시나리오에서 적용됩니다:
 
