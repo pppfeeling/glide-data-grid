@@ -14,3 +14,4 @@ export type ButtonCell = CustomCell<ButtonCellProps> & {
 };
 declare const renderer: CustomRenderer<ButtonCell>;
 export default renderer;
+//# sourceMappingURL=button-cell.d.ts.map

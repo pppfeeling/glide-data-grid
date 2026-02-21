@@ -10,3 +10,4 @@ interface TagsCellProps {
 export type TagsCell = CustomCell<TagsCellProps>;
 declare const renderer: CustomRenderer<TagsCell>;
 export default renderer;
+//# sourceMappingURL=tags-cell.d.ts.map

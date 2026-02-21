@@ -40,3 +40,4 @@ export declare const resolveValues: (values: string[] | null | undefined, option
 export type MultiSelectCell = CustomCell<MultiSelectCellProps>;
 declare const renderer: CustomRenderer<MultiSelectCell>;
 export default renderer;
+//# sourceMappingURL=multi-select-cell.d.ts.map

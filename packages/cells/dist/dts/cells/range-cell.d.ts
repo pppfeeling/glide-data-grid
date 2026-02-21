@@ -11,3 +11,4 @@ interface RangeCellProps {
 export type RangeCell = CustomCell<RangeCellProps>;
 declare const renderer: CustomRenderer<RangeCell>;
 export default renderer;
+//# sourceMappingURL=range-cell.d.ts.map

@@ -5,3 +5,4 @@ interface ArticleCellProps {
 }
 export type ArticleCell = CustomCell<ArticleCellProps>;
 export {};
+//# sourceMappingURL=article-cell-types.d.ts.map

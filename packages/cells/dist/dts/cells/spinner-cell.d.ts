@@ -5,3 +5,4 @@ interface SpinnerCellProps {
 export type SpinnerCell = CustomCell<SpinnerCellProps>;
 declare const renderer: CustomRenderer<SpinnerCell>;
 export default renderer;
+//# sourceMappingURL=spinner-cell.d.ts.map

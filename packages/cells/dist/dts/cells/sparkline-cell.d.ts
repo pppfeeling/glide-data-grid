@@ -11,3 +11,4 @@ interface SparklineCellProps {
 export type SparklineCell = CustomCell<SparklineCellProps>;
 declare const renderer: CustomRenderer<SparklineCell>;
 export default renderer;
+//# sourceMappingURL=sparkline-cell.d.ts.map

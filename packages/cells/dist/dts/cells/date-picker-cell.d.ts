@@ -16,3 +16,4 @@ export declare const formatValueForHTMLInput: (dateKind: DateKind, date: Date | 
 export type DatePickerCell = CustomCell<DatePickerCellProps>;
 declare const renderer: CustomRenderer<DatePickerCell>;
 export default renderer;
+//# sourceMappingURL=date-picker-cell.d.ts.map

@@ -17,3 +17,4 @@ interface LinksCellProps {
 export type LinksCell = CustomCell<LinksCellProps>;
 declare const renderer: CustomRenderer<LinksCell>;
 export default renderer;
+//# sourceMappingURL=links-cell.d.ts.map

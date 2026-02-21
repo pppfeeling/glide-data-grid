@@ -9,3 +9,4 @@ interface UserProfileCellProps {
 export type UserProfileCell = CustomCell<UserProfileCellProps>;
 declare const renderer: CustomRenderer<UserProfileCell>;
 export default renderer;
+//# sourceMappingURL=user-profile-cell.d.ts.map

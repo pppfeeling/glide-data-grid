@@ -11,3 +11,4 @@ interface DropdownCellProps {
 export type DropdownCell = CustomCell<DropdownCellProps>;
 declare const renderer: CustomRenderer<DropdownCell>;
 export default renderer;
+//# sourceMappingURL=dropdown-cell.d.ts.map

@@ -6,3 +6,4 @@ interface StarCellProps {
 export type StarCell = CustomCell<StarCellProps>;
 declare const renderer: CustomRenderer<StarCell>;
 export default renderer;
+//# sourceMappingURL=star-cell.d.ts.map
