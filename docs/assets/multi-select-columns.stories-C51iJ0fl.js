@@ -1,0 +1,7 @@
+import{R as e}from"./iframe-CB3jNLId.js";import{D as m}from"./data-editor-all-VbTXgUdc.js";import{B as u,D as i,P as r,M as p,K as o,u as d,d as C}from"./utils-CZdCQylj.js";import{S as E}from"./marked.esm-By-yLKzP.js";import"./preload-helper-C1FmrZbK.js";import"./index-B84JjiES.js";import"./image-window-loader-DtBhR23y.js";import"./scrolling-data-grid-xxMWlw8S.js";const k={title:"Glide-Data-Grid/DataEditor Demos",decorators:[l=>e.createElement(E,null,e.createElement(u,{title:"Multi select columns",description:e.createElement(e.Fragment,null,e.createElement(i,null,"You can select multiple columns by using the ",e.createElement(r,null,"selectedColumns")," and"," ",e.createElement(r,null,"onSelectedColumnsChange")," props"),e.createElement(p,null,"Here you can multi select columns by using ",e.createElement(o,null,"Ctrl")," (on Windows) or"," ",e.createElement(o,null,"⌘")," (on Mac)"))},e.createElement(l,null)))]},t=()=>{const{cols:l,getCellContent:c}=d(100);return e.createElement(m,{...C,getCellContent:c,rowMarkers:"both",columns:l,rows:1e5})};var n,a,s;t.parameters={...t.parameters,docs:{...(n=t.parameters)==null?void 0:n.docs,source:{originalSource:`() => {
+  const {
+    cols,
+    getCellContent
+  } = useMockDataGenerator(100);
+  return <DataEditor {...defaultProps} getCellContent={getCellContent} rowMarkers="both" columns={cols} rows={100_000} />;
+}`,...(s=(a=t.parameters)==null?void 0:a.docs)==null?void 0:s.source}}};const y=["MultiSelectColumns"];export{t as MultiSelectColumns,y as __namedExportsOrder,k as default};
