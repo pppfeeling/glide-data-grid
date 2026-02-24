@@ -21,7 +21,7 @@
     "scripts": {
         "start": "npm run storybook",
         "version": "./update-version.sh",
-        "build": "npm run build --workspaces && npm run lint --workspaces",
+        "build": "npm run build -w packages/core && npm run lint -w packages/core",
         "typedoc": "typedoc --readme none --disableSources --tsconfig packages/core/tsconfig.json",
         "serve-docs": "http-server packages/core/gen-docs",
         "storybook:run": "storybook dev -p 9009 --no-open",
@@ -32,17 +32,13 @@
         "test": "cd packages/core && npm run test --",
         "test-18": "./setup-react-18-test.sh && cd packages/core && npm run test --",
         "test-19": "./setup-react-19-test.sh && cd packages/core && npm run test --",
-        "test-source": "cd packages/source && npm run test",
-        "test-cells": "cd packages/cells && npm run test",
         "test-projects": "cd test-projects/ && ./bootstrap-projects.sh"
     },
     "type": "commonjs",
     "author": "Glide",
     "license": "MIT",
     "workspaces": [
-        "./packages/core",
-        "./packages/cells",
-        "./packages/source"
+        "./packages/core"
     ],
     "devDependencies": {
         "@babel/cli": "^7.27.2",
