@@ -1,6 +1,6 @@
 {
     "name": "@glideapps/glide-data-grid",
-    "version": "6.1.0",
+    "version": "6.2.0",
     "files": [
         "dist",
         "package.json"
