@@ -242,7 +242,7 @@ export const AddData = () => {
             // 채우기 작업 후, 영향을 받은 모든 행에 대해 데이터 처리 로직 실행
             affectedRows.forEach(row => processRow(row));
         },
-        [cols, getCellContentWithHighlight, processRow]
+        [getCellContentWithHighlight, processRow]
     );
 
     // 3. onPaste 구현
@@ -280,7 +280,7 @@ export const AddData = () => {
 
             return false; // 내부 붙여넣기 로직을 막고 직접 처리했음을 알림
         },
-        [cols.length, cols, processRow]
+        [processRow]
     );
 
     const onAddRow = React.useCallback(() => {
@@ -349,7 +349,7 @@ export const AddData = () => {
             setNumRows(newData.length);
             return newData;
         });
-    }, [cols, gridSelection.rows]);
+    }, [gridSelection.rows]);
 
     const onDeleteRow = React.useCallback(() => {
         if (gridSelection.rows.length === 0) return;
@@ -407,7 +407,7 @@ export const AddData = () => {
         document.body.append(link);
         link.click();
         link.remove();
-    }, [data, cols]);
+    }, [data]);
 
     // Callback to provide row status for each row
     const onRowStatus = React.useCallback(

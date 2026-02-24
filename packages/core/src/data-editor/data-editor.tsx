@@ -1065,7 +1065,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     };
 
     const expectedExternalGridSelection = React.useRef<GridSelection | undefined>(gridSelectionOuter);
-    const setGridSelection = (newVal: GridSelection, expand: boolean): void => {
+    const setGridSelection = React.useCallback((newVal: GridSelection, expand: boolean): void => {
         if (expand) {
             newVal = expandSelection(
                 newVal,
@@ -1081,7 +1081,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         } else {
             setGridSelectionInner(newVal);
         }
-    };
+    }, [getCellsForSelection, onGridSelectionChange, rowMarkerOffset, setGridSelectionInner, spanRangeBehavior]);
 
     const onColumnResize = whenDefined(
         onColumnResizeIn,
@@ -1934,7 +1934,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             }
 
             const col = typeof r === "number" ? r : right ? mangledCols.length : 0;
-            scrollTo(col - rowMarkerOffset, row);
+            scrollToRef.current(col - rowMarkerOffset, row);
             setCurrent(
                 {
                     cell: [col, row],
@@ -1959,6 +1959,11 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         };
         doFocus();
     };
+
+    const appendRowRef = React.useRef(appendRow);
+    appendRowRef.current = appendRow;
+    const appendColumnRef = React.useRef(appendColumn);
+    appendColumnRef.current = appendColumn;
 
     const getCustomNewRowTargetColumn = (col: number): number | undefined => {
         const customTargetColumn =
@@ -3166,8 +3171,8 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     React.useImperativeHandle(
         forwardedRef,
         () => ({
-            appendRow: (col: number, openOverlay?: boolean) => appendRow(col + rowMarkerOffset, openOverlay),
-            appendColumn: (row: number, openOverlay?: boolean) => appendColumn(row, openOverlay),
+            appendRow: (col: number, openOverlay?: boolean) => appendRowRef.current(col + rowMarkerOffset, openOverlay),
+            appendColumn: (row: number, openOverlay?: boolean) => appendColumnRef.current(row, openOverlay),
             updateCells: damageList => {
                 if (rowMarkerOffset !== 0) {
                     damageList = damageList.map(x => ({ cell: [x.cell[0] + rowMarkerOffset, x.cell[1]] }));
@@ -3251,7 +3256,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                         break;
                 }
             },
-            scrollTo,
+            scrollTo: scrollToRef.current,
             remeasureColumns: cols => {
                 for (const col of cols) {
                     void normalSizeColumn(col + rowMarkerOffset);
@@ -3278,17 +3283,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             },
         }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [
-            appendRow,
-            appendColumn,
-            normalSizeColumn,
-            scrollRef,
-            onCopy,
-            onKeyDown,
-            onPasteInternal,
-            rowMarkerOffset,
-            scrollTo,
-        ]
+        [normalSizeColumn, scrollRef, onCopy, onKeyDown, onPasteInternal, rowMarkerOffset]
     );
 
     const [selCol, selRow] = currentCell ?? [];

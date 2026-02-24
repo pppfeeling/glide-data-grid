@@ -221,6 +221,7 @@ export const HeaderMenus = () => {
                         title: "클릭테스트",
                         icon: GridColumnIcon.HeaderArray,
                         onClick: (e: GridMouseGroupHeaderEventArgs) => {
+                            // eslint-disable-next-line no-console
                             console.log("click", e);
                         },
                     },

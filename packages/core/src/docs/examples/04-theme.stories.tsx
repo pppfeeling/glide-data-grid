@@ -279,7 +279,7 @@ export const ThemeS = () => {
 
             return baseCell;
         },
-        [getCellContent]
+        [getCellContent, cols]
     );
 
     const [theme, setTheme] = React.useState<Partial<Theme>>(lightTheme);

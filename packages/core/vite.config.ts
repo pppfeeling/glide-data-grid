@@ -54,6 +54,15 @@ export default defineConfig({
             fileName: () => "index.js",
         },
         rollupOptions: {
+            onwarn(warning, warn) {
+                if (
+                    warning.code === "SOURCEMAP_BROKEN" ||
+                    warning.code === "SOURCEMAP_ERROR" ||
+                    warning.code === "INVALID_ANNOTATION" ||
+                    warning.message?.includes("Can't resolve original location of error")
+                ) return;
+                warn(warning);
+            },
             external: [
                 "react",
                 "react-dom",

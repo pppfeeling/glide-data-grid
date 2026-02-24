@@ -16,6 +16,7 @@ module.exports = {
             // React Compiler 최적화 포함
             optimizeDeps: {
                 include: ["babel-plugin-react-compiler"],
+                exclude: ["@faker-js/faker"],
             },
         });
     },
