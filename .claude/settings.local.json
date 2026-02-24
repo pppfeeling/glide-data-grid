@@ -45,7 +45,8 @@
       "Bash(du -sh:*)",
       "Bash(while read f)",
       "Bash(do ls -lh \"$f\")",
-      "Bash(sort:*)"
+      "Bash(sort:*)",
+      "Bash(cd /c/workspace/glide-data-grid/packages/core && npx vite build 2>&1)"
     ],
     "deny": [],
     "ask": []

@@ -1,2 +1,0 @@
-export declare const GhostInputBox: import("@linaria/react").StyledComponent<import("react").ClassAttributes<HTMLTextAreaElement> & import("react").TextareaHTMLAttributes<HTMLTextAreaElement> & Record<never, unknown>>;
-//# sourceMappingURL=ghost-input-style.d.ts.map

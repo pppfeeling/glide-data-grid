@@ -2,20 +2,19 @@
     "name": "root",
     "version": "6.1.0",
     "private": true,
-    "main": "./packages/core/dist/cjs/index.js",
-    "module": "./packages/core/dist/esm/index.js",
-    "types": "./packages/core/dist/dts/index.d.ts",
+    "main": "./packages/core/dist/index.js",
+    "module": "./packages/core/dist/index.js",
+    "types": "./packages/core/dist/index.d.ts",
     "exports": {
         ".": {
-        "types": "./packages/core/dist/dts/index.d.ts",
-        "import": "./packages/core/dist/esm/index.js",
-        "require": "./packages/core/dist/cjs/index.js"
+            "types": "./packages/core/dist/index.d.ts",
+            "import": "./packages/core/dist/index.js"
         },
         "./dist/index.css": {
-        "import": "./packages/core/dist/index.css"
+            "import": "./packages/core/dist/index.css"
         },
         "./index.css": {
-        "import": "./packages/core/dist/index.css"
+            "import": "./packages/core/dist/index.css"
         }
     },
     "scripts": {
@@ -75,6 +74,7 @@
         "@wyw-in-js/babel-preset": "^0.6.0",
         "@wyw-in-js/cli": "^0.6.0",
         "@wyw-in-js/vite": "^0.6.0",
+        "ajv": "^8.18.0",
         "babel-loader": "^10.0.0",
         "babel-plugin-react-compiler": "^1.0.0",
         "chokidar-cli": "^3.0.0",
@@ -105,6 +105,8 @@
         "tsc-esm-fix": "^3.1.2",
         "typedoc": "^0.28.5",
         "typescript": "^5.8.3",
+        "vite": "^7.3.1",
+        "vite-plugin-dts": "^4.5.4",
         "vitest": "^0.34.6",
         "vitest-canvas-mock": "^0.3.3",
         "webpack": "^5.99.9"
