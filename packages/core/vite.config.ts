@@ -67,9 +67,6 @@ export default defineConfig({
                 "react",
                 "react-dom",
                 "react/jsx-runtime",
-                "lodash",
-                "marked",
-                "react-responsive-carousel",
             ],
             output: {
                 inlineDynamicImports: true,

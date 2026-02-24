@@ -59,14 +59,14 @@
     "dependencies": {
         "@linaria/react": "^6.3.0",
         "canvas-hypertxt": "^1.0.3",
-        "react-number-format": "^5.4.4"
-    },
-    "peerDependencies": {
+        "react-number-format": "^5.4.4",
         "lodash": "^4.17.19",
         "marked": "^16.0.10",
-        "react": "^16.12.0 || 17.x || 18.x || 19.x",
-        "react-dom": "^16.12.0 || 17.x || 18.x || 19.x",
         "react-responsive-carousel": "^3.2.7"
+    },
+    "peerDependencies": {
+        "react": "^16.12.0 || 17.x || 18.x || 19.x",
+        "react-dom": "^16.12.0 || 17.x || 18.x || 19.x"
     },
     "devDependencies": {
         "@glideapps/ts-helper": "6.0.0",

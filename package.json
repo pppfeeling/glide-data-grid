@@ -18,27 +18,24 @@
         }
     },
     "scripts": {
-        "start": "npm run storybook",
+        "start": "pnpm run storybook",
         "version": "./update-version.sh",
-        "build": "npm run build -w packages/core && npm run lint -w packages/core",
+        "build": "pnpm --filter @glideapps/glide-data-grid run build && pnpm --filter @glideapps/glide-data-grid run lint",
         "typedoc": "typedoc --readme none --disableSources --tsconfig packages/core/tsconfig.json",
         "serve-docs": "http-server packages/core/gen-docs",
         "storybook:run": "storybook dev -p 9009 --no-open",
-        "watch:core": "npm run watch -w packages/core",
-        "storybook": "concurrently \"npm run storybook:run\" \"npm run watch:core\"",
-        "build-storybook": "npm run build --workspaces && storybook build -o storybook-build/",
-        "prod-storybook": "npm run build-storybook && npx http-server storybook-build -p 9009",
-        "test": "cd packages/core && npm run test --",
-        "test-18": "./setup-react-18-test.sh && cd packages/core && npm run test --",
-        "test-19": "./setup-react-19-test.sh && cd packages/core && npm run test --",
+        "watch:core": "pnpm --filter @glideapps/glide-data-grid run watch",
+        "storybook": "concurrently \"pnpm run storybook:run\" \"pnpm run watch:core\"",
+        "build-storybook": "pnpm --filter @glideapps/glide-data-grid run build && storybook build -o storybook-build/",
+        "prod-storybook": "pnpm run build-storybook && npx http-server storybook-build -p 9009",
+        "test": "pnpm --filter @glideapps/glide-data-grid run test",
+        "test-18": "./setup-react-18-test.sh && pnpm --filter @glideapps/glide-data-grid run test",
+        "test-19": "./setup-react-19-test.sh && pnpm --filter @glideapps/glide-data-grid run test",
         "test-projects": "cd test-projects/ && ./bootstrap-projects.sh"
     },
     "type": "commonjs",
     "author": "Glide",
     "license": "MIT",
-    "workspaces": [
-        "./packages/core"
-    ],
     "devDependencies": {
         "@babel/cli": "^7.27.2",
         "@babel/core": "^7.24.7",
@@ -111,8 +108,11 @@
         "vitest-canvas-mock": "^0.3.3",
         "webpack": "^5.99.9"
     },
-    "overrides": {
-        "storybook": "$storybook"
+    "pnpm": {
+        "overrides": {
+            "storybook": "$storybook"
+        },
+        "onlyBuiltDependencies": ["esbuild"]
     },
-    "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+    "packageManager": "pnpm@10.12.4"
 }

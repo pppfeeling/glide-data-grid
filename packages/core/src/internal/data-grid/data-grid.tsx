@@ -415,10 +415,10 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
     const windowEventTarget = windowEventTargetRef.current;
 
     const imageLoader = imageWindowLoader;
-    const damageRegion = React.useRef<CellSet | undefined>();
+    const damageRegion = React.useRef<CellSet | undefined>(undefined);
     const [scrolling, setScrolling] = React.useState<boolean>(false);
     const hoverValues = React.useRef<readonly { item: Item; hoverAmount: number }[]>([]);
-    const lastBlitData = React.useRef<BlitData | undefined>();
+    const lastBlitData = React.useRef<BlitData | undefined>(undefined);
     const [hoveredItemInfo, setHoveredItemInfo] = React.useState<[Item, readonly [number, number]] | undefined>();
     const [hoveredOnEdge, setHoveredOnEdge] = React.useState<boolean>();
     const overlayRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -778,7 +778,7 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
 
     const maxDPR = enableFirefoxRescaling && scrolling ? 1 : enableSafariRescaling && scrolling ? 2 : 5;
     const minimumCellWidth = experimental?.disableMinimumCellWidth === true ? 1 : 10;
-    const lastArgsRef = React.useRef<DrawGridArg>();
+    const lastArgsRef = React.useRef<DrawGridArg | undefined>(undefined);
 
     const canvasCtx = React.useRef<CanvasRenderingContext2D | null>(null);
     const overlayCtx = React.useRef<CanvasRenderingContext2D | null>(null);
@@ -1093,7 +1093,7 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
     );
 
     const downTime = React.useRef(0);
-    const downPosition = React.useRef<Item>();
+    const downPosition = React.useRef<Item | undefined>(undefined);
     const mouseDown = React.useRef(false);
     const onPointerDown = React.useCallback(
         (ev: PointerEvent) => {
@@ -1309,7 +1309,7 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
         am.setHovered(cellNeedsHover ? hoveredItem : undefined);
     }, [getCellContent, getCellRenderer, hoveredItem]);
 
-    const hoveredRef = React.useRef<GridMouseEventArgs>();
+    const hoveredRef = React.useRef<GridMouseEventArgs | undefined>(undefined);
     const onPointerMove = React.useCallback(
         (ev: MouseEvent) => {
             const canvas = ref.current;
@@ -1635,7 +1635,7 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
     );
     useEventListener("dragstart", onDragStartImpl, eventTargetRef?.current ?? null, false, false);
 
-    const activeDropTarget = React.useRef<Item | undefined>();
+    const activeDropTarget = React.useRef<Item | undefined>(undefined);
 
     const onDragOverImpl = React.useCallback(
         (event: DragEvent) => {
@@ -1755,7 +1755,7 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
         [canvasRef, damage, getBoundsForItem, getMouseArgsForPosition]
     );
 
-    const lastFocusedSubdomNode = React.useRef<Item>();
+    const lastFocusedSubdomNode = React.useRef<Item | undefined>(undefined);
 
     const accessibilityTree = useDebouncedMemo(
         () => {

@@ -1,508 +1,906 @@
 import { jsxs, jsx, Fragment } from "react/jsx-runtime";
 import * as React from "react";
 import React__default, { forwardRef, createElement, useRef, useState, useLayoutEffect, useEffect, useMemo } from "react";
-import { Carousel } from "react-responsive-carousel";
-import { marked } from "marked";
 import { createPortal } from "react-dom";
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
-function getDefaultExportFromCjs(x) {
-  return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
+function getDefaultExportFromCjs(x2) {
+  return x2 && x2.__esModule && Object.prototype.hasOwnProperty.call(x2, "default") ? x2["default"] : x2;
 }
-var objectProto$d = Object.prototype;
-var hasOwnProperty$a = objectProto$d.hasOwnProperty;
-function baseHas$1(object, key) {
-  return object != null && hasOwnProperty$a.call(object, key);
-}
-var _baseHas = baseHas$1;
-var isArray$a = Array.isArray;
-var isArray_1 = isArray$a;
-var freeGlobal$1 = typeof commonjsGlobal == "object" && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
-var _freeGlobal = freeGlobal$1;
-var freeGlobal = _freeGlobal;
-var freeSelf = typeof self == "object" && self && self.Object === Object && self;
-var root$9 = freeGlobal || freeSelf || Function("return this")();
-var _root = root$9;
-var root$8 = _root;
-var Symbol$6 = root$8.Symbol;
-var _Symbol = Symbol$6;
-var Symbol$5 = _Symbol;
-var objectProto$c = Object.prototype;
-var hasOwnProperty$9 = objectProto$c.hasOwnProperty;
-var nativeObjectToString$1 = objectProto$c.toString;
-var symToStringTag$1 = Symbol$5 ? Symbol$5.toStringTag : void 0;
-function getRawTag$1(value) {
-  var isOwn = hasOwnProperty$9.call(value, symToStringTag$1), tag = value[symToStringTag$1];
-  try {
-    value[symToStringTag$1] = void 0;
-    var unmasked = true;
-  } catch (e) {
+var _baseHas;
+var hasRequired_baseHas;
+function require_baseHas() {
+  if (hasRequired_baseHas) return _baseHas;
+  hasRequired_baseHas = 1;
+  var objectProto = Object.prototype;
+  var hasOwnProperty = objectProto.hasOwnProperty;
+  function baseHas(object, key) {
+    return object != null && hasOwnProperty.call(object, key);
   }
-  var result = nativeObjectToString$1.call(value);
-  if (unmasked) {
-    if (isOwn) {
-      value[symToStringTag$1] = tag;
-    } else {
-      delete value[symToStringTag$1];
+  _baseHas = baseHas;
+  return _baseHas;
+}
+var isArray_1;
+var hasRequiredIsArray;
+function requireIsArray() {
+  if (hasRequiredIsArray) return isArray_1;
+  hasRequiredIsArray = 1;
+  var isArray = Array.isArray;
+  isArray_1 = isArray;
+  return isArray_1;
+}
+var _freeGlobal;
+var hasRequired_freeGlobal;
+function require_freeGlobal() {
+  if (hasRequired_freeGlobal) return _freeGlobal;
+  hasRequired_freeGlobal = 1;
+  var freeGlobal = typeof commonjsGlobal == "object" && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+  _freeGlobal = freeGlobal;
+  return _freeGlobal;
+}
+var _root;
+var hasRequired_root;
+function require_root() {
+  if (hasRequired_root) return _root;
+  hasRequired_root = 1;
+  var freeGlobal = require_freeGlobal();
+  var freeSelf = typeof self == "object" && self && self.Object === Object && self;
+  var root = freeGlobal || freeSelf || Function("return this")();
+  _root = root;
+  return _root;
+}
+var _Symbol;
+var hasRequired_Symbol;
+function require_Symbol() {
+  if (hasRequired_Symbol) return _Symbol;
+  hasRequired_Symbol = 1;
+  var root = require_root();
+  var Symbol2 = root.Symbol;
+  _Symbol = Symbol2;
+  return _Symbol;
+}
+var _getRawTag;
+var hasRequired_getRawTag;
+function require_getRawTag() {
+  if (hasRequired_getRawTag) return _getRawTag;
+  hasRequired_getRawTag = 1;
+  var Symbol2 = require_Symbol();
+  var objectProto = Object.prototype;
+  var hasOwnProperty = objectProto.hasOwnProperty;
+  var nativeObjectToString = objectProto.toString;
+  var symToStringTag = Symbol2 ? Symbol2.toStringTag : void 0;
+  function getRawTag(value) {
+    var isOwn = hasOwnProperty.call(value, symToStringTag), tag = value[symToStringTag];
+    try {
+      value[symToStringTag] = void 0;
+      var unmasked = true;
+    } catch (e) {
+    }
+    var result = nativeObjectToString.call(value);
+    if (unmasked) {
+      if (isOwn) {
+        value[symToStringTag] = tag;
+      } else {
+        delete value[symToStringTag];
+      }
+    }
+    return result;
+  }
+  _getRawTag = getRawTag;
+  return _getRawTag;
+}
+var _objectToString;
+var hasRequired_objectToString;
+function require_objectToString() {
+  if (hasRequired_objectToString) return _objectToString;
+  hasRequired_objectToString = 1;
+  var objectProto = Object.prototype;
+  var nativeObjectToString = objectProto.toString;
+  function objectToString(value) {
+    return nativeObjectToString.call(value);
+  }
+  _objectToString = objectToString;
+  return _objectToString;
+}
+var _baseGetTag;
+var hasRequired_baseGetTag;
+function require_baseGetTag() {
+  if (hasRequired_baseGetTag) return _baseGetTag;
+  hasRequired_baseGetTag = 1;
+  var Symbol2 = require_Symbol(), getRawTag = require_getRawTag(), objectToString = require_objectToString();
+  var nullTag = "[object Null]", undefinedTag = "[object Undefined]";
+  var symToStringTag = Symbol2 ? Symbol2.toStringTag : void 0;
+  function baseGetTag(value) {
+    if (value == null) {
+      return value === void 0 ? undefinedTag : nullTag;
+    }
+    return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : objectToString(value);
+  }
+  _baseGetTag = baseGetTag;
+  return _baseGetTag;
+}
+var isObjectLike_1;
+var hasRequiredIsObjectLike;
+function requireIsObjectLike() {
+  if (hasRequiredIsObjectLike) return isObjectLike_1;
+  hasRequiredIsObjectLike = 1;
+  function isObjectLike(value) {
+    return value != null && typeof value == "object";
+  }
+  isObjectLike_1 = isObjectLike;
+  return isObjectLike_1;
+}
+var isSymbol_1;
+var hasRequiredIsSymbol;
+function requireIsSymbol() {
+  if (hasRequiredIsSymbol) return isSymbol_1;
+  hasRequiredIsSymbol = 1;
+  var baseGetTag = require_baseGetTag(), isObjectLike = requireIsObjectLike();
+  var symbolTag = "[object Symbol]";
+  function isSymbol(value) {
+    return typeof value == "symbol" || isObjectLike(value) && baseGetTag(value) == symbolTag;
+  }
+  isSymbol_1 = isSymbol;
+  return isSymbol_1;
+}
+var _isKey;
+var hasRequired_isKey;
+function require_isKey() {
+  if (hasRequired_isKey) return _isKey;
+  hasRequired_isKey = 1;
+  var isArray = requireIsArray(), isSymbol = requireIsSymbol();
+  var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/, reIsPlainProp = /^\w*$/;
+  function isKey(value, object) {
+    if (isArray(value)) {
+      return false;
+    }
+    var type = typeof value;
+    if (type == "number" || type == "symbol" || type == "boolean" || value == null || isSymbol(value)) {
+      return true;
+    }
+    return reIsPlainProp.test(value) || !reIsDeepProp.test(value) || object != null && value in Object(object);
+  }
+  _isKey = isKey;
+  return _isKey;
+}
+var isObject_1;
+var hasRequiredIsObject;
+function requireIsObject() {
+  if (hasRequiredIsObject) return isObject_1;
+  hasRequiredIsObject = 1;
+  function isObject(value) {
+    var type = typeof value;
+    return value != null && (type == "object" || type == "function");
+  }
+  isObject_1 = isObject;
+  return isObject_1;
+}
+var isFunction_1;
+var hasRequiredIsFunction;
+function requireIsFunction() {
+  if (hasRequiredIsFunction) return isFunction_1;
+  hasRequiredIsFunction = 1;
+  var baseGetTag = require_baseGetTag(), isObject = requireIsObject();
+  var asyncTag = "[object AsyncFunction]", funcTag = "[object Function]", genTag = "[object GeneratorFunction]", proxyTag = "[object Proxy]";
+  function isFunction(value) {
+    if (!isObject(value)) {
+      return false;
+    }
+    var tag = baseGetTag(value);
+    return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
+  }
+  isFunction_1 = isFunction;
+  return isFunction_1;
+}
+var _coreJsData;
+var hasRequired_coreJsData;
+function require_coreJsData() {
+  if (hasRequired_coreJsData) return _coreJsData;
+  hasRequired_coreJsData = 1;
+  var root = require_root();
+  var coreJsData = root["__core-js_shared__"];
+  _coreJsData = coreJsData;
+  return _coreJsData;
+}
+var _isMasked;
+var hasRequired_isMasked;
+function require_isMasked() {
+  if (hasRequired_isMasked) return _isMasked;
+  hasRequired_isMasked = 1;
+  var coreJsData = require_coreJsData();
+  var maskSrcKey = (function() {
+    var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || "");
+    return uid ? "Symbol(src)_1." + uid : "";
+  })();
+  function isMasked(func) {
+    return !!maskSrcKey && maskSrcKey in func;
+  }
+  _isMasked = isMasked;
+  return _isMasked;
+}
+var _toSource;
+var hasRequired_toSource;
+function require_toSource() {
+  if (hasRequired_toSource) return _toSource;
+  hasRequired_toSource = 1;
+  var funcProto = Function.prototype;
+  var funcToString = funcProto.toString;
+  function toSource(func) {
+    if (func != null) {
+      try {
+        return funcToString.call(func);
+      } catch (e) {
+      }
+      try {
+        return func + "";
+      } catch (e) {
+      }
+    }
+    return "";
+  }
+  _toSource = toSource;
+  return _toSource;
+}
+var _baseIsNative;
+var hasRequired_baseIsNative;
+function require_baseIsNative() {
+  if (hasRequired_baseIsNative) return _baseIsNative;
+  hasRequired_baseIsNative = 1;
+  var isFunction = requireIsFunction(), isMasked = require_isMasked(), isObject = requireIsObject(), toSource = require_toSource();
+  var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+  var reIsHostCtor = /^\[object .+?Constructor\]$/;
+  var funcProto = Function.prototype, objectProto = Object.prototype;
+  var funcToString = funcProto.toString;
+  var hasOwnProperty = objectProto.hasOwnProperty;
+  var reIsNative = RegExp(
+    "^" + funcToString.call(hasOwnProperty).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"
+  );
+  function baseIsNative(value) {
+    if (!isObject(value) || isMasked(value)) {
+      return false;
+    }
+    var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
+    return pattern.test(toSource(value));
+  }
+  _baseIsNative = baseIsNative;
+  return _baseIsNative;
+}
+var _getValue;
+var hasRequired_getValue;
+function require_getValue() {
+  if (hasRequired_getValue) return _getValue;
+  hasRequired_getValue = 1;
+  function getValue(object, key) {
+    return object == null ? void 0 : object[key];
+  }
+  _getValue = getValue;
+  return _getValue;
+}
+var _getNative;
+var hasRequired_getNative;
+function require_getNative() {
+  if (hasRequired_getNative) return _getNative;
+  hasRequired_getNative = 1;
+  var baseIsNative = require_baseIsNative(), getValue = require_getValue();
+  function getNative(object, key) {
+    var value = getValue(object, key);
+    return baseIsNative(value) ? value : void 0;
+  }
+  _getNative = getNative;
+  return _getNative;
+}
+var _nativeCreate;
+var hasRequired_nativeCreate;
+function require_nativeCreate() {
+  if (hasRequired_nativeCreate) return _nativeCreate;
+  hasRequired_nativeCreate = 1;
+  var getNative = require_getNative();
+  var nativeCreate = getNative(Object, "create");
+  _nativeCreate = nativeCreate;
+  return _nativeCreate;
+}
+var _hashClear;
+var hasRequired_hashClear;
+function require_hashClear() {
+  if (hasRequired_hashClear) return _hashClear;
+  hasRequired_hashClear = 1;
+  var nativeCreate = require_nativeCreate();
+  function hashClear() {
+    this.__data__ = nativeCreate ? nativeCreate(null) : {};
+    this.size = 0;
+  }
+  _hashClear = hashClear;
+  return _hashClear;
+}
+var _hashDelete;
+var hasRequired_hashDelete;
+function require_hashDelete() {
+  if (hasRequired_hashDelete) return _hashDelete;
+  hasRequired_hashDelete = 1;
+  function hashDelete(key) {
+    var result = this.has(key) && delete this.__data__[key];
+    this.size -= result ? 1 : 0;
+    return result;
+  }
+  _hashDelete = hashDelete;
+  return _hashDelete;
+}
+var _hashGet;
+var hasRequired_hashGet;
+function require_hashGet() {
+  if (hasRequired_hashGet) return _hashGet;
+  hasRequired_hashGet = 1;
+  var nativeCreate = require_nativeCreate();
+  var HASH_UNDEFINED = "__lodash_hash_undefined__";
+  var objectProto = Object.prototype;
+  var hasOwnProperty = objectProto.hasOwnProperty;
+  function hashGet(key) {
+    var data = this.__data__;
+    if (nativeCreate) {
+      var result = data[key];
+      return result === HASH_UNDEFINED ? void 0 : result;
+    }
+    return hasOwnProperty.call(data, key) ? data[key] : void 0;
+  }
+  _hashGet = hashGet;
+  return _hashGet;
+}
+var _hashHas;
+var hasRequired_hashHas;
+function require_hashHas() {
+  if (hasRequired_hashHas) return _hashHas;
+  hasRequired_hashHas = 1;
+  var nativeCreate = require_nativeCreate();
+  var objectProto = Object.prototype;
+  var hasOwnProperty = objectProto.hasOwnProperty;
+  function hashHas(key) {
+    var data = this.__data__;
+    return nativeCreate ? data[key] !== void 0 : hasOwnProperty.call(data, key);
+  }
+  _hashHas = hashHas;
+  return _hashHas;
+}
+var _hashSet;
+var hasRequired_hashSet;
+function require_hashSet() {
+  if (hasRequired_hashSet) return _hashSet;
+  hasRequired_hashSet = 1;
+  var nativeCreate = require_nativeCreate();
+  var HASH_UNDEFINED = "__lodash_hash_undefined__";
+  function hashSet(key, value) {
+    var data = this.__data__;
+    this.size += this.has(key) ? 0 : 1;
+    data[key] = nativeCreate && value === void 0 ? HASH_UNDEFINED : value;
+    return this;
+  }
+  _hashSet = hashSet;
+  return _hashSet;
+}
+var _Hash;
+var hasRequired_Hash;
+function require_Hash() {
+  if (hasRequired_Hash) return _Hash;
+  hasRequired_Hash = 1;
+  var hashClear = require_hashClear(), hashDelete = require_hashDelete(), hashGet = require_hashGet(), hashHas = require_hashHas(), hashSet = require_hashSet();
+  function Hash(entries) {
+    var index = -1, length = entries == null ? 0 : entries.length;
+    this.clear();
+    while (++index < length) {
+      var entry = entries[index];
+      this.set(entry[0], entry[1]);
     }
   }
-  return result;
+  Hash.prototype.clear = hashClear;
+  Hash.prototype["delete"] = hashDelete;
+  Hash.prototype.get = hashGet;
+  Hash.prototype.has = hashHas;
+  Hash.prototype.set = hashSet;
+  _Hash = Hash;
+  return _Hash;
 }
-var _getRawTag = getRawTag$1;
-var objectProto$b = Object.prototype;
-var nativeObjectToString = objectProto$b.toString;
-function objectToString$1(value) {
-  return nativeObjectToString.call(value);
-}
-var _objectToString = objectToString$1;
-var Symbol$4 = _Symbol, getRawTag = _getRawTag, objectToString = _objectToString;
-var nullTag = "[object Null]", undefinedTag = "[object Undefined]";
-var symToStringTag = Symbol$4 ? Symbol$4.toStringTag : void 0;
-function baseGetTag$5(value) {
-  if (value == null) {
-    return value === void 0 ? undefinedTag : nullTag;
+var _listCacheClear;
+var hasRequired_listCacheClear;
+function require_listCacheClear() {
+  if (hasRequired_listCacheClear) return _listCacheClear;
+  hasRequired_listCacheClear = 1;
+  function listCacheClear() {
+    this.__data__ = [];
+    this.size = 0;
   }
-  return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : objectToString(value);
+  _listCacheClear = listCacheClear;
+  return _listCacheClear;
 }
-var _baseGetTag = baseGetTag$5;
-function isObjectLike$5(value) {
-  return value != null && typeof value == "object";
-}
-var isObjectLike_1 = isObjectLike$5;
-var baseGetTag$4 = _baseGetTag, isObjectLike$4 = isObjectLike_1;
-var symbolTag$1 = "[object Symbol]";
-function isSymbol$4(value) {
-  return typeof value == "symbol" || isObjectLike$4(value) && baseGetTag$4(value) == symbolTag$1;
-}
-var isSymbol_1 = isSymbol$4;
-var isArray$9 = isArray_1, isSymbol$3 = isSymbol_1;
-var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/, reIsPlainProp = /^\w*$/;
-function isKey$3(value, object) {
-  if (isArray$9(value)) {
-    return false;
+var eq_1;
+var hasRequiredEq;
+function requireEq() {
+  if (hasRequiredEq) return eq_1;
+  hasRequiredEq = 1;
+  function eq(value, other) {
+    return value === other || value !== value && other !== other;
   }
-  var type = typeof value;
-  if (type == "number" || type == "symbol" || type == "boolean" || value == null || isSymbol$3(value)) {
+  eq_1 = eq;
+  return eq_1;
+}
+var _assocIndexOf;
+var hasRequired_assocIndexOf;
+function require_assocIndexOf() {
+  if (hasRequired_assocIndexOf) return _assocIndexOf;
+  hasRequired_assocIndexOf = 1;
+  var eq = requireEq();
+  function assocIndexOf(array, key) {
+    var length = array.length;
+    while (length--) {
+      if (eq(array[length][0], key)) {
+        return length;
+      }
+    }
+    return -1;
+  }
+  _assocIndexOf = assocIndexOf;
+  return _assocIndexOf;
+}
+var _listCacheDelete;
+var hasRequired_listCacheDelete;
+function require_listCacheDelete() {
+  if (hasRequired_listCacheDelete) return _listCacheDelete;
+  hasRequired_listCacheDelete = 1;
+  var assocIndexOf = require_assocIndexOf();
+  var arrayProto = Array.prototype;
+  var splice = arrayProto.splice;
+  function listCacheDelete(key) {
+    var data = this.__data__, index = assocIndexOf(data, key);
+    if (index < 0) {
+      return false;
+    }
+    var lastIndex = data.length - 1;
+    if (index == lastIndex) {
+      data.pop();
+    } else {
+      splice.call(data, index, 1);
+    }
+    --this.size;
     return true;
   }
-  return reIsPlainProp.test(value) || !reIsDeepProp.test(value) || object != null && value in Object(object);
+  _listCacheDelete = listCacheDelete;
+  return _listCacheDelete;
 }
-var _isKey = isKey$3;
-function isObject$7(value) {
-  var type = typeof value;
-  return value != null && (type == "object" || type == "function");
-}
-var isObject_1 = isObject$7;
-var baseGetTag$3 = _baseGetTag, isObject$6 = isObject_1;
-var asyncTag = "[object AsyncFunction]", funcTag$1 = "[object Function]", genTag = "[object GeneratorFunction]", proxyTag = "[object Proxy]";
-function isFunction$2(value) {
-  if (!isObject$6(value)) {
-    return false;
+var _listCacheGet;
+var hasRequired_listCacheGet;
+function require_listCacheGet() {
+  if (hasRequired_listCacheGet) return _listCacheGet;
+  hasRequired_listCacheGet = 1;
+  var assocIndexOf = require_assocIndexOf();
+  function listCacheGet(key) {
+    var data = this.__data__, index = assocIndexOf(data, key);
+    return index < 0 ? void 0 : data[index][1];
   }
-  var tag = baseGetTag$3(value);
-  return tag == funcTag$1 || tag == genTag || tag == asyncTag || tag == proxyTag;
+  _listCacheGet = listCacheGet;
+  return _listCacheGet;
 }
-var isFunction_1 = isFunction$2;
-var root$7 = _root;
-var coreJsData$1 = root$7["__core-js_shared__"];
-var _coreJsData = coreJsData$1;
-var coreJsData = _coreJsData;
-var maskSrcKey = function() {
-  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || "");
-  return uid ? "Symbol(src)_1." + uid : "";
-}();
-function isMasked$1(func) {
-  return !!maskSrcKey && maskSrcKey in func;
+var _listCacheHas;
+var hasRequired_listCacheHas;
+function require_listCacheHas() {
+  if (hasRequired_listCacheHas) return _listCacheHas;
+  hasRequired_listCacheHas = 1;
+  var assocIndexOf = require_assocIndexOf();
+  function listCacheHas(key) {
+    return assocIndexOf(this.__data__, key) > -1;
+  }
+  _listCacheHas = listCacheHas;
+  return _listCacheHas;
 }
-var _isMasked = isMasked$1;
-var funcProto$1 = Function.prototype;
-var funcToString$1 = funcProto$1.toString;
-function toSource$2(func) {
-  if (func != null) {
-    try {
-      return funcToString$1.call(func);
-    } catch (e) {
+var _listCacheSet;
+var hasRequired_listCacheSet;
+function require_listCacheSet() {
+  if (hasRequired_listCacheSet) return _listCacheSet;
+  hasRequired_listCacheSet = 1;
+  var assocIndexOf = require_assocIndexOf();
+  function listCacheSet(key, value) {
+    var data = this.__data__, index = assocIndexOf(data, key);
+    if (index < 0) {
+      ++this.size;
+      data.push([key, value]);
+    } else {
+      data[index][1] = value;
     }
-    try {
-      return func + "";
-    } catch (e) {
-    }
+    return this;
   }
-  return "";
+  _listCacheSet = listCacheSet;
+  return _listCacheSet;
 }
-var _toSource = toSource$2;
-var isFunction$1 = isFunction_1, isMasked = _isMasked, isObject$5 = isObject_1, toSource$1 = _toSource;
-var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
-var reIsHostCtor = /^\[object .+?Constructor\]$/;
-var funcProto = Function.prototype, objectProto$a = Object.prototype;
-var funcToString = funcProto.toString;
-var hasOwnProperty$8 = objectProto$a.hasOwnProperty;
-var reIsNative = RegExp(
-  "^" + funcToString.call(hasOwnProperty$8).replace(reRegExpChar, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"
-);
-function baseIsNative$1(value) {
-  if (!isObject$5(value) || isMasked(value)) {
-    return false;
-  }
-  var pattern = isFunction$1(value) ? reIsNative : reIsHostCtor;
-  return pattern.test(toSource$1(value));
-}
-var _baseIsNative = baseIsNative$1;
-function getValue$1(object, key) {
-  return object == null ? void 0 : object[key];
-}
-var _getValue = getValue$1;
-var baseIsNative = _baseIsNative, getValue = _getValue;
-function getNative$7(object, key) {
-  var value = getValue(object, key);
-  return baseIsNative(value) ? value : void 0;
-}
-var _getNative = getNative$7;
-var getNative$6 = _getNative;
-var nativeCreate$4 = getNative$6(Object, "create");
-var _nativeCreate = nativeCreate$4;
-var nativeCreate$3 = _nativeCreate;
-function hashClear$1() {
-  this.__data__ = nativeCreate$3 ? nativeCreate$3(null) : {};
-  this.size = 0;
-}
-var _hashClear = hashClear$1;
-function hashDelete$1(key) {
-  var result = this.has(key) && delete this.__data__[key];
-  this.size -= result ? 1 : 0;
-  return result;
-}
-var _hashDelete = hashDelete$1;
-var nativeCreate$2 = _nativeCreate;
-var HASH_UNDEFINED$2 = "__lodash_hash_undefined__";
-var objectProto$9 = Object.prototype;
-var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
-function hashGet$1(key) {
-  var data = this.__data__;
-  if (nativeCreate$2) {
-    var result = data[key];
-    return result === HASH_UNDEFINED$2 ? void 0 : result;
-  }
-  return hasOwnProperty$7.call(data, key) ? data[key] : void 0;
-}
-var _hashGet = hashGet$1;
-var nativeCreate$1 = _nativeCreate;
-var objectProto$8 = Object.prototype;
-var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
-function hashHas$1(key) {
-  var data = this.__data__;
-  return nativeCreate$1 ? data[key] !== void 0 : hasOwnProperty$6.call(data, key);
-}
-var _hashHas = hashHas$1;
-var nativeCreate = _nativeCreate;
-var HASH_UNDEFINED$1 = "__lodash_hash_undefined__";
-function hashSet$1(key, value) {
-  var data = this.__data__;
-  this.size += this.has(key) ? 0 : 1;
-  data[key] = nativeCreate && value === void 0 ? HASH_UNDEFINED$1 : value;
-  return this;
-}
-var _hashSet = hashSet$1;
-var hashClear = _hashClear, hashDelete = _hashDelete, hashGet = _hashGet, hashHas = _hashHas, hashSet = _hashSet;
-function Hash$1(entries) {
-  var index = -1, length = entries == null ? 0 : entries.length;
-  this.clear();
-  while (++index < length) {
-    var entry = entries[index];
-    this.set(entry[0], entry[1]);
-  }
-}
-Hash$1.prototype.clear = hashClear;
-Hash$1.prototype["delete"] = hashDelete;
-Hash$1.prototype.get = hashGet;
-Hash$1.prototype.has = hashHas;
-Hash$1.prototype.set = hashSet;
-var _Hash = Hash$1;
-function listCacheClear$1() {
-  this.__data__ = [];
-  this.size = 0;
-}
-var _listCacheClear = listCacheClear$1;
-function eq$3(value, other) {
-  return value === other || value !== value && other !== other;
-}
-var eq_1 = eq$3;
-var eq$2 = eq_1;
-function assocIndexOf$4(array, key) {
-  var length = array.length;
-  while (length--) {
-    if (eq$2(array[length][0], key)) {
-      return length;
+var _ListCache;
+var hasRequired_ListCache;
+function require_ListCache() {
+  if (hasRequired_ListCache) return _ListCache;
+  hasRequired_ListCache = 1;
+  var listCacheClear = require_listCacheClear(), listCacheDelete = require_listCacheDelete(), listCacheGet = require_listCacheGet(), listCacheHas = require_listCacheHas(), listCacheSet = require_listCacheSet();
+  function ListCache(entries) {
+    var index = -1, length = entries == null ? 0 : entries.length;
+    this.clear();
+    while (++index < length) {
+      var entry = entries[index];
+      this.set(entry[0], entry[1]);
     }
   }
-  return -1;
+  ListCache.prototype.clear = listCacheClear;
+  ListCache.prototype["delete"] = listCacheDelete;
+  ListCache.prototype.get = listCacheGet;
+  ListCache.prototype.has = listCacheHas;
+  ListCache.prototype.set = listCacheSet;
+  _ListCache = ListCache;
+  return _ListCache;
 }
-var _assocIndexOf = assocIndexOf$4;
-var assocIndexOf$3 = _assocIndexOf;
-var arrayProto = Array.prototype;
-var splice = arrayProto.splice;
-function listCacheDelete$1(key) {
-  var data = this.__data__, index = assocIndexOf$3(data, key);
-  if (index < 0) {
-    return false;
+var _Map;
+var hasRequired_Map;
+function require_Map() {
+  if (hasRequired_Map) return _Map;
+  hasRequired_Map = 1;
+  var getNative = require_getNative(), root = require_root();
+  var Map2 = getNative(root, "Map");
+  _Map = Map2;
+  return _Map;
+}
+var _mapCacheClear;
+var hasRequired_mapCacheClear;
+function require_mapCacheClear() {
+  if (hasRequired_mapCacheClear) return _mapCacheClear;
+  hasRequired_mapCacheClear = 1;
+  var Hash = require_Hash(), ListCache = require_ListCache(), Map2 = require_Map();
+  function mapCacheClear() {
+    this.size = 0;
+    this.__data__ = {
+      "hash": new Hash(),
+      "map": new (Map2 || ListCache)(),
+      "string": new Hash()
+    };
   }
-  var lastIndex = data.length - 1;
-  if (index == lastIndex) {
-    data.pop();
-  } else {
-    splice.call(data, index, 1);
+  _mapCacheClear = mapCacheClear;
+  return _mapCacheClear;
+}
+var _isKeyable;
+var hasRequired_isKeyable;
+function require_isKeyable() {
+  if (hasRequired_isKeyable) return _isKeyable;
+  hasRequired_isKeyable = 1;
+  function isKeyable(value) {
+    var type = typeof value;
+    return type == "string" || type == "number" || type == "symbol" || type == "boolean" ? value !== "__proto__" : value === null;
   }
-  --this.size;
-  return true;
+  _isKeyable = isKeyable;
+  return _isKeyable;
 }
-var _listCacheDelete = listCacheDelete$1;
-var assocIndexOf$2 = _assocIndexOf;
-function listCacheGet$1(key) {
-  var data = this.__data__, index = assocIndexOf$2(data, key);
-  return index < 0 ? void 0 : data[index][1];
-}
-var _listCacheGet = listCacheGet$1;
-var assocIndexOf$1 = _assocIndexOf;
-function listCacheHas$1(key) {
-  return assocIndexOf$1(this.__data__, key) > -1;
-}
-var _listCacheHas = listCacheHas$1;
-var assocIndexOf = _assocIndexOf;
-function listCacheSet$1(key, value) {
-  var data = this.__data__, index = assocIndexOf(data, key);
-  if (index < 0) {
-    ++this.size;
-    data.push([key, value]);
-  } else {
-    data[index][1] = value;
+var _getMapData;
+var hasRequired_getMapData;
+function require_getMapData() {
+  if (hasRequired_getMapData) return _getMapData;
+  hasRequired_getMapData = 1;
+  var isKeyable = require_isKeyable();
+  function getMapData(map, key) {
+    var data = map.__data__;
+    return isKeyable(key) ? data[typeof key == "string" ? "string" : "hash"] : data.map;
   }
-  return this;
+  _getMapData = getMapData;
+  return _getMapData;
 }
-var _listCacheSet = listCacheSet$1;
-var listCacheClear = _listCacheClear, listCacheDelete = _listCacheDelete, listCacheGet = _listCacheGet, listCacheHas = _listCacheHas, listCacheSet = _listCacheSet;
-function ListCache$4(entries) {
-  var index = -1, length = entries == null ? 0 : entries.length;
-  this.clear();
-  while (++index < length) {
-    var entry = entries[index];
-    this.set(entry[0], entry[1]);
-  }
-}
-ListCache$4.prototype.clear = listCacheClear;
-ListCache$4.prototype["delete"] = listCacheDelete;
-ListCache$4.prototype.get = listCacheGet;
-ListCache$4.prototype.has = listCacheHas;
-ListCache$4.prototype.set = listCacheSet;
-var _ListCache = ListCache$4;
-var getNative$5 = _getNative, root$6 = _root;
-var Map$4 = getNative$5(root$6, "Map");
-var _Map = Map$4;
-var Hash = _Hash, ListCache$3 = _ListCache, Map$3 = _Map;
-function mapCacheClear$1() {
-  this.size = 0;
-  this.__data__ = {
-    "hash": new Hash(),
-    "map": new (Map$3 || ListCache$3)(),
-    "string": new Hash()
-  };
-}
-var _mapCacheClear = mapCacheClear$1;
-function isKeyable$1(value) {
-  var type = typeof value;
-  return type == "string" || type == "number" || type == "symbol" || type == "boolean" ? value !== "__proto__" : value === null;
-}
-var _isKeyable = isKeyable$1;
-var isKeyable = _isKeyable;
-function getMapData$4(map, key) {
-  var data = map.__data__;
-  return isKeyable(key) ? data[typeof key == "string" ? "string" : "hash"] : data.map;
-}
-var _getMapData = getMapData$4;
-var getMapData$3 = _getMapData;
-function mapCacheDelete$1(key) {
-  var result = getMapData$3(this, key)["delete"](key);
-  this.size -= result ? 1 : 0;
-  return result;
-}
-var _mapCacheDelete = mapCacheDelete$1;
-var getMapData$2 = _getMapData;
-function mapCacheGet$1(key) {
-  return getMapData$2(this, key).get(key);
-}
-var _mapCacheGet = mapCacheGet$1;
-var getMapData$1 = _getMapData;
-function mapCacheHas$1(key) {
-  return getMapData$1(this, key).has(key);
-}
-var _mapCacheHas = mapCacheHas$1;
-var getMapData = _getMapData;
-function mapCacheSet$1(key, value) {
-  var data = getMapData(this, key), size = data.size;
-  data.set(key, value);
-  this.size += data.size == size ? 0 : 1;
-  return this;
-}
-var _mapCacheSet = mapCacheSet$1;
-var mapCacheClear = _mapCacheClear, mapCacheDelete = _mapCacheDelete, mapCacheGet = _mapCacheGet, mapCacheHas = _mapCacheHas, mapCacheSet = _mapCacheSet;
-function MapCache$3(entries) {
-  var index = -1, length = entries == null ? 0 : entries.length;
-  this.clear();
-  while (++index < length) {
-    var entry = entries[index];
-    this.set(entry[0], entry[1]);
-  }
-}
-MapCache$3.prototype.clear = mapCacheClear;
-MapCache$3.prototype["delete"] = mapCacheDelete;
-MapCache$3.prototype.get = mapCacheGet;
-MapCache$3.prototype.has = mapCacheHas;
-MapCache$3.prototype.set = mapCacheSet;
-var _MapCache = MapCache$3;
-var MapCache$2 = _MapCache;
-var FUNC_ERROR_TEXT$2 = "Expected a function";
-function memoize$2(func, resolver) {
-  if (typeof func != "function" || resolver != null && typeof resolver != "function") {
-    throw new TypeError(FUNC_ERROR_TEXT$2);
-  }
-  var memoized = function() {
-    var args = arguments, key = resolver ? resolver.apply(this, args) : args[0], cache2 = memoized.cache;
-    if (cache2.has(key)) {
-      return cache2.get(key);
-    }
-    var result = func.apply(this, args);
-    memoized.cache = cache2.set(key, result) || cache2;
-    return result;
-  };
-  memoized.cache = new (memoize$2.Cache || MapCache$2)();
-  return memoized;
-}
-memoize$2.Cache = MapCache$2;
-var memoize_1 = memoize$2;
-var memoize$1 = memoize_1;
-var MAX_MEMOIZE_SIZE = 500;
-function memoizeCapped$1(func) {
-  var result = memoize$1(func, function(key) {
-    if (cache2.size === MAX_MEMOIZE_SIZE) {
-      cache2.clear();
-    }
-    return key;
-  });
-  var cache2 = result.cache;
-  return result;
-}
-var _memoizeCapped = memoizeCapped$1;
-var memoizeCapped = _memoizeCapped;
-var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
-var reEscapeChar = /\\(\\)?/g;
-var stringToPath$1 = memoizeCapped(function(string) {
-  var result = [];
-  if (string.charCodeAt(0) === 46) {
-    result.push("");
-  }
-  string.replace(rePropName, function(match, number, quote, subString) {
-    result.push(quote ? subString.replace(reEscapeChar, "$1") : number || match);
-  });
-  return result;
-});
-var _stringToPath = stringToPath$1;
-function arrayMap$1(array, iteratee) {
-  var index = -1, length = array == null ? 0 : array.length, result = Array(length);
-  while (++index < length) {
-    result[index] = iteratee(array[index], index, array);
-  }
-  return result;
-}
-var _arrayMap = arrayMap$1;
-var Symbol$3 = _Symbol, arrayMap = _arrayMap, isArray$8 = isArray_1, isSymbol$2 = isSymbol_1;
-var symbolProto$1 = Symbol$3 ? Symbol$3.prototype : void 0, symbolToString = symbolProto$1 ? symbolProto$1.toString : void 0;
-function baseToString$1(value) {
-  if (typeof value == "string") {
-    return value;
-  }
-  if (isArray$8(value)) {
-    return arrayMap(value, baseToString$1) + "";
-  }
-  if (isSymbol$2(value)) {
-    return symbolToString ? symbolToString.call(value) : "";
-  }
-  var result = value + "";
-  return result == "0" && 1 / value == -Infinity ? "-0" : result;
-}
-var _baseToString = baseToString$1;
-var baseToString = _baseToString;
-function toString$1(value) {
-  return value == null ? "" : baseToString(value);
-}
-var toString_1 = toString$1;
-var isArray$7 = isArray_1, isKey$2 = _isKey, stringToPath = _stringToPath, toString = toString_1;
-function castPath$2(value, object) {
-  if (isArray$7(value)) {
-    return value;
-  }
-  return isKey$2(value, object) ? [value] : stringToPath(toString(value));
-}
-var _castPath = castPath$2;
-var baseGetTag$2 = _baseGetTag, isObjectLike$3 = isObjectLike_1;
-var argsTag$2 = "[object Arguments]";
-function baseIsArguments$1(value) {
-  return isObjectLike$3(value) && baseGetTag$2(value) == argsTag$2;
-}
-var _baseIsArguments = baseIsArguments$1;
-var baseIsArguments = _baseIsArguments, isObjectLike$2 = isObjectLike_1;
-var objectProto$7 = Object.prototype;
-var hasOwnProperty$5 = objectProto$7.hasOwnProperty;
-var propertyIsEnumerable$1 = objectProto$7.propertyIsEnumerable;
-var isArguments$3 = baseIsArguments(/* @__PURE__ */ function() {
-  return arguments;
-}()) ? baseIsArguments : function(value) {
-  return isObjectLike$2(value) && hasOwnProperty$5.call(value, "callee") && !propertyIsEnumerable$1.call(value, "callee");
-};
-var isArguments_1 = isArguments$3;
-var MAX_SAFE_INTEGER$1 = 9007199254740991;
-var reIsUint = /^(?:0|[1-9]\d*)$/;
-function isIndex$3(value, length) {
-  var type = typeof value;
-  length = length == null ? MAX_SAFE_INTEGER$1 : length;
-  return !!length && (type == "number" || type != "symbol" && reIsUint.test(value)) && (value > -1 && value % 1 == 0 && value < length);
-}
-var _isIndex = isIndex$3;
-var MAX_SAFE_INTEGER = 9007199254740991;
-function isLength$3(value) {
-  return typeof value == "number" && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-var isLength_1 = isLength$3;
-var isSymbol$1 = isSymbol_1;
-function toKey$4(value) {
-  if (typeof value == "string" || isSymbol$1(value)) {
-    return value;
-  }
-  var result = value + "";
-  return result == "0" && 1 / value == -Infinity ? "-0" : result;
-}
-var _toKey = toKey$4;
-var castPath$1 = _castPath, isArguments$2 = isArguments_1, isArray$6 = isArray_1, isIndex$2 = _isIndex, isLength$2 = isLength_1, toKey$3 = _toKey;
-function hasPath$2(object, path, hasFunc) {
-  path = castPath$1(path, object);
-  var index = -1, length = path.length, result = false;
-  while (++index < length) {
-    var key = toKey$3(path[index]);
-    if (!(result = object != null && hasFunc(object, key))) {
-      break;
-    }
-    object = object[key];
-  }
-  if (result || ++index != length) {
+var _mapCacheDelete;
+var hasRequired_mapCacheDelete;
+function require_mapCacheDelete() {
+  if (hasRequired_mapCacheDelete) return _mapCacheDelete;
+  hasRequired_mapCacheDelete = 1;
+  var getMapData = require_getMapData();
+  function mapCacheDelete(key) {
+    var result = getMapData(this, key)["delete"](key);
+    this.size -= result ? 1 : 0;
     return result;
   }
-  length = object == null ? 0 : object.length;
-  return !!length && isLength$2(length) && isIndex$2(key, length) && (isArray$6(object) || isArguments$2(object));
+  _mapCacheDelete = mapCacheDelete;
+  return _mapCacheDelete;
 }
-var _hasPath = hasPath$2;
-var baseHas = _baseHas, hasPath$1 = _hasPath;
-function has$1(object, path) {
-  return object != null && hasPath$1(object, path, baseHas);
+var _mapCacheGet;
+var hasRequired_mapCacheGet;
+function require_mapCacheGet() {
+  if (hasRequired_mapCacheGet) return _mapCacheGet;
+  hasRequired_mapCacheGet = 1;
+  var getMapData = require_getMapData();
+  function mapCacheGet(key) {
+    return getMapData(this, key).get(key);
+  }
+  _mapCacheGet = mapCacheGet;
+  return _mapCacheGet;
 }
-var has_1 = has$1;
-const has$2 = /* @__PURE__ */ getDefaultExportFromCjs(has_1);
+var _mapCacheHas;
+var hasRequired_mapCacheHas;
+function require_mapCacheHas() {
+  if (hasRequired_mapCacheHas) return _mapCacheHas;
+  hasRequired_mapCacheHas = 1;
+  var getMapData = require_getMapData();
+  function mapCacheHas(key) {
+    return getMapData(this, key).has(key);
+  }
+  _mapCacheHas = mapCacheHas;
+  return _mapCacheHas;
+}
+var _mapCacheSet;
+var hasRequired_mapCacheSet;
+function require_mapCacheSet() {
+  if (hasRequired_mapCacheSet) return _mapCacheSet;
+  hasRequired_mapCacheSet = 1;
+  var getMapData = require_getMapData();
+  function mapCacheSet(key, value) {
+    var data = getMapData(this, key), size = data.size;
+    data.set(key, value);
+    this.size += data.size == size ? 0 : 1;
+    return this;
+  }
+  _mapCacheSet = mapCacheSet;
+  return _mapCacheSet;
+}
+var _MapCache;
+var hasRequired_MapCache;
+function require_MapCache() {
+  if (hasRequired_MapCache) return _MapCache;
+  hasRequired_MapCache = 1;
+  var mapCacheClear = require_mapCacheClear(), mapCacheDelete = require_mapCacheDelete(), mapCacheGet = require_mapCacheGet(), mapCacheHas = require_mapCacheHas(), mapCacheSet = require_mapCacheSet();
+  function MapCache(entries) {
+    var index = -1, length = entries == null ? 0 : entries.length;
+    this.clear();
+    while (++index < length) {
+      var entry = entries[index];
+      this.set(entry[0], entry[1]);
+    }
+  }
+  MapCache.prototype.clear = mapCacheClear;
+  MapCache.prototype["delete"] = mapCacheDelete;
+  MapCache.prototype.get = mapCacheGet;
+  MapCache.prototype.has = mapCacheHas;
+  MapCache.prototype.set = mapCacheSet;
+  _MapCache = MapCache;
+  return _MapCache;
+}
+var memoize_1;
+var hasRequiredMemoize;
+function requireMemoize() {
+  if (hasRequiredMemoize) return memoize_1;
+  hasRequiredMemoize = 1;
+  var MapCache = require_MapCache();
+  var FUNC_ERROR_TEXT = "Expected a function";
+  function memoize2(func, resolver) {
+    if (typeof func != "function" || resolver != null && typeof resolver != "function") {
+      throw new TypeError(FUNC_ERROR_TEXT);
+    }
+    var memoized = function() {
+      var args = arguments, key = resolver ? resolver.apply(this, args) : args[0], cache2 = memoized.cache;
+      if (cache2.has(key)) {
+        return cache2.get(key);
+      }
+      var result = func.apply(this, args);
+      memoized.cache = cache2.set(key, result) || cache2;
+      return result;
+    };
+    memoized.cache = new (memoize2.Cache || MapCache)();
+    return memoized;
+  }
+  memoize2.Cache = MapCache;
+  memoize_1 = memoize2;
+  return memoize_1;
+}
+var _memoizeCapped;
+var hasRequired_memoizeCapped;
+function require_memoizeCapped() {
+  if (hasRequired_memoizeCapped) return _memoizeCapped;
+  hasRequired_memoizeCapped = 1;
+  var memoize2 = requireMemoize();
+  var MAX_MEMOIZE_SIZE = 500;
+  function memoizeCapped(func) {
+    var result = memoize2(func, function(key) {
+      if (cache2.size === MAX_MEMOIZE_SIZE) {
+        cache2.clear();
+      }
+      return key;
+    });
+    var cache2 = result.cache;
+    return result;
+  }
+  _memoizeCapped = memoizeCapped;
+  return _memoizeCapped;
+}
+var _stringToPath;
+var hasRequired_stringToPath;
+function require_stringToPath() {
+  if (hasRequired_stringToPath) return _stringToPath;
+  hasRequired_stringToPath = 1;
+  var memoizeCapped = require_memoizeCapped();
+  var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
+  var reEscapeChar = /\\(\\)?/g;
+  var stringToPath = memoizeCapped(function(string) {
+    var result = [];
+    if (string.charCodeAt(0) === 46) {
+      result.push("");
+    }
+    string.replace(rePropName, function(match, number, quote, subString) {
+      result.push(quote ? subString.replace(reEscapeChar, "$1") : number || match);
+    });
+    return result;
+  });
+  _stringToPath = stringToPath;
+  return _stringToPath;
+}
+var _arrayMap;
+var hasRequired_arrayMap;
+function require_arrayMap() {
+  if (hasRequired_arrayMap) return _arrayMap;
+  hasRequired_arrayMap = 1;
+  function arrayMap(array, iteratee) {
+    var index = -1, length = array == null ? 0 : array.length, result = Array(length);
+    while (++index < length) {
+      result[index] = iteratee(array[index], index, array);
+    }
+    return result;
+  }
+  _arrayMap = arrayMap;
+  return _arrayMap;
+}
+var _baseToString;
+var hasRequired_baseToString;
+function require_baseToString() {
+  if (hasRequired_baseToString) return _baseToString;
+  hasRequired_baseToString = 1;
+  var Symbol2 = require_Symbol(), arrayMap = require_arrayMap(), isArray = requireIsArray(), isSymbol = requireIsSymbol();
+  var symbolProto = Symbol2 ? Symbol2.prototype : void 0, symbolToString = symbolProto ? symbolProto.toString : void 0;
+  function baseToString(value) {
+    if (typeof value == "string") {
+      return value;
+    }
+    if (isArray(value)) {
+      return arrayMap(value, baseToString) + "";
+    }
+    if (isSymbol(value)) {
+      return symbolToString ? symbolToString.call(value) : "";
+    }
+    var result = value + "";
+    return result == "0" && 1 / value == -Infinity ? "-0" : result;
+  }
+  _baseToString = baseToString;
+  return _baseToString;
+}
+var toString_1;
+var hasRequiredToString;
+function requireToString() {
+  if (hasRequiredToString) return toString_1;
+  hasRequiredToString = 1;
+  var baseToString = require_baseToString();
+  function toString(value) {
+    return value == null ? "" : baseToString(value);
+  }
+  toString_1 = toString;
+  return toString_1;
+}
+var _castPath;
+var hasRequired_castPath;
+function require_castPath() {
+  if (hasRequired_castPath) return _castPath;
+  hasRequired_castPath = 1;
+  var isArray = requireIsArray(), isKey = require_isKey(), stringToPath = require_stringToPath(), toString = requireToString();
+  function castPath(value, object) {
+    if (isArray(value)) {
+      return value;
+    }
+    return isKey(value, object) ? [value] : stringToPath(toString(value));
+  }
+  _castPath = castPath;
+  return _castPath;
+}
+var _baseIsArguments;
+var hasRequired_baseIsArguments;
+function require_baseIsArguments() {
+  if (hasRequired_baseIsArguments) return _baseIsArguments;
+  hasRequired_baseIsArguments = 1;
+  var baseGetTag = require_baseGetTag(), isObjectLike = requireIsObjectLike();
+  var argsTag = "[object Arguments]";
+  function baseIsArguments(value) {
+    return isObjectLike(value) && baseGetTag(value) == argsTag;
+  }
+  _baseIsArguments = baseIsArguments;
+  return _baseIsArguments;
+}
+var isArguments_1;
+var hasRequiredIsArguments;
+function requireIsArguments() {
+  if (hasRequiredIsArguments) return isArguments_1;
+  hasRequiredIsArguments = 1;
+  var baseIsArguments = require_baseIsArguments(), isObjectLike = requireIsObjectLike();
+  var objectProto = Object.prototype;
+  var hasOwnProperty = objectProto.hasOwnProperty;
+  var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+  var isArguments = baseIsArguments(/* @__PURE__ */ (function() {
+    return arguments;
+  })()) ? baseIsArguments : function(value) {
+    return isObjectLike(value) && hasOwnProperty.call(value, "callee") && !propertyIsEnumerable.call(value, "callee");
+  };
+  isArguments_1 = isArguments;
+  return isArguments_1;
+}
+var _isIndex;
+var hasRequired_isIndex;
+function require_isIndex() {
+  if (hasRequired_isIndex) return _isIndex;
+  hasRequired_isIndex = 1;
+  var MAX_SAFE_INTEGER = 9007199254740991;
+  var reIsUint = /^(?:0|[1-9]\d*)$/;
+  function isIndex(value, length) {
+    var type = typeof value;
+    length = length == null ? MAX_SAFE_INTEGER : length;
+    return !!length && (type == "number" || type != "symbol" && reIsUint.test(value)) && (value > -1 && value % 1 == 0 && value < length);
+  }
+  _isIndex = isIndex;
+  return _isIndex;
+}
+var isLength_1;
+var hasRequiredIsLength;
+function requireIsLength() {
+  if (hasRequiredIsLength) return isLength_1;
+  hasRequiredIsLength = 1;
+  var MAX_SAFE_INTEGER = 9007199254740991;
+  function isLength(value) {
+    return typeof value == "number" && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+  }
+  isLength_1 = isLength;
+  return isLength_1;
+}
+var _toKey;
+var hasRequired_toKey;
+function require_toKey() {
+  if (hasRequired_toKey) return _toKey;
+  hasRequired_toKey = 1;
+  var isSymbol = requireIsSymbol();
+  function toKey(value) {
+    if (typeof value == "string" || isSymbol(value)) {
+      return value;
+    }
+    var result = value + "";
+    return result == "0" && 1 / value == -Infinity ? "-0" : result;
+  }
+  _toKey = toKey;
+  return _toKey;
+}
+var _hasPath;
+var hasRequired_hasPath;
+function require_hasPath() {
+  if (hasRequired_hasPath) return _hasPath;
+  hasRequired_hasPath = 1;
+  var castPath = require_castPath(), isArguments = requireIsArguments(), isArray = requireIsArray(), isIndex = require_isIndex(), isLength = requireIsLength(), toKey = require_toKey();
+  function hasPath(object, path, hasFunc) {
+    path = castPath(path, object);
+    var index = -1, length = path.length, result = false;
+    while (++index < length) {
+      var key = toKey(path[index]);
+      if (!(result = object != null && hasFunc(object, key))) {
+        break;
+      }
+      object = object[key];
+    }
+    if (result || ++index != length) {
+      return result;
+    }
+    length = object == null ? 0 : object.length;
+    return !!length && isLength(length) && isIndex(key, length) && (isArray(object) || isArguments(object));
+  }
+  _hasPath = hasPath;
+  return _hasPath;
+}
+var has_1;
+var hasRequiredHas$1;
+function requireHas$1() {
+  if (hasRequiredHas$1) return has_1;
+  hasRequiredHas$1 = 1;
+  var baseHas = require_baseHas(), hasPath = require_hasPath();
+  function has2(object, path) {
+    return object != null && hasPath(object, path, baseHas);
+  }
+  has_1 = has2;
+  return has_1;
+}
+var hasExports = requireHas$1();
+const has$2 = /* @__PURE__ */ getDefaultExportFromCjs(hasExports);
 function panic() {
   let message = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : "This should not happen";
   throw new Error(message);
@@ -522,7 +920,7 @@ function maybe(fn, defaultValue) {
     return defaultValue;
   }
 }
-const has = Object.prototype.hasOwnProperty;
+const has$1 = Object.prototype.hasOwnProperty;
 function deepEqual(foo, bar) {
   let ctor, len;
   if (foo === bar) return true;
@@ -538,7 +936,7 @@ function deepEqual(foo, bar) {
     if (!ctor || typeof foo === "object") {
       len = 0;
       for (ctor in foo) {
-        if (has.call(foo, ctor) && ++len && !has.call(bar, ctor)) return false;
+        if (has$1.call(foo, ctor) && ++len && !has$1.call(bar, ctor)) return false;
         if (!(ctor in bar) || !deepEqual(foo[ctor], bar[ctor])) return false;
       }
       return Object.keys(bar).length === len;
@@ -691,7 +1089,7 @@ class CompactSelection {
   }
   offset(amount) {
     if (amount === 0) return this;
-    const newItems = this.items.map((x) => [x[0] + amount, x[1] + amount]);
+    const newItems = this.items.map((x2) => [x2[0] + amount, x2[1] + amount]);
     return new CompactSelection(newItems);
   }
   add(selection) {
@@ -734,8 +1132,8 @@ class CompactSelection {
     return false;
   }
   hasAll(index) {
-    for (let x = index[0]; x < index[1]; x++) {
-      if (!this.hasIndex(x)) return false;
+    for (let x2 = index[0]; x2 < index[1]; x2++) {
+      if (!this.hasIndex(x2)) return false;
     }
     return true;
   }
@@ -758,8 +1156,8 @@ class CompactSelection {
   toArray() {
     const result = [];
     for (const [start, end] of this.items) {
-      for (let x = start; x < end; x++) {
-        result.push(x);
+      for (let x2 = start; x2 < end; x2++) {
+        result.push(x2);
       }
     }
     return result;
@@ -773,8 +1171,8 @@ class CompactSelection {
   }
   *[Symbol.iterator]() {
     for (const [start, end] of this.items) {
-      for (let x = start; x < end; x++) {
-        yield x;
+      for (let x2 = start; x2 < end; x2++) {
+        yield x2;
       }
     }
   }
@@ -797,15 +1195,6 @@ CompactSelection.fromArray = (items) => {
 };
 var compilerRuntime = { exports: {} };
 var reactCompilerRuntime_production = {};
-/**
- * @license React
- * react-compiler-runtime.production.js
- *
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
 var hasRequiredReactCompilerRuntime_production;
 function requireReactCompilerRuntime_production() {
   if (hasRequiredReactCompilerRuntime_production) return reactCompilerRuntime_production;
@@ -817,20 +1206,11 @@ function requireReactCompilerRuntime_production() {
   return reactCompilerRuntime_production;
 }
 var reactCompilerRuntime_development = {};
-/**
- * @license React
- * react-compiler-runtime.development.js
- *
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
 var hasRequiredReactCompilerRuntime_development;
 function requireReactCompilerRuntime_development() {
   if (hasRequiredReactCompilerRuntime_development) return reactCompilerRuntime_development;
   hasRequiredReactCompilerRuntime_development = 1;
-  "production" !== process.env.NODE_ENV && function() {
+  "production" !== process.env.NODE_ENV && (function() {
     var ReactSharedInternals = React__default.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
     reactCompilerRuntime_development.c = function(size) {
       var dispatcher = ReactSharedInternals.H;
@@ -839,15 +1219,21 @@ function requireReactCompilerRuntime_development() {
       );
       return dispatcher.useMemoCache(size);
     };
-  }();
+  })();
   return reactCompilerRuntime_development;
 }
-if (process.env.NODE_ENV === "production") {
-  compilerRuntime.exports = requireReactCompilerRuntime_production();
-} else {
-  compilerRuntime.exports = requireReactCompilerRuntime_development();
+var hasRequiredCompilerRuntime;
+function requireCompilerRuntime() {
+  if (hasRequiredCompilerRuntime) return compilerRuntime.exports;
+  hasRequiredCompilerRuntime = 1;
+  if (process.env.NODE_ENV === "production") {
+    compilerRuntime.exports = requireReactCompilerRuntime_production();
+  } else {
+    compilerRuntime.exports = requireReactCompilerRuntime_development();
+  }
+  return compilerRuntime.exports;
 }
-var compilerRuntimeExports = compilerRuntime.exports;
+var compilerRuntimeExports = requireCompilerRuntime();
 function memoize(fn) {
   var cache2 = /* @__PURE__ */ Object.create(null);
   return function(arg) {
@@ -855,7 +1241,7 @@ function memoize(fn) {
     return cache2[arg];
   };
 }
-var reactPropsRegex = /^((children|dangerouslySetInnerHTML|key|ref|autoFocus|defaultValue|defaultChecked|innerHTML|suppressContentEditableWarning|suppressHydrationWarning|valueLink|abbr|accept|acceptCharset|accessKey|action|allow|allowUserMedia|allowPaymentRequest|allowFullScreen|allowTransparency|alt|async|autoComplete|autoPlay|capture|cellPadding|cellSpacing|challenge|charSet|checked|cite|classID|className|cols|colSpan|content|contentEditable|contextMenu|controls|controlsList|coords|crossOrigin|data|dateTime|decoding|default|defer|dir|disabled|disablePictureInPicture|download|draggable|encType|enterKeyHint|form|formAction|formEncType|formMethod|formNoValidate|formTarget|frameBorder|headers|height|hidden|high|href|hrefLang|htmlFor|httpEquiv|id|inputMode|integrity|is|keyParams|keyType|kind|label|lang|list|loading|loop|low|marginHeight|marginWidth|max|maxLength|media|mediaGroup|method|min|minLength|multiple|muted|name|nonce|noValidate|open|optimum|pattern|placeholder|playsInline|poster|preload|profile|radioGroup|readOnly|referrerPolicy|rel|required|reversed|role|rows|rowSpan|sandbox|scope|scoped|scrolling|seamless|selected|shape|size|sizes|slot|span|spellCheck|src|srcDoc|srcLang|srcSet|start|step|style|summary|tabIndex|target|title|translate|type|useMap|value|width|wmode|wrap|about|datatype|inlist|prefix|property|resource|typeof|vocab|autoCapitalize|autoCorrect|autoSave|color|incremental|fallback|inert|itemProp|itemScope|itemType|itemID|itemRef|on|option|results|security|unselectable|accentHeight|accumulate|additive|alignmentBaseline|allowReorder|alphabetic|amplitude|arabicForm|ascent|attributeName|attributeType|autoReverse|azimuth|baseFrequency|baselineShift|baseProfile|bbox|begin|bias|by|calcMode|capHeight|clip|clipPathUnits|clipPath|clipRule|colorInterpolation|colorInterpolationFilters|colorProfile|colorRendering|contentScriptType|contentStyleType|cursor|cx|cy|d|decelerate|descent|diffuseConstant|direction|display|divisor|dominantBaseline|dur|dx|dy|edgeMode|elevation|enableBackground|end|exponent|externalResourcesRequired|fill|fillOpacity|fillRule|filter|filterRes|filterUnits|floodColor|floodOpacity|focusable|fontFamily|fontSize|fontSizeAdjust|fontStretch|fontStyle|fontVariant|fontWeight|format|from|fr|fx|fy|g1|g2|glyphName|glyphOrientationHorizontal|glyphOrientationVertical|glyphRef|gradientTransform|gradientUnits|hanging|horizAdvX|horizOriginX|ideographic|imageRendering|in|in2|intercept|k|k1|k2|k3|k4|kernelMatrix|kernelUnitLength|kerning|keyPoints|keySplines|keyTimes|lengthAdjust|letterSpacing|lightingColor|limitingConeAngle|local|markerEnd|markerMid|markerStart|markerHeight|markerUnits|markerWidth|mask|maskContentUnits|maskUnits|mathematical|mode|numOctaves|offset|opacity|operator|order|orient|orientation|origin|overflow|overlinePosition|overlineThickness|panose1|paintOrder|pathLength|patternContentUnits|patternTransform|patternUnits|pointerEvents|points|pointsAtX|pointsAtY|pointsAtZ|preserveAlpha|preserveAspectRatio|primitiveUnits|r|radius|refX|refY|renderingIntent|repeatCount|repeatDur|requiredExtensions|requiredFeatures|restart|result|rotate|rx|ry|scale|seed|shapeRendering|slope|spacing|specularConstant|specularExponent|speed|spreadMethod|startOffset|stdDeviation|stemh|stemv|stitchTiles|stopColor|stopOpacity|strikethroughPosition|strikethroughThickness|string|stroke|strokeDasharray|strokeDashoffset|strokeLinecap|strokeLinejoin|strokeMiterlimit|strokeOpacity|strokeWidth|surfaceScale|systemLanguage|tableValues|targetX|targetY|textAnchor|textDecoration|textRendering|textLength|to|transform|u1|u2|underlinePosition|underlineThickness|unicode|unicodeBidi|unicodeRange|unitsPerEm|vAlphabetic|vHanging|vIdeographic|vMathematical|values|vectorEffect|version|vertAdvY|vertOriginX|vertOriginY|viewBox|viewTarget|visibility|widths|wordSpacing|writingMode|x|xHeight|x1|x2|xChannelSelector|xlinkActuate|xlinkArcrole|xlinkHref|xlinkRole|xlinkShow|xlinkTitle|xlinkType|xmlBase|xmlns|xmlnsXlink|xmlLang|xmlSpace|y|y1|y2|yChannelSelector|z|zoomAndPan|for|class|autofocus)|(([Dd][Aa][Tt][Aa]|[Aa][Rr][Ii][Aa]|x)-.*))$/;
+var reactPropsRegex = /^((children|dangerouslySetInnerHTML|key|ref|autoFocus|defaultValue|defaultChecked|innerHTML|suppressContentEditableWarning|suppressHydrationWarning|valueLink|abbr|accept|acceptCharset|accessKey|action|allow|allowUserMedia|allowPaymentRequest|allowFullScreen|allowTransparency|alt|async|autoComplete|autoPlay|capture|cellPadding|cellSpacing|challenge|charSet|checked|cite|classID|className|cols|colSpan|content|contentEditable|contextMenu|controls|controlsList|coords|crossOrigin|data|dateTime|decoding|default|defer|dir|disabled|disablePictureInPicture|disableRemotePlayback|download|draggable|encType|enterKeyHint|fetchpriority|fetchPriority|form|formAction|formEncType|formMethod|formNoValidate|formTarget|frameBorder|headers|height|hidden|high|href|hrefLang|htmlFor|httpEquiv|id|inputMode|integrity|is|keyParams|keyType|kind|label|lang|list|loading|loop|low|marginHeight|marginWidth|max|maxLength|media|mediaGroup|method|min|minLength|multiple|muted|name|nonce|noValidate|open|optimum|pattern|placeholder|playsInline|popover|popoverTarget|popoverTargetAction|poster|preload|profile|radioGroup|readOnly|referrerPolicy|rel|required|reversed|role|rows|rowSpan|sandbox|scope|scoped|scrolling|seamless|selected|shape|size|sizes|slot|span|spellCheck|src|srcDoc|srcLang|srcSet|start|step|style|summary|tabIndex|target|title|translate|type|useMap|value|width|wmode|wrap|about|datatype|inlist|prefix|property|resource|typeof|vocab|autoCapitalize|autoCorrect|autoSave|color|incremental|fallback|inert|itemProp|itemScope|itemType|itemID|itemRef|on|option|results|security|unselectable|accentHeight|accumulate|additive|alignmentBaseline|allowReorder|alphabetic|amplitude|arabicForm|ascent|attributeName|attributeType|autoReverse|azimuth|baseFrequency|baselineShift|baseProfile|bbox|begin|bias|by|calcMode|capHeight|clip|clipPathUnits|clipPath|clipRule|colorInterpolation|colorInterpolationFilters|colorProfile|colorRendering|contentScriptType|contentStyleType|cursor|cx|cy|d|decelerate|descent|diffuseConstant|direction|display|divisor|dominantBaseline|dur|dx|dy|edgeMode|elevation|enableBackground|end|exponent|externalResourcesRequired|fill|fillOpacity|fillRule|filter|filterRes|filterUnits|floodColor|floodOpacity|focusable|fontFamily|fontSize|fontSizeAdjust|fontStretch|fontStyle|fontVariant|fontWeight|format|from|fr|fx|fy|g1|g2|glyphName|glyphOrientationHorizontal|glyphOrientationVertical|glyphRef|gradientTransform|gradientUnits|hanging|horizAdvX|horizOriginX|ideographic|imageRendering|in|in2|intercept|k|k1|k2|k3|k4|kernelMatrix|kernelUnitLength|kerning|keyPoints|keySplines|keyTimes|lengthAdjust|letterSpacing|lightingColor|limitingConeAngle|local|markerEnd|markerMid|markerStart|markerHeight|markerUnits|markerWidth|mask|maskContentUnits|maskUnits|mathematical|mode|numOctaves|offset|opacity|operator|order|orient|orientation|origin|overflow|overlinePosition|overlineThickness|panose1|paintOrder|pathLength|patternContentUnits|patternTransform|patternUnits|pointerEvents|points|pointsAtX|pointsAtY|pointsAtZ|preserveAlpha|preserveAspectRatio|primitiveUnits|r|radius|refX|refY|renderingIntent|repeatCount|repeatDur|requiredExtensions|requiredFeatures|restart|result|rotate|rx|ry|scale|seed|shapeRendering|slope|spacing|specularConstant|specularExponent|speed|spreadMethod|startOffset|stdDeviation|stemh|stemv|stitchTiles|stopColor|stopOpacity|strikethroughPosition|strikethroughThickness|string|stroke|strokeDasharray|strokeDashoffset|strokeLinecap|strokeLinejoin|strokeMiterlimit|strokeOpacity|strokeWidth|surfaceScale|systemLanguage|tableValues|targetX|targetY|textAnchor|textDecoration|textRendering|textLength|to|transform|u1|u2|underlinePosition|underlineThickness|unicode|unicodeBidi|unicodeRange|unitsPerEm|vAlphabetic|vHanging|vIdeographic|vMathematical|values|vectorEffect|version|vertAdvY|vertOriginX|vertOriginY|viewBox|viewTarget|visibility|widths|wordSpacing|writingMode|x|xHeight|x1|x2|xChannelSelector|xlinkActuate|xlinkArcrole|xlinkHref|xlinkRole|xlinkShow|xlinkTitle|xlinkType|xmlBase|xmlns|xmlnsXlink|xmlLang|xmlSpace|y|y1|y2|yChannelSelector|z|zoomAndPan|for|class|autofocus)|(([Dd][Aa][Tt][Aa]|[Aa][Rr][Ii][Aa]|x)-.*))$/;
 var isPropValid = /* @__PURE__ */ memoize(
   function(prop) {
     return reactPropsRegex.test(prop) || prop.charCodeAt(0) === 111 && prop.charCodeAt(1) === 110 && prop.charCodeAt(2) < 91;
@@ -888,10 +1274,10 @@ var cx = function cx2() {
 };
 var cx_default = cx;
 var isCapital = (ch) => ch.toUpperCase() === ch;
-var filterKey = (keys2) => (key) => keys2.indexOf(key) === -1;
-var omit = (obj, keys2) => {
+var filterKey = (keys) => (key) => keys.indexOf(key) === -1;
+var omit = (obj, keys) => {
   const res = {};
-  Object.keys(obj).filter(filterKey(keys2)).forEach((key) => {
+  Object.keys(obj).filter(filterKey(keys)).forEach((key) => {
     res[key] = obj[key];
   });
   return res;
@@ -958,9 +1344,9 @@ function styled(tag) {
           style[`--${name}`] = `${value}${unit}`;
         }
         const ownStyle = filteredProps.style || {};
-        const keys2 = Object.keys(ownStyle);
-        if (keys2.length > 0) {
-          keys2.forEach((key) => {
+        const keys = Object.keys(ownStyle);
+        if (keys.length > 0) {
+          keys.forEach((key) => {
             style[key] = ownStyle[key];
           });
         }
@@ -975,10 +1361,10 @@ function styled(tag) {
     const Result = forwardRef ? forwardRef(render) : (
       // React.forwardRef won't available on older React versions and in Preact
       // Fallback to a innerRef prop in that case
-      (props) => {
+      ((props) => {
         const rest = omit(props, ["innerRef"]);
         return render(rest, props.innerRef);
-      }
+      })
     );
     Result.displayName = options.name;
     Result.__wyw_meta = {
@@ -998,139 +1384,3159 @@ const ImageOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
   class: "gdg-i19r494s",
   propsAsIs: false
 });
-var root$5 = _root;
-var now$1 = function() {
-  return root$5.Date.now();
-};
-var now_1 = now$1;
-var reWhitespace = /\s/;
-function trimmedEndIndex$1(string) {
-  var index = string.length;
-  while (index-- && reWhitespace.test(string.charAt(index))) {
-  }
-  return index;
-}
-var _trimmedEndIndex = trimmedEndIndex$1;
-var trimmedEndIndex = _trimmedEndIndex;
-var reTrimStart = /^\s+/;
-function baseTrim$1(string) {
-  return string ? string.slice(0, trimmedEndIndex(string) + 1).replace(reTrimStart, "") : string;
-}
-var _baseTrim = baseTrim$1;
-var baseTrim = _baseTrim, isObject$4 = isObject_1, isSymbol = isSymbol_1;
-var NAN = 0 / 0;
-var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
-var reIsBinary = /^0b[01]+$/i;
-var reIsOctal = /^0o[0-7]+$/i;
-var freeParseInt = parseInt;
-function toNumber$3(value) {
-  if (typeof value == "number") {
-    return value;
-  }
-  if (isSymbol(value)) {
-    return NAN;
-  }
-  if (isObject$4(value)) {
-    var other = typeof value.valueOf == "function" ? value.valueOf() : value;
-    value = isObject$4(other) ? other + "" : other;
-  }
-  if (typeof value != "string") {
-    return value === 0 ? value : +value;
-  }
-  value = baseTrim(value);
-  var isBinary = reIsBinary.test(value);
-  return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
-}
-var toNumber_1 = toNumber$3;
-var isObject$3 = isObject_1, now = now_1, toNumber$2 = toNumber_1;
-var FUNC_ERROR_TEXT$1 = "Expected a function";
-var nativeMax$1 = Math.max, nativeMin = Math.min;
-function debounce$1(func, wait, options) {
-  var lastArgs, lastThis, maxWait, result, timerId, lastCallTime, lastInvokeTime = 0, leading = false, maxing = false, trailing = true;
-  if (typeof func != "function") {
-    throw new TypeError(FUNC_ERROR_TEXT$1);
-  }
-  wait = toNumber$2(wait) || 0;
-  if (isObject$3(options)) {
-    leading = !!options.leading;
-    maxing = "maxWait" in options;
-    maxWait = maxing ? nativeMax$1(toNumber$2(options.maxWait) || 0, wait) : maxWait;
-    trailing = "trailing" in options ? !!options.trailing : trailing;
-  }
-  function invokeFunc(time) {
-    var args = lastArgs, thisArg = lastThis;
-    lastArgs = lastThis = void 0;
-    lastInvokeTime = time;
-    result = func.apply(thisArg, args);
-    return result;
-  }
-  function leadingEdge(time) {
-    lastInvokeTime = time;
-    timerId = setTimeout(timerExpired, wait);
-    return leading ? invokeFunc(time) : result;
-  }
-  function remainingWait(time) {
-    var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime, timeWaiting = wait - timeSinceLastCall;
-    return maxing ? nativeMin(timeWaiting, maxWait - timeSinceLastInvoke) : timeWaiting;
-  }
-  function shouldInvoke(time) {
-    var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime;
-    return lastCallTime === void 0 || timeSinceLastCall >= wait || timeSinceLastCall < 0 || maxing && timeSinceLastInvoke >= maxWait;
-  }
-  function timerExpired() {
-    var time = now();
-    if (shouldInvoke(time)) {
-      return trailingEdge(time);
-    }
-    timerId = setTimeout(timerExpired, remainingWait(time));
-  }
-  function trailingEdge(time) {
-    timerId = void 0;
-    if (trailing && lastArgs) {
-      return invokeFunc(time);
-    }
-    lastArgs = lastThis = void 0;
-    return result;
-  }
-  function cancel() {
-    if (timerId !== void 0) {
-      clearTimeout(timerId);
-    }
-    lastInvokeTime = 0;
-    lastArgs = lastCallTime = lastThis = timerId = void 0;
-  }
-  function flush() {
-    return timerId === void 0 ? result : trailingEdge(now());
-  }
-  function debounced() {
-    var time = now(), isInvoking = shouldInvoke(time);
-    lastArgs = arguments;
-    lastThis = this;
-    lastCallTime = time;
-    if (isInvoking) {
-      if (timerId === void 0) {
-        return leadingEdge(lastCallTime);
-      }
-      if (maxing) {
-        clearTimeout(timerId);
-        timerId = setTimeout(timerExpired, wait);
-        return invokeFunc(lastCallTime);
+var js = {};
+var Carousel = {};
+var lib = {};
+var reactSwipe = {};
+var propTypes = { exports: {} };
+var reactIs = { exports: {} };
+var reactIs_production_min = {};
+var hasRequiredReactIs_production_min;
+function requireReactIs_production_min() {
+  if (hasRequiredReactIs_production_min) return reactIs_production_min;
+  hasRequiredReactIs_production_min = 1;
+  var b2 = "function" === typeof Symbol && Symbol.for, c = b2 ? /* @__PURE__ */ Symbol.for("react.element") : 60103, d2 = b2 ? /* @__PURE__ */ Symbol.for("react.portal") : 60106, e = b2 ? /* @__PURE__ */ Symbol.for("react.fragment") : 60107, f = b2 ? /* @__PURE__ */ Symbol.for("react.strict_mode") : 60108, g = b2 ? /* @__PURE__ */ Symbol.for("react.profiler") : 60114, h = b2 ? /* @__PURE__ */ Symbol.for("react.provider") : 60109, k2 = b2 ? /* @__PURE__ */ Symbol.for("react.context") : 60110, l3 = b2 ? /* @__PURE__ */ Symbol.for("react.async_mode") : 60111, m2 = b2 ? /* @__PURE__ */ Symbol.for("react.concurrent_mode") : 60111, n = b2 ? /* @__PURE__ */ Symbol.for("react.forward_ref") : 60112, p2 = b2 ? /* @__PURE__ */ Symbol.for("react.suspense") : 60113, q2 = b2 ? /* @__PURE__ */ Symbol.for("react.suspense_list") : 60120, r = b2 ? /* @__PURE__ */ Symbol.for("react.memo") : 60115, t = b2 ? /* @__PURE__ */ Symbol.for("react.lazy") : 60116, v2 = b2 ? /* @__PURE__ */ Symbol.for("react.block") : 60121, w2 = b2 ? /* @__PURE__ */ Symbol.for("react.fundamental") : 60117, x2 = b2 ? /* @__PURE__ */ Symbol.for("react.responder") : 60118, y2 = b2 ? /* @__PURE__ */ Symbol.for("react.scope") : 60119;
+  function z2(a) {
+    if ("object" === typeof a && null !== a) {
+      var u = a.$$typeof;
+      switch (u) {
+        case c:
+          switch (a = a.type, a) {
+            case l3:
+            case m2:
+            case e:
+            case g:
+            case f:
+            case p2:
+              return a;
+            default:
+              switch (a = a && a.$$typeof, a) {
+                case k2:
+                case n:
+                case t:
+                case r:
+                case h:
+                  return a;
+                default:
+                  return u;
+              }
+          }
+        case d2:
+          return u;
       }
     }
-    if (timerId === void 0) {
+  }
+  function A(a) {
+    return z2(a) === m2;
+  }
+  reactIs_production_min.AsyncMode = l3;
+  reactIs_production_min.ConcurrentMode = m2;
+  reactIs_production_min.ContextConsumer = k2;
+  reactIs_production_min.ContextProvider = h;
+  reactIs_production_min.Element = c;
+  reactIs_production_min.ForwardRef = n;
+  reactIs_production_min.Fragment = e;
+  reactIs_production_min.Lazy = t;
+  reactIs_production_min.Memo = r;
+  reactIs_production_min.Portal = d2;
+  reactIs_production_min.Profiler = g;
+  reactIs_production_min.StrictMode = f;
+  reactIs_production_min.Suspense = p2;
+  reactIs_production_min.isAsyncMode = function(a) {
+    return A(a) || z2(a) === l3;
+  };
+  reactIs_production_min.isConcurrentMode = A;
+  reactIs_production_min.isContextConsumer = function(a) {
+    return z2(a) === k2;
+  };
+  reactIs_production_min.isContextProvider = function(a) {
+    return z2(a) === h;
+  };
+  reactIs_production_min.isElement = function(a) {
+    return "object" === typeof a && null !== a && a.$$typeof === c;
+  };
+  reactIs_production_min.isForwardRef = function(a) {
+    return z2(a) === n;
+  };
+  reactIs_production_min.isFragment = function(a) {
+    return z2(a) === e;
+  };
+  reactIs_production_min.isLazy = function(a) {
+    return z2(a) === t;
+  };
+  reactIs_production_min.isMemo = function(a) {
+    return z2(a) === r;
+  };
+  reactIs_production_min.isPortal = function(a) {
+    return z2(a) === d2;
+  };
+  reactIs_production_min.isProfiler = function(a) {
+    return z2(a) === g;
+  };
+  reactIs_production_min.isStrictMode = function(a) {
+    return z2(a) === f;
+  };
+  reactIs_production_min.isSuspense = function(a) {
+    return z2(a) === p2;
+  };
+  reactIs_production_min.isValidElementType = function(a) {
+    return "string" === typeof a || "function" === typeof a || a === e || a === m2 || a === g || a === f || a === p2 || a === q2 || "object" === typeof a && null !== a && (a.$$typeof === t || a.$$typeof === r || a.$$typeof === h || a.$$typeof === k2 || a.$$typeof === n || a.$$typeof === w2 || a.$$typeof === x2 || a.$$typeof === y2 || a.$$typeof === v2);
+  };
+  reactIs_production_min.typeOf = z2;
+  return reactIs_production_min;
+}
+var reactIs_development = {};
+var hasRequiredReactIs_development;
+function requireReactIs_development() {
+  if (hasRequiredReactIs_development) return reactIs_development;
+  hasRequiredReactIs_development = 1;
+  if (process.env.NODE_ENV !== "production") {
+    (function() {
+      var hasSymbol = typeof Symbol === "function" && Symbol.for;
+      var REACT_ELEMENT_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.element") : 60103;
+      var REACT_PORTAL_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.portal") : 60106;
+      var REACT_FRAGMENT_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.fragment") : 60107;
+      var REACT_STRICT_MODE_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.strict_mode") : 60108;
+      var REACT_PROFILER_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.profiler") : 60114;
+      var REACT_PROVIDER_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.provider") : 60109;
+      var REACT_CONTEXT_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.context") : 60110;
+      var REACT_ASYNC_MODE_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.async_mode") : 60111;
+      var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.concurrent_mode") : 60111;
+      var REACT_FORWARD_REF_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.forward_ref") : 60112;
+      var REACT_SUSPENSE_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.suspense") : 60113;
+      var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.suspense_list") : 60120;
+      var REACT_MEMO_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.memo") : 60115;
+      var REACT_LAZY_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.lazy") : 60116;
+      var REACT_BLOCK_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.block") : 60121;
+      var REACT_FUNDAMENTAL_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.fundamental") : 60117;
+      var REACT_RESPONDER_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.responder") : 60118;
+      var REACT_SCOPE_TYPE = hasSymbol ? /* @__PURE__ */ Symbol.for("react.scope") : 60119;
+      function isValidElementType(type) {
+        return typeof type === "string" || typeof type === "function" || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+        type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === "object" && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
+      }
+      function typeOf(object) {
+        if (typeof object === "object" && object !== null) {
+          var $$typeof = object.$$typeof;
+          switch ($$typeof) {
+            case REACT_ELEMENT_TYPE:
+              var type = object.type;
+              switch (type) {
+                case REACT_ASYNC_MODE_TYPE:
+                case REACT_CONCURRENT_MODE_TYPE:
+                case REACT_FRAGMENT_TYPE:
+                case REACT_PROFILER_TYPE:
+                case REACT_STRICT_MODE_TYPE:
+                case REACT_SUSPENSE_TYPE:
+                  return type;
+                default:
+                  var $$typeofType = type && type.$$typeof;
+                  switch ($$typeofType) {
+                    case REACT_CONTEXT_TYPE:
+                    case REACT_FORWARD_REF_TYPE:
+                    case REACT_LAZY_TYPE:
+                    case REACT_MEMO_TYPE:
+                    case REACT_PROVIDER_TYPE:
+                      return $$typeofType;
+                    default:
+                      return $$typeof;
+                  }
+              }
+            case REACT_PORTAL_TYPE:
+              return $$typeof;
+          }
+        }
+        return void 0;
+      }
+      var AsyncMode = REACT_ASYNC_MODE_TYPE;
+      var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+      var ContextConsumer = REACT_CONTEXT_TYPE;
+      var ContextProvider = REACT_PROVIDER_TYPE;
+      var Element = REACT_ELEMENT_TYPE;
+      var ForwardRef = REACT_FORWARD_REF_TYPE;
+      var Fragment2 = REACT_FRAGMENT_TYPE;
+      var Lazy2 = REACT_LAZY_TYPE;
+      var Memo = REACT_MEMO_TYPE;
+      var Portal = REACT_PORTAL_TYPE;
+      var Profiler = REACT_PROFILER_TYPE;
+      var StrictMode = REACT_STRICT_MODE_TYPE;
+      var Suspense = REACT_SUSPENSE_TYPE;
+      var hasWarnedAboutDeprecatedIsAsyncMode = false;
+      function isAsyncMode(object) {
+        {
+          if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+            hasWarnedAboutDeprecatedIsAsyncMode = true;
+            console["warn"]("The ReactIs.isAsyncMode() alias has been deprecated, and will be removed in React 17+. Update your code to use ReactIs.isConcurrentMode() instead. It has the exact same API.");
+          }
+        }
+        return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+      }
+      function isConcurrentMode(object) {
+        return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+      }
+      function isContextConsumer(object) {
+        return typeOf(object) === REACT_CONTEXT_TYPE;
+      }
+      function isContextProvider(object) {
+        return typeOf(object) === REACT_PROVIDER_TYPE;
+      }
+      function isElement(object) {
+        return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+      }
+      function isForwardRef(object) {
+        return typeOf(object) === REACT_FORWARD_REF_TYPE;
+      }
+      function isFragment(object) {
+        return typeOf(object) === REACT_FRAGMENT_TYPE;
+      }
+      function isLazy(object) {
+        return typeOf(object) === REACT_LAZY_TYPE;
+      }
+      function isMemo(object) {
+        return typeOf(object) === REACT_MEMO_TYPE;
+      }
+      function isPortal(object) {
+        return typeOf(object) === REACT_PORTAL_TYPE;
+      }
+      function isProfiler(object) {
+        return typeOf(object) === REACT_PROFILER_TYPE;
+      }
+      function isStrictMode(object) {
+        return typeOf(object) === REACT_STRICT_MODE_TYPE;
+      }
+      function isSuspense(object) {
+        return typeOf(object) === REACT_SUSPENSE_TYPE;
+      }
+      reactIs_development.AsyncMode = AsyncMode;
+      reactIs_development.ConcurrentMode = ConcurrentMode;
+      reactIs_development.ContextConsumer = ContextConsumer;
+      reactIs_development.ContextProvider = ContextProvider;
+      reactIs_development.Element = Element;
+      reactIs_development.ForwardRef = ForwardRef;
+      reactIs_development.Fragment = Fragment2;
+      reactIs_development.Lazy = Lazy2;
+      reactIs_development.Memo = Memo;
+      reactIs_development.Portal = Portal;
+      reactIs_development.Profiler = Profiler;
+      reactIs_development.StrictMode = StrictMode;
+      reactIs_development.Suspense = Suspense;
+      reactIs_development.isAsyncMode = isAsyncMode;
+      reactIs_development.isConcurrentMode = isConcurrentMode;
+      reactIs_development.isContextConsumer = isContextConsumer;
+      reactIs_development.isContextProvider = isContextProvider;
+      reactIs_development.isElement = isElement;
+      reactIs_development.isForwardRef = isForwardRef;
+      reactIs_development.isFragment = isFragment;
+      reactIs_development.isLazy = isLazy;
+      reactIs_development.isMemo = isMemo;
+      reactIs_development.isPortal = isPortal;
+      reactIs_development.isProfiler = isProfiler;
+      reactIs_development.isStrictMode = isStrictMode;
+      reactIs_development.isSuspense = isSuspense;
+      reactIs_development.isValidElementType = isValidElementType;
+      reactIs_development.typeOf = typeOf;
+    })();
+  }
+  return reactIs_development;
+}
+var hasRequiredReactIs;
+function requireReactIs() {
+  if (hasRequiredReactIs) return reactIs.exports;
+  hasRequiredReactIs = 1;
+  if (process.env.NODE_ENV === "production") {
+    reactIs.exports = requireReactIs_production_min();
+  } else {
+    reactIs.exports = requireReactIs_development();
+  }
+  return reactIs.exports;
+}
+var objectAssign;
+var hasRequiredObjectAssign;
+function requireObjectAssign() {
+  if (hasRequiredObjectAssign) return objectAssign;
+  hasRequiredObjectAssign = 1;
+  var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+  var hasOwnProperty = Object.prototype.hasOwnProperty;
+  var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+  function toObject(val) {
+    if (val === null || val === void 0) {
+      throw new TypeError("Object.assign cannot be called with null or undefined");
+    }
+    return Object(val);
+  }
+  function shouldUseNative() {
+    try {
+      if (!Object.assign) {
+        return false;
+      }
+      var test1 = new String("abc");
+      test1[5] = "de";
+      if (Object.getOwnPropertyNames(test1)[0] === "5") {
+        return false;
+      }
+      var test2 = {};
+      for (var i = 0; i < 10; i++) {
+        test2["_" + String.fromCharCode(i)] = i;
+      }
+      var order2 = Object.getOwnPropertyNames(test2).map(function(n) {
+        return test2[n];
+      });
+      if (order2.join("") !== "0123456789") {
+        return false;
+      }
+      var test3 = {};
+      "abcdefghijklmnopqrst".split("").forEach(function(letter) {
+        test3[letter] = letter;
+      });
+      if (Object.keys(Object.assign({}, test3)).join("") !== "abcdefghijklmnopqrst") {
+        return false;
+      }
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+  objectAssign = shouldUseNative() ? Object.assign : function(target, source) {
+    var from;
+    var to = toObject(target);
+    var symbols;
+    for (var s = 1; s < arguments.length; s++) {
+      from = Object(arguments[s]);
+      for (var key in from) {
+        if (hasOwnProperty.call(from, key)) {
+          to[key] = from[key];
+        }
+      }
+      if (getOwnPropertySymbols) {
+        symbols = getOwnPropertySymbols(from);
+        for (var i = 0; i < symbols.length; i++) {
+          if (propIsEnumerable.call(from, symbols[i])) {
+            to[symbols[i]] = from[symbols[i]];
+          }
+        }
+      }
+    }
+    return to;
+  };
+  return objectAssign;
+}
+var ReactPropTypesSecret_1;
+var hasRequiredReactPropTypesSecret;
+function requireReactPropTypesSecret() {
+  if (hasRequiredReactPropTypesSecret) return ReactPropTypesSecret_1;
+  hasRequiredReactPropTypesSecret = 1;
+  var ReactPropTypesSecret = "SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED";
+  ReactPropTypesSecret_1 = ReactPropTypesSecret;
+  return ReactPropTypesSecret_1;
+}
+var has;
+var hasRequiredHas;
+function requireHas() {
+  if (hasRequiredHas) return has;
+  hasRequiredHas = 1;
+  has = Function.call.bind(Object.prototype.hasOwnProperty);
+  return has;
+}
+var checkPropTypes_1;
+var hasRequiredCheckPropTypes;
+function requireCheckPropTypes() {
+  if (hasRequiredCheckPropTypes) return checkPropTypes_1;
+  hasRequiredCheckPropTypes = 1;
+  var printWarning = function() {
+  };
+  if (process.env.NODE_ENV !== "production") {
+    var ReactPropTypesSecret = /* @__PURE__ */ requireReactPropTypesSecret();
+    var loggedTypeFailures = {};
+    var has2 = /* @__PURE__ */ requireHas();
+    printWarning = function(text) {
+      var message = "Warning: " + text;
+      if (typeof console !== "undefined") {
+        console.error(message);
+      }
+      try {
+        throw new Error(message);
+      } catch (x2) {
+      }
+    };
+  }
+  function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
+    if (process.env.NODE_ENV !== "production") {
+      for (var typeSpecName in typeSpecs) {
+        if (has2(typeSpecs, typeSpecName)) {
+          var error;
+          try {
+            if (typeof typeSpecs[typeSpecName] !== "function") {
+              var err = Error(
+                (componentName || "React class") + ": " + location + " type `" + typeSpecName + "` is invalid; it must be a function, usually from the `prop-types` package, but received `" + typeof typeSpecs[typeSpecName] + "`.This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`."
+              );
+              err.name = "Invariant Violation";
+              throw err;
+            }
+            error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
+          } catch (ex) {
+            error = ex;
+          }
+          if (error && !(error instanceof Error)) {
+            printWarning(
+              (componentName || "React class") + ": type specification of " + location + " `" + typeSpecName + "` is invalid; the type checker function must return `null` or an `Error` but returned a " + typeof error + ". You may have forgotten to pass an argument to the type checker creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and shape all require an argument)."
+            );
+          }
+          if (error instanceof Error && !(error.message in loggedTypeFailures)) {
+            loggedTypeFailures[error.message] = true;
+            var stack = getStack ? getStack() : "";
+            printWarning(
+              "Failed " + location + " type: " + error.message + (stack != null ? stack : "")
+            );
+          }
+        }
+      }
+    }
+  }
+  checkPropTypes.resetWarningCache = function() {
+    if (process.env.NODE_ENV !== "production") {
+      loggedTypeFailures = {};
+    }
+  };
+  checkPropTypes_1 = checkPropTypes;
+  return checkPropTypes_1;
+}
+var factoryWithTypeCheckers;
+var hasRequiredFactoryWithTypeCheckers;
+function requireFactoryWithTypeCheckers() {
+  if (hasRequiredFactoryWithTypeCheckers) return factoryWithTypeCheckers;
+  hasRequiredFactoryWithTypeCheckers = 1;
+  var ReactIs = requireReactIs();
+  var assign = requireObjectAssign();
+  var ReactPropTypesSecret = /* @__PURE__ */ requireReactPropTypesSecret();
+  var has2 = /* @__PURE__ */ requireHas();
+  var checkPropTypes = /* @__PURE__ */ requireCheckPropTypes();
+  var printWarning = function() {
+  };
+  if (process.env.NODE_ENV !== "production") {
+    printWarning = function(text) {
+      var message = "Warning: " + text;
+      if (typeof console !== "undefined") {
+        console.error(message);
+      }
+      try {
+        throw new Error(message);
+      } catch (x2) {
+      }
+    };
+  }
+  function emptyFunctionThatReturnsNull() {
+    return null;
+  }
+  factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
+    var ITERATOR_SYMBOL = typeof Symbol === "function" && Symbol.iterator;
+    var FAUX_ITERATOR_SYMBOL = "@@iterator";
+    function getIteratorFn(maybeIterable) {
+      var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
+      if (typeof iteratorFn === "function") {
+        return iteratorFn;
+      }
+    }
+    var ANONYMOUS = "<<anonymous>>";
+    var ReactPropTypes = {
+      array: createPrimitiveTypeChecker("array"),
+      bigint: createPrimitiveTypeChecker("bigint"),
+      bool: createPrimitiveTypeChecker("boolean"),
+      func: createPrimitiveTypeChecker("function"),
+      number: createPrimitiveTypeChecker("number"),
+      object: createPrimitiveTypeChecker("object"),
+      string: createPrimitiveTypeChecker("string"),
+      symbol: createPrimitiveTypeChecker("symbol"),
+      any: createAnyTypeChecker(),
+      arrayOf: createArrayOfTypeChecker,
+      element: createElementTypeChecker(),
+      elementType: createElementTypeTypeChecker(),
+      instanceOf: createInstanceTypeChecker,
+      node: createNodeChecker(),
+      objectOf: createObjectOfTypeChecker,
+      oneOf: createEnumTypeChecker,
+      oneOfType: createUnionTypeChecker,
+      shape: createShapeTypeChecker,
+      exact: createStrictShapeTypeChecker
+    };
+    function is(x2, y2) {
+      if (x2 === y2) {
+        return x2 !== 0 || 1 / x2 === 1 / y2;
+      } else {
+        return x2 !== x2 && y2 !== y2;
+      }
+    }
+    function PropTypeError(message, data) {
+      this.message = message;
+      this.data = data && typeof data === "object" ? data : {};
+      this.stack = "";
+    }
+    PropTypeError.prototype = Error.prototype;
+    function createChainableTypeChecker(validate) {
+      if (process.env.NODE_ENV !== "production") {
+        var manualPropTypeCallCache = {};
+        var manualPropTypeWarningCount = 0;
+      }
+      function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
+        componentName = componentName || ANONYMOUS;
+        propFullName = propFullName || propName;
+        if (secret !== ReactPropTypesSecret) {
+          if (throwOnDirectAccess) {
+            var err = new Error(
+              "Calling PropTypes validators directly is not supported by the `prop-types` package. Use `PropTypes.checkPropTypes()` to call them. Read more at http://fb.me/use-check-prop-types"
+            );
+            err.name = "Invariant Violation";
+            throw err;
+          } else if (process.env.NODE_ENV !== "production" && typeof console !== "undefined") {
+            var cacheKey = componentName + ":" + propName;
+            if (!manualPropTypeCallCache[cacheKey] && // Avoid spamming the console because they are often not actionable except for lib authors
+            manualPropTypeWarningCount < 3) {
+              printWarning(
+                "You are manually calling a React.PropTypes validation function for the `" + propFullName + "` prop on `" + componentName + "`. This is deprecated and will throw in the standalone `prop-types` package. You may be seeing this warning due to a third-party PropTypes library. See https://fb.me/react-warning-dont-call-proptypes for details."
+              );
+              manualPropTypeCallCache[cacheKey] = true;
+              manualPropTypeWarningCount++;
+            }
+          }
+        }
+        if (props[propName] == null) {
+          if (isRequired) {
+            if (props[propName] === null) {
+              return new PropTypeError("The " + location + " `" + propFullName + "` is marked as required " + ("in `" + componentName + "`, but its value is `null`."));
+            }
+            return new PropTypeError("The " + location + " `" + propFullName + "` is marked as required in " + ("`" + componentName + "`, but its value is `undefined`."));
+          }
+          return null;
+        } else {
+          return validate(props, propName, componentName, location, propFullName);
+        }
+      }
+      var chainedCheckType = checkType.bind(null, false);
+      chainedCheckType.isRequired = checkType.bind(null, true);
+      return chainedCheckType;
+    }
+    function createPrimitiveTypeChecker(expectedType) {
+      function validate(props, propName, componentName, location, propFullName, secret) {
+        var propValue = props[propName];
+        var propType = getPropType(propValue);
+        if (propType !== expectedType) {
+          var preciseType = getPreciseType(propValue);
+          return new PropTypeError(
+            "Invalid " + location + " `" + propFullName + "` of type " + ("`" + preciseType + "` supplied to `" + componentName + "`, expected ") + ("`" + expectedType + "`."),
+            { expectedType }
+          );
+        }
+        return null;
+      }
+      return createChainableTypeChecker(validate);
+    }
+    function createAnyTypeChecker() {
+      return createChainableTypeChecker(emptyFunctionThatReturnsNull);
+    }
+    function createArrayOfTypeChecker(typeChecker) {
+      function validate(props, propName, componentName, location, propFullName) {
+        if (typeof typeChecker !== "function") {
+          return new PropTypeError("Property `" + propFullName + "` of component `" + componentName + "` has invalid PropType notation inside arrayOf.");
+        }
+        var propValue = props[propName];
+        if (!Array.isArray(propValue)) {
+          var propType = getPropType(propValue);
+          return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type " + ("`" + propType + "` supplied to `" + componentName + "`, expected an array."));
+        }
+        for (var i = 0; i < propValue.length; i++) {
+          var error = typeChecker(propValue, i, componentName, location, propFullName + "[" + i + "]", ReactPropTypesSecret);
+          if (error instanceof Error) {
+            return error;
+          }
+        }
+        return null;
+      }
+      return createChainableTypeChecker(validate);
+    }
+    function createElementTypeChecker() {
+      function validate(props, propName, componentName, location, propFullName) {
+        var propValue = props[propName];
+        if (!isValidElement(propValue)) {
+          var propType = getPropType(propValue);
+          return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type " + ("`" + propType + "` supplied to `" + componentName + "`, expected a single ReactElement."));
+        }
+        return null;
+      }
+      return createChainableTypeChecker(validate);
+    }
+    function createElementTypeTypeChecker() {
+      function validate(props, propName, componentName, location, propFullName) {
+        var propValue = props[propName];
+        if (!ReactIs.isValidElementType(propValue)) {
+          var propType = getPropType(propValue);
+          return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type " + ("`" + propType + "` supplied to `" + componentName + "`, expected a single ReactElement type."));
+        }
+        return null;
+      }
+      return createChainableTypeChecker(validate);
+    }
+    function createInstanceTypeChecker(expectedClass) {
+      function validate(props, propName, componentName, location, propFullName) {
+        if (!(props[propName] instanceof expectedClass)) {
+          var expectedClassName = expectedClass.name || ANONYMOUS;
+          var actualClassName = getClassName(props[propName]);
+          return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type " + ("`" + actualClassName + "` supplied to `" + componentName + "`, expected ") + ("instance of `" + expectedClassName + "`."));
+        }
+        return null;
+      }
+      return createChainableTypeChecker(validate);
+    }
+    function createEnumTypeChecker(expectedValues) {
+      if (!Array.isArray(expectedValues)) {
+        if (process.env.NODE_ENV !== "production") {
+          if (arguments.length > 1) {
+            printWarning(
+              "Invalid arguments supplied to oneOf, expected an array, got " + arguments.length + " arguments. A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z])."
+            );
+          } else {
+            printWarning("Invalid argument supplied to oneOf, expected an array.");
+          }
+        }
+        return emptyFunctionThatReturnsNull;
+      }
+      function validate(props, propName, componentName, location, propFullName) {
+        var propValue = props[propName];
+        for (var i = 0; i < expectedValues.length; i++) {
+          if (is(propValue, expectedValues[i])) {
+            return null;
+          }
+        }
+        var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
+          var type = getPreciseType(value);
+          if (type === "symbol") {
+            return String(value);
+          }
+          return value;
+        });
+        return new PropTypeError("Invalid " + location + " `" + propFullName + "` of value `" + String(propValue) + "` " + ("supplied to `" + componentName + "`, expected one of " + valuesString + "."));
+      }
+      return createChainableTypeChecker(validate);
+    }
+    function createObjectOfTypeChecker(typeChecker) {
+      function validate(props, propName, componentName, location, propFullName) {
+        if (typeof typeChecker !== "function") {
+          return new PropTypeError("Property `" + propFullName + "` of component `" + componentName + "` has invalid PropType notation inside objectOf.");
+        }
+        var propValue = props[propName];
+        var propType = getPropType(propValue);
+        if (propType !== "object") {
+          return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type " + ("`" + propType + "` supplied to `" + componentName + "`, expected an object."));
+        }
+        for (var key in propValue) {
+          if (has2(propValue, key)) {
+            var error = typeChecker(propValue, key, componentName, location, propFullName + "." + key, ReactPropTypesSecret);
+            if (error instanceof Error) {
+              return error;
+            }
+          }
+        }
+        return null;
+      }
+      return createChainableTypeChecker(validate);
+    }
+    function createUnionTypeChecker(arrayOfTypeCheckers) {
+      if (!Array.isArray(arrayOfTypeCheckers)) {
+        process.env.NODE_ENV !== "production" ? printWarning("Invalid argument supplied to oneOfType, expected an instance of array.") : void 0;
+        return emptyFunctionThatReturnsNull;
+      }
+      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+        var checker = arrayOfTypeCheckers[i];
+        if (typeof checker !== "function") {
+          printWarning(
+            "Invalid argument supplied to oneOfType. Expected an array of check functions, but received " + getPostfixForTypeWarning(checker) + " at index " + i + "."
+          );
+          return emptyFunctionThatReturnsNull;
+        }
+      }
+      function validate(props, propName, componentName, location, propFullName) {
+        var expectedTypes = [];
+        for (var i2 = 0; i2 < arrayOfTypeCheckers.length; i2++) {
+          var checker2 = arrayOfTypeCheckers[i2];
+          var checkerResult = checker2(props, propName, componentName, location, propFullName, ReactPropTypesSecret);
+          if (checkerResult == null) {
+            return null;
+          }
+          if (checkerResult.data && has2(checkerResult.data, "expectedType")) {
+            expectedTypes.push(checkerResult.data.expectedType);
+          }
+        }
+        var expectedTypesMessage = expectedTypes.length > 0 ? ", expected one of type [" + expectedTypes.join(", ") + "]" : "";
+        return new PropTypeError("Invalid " + location + " `" + propFullName + "` supplied to " + ("`" + componentName + "`" + expectedTypesMessage + "."));
+      }
+      return createChainableTypeChecker(validate);
+    }
+    function createNodeChecker() {
+      function validate(props, propName, componentName, location, propFullName) {
+        if (!isNode(props[propName])) {
+          return new PropTypeError("Invalid " + location + " `" + propFullName + "` supplied to " + ("`" + componentName + "`, expected a ReactNode."));
+        }
+        return null;
+      }
+      return createChainableTypeChecker(validate);
+    }
+    function invalidValidatorError(componentName, location, propFullName, key, type) {
+      return new PropTypeError(
+        (componentName || "React class") + ": " + location + " type `" + propFullName + "." + key + "` is invalid; it must be a function, usually from the `prop-types` package, but received `" + type + "`."
+      );
+    }
+    function createShapeTypeChecker(shapeTypes) {
+      function validate(props, propName, componentName, location, propFullName) {
+        var propValue = props[propName];
+        var propType = getPropType(propValue);
+        if (propType !== "object") {
+          return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type `" + propType + "` " + ("supplied to `" + componentName + "`, expected `object`."));
+        }
+        for (var key in shapeTypes) {
+          var checker = shapeTypes[key];
+          if (typeof checker !== "function") {
+            return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
+          }
+          var error = checker(propValue, key, componentName, location, propFullName + "." + key, ReactPropTypesSecret);
+          if (error) {
+            return error;
+          }
+        }
+        return null;
+      }
+      return createChainableTypeChecker(validate);
+    }
+    function createStrictShapeTypeChecker(shapeTypes) {
+      function validate(props, propName, componentName, location, propFullName) {
+        var propValue = props[propName];
+        var propType = getPropType(propValue);
+        if (propType !== "object") {
+          return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type `" + propType + "` " + ("supplied to `" + componentName + "`, expected `object`."));
+        }
+        var allKeys = assign({}, props[propName], shapeTypes);
+        for (var key in allKeys) {
+          var checker = shapeTypes[key];
+          if (has2(shapeTypes, key) && typeof checker !== "function") {
+            return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
+          }
+          if (!checker) {
+            return new PropTypeError(
+              "Invalid " + location + " `" + propFullName + "` key `" + key + "` supplied to `" + componentName + "`.\nBad object: " + JSON.stringify(props[propName], null, "  ") + "\nValid keys: " + JSON.stringify(Object.keys(shapeTypes), null, "  ")
+            );
+          }
+          var error = checker(propValue, key, componentName, location, propFullName + "." + key, ReactPropTypesSecret);
+          if (error) {
+            return error;
+          }
+        }
+        return null;
+      }
+      return createChainableTypeChecker(validate);
+    }
+    function isNode(propValue) {
+      switch (typeof propValue) {
+        case "number":
+        case "string":
+        case "undefined":
+          return true;
+        case "boolean":
+          return !propValue;
+        case "object":
+          if (Array.isArray(propValue)) {
+            return propValue.every(isNode);
+          }
+          if (propValue === null || isValidElement(propValue)) {
+            return true;
+          }
+          var iteratorFn = getIteratorFn(propValue);
+          if (iteratorFn) {
+            var iterator = iteratorFn.call(propValue);
+            var step;
+            if (iteratorFn !== propValue.entries) {
+              while (!(step = iterator.next()).done) {
+                if (!isNode(step.value)) {
+                  return false;
+                }
+              }
+            } else {
+              while (!(step = iterator.next()).done) {
+                var entry = step.value;
+                if (entry) {
+                  if (!isNode(entry[1])) {
+                    return false;
+                  }
+                }
+              }
+            }
+          } else {
+            return false;
+          }
+          return true;
+        default:
+          return false;
+      }
+    }
+    function isSymbol(propType, propValue) {
+      if (propType === "symbol") {
+        return true;
+      }
+      if (!propValue) {
+        return false;
+      }
+      if (propValue["@@toStringTag"] === "Symbol") {
+        return true;
+      }
+      if (typeof Symbol === "function" && propValue instanceof Symbol) {
+        return true;
+      }
+      return false;
+    }
+    function getPropType(propValue) {
+      var propType = typeof propValue;
+      if (Array.isArray(propValue)) {
+        return "array";
+      }
+      if (propValue instanceof RegExp) {
+        return "object";
+      }
+      if (isSymbol(propType, propValue)) {
+        return "symbol";
+      }
+      return propType;
+    }
+    function getPreciseType(propValue) {
+      if (typeof propValue === "undefined" || propValue === null) {
+        return "" + propValue;
+      }
+      var propType = getPropType(propValue);
+      if (propType === "object") {
+        if (propValue instanceof Date) {
+          return "date";
+        } else if (propValue instanceof RegExp) {
+          return "regexp";
+        }
+      }
+      return propType;
+    }
+    function getPostfixForTypeWarning(value) {
+      var type = getPreciseType(value);
+      switch (type) {
+        case "array":
+        case "object":
+          return "an " + type;
+        case "boolean":
+        case "date":
+        case "regexp":
+          return "a " + type;
+        default:
+          return type;
+      }
+    }
+    function getClassName(propValue) {
+      if (!propValue.constructor || !propValue.constructor.name) {
+        return ANONYMOUS;
+      }
+      return propValue.constructor.name;
+    }
+    ReactPropTypes.checkPropTypes = checkPropTypes;
+    ReactPropTypes.resetWarningCache = checkPropTypes.resetWarningCache;
+    ReactPropTypes.PropTypes = ReactPropTypes;
+    return ReactPropTypes;
+  };
+  return factoryWithTypeCheckers;
+}
+var factoryWithThrowingShims;
+var hasRequiredFactoryWithThrowingShims;
+function requireFactoryWithThrowingShims() {
+  if (hasRequiredFactoryWithThrowingShims) return factoryWithThrowingShims;
+  hasRequiredFactoryWithThrowingShims = 1;
+  var ReactPropTypesSecret = /* @__PURE__ */ requireReactPropTypesSecret();
+  function emptyFunction() {
+  }
+  function emptyFunctionWithReset() {
+  }
+  emptyFunctionWithReset.resetWarningCache = emptyFunction;
+  factoryWithThrowingShims = function() {
+    function shim(props, propName, componentName, location, propFullName, secret) {
+      if (secret === ReactPropTypesSecret) {
+        return;
+      }
+      var err = new Error(
+        "Calling PropTypes validators directly is not supported by the `prop-types` package. Use PropTypes.checkPropTypes() to call them. Read more at http://fb.me/use-check-prop-types"
+      );
+      err.name = "Invariant Violation";
+      throw err;
+    }
+    shim.isRequired = shim;
+    function getShim() {
+      return shim;
+    }
+    var ReactPropTypes = {
+      array: shim,
+      bigint: shim,
+      bool: shim,
+      func: shim,
+      number: shim,
+      object: shim,
+      string: shim,
+      symbol: shim,
+      any: shim,
+      arrayOf: getShim,
+      element: shim,
+      elementType: shim,
+      instanceOf: getShim,
+      node: shim,
+      objectOf: getShim,
+      oneOf: getShim,
+      oneOfType: getShim,
+      shape: getShim,
+      exact: getShim,
+      checkPropTypes: emptyFunctionWithReset,
+      resetWarningCache: emptyFunction
+    };
+    ReactPropTypes.PropTypes = ReactPropTypes;
+    return ReactPropTypes;
+  };
+  return factoryWithThrowingShims;
+}
+var hasRequiredPropTypes;
+function requirePropTypes() {
+  if (hasRequiredPropTypes) return propTypes.exports;
+  hasRequiredPropTypes = 1;
+  if (process.env.NODE_ENV !== "production") {
+    var ReactIs = requireReactIs();
+    var throwOnDirectAccess = true;
+    propTypes.exports = /* @__PURE__ */ requireFactoryWithTypeCheckers()(ReactIs.isElement, throwOnDirectAccess);
+  } else {
+    propTypes.exports = /* @__PURE__ */ requireFactoryWithThrowingShims()();
+  }
+  return propTypes.exports;
+}
+var hasRequiredReactSwipe;
+function requireReactSwipe() {
+  if (hasRequiredReactSwipe) return reactSwipe;
+  hasRequiredReactSwipe = 1;
+  (function(exports$1) {
+    (function(global2, factory) {
+      {
+        factory(exports$1, React__default, /* @__PURE__ */ requirePropTypes());
+      }
+    })(reactSwipe, function(exports$12, _react, _propTypes) {
+      Object.defineProperty(exports$12, "__esModule", {
+        value: true
+      });
+      exports$12.setHasSupportToCaptureOption = setHasSupportToCaptureOption;
+      var _react2 = _interopRequireDefault(_react);
+      var _propTypes2 = _interopRequireDefault(_propTypes);
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+          default: obj
+        };
+      }
+      var _extends = Object.assign || function(target) {
+        for (var i = 1; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (Object.prototype.hasOwnProperty.call(source, key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      };
+      function _objectWithoutProperties(obj, keys) {
+        var target = {};
+        for (var i in obj) {
+          if (keys.indexOf(i) >= 0) continue;
+          if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+          target[i] = obj[i];
+        }
+        return target;
+      }
+      function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+          throw new TypeError("Cannot call a class as a function");
+        }
+      }
+      var _createClass = /* @__PURE__ */ (function() {
+        function defineProperties(target, props) {
+          for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];
+            descriptor.enumerable = descriptor.enumerable || false;
+            descriptor.configurable = true;
+            if ("value" in descriptor) descriptor.writable = true;
+            Object.defineProperty(target, descriptor.key, descriptor);
+          }
+        }
+        return function(Constructor, protoProps, staticProps) {
+          if (protoProps) defineProperties(Constructor.prototype, protoProps);
+          if (staticProps) defineProperties(Constructor, staticProps);
+          return Constructor;
+        };
+      })();
+      function _possibleConstructorReturn(self2, call) {
+        if (!self2) {
+          throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+        }
+        return call && (typeof call === "object" || typeof call === "function") ? call : self2;
+      }
+      function _inherits(subClass, superClass) {
+        if (typeof superClass !== "function" && superClass !== null) {
+          throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+        }
+        subClass.prototype = Object.create(superClass && superClass.prototype, {
+          constructor: {
+            value: subClass,
+            enumerable: false,
+            writable: true,
+            configurable: true
+          }
+        });
+        if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+      }
+      var supportsCaptureOption = false;
+      function setHasSupportToCaptureOption(hasSupport) {
+        supportsCaptureOption = hasSupport;
+      }
+      try {
+        addEventListener("test", null, Object.defineProperty({}, "capture", { get: function get() {
+          setHasSupportToCaptureOption(true);
+        } }));
+      } catch (e) {
+      }
+      function getSafeEventHandlerOpts() {
+        var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : { capture: true };
+        return supportsCaptureOption ? options : options.capture;
+      }
+      function getPosition(event) {
+        if ("touches" in event) {
+          var _event$touches$ = event.touches[0], pageX = _event$touches$.pageX, pageY = _event$touches$.pageY;
+          return { x: pageX, y: pageY };
+        }
+        var screenX = event.screenX, screenY = event.screenY;
+        return { x: screenX, y: screenY };
+      }
+      var ReactSwipe = (function(_Component) {
+        _inherits(ReactSwipe2, _Component);
+        function ReactSwipe2() {
+          var _ref;
+          _classCallCheck(this, ReactSwipe2);
+          for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+          var _this = _possibleConstructorReturn(this, (_ref = ReactSwipe2.__proto__ || Object.getPrototypeOf(ReactSwipe2)).call.apply(_ref, [this].concat(args)));
+          _this._handleSwipeStart = _this._handleSwipeStart.bind(_this);
+          _this._handleSwipeMove = _this._handleSwipeMove.bind(_this);
+          _this._handleSwipeEnd = _this._handleSwipeEnd.bind(_this);
+          _this._onMouseDown = _this._onMouseDown.bind(_this);
+          _this._onMouseMove = _this._onMouseMove.bind(_this);
+          _this._onMouseUp = _this._onMouseUp.bind(_this);
+          _this._setSwiperRef = _this._setSwiperRef.bind(_this);
+          return _this;
+        }
+        _createClass(ReactSwipe2, [{
+          key: "componentDidMount",
+          value: function componentDidMount() {
+            if (this.swiper) {
+              this.swiper.addEventListener("touchmove", this._handleSwipeMove, getSafeEventHandlerOpts({
+                capture: true,
+                passive: false
+              }));
+            }
+          }
+        }, {
+          key: "componentWillUnmount",
+          value: function componentWillUnmount() {
+            if (this.swiper) {
+              this.swiper.removeEventListener("touchmove", this._handleSwipeMove, getSafeEventHandlerOpts({
+                capture: true,
+                passive: false
+              }));
+            }
+          }
+        }, {
+          key: "_onMouseDown",
+          value: function _onMouseDown(event) {
+            if (!this.props.allowMouseEvents) {
+              return;
+            }
+            this.mouseDown = true;
+            document.addEventListener("mouseup", this._onMouseUp);
+            document.addEventListener("mousemove", this._onMouseMove);
+            this._handleSwipeStart(event);
+          }
+        }, {
+          key: "_onMouseMove",
+          value: function _onMouseMove(event) {
+            if (!this.mouseDown) {
+              return;
+            }
+            this._handleSwipeMove(event);
+          }
+        }, {
+          key: "_onMouseUp",
+          value: function _onMouseUp(event) {
+            this.mouseDown = false;
+            document.removeEventListener("mouseup", this._onMouseUp);
+            document.removeEventListener("mousemove", this._onMouseMove);
+            this._handleSwipeEnd(event);
+          }
+        }, {
+          key: "_handleSwipeStart",
+          value: function _handleSwipeStart(event) {
+            var _getPosition = getPosition(event), x2 = _getPosition.x, y2 = _getPosition.y;
+            this.moveStart = { x: x2, y: y2 };
+            this.props.onSwipeStart(event);
+          }
+        }, {
+          key: "_handleSwipeMove",
+          value: function _handleSwipeMove(event) {
+            if (!this.moveStart) {
+              return;
+            }
+            var _getPosition2 = getPosition(event), x2 = _getPosition2.x, y2 = _getPosition2.y;
+            var deltaX = x2 - this.moveStart.x;
+            var deltaY = y2 - this.moveStart.y;
+            this.moving = true;
+            var shouldPreventDefault = this.props.onSwipeMove({
+              x: deltaX,
+              y: deltaY
+            }, event);
+            if (shouldPreventDefault && event.cancelable) {
+              event.preventDefault();
+            }
+            this.movePosition = { deltaX, deltaY };
+          }
+        }, {
+          key: "_handleSwipeEnd",
+          value: function _handleSwipeEnd(event) {
+            this.props.onSwipeEnd(event);
+            var tolerance = this.props.tolerance;
+            if (this.moving && this.movePosition) {
+              if (this.movePosition.deltaX < -tolerance) {
+                this.props.onSwipeLeft(1, event);
+              } else if (this.movePosition.deltaX > tolerance) {
+                this.props.onSwipeRight(1, event);
+              }
+              if (this.movePosition.deltaY < -tolerance) {
+                this.props.onSwipeUp(1, event);
+              } else if (this.movePosition.deltaY > tolerance) {
+                this.props.onSwipeDown(1, event);
+              }
+            }
+            this.moveStart = null;
+            this.moving = false;
+            this.movePosition = null;
+          }
+        }, {
+          key: "_setSwiperRef",
+          value: function _setSwiperRef(node) {
+            this.swiper = node;
+            this.props.innerRef(node);
+          }
+        }, {
+          key: "render",
+          value: function render() {
+            var _props = this.props;
+            _props.tagName;
+            var className = _props.className, style = _props.style, children = _props.children;
+            _props.allowMouseEvents;
+            _props.onSwipeUp;
+            _props.onSwipeDown;
+            _props.onSwipeLeft;
+            _props.onSwipeRight;
+            _props.onSwipeStart;
+            _props.onSwipeMove;
+            _props.onSwipeEnd;
+            _props.innerRef;
+            _props.tolerance;
+            var props = _objectWithoutProperties(_props, ["tagName", "className", "style", "children", "allowMouseEvents", "onSwipeUp", "onSwipeDown", "onSwipeLeft", "onSwipeRight", "onSwipeStart", "onSwipeMove", "onSwipeEnd", "innerRef", "tolerance"]);
+            return _react2.default.createElement(
+              this.props.tagName,
+              _extends({
+                ref: this._setSwiperRef,
+                onMouseDown: this._onMouseDown,
+                onTouchStart: this._handleSwipeStart,
+                onTouchEnd: this._handleSwipeEnd,
+                className,
+                style
+              }, props),
+              children
+            );
+          }
+        }]);
+        return ReactSwipe2;
+      })(_react.Component);
+      ReactSwipe.displayName = "ReactSwipe";
+      ReactSwipe.propTypes = {
+        tagName: _propTypes2.default.string,
+        className: _propTypes2.default.string,
+        style: _propTypes2.default.object,
+        children: _propTypes2.default.node,
+        allowMouseEvents: _propTypes2.default.bool,
+        onSwipeUp: _propTypes2.default.func,
+        onSwipeDown: _propTypes2.default.func,
+        onSwipeLeft: _propTypes2.default.func,
+        onSwipeRight: _propTypes2.default.func,
+        onSwipeStart: _propTypes2.default.func,
+        onSwipeMove: _propTypes2.default.func,
+        onSwipeEnd: _propTypes2.default.func,
+        innerRef: _propTypes2.default.func,
+        tolerance: _propTypes2.default.number.isRequired
+      };
+      ReactSwipe.defaultProps = {
+        tagName: "div",
+        allowMouseEvents: false,
+        onSwipeUp: function onSwipeUp() {
+        },
+        onSwipeDown: function onSwipeDown() {
+        },
+        onSwipeLeft: function onSwipeLeft() {
+        },
+        onSwipeRight: function onSwipeRight() {
+        },
+        onSwipeStart: function onSwipeStart() {
+        },
+        onSwipeMove: function onSwipeMove() {
+        },
+        onSwipeEnd: function onSwipeEnd() {
+        },
+        innerRef: function innerRef() {
+        },
+        tolerance: 0
+      };
+      exports$12.default = ReactSwipe;
+    });
+  })(reactSwipe);
+  return reactSwipe;
+}
+var hasRequiredLib;
+function requireLib() {
+  if (hasRequiredLib) return lib;
+  hasRequiredLib = 1;
+  (function(exports$1) {
+    (function(global2, factory) {
+      {
+        factory(exports$1, requireReactSwipe());
+      }
+    })(lib, function(exports$12, _reactSwipe) {
+      Object.defineProperty(exports$12, "__esModule", {
+        value: true
+      });
+      var _reactSwipe2 = _interopRequireDefault(_reactSwipe);
+      function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+          default: obj
+        };
+      }
+      exports$12.default = _reactSwipe2.default;
+    });
+  })(lib);
+  return lib;
+}
+var cssClasses = {};
+var classnames = { exports: {} };
+var hasRequiredClassnames;
+function requireClassnames() {
+  if (hasRequiredClassnames) return classnames.exports;
+  hasRequiredClassnames = 1;
+  (function(module) {
+    (function() {
+      var hasOwn = {}.hasOwnProperty;
+      function classNames() {
+        var classes = "";
+        for (var i = 0; i < arguments.length; i++) {
+          var arg = arguments[i];
+          if (arg) {
+            classes = appendClass(classes, parseValue(arg));
+          }
+        }
+        return classes;
+      }
+      function parseValue(arg) {
+        if (typeof arg === "string" || typeof arg === "number") {
+          return arg;
+        }
+        if (typeof arg !== "object") {
+          return "";
+        }
+        if (Array.isArray(arg)) {
+          return classNames.apply(null, arg);
+        }
+        if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes("[native code]")) {
+          return arg.toString();
+        }
+        var classes = "";
+        for (var key in arg) {
+          if (hasOwn.call(arg, key) && arg[key]) {
+            classes = appendClass(classes, key);
+          }
+        }
+        return classes;
+      }
+      function appendClass(value, newClass) {
+        if (!newClass) {
+          return value;
+        }
+        if (value) {
+          return value + " " + newClass;
+        }
+        return value + newClass;
+      }
+      if (module.exports) {
+        classNames.default = classNames;
+        module.exports = classNames;
+      } else {
+        window.classNames = classNames;
+      }
+    })();
+  })(classnames);
+  return classnames.exports;
+}
+var hasRequiredCssClasses;
+function requireCssClasses() {
+  if (hasRequiredCssClasses) return cssClasses;
+  hasRequiredCssClasses = 1;
+  Object.defineProperty(cssClasses, "__esModule", {
+    value: true
+  });
+  cssClasses.default = void 0;
+  var _classnames = _interopRequireDefault(requireClassnames());
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  function _defineProperty2(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, { value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key] = value;
+    }
+    return obj;
+  }
+  var _default = {
+    ROOT: function ROOT(customClassName) {
+      return (0, _classnames.default)(_defineProperty2({
+        "carousel-root": true
+      }, customClassName || "", !!customClassName));
+    },
+    CAROUSEL: function CAROUSEL(isSlider) {
+      return (0, _classnames.default)({
+        carousel: true,
+        "carousel-slider": isSlider
+      });
+    },
+    WRAPPER: function WRAPPER(isSlider, axis) {
+      return (0, _classnames.default)({
+        "thumbs-wrapper": !isSlider,
+        "slider-wrapper": isSlider,
+        "axis-horizontal": axis === "horizontal",
+        "axis-vertical": axis !== "horizontal"
+      });
+    },
+    SLIDER: function SLIDER(isSlider, isSwiping) {
+      return (0, _classnames.default)({
+        thumbs: !isSlider,
+        slider: isSlider,
+        animated: !isSwiping
+      });
+    },
+    ITEM: function ITEM(isSlider, selected, previous) {
+      return (0, _classnames.default)({
+        thumb: !isSlider,
+        slide: isSlider,
+        selected,
+        previous
+      });
+    },
+    ARROW_PREV: function ARROW_PREV(disabled) {
+      return (0, _classnames.default)({
+        "control-arrow control-prev": true,
+        "control-disabled": disabled
+      });
+    },
+    ARROW_NEXT: function ARROW_NEXT(disabled) {
+      return (0, _classnames.default)({
+        "control-arrow control-next": true,
+        "control-disabled": disabled
+      });
+    },
+    DOT: function DOT(selected) {
+      return (0, _classnames.default)({
+        dot: true,
+        selected
+      });
+    }
+  };
+  cssClasses.default = _default;
+  return cssClasses;
+}
+var Thumbs = {};
+var dimensions = {};
+var hasRequiredDimensions;
+function requireDimensions() {
+  if (hasRequiredDimensions) return dimensions;
+  hasRequiredDimensions = 1;
+  Object.defineProperty(dimensions, "__esModule", {
+    value: true
+  });
+  dimensions.outerWidth = void 0;
+  var outerWidth = function outerWidth2(el) {
+    var width = el.offsetWidth;
+    var style = getComputedStyle(el);
+    width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+    return width;
+  };
+  dimensions.outerWidth = outerWidth;
+  return dimensions;
+}
+var CSSTranslate = {};
+var hasRequiredCSSTranslate;
+function requireCSSTranslate() {
+  if (hasRequiredCSSTranslate) return CSSTranslate;
+  hasRequiredCSSTranslate = 1;
+  Object.defineProperty(CSSTranslate, "__esModule", {
+    value: true
+  });
+  CSSTranslate.default = void 0;
+  var _default = function _default2(position, metric, axis) {
+    var positionPercent = position === 0 ? position : position + metric;
+    var positionCss = axis === "horizontal" ? [positionPercent, 0, 0] : [0, positionPercent, 0];
+    var transitionProp = "translate3d";
+    var translatedPosition = "(" + positionCss.join(",") + ")";
+    return transitionProp + translatedPosition;
+  };
+  CSSTranslate.default = _default;
+  return CSSTranslate;
+}
+var window$1 = {};
+var hasRequiredWindow;
+function requireWindow() {
+  if (hasRequiredWindow) return window$1;
+  hasRequiredWindow = 1;
+  Object.defineProperty(window$1, "__esModule", {
+    value: true
+  });
+  window$1.default = void 0;
+  var _default = function _default2() {
+    return window;
+  };
+  window$1.default = _default;
+  return window$1;
+}
+var hasRequiredThumbs;
+function requireThumbs() {
+  if (hasRequiredThumbs) return Thumbs;
+  hasRequiredThumbs = 1;
+  Object.defineProperty(Thumbs, "__esModule", {
+    value: true
+  });
+  Thumbs.default = void 0;
+  var _react = _interopRequireWildcard(React__default);
+  var _cssClasses = _interopRequireDefault(requireCssClasses());
+  var _dimensions = requireDimensions();
+  var _CSSTranslate = _interopRequireDefault(requireCSSTranslate());
+  var _reactEasySwipe = _interopRequireDefault(requireLib());
+  var _window = _interopRequireDefault(requireWindow());
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  function _getRequireWildcardCache() {
+    if (typeof WeakMap !== "function") return null;
+    var cache2 = /* @__PURE__ */ new WeakMap();
+    _getRequireWildcardCache = function _getRequireWildcardCache2() {
+      return cache2;
+    };
+    return cache2;
+  }
+  function _interopRequireWildcard(obj) {
+    if (obj && obj.__esModule) {
+      return obj;
+    }
+    if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
+      return { default: obj };
+    }
+    var cache2 = _getRequireWildcardCache();
+    if (cache2 && cache2.has(obj)) {
+      return cache2.get(obj);
+    }
+    var newObj = {};
+    var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+        if (desc && (desc.get || desc.set)) {
+          Object.defineProperty(newObj, key, desc);
+        } else {
+          newObj[key] = obj[key];
+        }
+      }
+    }
+    newObj.default = obj;
+    if (cache2) {
+      cache2.set(obj, newObj);
+    }
+    return newObj;
+  }
+  function _typeof(obj) {
+    "@babel/helpers - typeof";
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+      _typeof = function _typeof2(obj2) {
+        return typeof obj2;
+      };
+    } else {
+      _typeof = function _typeof2(obj2) {
+        return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
+      };
+    }
+    return _typeof(obj);
+  }
+  function _extends() {
+    _extends = Object.assign || function(target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+      return target;
+    };
+    return _extends.apply(this, arguments);
+  }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    return Constructor;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function");
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } });
+    if (superClass) _setPrototypeOf(subClass, superClass);
+  }
+  function _setPrototypeOf(o, p2) {
+    _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf2(o2, p3) {
+      o2.__proto__ = p3;
+      return o2;
+    };
+    return _setPrototypeOf(o, p2);
+  }
+  function _createSuper(Derived) {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+    return function _createSuperInternal() {
+      var Super = _getPrototypeOf(Derived), result;
+      if (hasNativeReflectConstruct) {
+        var NewTarget = _getPrototypeOf(this).constructor;
+        result = Reflect.construct(Super, arguments, NewTarget);
+      } else {
+        result = Super.apply(this, arguments);
+      }
+      return _possibleConstructorReturn(this, result);
+    };
+  }
+  function _possibleConstructorReturn(self2, call) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
+      return call;
+    }
+    return _assertThisInitialized(self2);
+  }
+  function _assertThisInitialized(self2) {
+    if (self2 === void 0) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return self2;
+  }
+  function _isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      Date.prototype.toString.call(Reflect.construct(Date, [], function() {
+      }));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  function _getPrototypeOf(o) {
+    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf2(o2) {
+      return o2.__proto__ || Object.getPrototypeOf(o2);
+    };
+    return _getPrototypeOf(o);
+  }
+  function _defineProperty2(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, { value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key] = value;
+    }
+    return obj;
+  }
+  var isKeyboardEvent = function isKeyboardEvent2(e) {
+    return e.hasOwnProperty("key");
+  };
+  var Thumbs$1 = /* @__PURE__ */ (function(_Component) {
+    _inherits(Thumbs2, _Component);
+    var _super = _createSuper(Thumbs2);
+    function Thumbs2(_props) {
+      var _this;
+      _classCallCheck(this, Thumbs2);
+      _this = _super.call(this, _props);
+      _defineProperty2(_assertThisInitialized(_this), "itemsWrapperRef", void 0);
+      _defineProperty2(_assertThisInitialized(_this), "itemsListRef", void 0);
+      _defineProperty2(_assertThisInitialized(_this), "thumbsRef", void 0);
+      _defineProperty2(_assertThisInitialized(_this), "setItemsWrapperRef", function(node) {
+        _this.itemsWrapperRef = node;
+      });
+      _defineProperty2(_assertThisInitialized(_this), "setItemsListRef", function(node) {
+        _this.itemsListRef = node;
+      });
+      _defineProperty2(_assertThisInitialized(_this), "setThumbsRef", function(node, index) {
+        if (!_this.thumbsRef) {
+          _this.thumbsRef = [];
+        }
+        _this.thumbsRef[index] = node;
+      });
+      _defineProperty2(_assertThisInitialized(_this), "updateSizes", function() {
+        if (!_this.props.children || !_this.itemsWrapperRef || !_this.thumbsRef) {
+          return;
+        }
+        var total = _react.Children.count(_this.props.children);
+        var wrapperSize = _this.itemsWrapperRef.clientWidth;
+        var itemSize = _this.props.thumbWidth ? _this.props.thumbWidth : (0, _dimensions.outerWidth)(_this.thumbsRef[0]);
+        var visibleItems = Math.floor(wrapperSize / itemSize);
+        var showArrows = visibleItems < total;
+        var lastPosition = showArrows ? total - visibleItems : 0;
+        _this.setState(function(_state, props) {
+          return {
+            itemSize,
+            visibleItems,
+            firstItem: showArrows ? _this.getFirstItem(props.selectedItem) : 0,
+            lastPosition,
+            showArrows
+          };
+        });
+      });
+      _defineProperty2(_assertThisInitialized(_this), "handleClickItem", function(index, item, e) {
+        if (!isKeyboardEvent(e) || e.key === "Enter") {
+          var handler = _this.props.onSelectItem;
+          if (typeof handler === "function") {
+            handler(index, item);
+          }
+        }
+      });
+      _defineProperty2(_assertThisInitialized(_this), "onSwipeStart", function() {
+        _this.setState({
+          swiping: true
+        });
+      });
+      _defineProperty2(_assertThisInitialized(_this), "onSwipeEnd", function() {
+        _this.setState({
+          swiping: false
+        });
+      });
+      _defineProperty2(_assertThisInitialized(_this), "onSwipeMove", function(delta) {
+        var deltaX = delta.x;
+        if (!_this.state.itemSize || !_this.itemsWrapperRef || !_this.state.visibleItems) {
+          return false;
+        }
+        var leftBoundary = 0;
+        var childrenLength = _react.Children.count(_this.props.children);
+        var currentPosition = -(_this.state.firstItem * 100) / _this.state.visibleItems;
+        var lastLeftItem = Math.max(childrenLength - _this.state.visibleItems, 0);
+        var lastLeftBoundary = -lastLeftItem * 100 / _this.state.visibleItems;
+        if (currentPosition === leftBoundary && deltaX > 0) {
+          deltaX = 0;
+        }
+        if (currentPosition === lastLeftBoundary && deltaX < 0) {
+          deltaX = 0;
+        }
+        var wrapperSize = _this.itemsWrapperRef.clientWidth;
+        var position = currentPosition + 100 / (wrapperSize / deltaX);
+        if (_this.itemsListRef) {
+          ["WebkitTransform", "MozTransform", "MsTransform", "OTransform", "transform", "msTransform"].forEach(function(prop) {
+            _this.itemsListRef.style[prop] = (0, _CSSTranslate.default)(position, "%", _this.props.axis);
+          });
+        }
+        return true;
+      });
+      _defineProperty2(_assertThisInitialized(_this), "slideRight", function(positions) {
+        _this.moveTo(_this.state.firstItem - (typeof positions === "number" ? positions : 1));
+      });
+      _defineProperty2(_assertThisInitialized(_this), "slideLeft", function(positions) {
+        _this.moveTo(_this.state.firstItem + (typeof positions === "number" ? positions : 1));
+      });
+      _defineProperty2(_assertThisInitialized(_this), "moveTo", function(position) {
+        position = position < 0 ? 0 : position;
+        position = position >= _this.state.lastPosition ? _this.state.lastPosition : position;
+        _this.setState({
+          firstItem: position
+        });
+      });
+      _this.state = {
+        selectedItem: _props.selectedItem,
+        swiping: false,
+        showArrows: false,
+        firstItem: 0,
+        visibleItems: 0,
+        lastPosition: 0
+      };
+      return _this;
+    }
+    _createClass(Thumbs2, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        this.setupThumbs();
+      }
+    }, {
+      key: "componentDidUpdate",
+      value: function componentDidUpdate(prevProps) {
+        if (this.props.selectedItem !== this.state.selectedItem) {
+          this.setState({
+            selectedItem: this.props.selectedItem,
+            firstItem: this.getFirstItem(this.props.selectedItem)
+          });
+        }
+        if (this.props.children === prevProps.children) {
+          return;
+        }
+        this.updateSizes();
+      }
+    }, {
+      key: "componentWillUnmount",
+      value: function componentWillUnmount() {
+        this.destroyThumbs();
+      }
+    }, {
+      key: "setupThumbs",
+      value: function setupThumbs() {
+        (0, _window.default)().addEventListener("resize", this.updateSizes);
+        (0, _window.default)().addEventListener("DOMContentLoaded", this.updateSizes);
+        this.updateSizes();
+      }
+    }, {
+      key: "destroyThumbs",
+      value: function destroyThumbs() {
+        (0, _window.default)().removeEventListener("resize", this.updateSizes);
+        (0, _window.default)().removeEventListener("DOMContentLoaded", this.updateSizes);
+      }
+    }, {
+      key: "getFirstItem",
+      value: function getFirstItem(selectedItem) {
+        var firstItem = selectedItem;
+        if (selectedItem >= this.state.lastPosition) {
+          firstItem = this.state.lastPosition;
+        }
+        if (selectedItem < this.state.firstItem + this.state.visibleItems) {
+          firstItem = this.state.firstItem;
+        }
+        if (selectedItem < this.state.firstItem) {
+          firstItem = selectedItem;
+        }
+        return firstItem;
+      }
+    }, {
+      key: "renderItems",
+      value: function renderItems() {
+        var _this2 = this;
+        return this.props.children.map(function(img, index) {
+          var itemClass = _cssClasses.default.ITEM(false, index === _this2.state.selectedItem);
+          var thumbProps = {
+            key: index,
+            ref: function ref(e) {
+              return _this2.setThumbsRef(e, index);
+            },
+            className: itemClass,
+            onClick: _this2.handleClickItem.bind(_this2, index, _this2.props.children[index]),
+            onKeyDown: _this2.handleClickItem.bind(_this2, index, _this2.props.children[index]),
+            "aria-label": "".concat(_this2.props.labels.item, " ").concat(index + 1),
+            style: {
+              width: _this2.props.thumbWidth
+            }
+          };
+          return /* @__PURE__ */ _react.default.createElement("li", _extends({}, thumbProps, {
+            role: "button",
+            tabIndex: 0
+          }), img);
+        });
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this3 = this;
+        if (!this.props.children) {
+          return null;
+        }
+        var isSwipeable = _react.Children.count(this.props.children) > 1;
+        var hasPrev = this.state.showArrows && this.state.firstItem > 0;
+        var hasNext = this.state.showArrows && this.state.firstItem < this.state.lastPosition;
+        var itemListStyles = {};
+        var currentPosition = -this.state.firstItem * (this.state.itemSize || 0);
+        var transformProp = (0, _CSSTranslate.default)(currentPosition, "px", this.props.axis);
+        var transitionTime = this.props.transitionTime + "ms";
+        itemListStyles = {
+          WebkitTransform: transformProp,
+          MozTransform: transformProp,
+          MsTransform: transformProp,
+          OTransform: transformProp,
+          transform: transformProp,
+          msTransform: transformProp,
+          WebkitTransitionDuration: transitionTime,
+          MozTransitionDuration: transitionTime,
+          MsTransitionDuration: transitionTime,
+          OTransitionDuration: transitionTime,
+          transitionDuration: transitionTime,
+          msTransitionDuration: transitionTime
+        };
+        return /* @__PURE__ */ _react.default.createElement("div", {
+          className: _cssClasses.default.CAROUSEL(false)
+        }, /* @__PURE__ */ _react.default.createElement("div", {
+          className: _cssClasses.default.WRAPPER(false),
+          ref: this.setItemsWrapperRef
+        }, /* @__PURE__ */ _react.default.createElement("button", {
+          type: "button",
+          className: _cssClasses.default.ARROW_PREV(!hasPrev),
+          onClick: function onClick() {
+            return _this3.slideRight();
+          },
+          "aria-label": this.props.labels.leftArrow
+        }), isSwipeable ? /* @__PURE__ */ _react.default.createElement(_reactEasySwipe.default, {
+          tagName: "ul",
+          className: _cssClasses.default.SLIDER(false, this.state.swiping),
+          onSwipeLeft: this.slideLeft,
+          onSwipeRight: this.slideRight,
+          onSwipeMove: this.onSwipeMove,
+          onSwipeStart: this.onSwipeStart,
+          onSwipeEnd: this.onSwipeEnd,
+          style: itemListStyles,
+          innerRef: this.setItemsListRef,
+          allowMouseEvents: this.props.emulateTouch
+        }, this.renderItems()) : /* @__PURE__ */ _react.default.createElement("ul", {
+          className: _cssClasses.default.SLIDER(false, this.state.swiping),
+          ref: function ref(node) {
+            return _this3.setItemsListRef(node);
+          },
+          style: itemListStyles
+        }, this.renderItems()), /* @__PURE__ */ _react.default.createElement("button", {
+          type: "button",
+          className: _cssClasses.default.ARROW_NEXT(!hasNext),
+          onClick: function onClick() {
+            return _this3.slideLeft();
+          },
+          "aria-label": this.props.labels.rightArrow
+        })));
+      }
+    }]);
+    return Thumbs2;
+  })(_react.Component);
+  Thumbs.default = Thumbs$1;
+  _defineProperty2(Thumbs$1, "displayName", "Thumbs");
+  _defineProperty2(Thumbs$1, "defaultProps", {
+    axis: "horizontal",
+    labels: {
+      leftArrow: "previous slide / item",
+      rightArrow: "next slide / item",
+      item: "slide item"
+    },
+    selectedItem: 0,
+    thumbWidth: 80,
+    transitionTime: 350
+  });
+  return Thumbs;
+}
+var document$1 = {};
+var hasRequiredDocument;
+function requireDocument() {
+  if (hasRequiredDocument) return document$1;
+  hasRequiredDocument = 1;
+  Object.defineProperty(document$1, "__esModule", {
+    value: true
+  });
+  document$1.default = void 0;
+  var _default = function _default2() {
+    return document;
+  };
+  document$1.default = _default;
+  return document$1;
+}
+var utils = {};
+var hasRequiredUtils;
+function requireUtils() {
+  if (hasRequiredUtils) return utils;
+  hasRequiredUtils = 1;
+  Object.defineProperty(utils, "__esModule", {
+    value: true
+  });
+  utils.setPosition = utils.getPosition = utils.isKeyboardEvent = utils.defaultStatusFormatter = utils.noop = void 0;
+  var _react = React__default;
+  var _CSSTranslate = _interopRequireDefault(requireCSSTranslate());
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  var noop2 = function noop3() {
+  };
+  utils.noop = noop2;
+  var defaultStatusFormatter = function defaultStatusFormatter2(current, total) {
+    return "".concat(current, " of ").concat(total);
+  };
+  utils.defaultStatusFormatter = defaultStatusFormatter;
+  var isKeyboardEvent = function isKeyboardEvent2(e) {
+    return e ? e.hasOwnProperty("key") : false;
+  };
+  utils.isKeyboardEvent = isKeyboardEvent;
+  var getPosition = function getPosition2(index, props) {
+    if (props.infiniteLoop) {
+      ++index;
+    }
+    if (index === 0) {
+      return 0;
+    }
+    var childrenLength = _react.Children.count(props.children);
+    if (props.centerMode && props.axis === "horizontal") {
+      var currentPosition = -index * props.centerSlidePercentage;
+      var lastPosition = childrenLength - 1;
+      if (index && (index !== lastPosition || props.infiniteLoop)) {
+        currentPosition += (100 - props.centerSlidePercentage) / 2;
+      } else if (index === lastPosition) {
+        currentPosition += 100 - props.centerSlidePercentage;
+      }
+      return currentPosition;
+    }
+    return -index * 100;
+  };
+  utils.getPosition = getPosition;
+  var setPosition = function setPosition2(position, axis) {
+    var style = {};
+    ["WebkitTransform", "MozTransform", "MsTransform", "OTransform", "transform", "msTransform"].forEach(function(prop) {
+      style[prop] = (0, _CSSTranslate.default)(position, "%", axis);
+    });
+    return style;
+  };
+  utils.setPosition = setPosition;
+  return utils;
+}
+var animations = {};
+var hasRequiredAnimations;
+function requireAnimations() {
+  if (hasRequiredAnimations) return animations;
+  hasRequiredAnimations = 1;
+  Object.defineProperty(animations, "__esModule", {
+    value: true
+  });
+  animations.fadeAnimationHandler = animations.slideStopSwipingHandler = animations.slideSwipeAnimationHandler = animations.slideAnimationHandler = void 0;
+  var _react = React__default;
+  var _CSSTranslate = _interopRequireDefault(requireCSSTranslate());
+  var _utils = requireUtils();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  function ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function(sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
+    }
+    return keys;
+  }
+  function _objectSpread(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+      if (i % 2) {
+        ownKeys(Object(source), true).forEach(function(key) {
+          _defineProperty2(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys(Object(source)).forEach(function(key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+    return target;
+  }
+  function _defineProperty2(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, { value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key] = value;
+    }
+    return obj;
+  }
+  var slideAnimationHandler = function slideAnimationHandler2(props, state) {
+    var returnStyles = {};
+    var selectedItem = state.selectedItem;
+    var previousItem = selectedItem;
+    var lastPosition = _react.Children.count(props.children) - 1;
+    var needClonedSlide = props.infiniteLoop && (selectedItem < 0 || selectedItem > lastPosition);
+    if (needClonedSlide) {
+      if (previousItem < 0) {
+        if (props.centerMode && props.centerSlidePercentage && props.axis === "horizontal") {
+          returnStyles.itemListStyle = (0, _utils.setPosition)(-(lastPosition + 2) * props.centerSlidePercentage - (100 - props.centerSlidePercentage) / 2, props.axis);
+        } else {
+          returnStyles.itemListStyle = (0, _utils.setPosition)(-(lastPosition + 2) * 100, props.axis);
+        }
+      } else if (previousItem > lastPosition) {
+        returnStyles.itemListStyle = (0, _utils.setPosition)(0, props.axis);
+      }
+      return returnStyles;
+    }
+    var currentPosition = (0, _utils.getPosition)(selectedItem, props);
+    var transformProp = (0, _CSSTranslate.default)(currentPosition, "%", props.axis);
+    var transitionTime = props.transitionTime + "ms";
+    returnStyles.itemListStyle = {
+      WebkitTransform: transformProp,
+      msTransform: transformProp,
+      OTransform: transformProp,
+      transform: transformProp
+    };
+    if (!state.swiping) {
+      returnStyles.itemListStyle = _objectSpread(_objectSpread({}, returnStyles.itemListStyle), {}, {
+        WebkitTransitionDuration: transitionTime,
+        MozTransitionDuration: transitionTime,
+        OTransitionDuration: transitionTime,
+        transitionDuration: transitionTime,
+        msTransitionDuration: transitionTime
+      });
+    }
+    return returnStyles;
+  };
+  animations.slideAnimationHandler = slideAnimationHandler;
+  var slideSwipeAnimationHandler = function slideSwipeAnimationHandler2(delta, props, state, setState) {
+    var returnStyles = {};
+    var isHorizontal = props.axis === "horizontal";
+    var childrenLength = _react.Children.count(props.children);
+    var initialBoundry = 0;
+    var currentPosition = (0, _utils.getPosition)(state.selectedItem, props);
+    var finalBoundry = props.infiniteLoop ? (0, _utils.getPosition)(childrenLength - 1, props) - 100 : (0, _utils.getPosition)(childrenLength - 1, props);
+    var axisDelta = isHorizontal ? delta.x : delta.y;
+    var handledDelta = axisDelta;
+    if (currentPosition === initialBoundry && axisDelta > 0) {
+      handledDelta = 0;
+    }
+    if (currentPosition === finalBoundry && axisDelta < 0) {
+      handledDelta = 0;
+    }
+    var position = currentPosition + 100 / (state.itemSize / handledDelta);
+    var hasMoved = Math.abs(axisDelta) > props.swipeScrollTolerance;
+    if (props.infiniteLoop && hasMoved) {
+      if (state.selectedItem === 0 && position > -100) {
+        position -= childrenLength * 100;
+      } else if (state.selectedItem === childrenLength - 1 && position < -childrenLength * 100) {
+        position += childrenLength * 100;
+      }
+    }
+    if (!props.preventMovementUntilSwipeScrollTolerance || hasMoved || state.swipeMovementStarted) {
+      if (!state.swipeMovementStarted) {
+        setState({
+          swipeMovementStarted: true
+        });
+      }
+      returnStyles.itemListStyle = (0, _utils.setPosition)(position, props.axis);
+    }
+    if (hasMoved && !state.cancelClick) {
+      setState({
+        cancelClick: true
+      });
+    }
+    return returnStyles;
+  };
+  animations.slideSwipeAnimationHandler = slideSwipeAnimationHandler;
+  var slideStopSwipingHandler = function slideStopSwipingHandler2(props, state) {
+    var currentPosition = (0, _utils.getPosition)(state.selectedItem, props);
+    var itemListStyle = (0, _utils.setPosition)(currentPosition, props.axis);
+    return {
+      itemListStyle
+    };
+  };
+  animations.slideStopSwipingHandler = slideStopSwipingHandler;
+  var fadeAnimationHandler = function fadeAnimationHandler2(props, state) {
+    var transitionTime = props.transitionTime + "ms";
+    var transitionTimingFunction = "ease-in-out";
+    var slideStyle = {
+      position: "absolute",
+      display: "block",
+      zIndex: -2,
+      minHeight: "100%",
+      opacity: 0,
+      top: 0,
+      right: 0,
+      left: 0,
+      bottom: 0,
+      transitionTimingFunction,
+      msTransitionTimingFunction: transitionTimingFunction,
+      MozTransitionTimingFunction: transitionTimingFunction,
+      WebkitTransitionTimingFunction: transitionTimingFunction,
+      OTransitionTimingFunction: transitionTimingFunction
+    };
+    if (!state.swiping) {
+      slideStyle = _objectSpread(_objectSpread({}, slideStyle), {}, {
+        WebkitTransitionDuration: transitionTime,
+        MozTransitionDuration: transitionTime,
+        OTransitionDuration: transitionTime,
+        transitionDuration: transitionTime,
+        msTransitionDuration: transitionTime
+      });
+    }
+    return {
+      slideStyle,
+      selectedStyle: _objectSpread(_objectSpread({}, slideStyle), {}, {
+        opacity: 1,
+        position: "relative"
+      }),
+      prevStyle: _objectSpread({}, slideStyle)
+    };
+  };
+  animations.fadeAnimationHandler = fadeAnimationHandler;
+  return animations;
+}
+var hasRequiredCarousel;
+function requireCarousel() {
+  if (hasRequiredCarousel) return Carousel;
+  hasRequiredCarousel = 1;
+  Object.defineProperty(Carousel, "__esModule", {
+    value: true
+  });
+  Carousel.default = void 0;
+  var _react = _interopRequireWildcard(React__default);
+  var _reactEasySwipe = _interopRequireDefault(requireLib());
+  var _cssClasses = _interopRequireDefault(requireCssClasses());
+  var _Thumbs = _interopRequireDefault(requireThumbs());
+  var _document = _interopRequireDefault(requireDocument());
+  var _window = _interopRequireDefault(requireWindow());
+  var _utils = requireUtils();
+  var _animations = requireAnimations();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  function _getRequireWildcardCache() {
+    if (typeof WeakMap !== "function") return null;
+    var cache2 = /* @__PURE__ */ new WeakMap();
+    _getRequireWildcardCache = function _getRequireWildcardCache2() {
+      return cache2;
+    };
+    return cache2;
+  }
+  function _interopRequireWildcard(obj) {
+    if (obj && obj.__esModule) {
+      return obj;
+    }
+    if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
+      return { default: obj };
+    }
+    var cache2 = _getRequireWildcardCache();
+    if (cache2 && cache2.has(obj)) {
+      return cache2.get(obj);
+    }
+    var newObj = {};
+    var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+        if (desc && (desc.get || desc.set)) {
+          Object.defineProperty(newObj, key, desc);
+        } else {
+          newObj[key] = obj[key];
+        }
+      }
+    }
+    newObj.default = obj;
+    if (cache2) {
+      cache2.set(obj, newObj);
+    }
+    return newObj;
+  }
+  function _typeof(obj) {
+    "@babel/helpers - typeof";
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+      _typeof = function _typeof2(obj2) {
+        return typeof obj2;
+      };
+    } else {
+      _typeof = function _typeof2(obj2) {
+        return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
+      };
+    }
+    return _typeof(obj);
+  }
+  function _extends() {
+    _extends = Object.assign || function(target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+      return target;
+    };
+    return _extends.apply(this, arguments);
+  }
+  function ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function(sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
+    }
+    return keys;
+  }
+  function _objectSpread(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+      if (i % 2) {
+        ownKeys(Object(source), true).forEach(function(key) {
+          _defineProperty2(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys(Object(source)).forEach(function(key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+    return target;
+  }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    return Constructor;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function");
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } });
+    if (superClass) _setPrototypeOf(subClass, superClass);
+  }
+  function _setPrototypeOf(o, p2) {
+    _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf2(o2, p3) {
+      o2.__proto__ = p3;
+      return o2;
+    };
+    return _setPrototypeOf(o, p2);
+  }
+  function _createSuper(Derived) {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+    return function _createSuperInternal() {
+      var Super = _getPrototypeOf(Derived), result;
+      if (hasNativeReflectConstruct) {
+        var NewTarget = _getPrototypeOf(this).constructor;
+        result = Reflect.construct(Super, arguments, NewTarget);
+      } else {
+        result = Super.apply(this, arguments);
+      }
+      return _possibleConstructorReturn(this, result);
+    };
+  }
+  function _possibleConstructorReturn(self2, call) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
+      return call;
+    }
+    return _assertThisInitialized(self2);
+  }
+  function _assertThisInitialized(self2) {
+    if (self2 === void 0) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return self2;
+  }
+  function _isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+    try {
+      Date.prototype.toString.call(Reflect.construct(Date, [], function() {
+      }));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+  function _getPrototypeOf(o) {
+    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf2(o2) {
+      return o2.__proto__ || Object.getPrototypeOf(o2);
+    };
+    return _getPrototypeOf(o);
+  }
+  function _defineProperty2(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, { value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key] = value;
+    }
+    return obj;
+  }
+  var Carousel$1 = /* @__PURE__ */ (function(_React$Component) {
+    _inherits(Carousel2, _React$Component);
+    var _super = _createSuper(Carousel2);
+    function Carousel2(props) {
+      var _this;
+      _classCallCheck(this, Carousel2);
+      _this = _super.call(this, props);
+      _defineProperty2(_assertThisInitialized(_this), "thumbsRef", void 0);
+      _defineProperty2(_assertThisInitialized(_this), "carouselWrapperRef", void 0);
+      _defineProperty2(_assertThisInitialized(_this), "listRef", void 0);
+      _defineProperty2(_assertThisInitialized(_this), "itemsRef", void 0);
+      _defineProperty2(_assertThisInitialized(_this), "timer", void 0);
+      _defineProperty2(_assertThisInitialized(_this), "animationHandler", void 0);
+      _defineProperty2(_assertThisInitialized(_this), "setThumbsRef", function(node) {
+        _this.thumbsRef = node;
+      });
+      _defineProperty2(_assertThisInitialized(_this), "setCarouselWrapperRef", function(node) {
+        _this.carouselWrapperRef = node;
+      });
+      _defineProperty2(_assertThisInitialized(_this), "setListRef", function(node) {
+        _this.listRef = node;
+      });
+      _defineProperty2(_assertThisInitialized(_this), "setItemsRef", function(node, index) {
+        if (!_this.itemsRef) {
+          _this.itemsRef = [];
+        }
+        _this.itemsRef[index] = node;
+      });
+      _defineProperty2(_assertThisInitialized(_this), "autoPlay", function() {
+        if (_react.Children.count(_this.props.children) <= 1) {
+          return;
+        }
+        _this.clearAutoPlay();
+        if (!_this.props.autoPlay) {
+          return;
+        }
+        _this.timer = setTimeout(function() {
+          _this.increment();
+        }, _this.props.interval);
+      });
+      _defineProperty2(_assertThisInitialized(_this), "clearAutoPlay", function() {
+        if (_this.timer) clearTimeout(_this.timer);
+      });
+      _defineProperty2(_assertThisInitialized(_this), "resetAutoPlay", function() {
+        _this.clearAutoPlay();
+        _this.autoPlay();
+      });
+      _defineProperty2(_assertThisInitialized(_this), "stopOnHover", function() {
+        _this.setState({
+          isMouseEntered: true
+        }, _this.clearAutoPlay);
+      });
+      _defineProperty2(_assertThisInitialized(_this), "startOnLeave", function() {
+        _this.setState({
+          isMouseEntered: false
+        }, _this.autoPlay);
+      });
+      _defineProperty2(_assertThisInitialized(_this), "isFocusWithinTheCarousel", function() {
+        if (!_this.carouselWrapperRef) {
+          return false;
+        }
+        if ((0, _document.default)().activeElement === _this.carouselWrapperRef || _this.carouselWrapperRef.contains((0, _document.default)().activeElement)) {
+          return true;
+        }
+        return false;
+      });
+      _defineProperty2(_assertThisInitialized(_this), "navigateWithKeyboard", function(e) {
+        if (!_this.isFocusWithinTheCarousel()) {
+          return;
+        }
+        var axis = _this.props.axis;
+        var isHorizontal = axis === "horizontal";
+        var keyNames = {
+          ArrowUp: 38,
+          ArrowRight: 39,
+          ArrowDown: 40,
+          ArrowLeft: 37
+        };
+        var nextKey = isHorizontal ? keyNames.ArrowRight : keyNames.ArrowDown;
+        var prevKey = isHorizontal ? keyNames.ArrowLeft : keyNames.ArrowUp;
+        if (nextKey === e.keyCode) {
+          _this.increment();
+        } else if (prevKey === e.keyCode) {
+          _this.decrement();
+        }
+      });
+      _defineProperty2(_assertThisInitialized(_this), "updateSizes", function() {
+        if (!_this.state.initialized || !_this.itemsRef || _this.itemsRef.length === 0) {
+          return;
+        }
+        var isHorizontal = _this.props.axis === "horizontal";
+        var firstItem = _this.itemsRef[0];
+        if (!firstItem) {
+          return;
+        }
+        var itemSize = isHorizontal ? firstItem.clientWidth : firstItem.clientHeight;
+        _this.setState({
+          itemSize
+        });
+        if (_this.thumbsRef) {
+          _this.thumbsRef.updateSizes();
+        }
+      });
+      _defineProperty2(_assertThisInitialized(_this), "setMountState", function() {
+        _this.setState({
+          hasMount: true
+        });
+        _this.updateSizes();
+      });
+      _defineProperty2(_assertThisInitialized(_this), "handleClickItem", function(index, item) {
+        if (_react.Children.count(_this.props.children) === 0) {
+          return;
+        }
+        if (_this.state.cancelClick) {
+          _this.setState({
+            cancelClick: false
+          });
+          return;
+        }
+        _this.props.onClickItem(index, item);
+        if (index !== _this.state.selectedItem) {
+          _this.setState({
+            selectedItem: index
+          });
+        }
+      });
+      _defineProperty2(_assertThisInitialized(_this), "handleOnChange", function(index, item) {
+        if (_react.Children.count(_this.props.children) <= 1) {
+          return;
+        }
+        _this.props.onChange(index, item);
+      });
+      _defineProperty2(_assertThisInitialized(_this), "handleClickThumb", function(index, item) {
+        _this.props.onClickThumb(index, item);
+        _this.moveTo(index);
+      });
+      _defineProperty2(_assertThisInitialized(_this), "onSwipeStart", function(event) {
+        _this.setState({
+          swiping: true
+        });
+        _this.props.onSwipeStart(event);
+      });
+      _defineProperty2(_assertThisInitialized(_this), "onSwipeEnd", function(event) {
+        _this.setState({
+          swiping: false,
+          cancelClick: false,
+          swipeMovementStarted: false
+        });
+        _this.props.onSwipeEnd(event);
+        _this.clearAutoPlay();
+        if (_this.state.autoPlay) {
+          _this.autoPlay();
+        }
+      });
+      _defineProperty2(_assertThisInitialized(_this), "onSwipeMove", function(delta, event) {
+        _this.props.onSwipeMove(event);
+        var animationHandlerResponse = _this.props.swipeAnimationHandler(delta, _this.props, _this.state, _this.setState.bind(_assertThisInitialized(_this)));
+        _this.setState(_objectSpread({}, animationHandlerResponse));
+        return !!Object.keys(animationHandlerResponse).length;
+      });
+      _defineProperty2(_assertThisInitialized(_this), "decrement", function() {
+        var positions = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : 1;
+        _this.moveTo(_this.state.selectedItem - (typeof positions === "number" ? positions : 1));
+      });
+      _defineProperty2(_assertThisInitialized(_this), "increment", function() {
+        var positions = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : 1;
+        _this.moveTo(_this.state.selectedItem + (typeof positions === "number" ? positions : 1));
+      });
+      _defineProperty2(_assertThisInitialized(_this), "moveTo", function(position) {
+        if (typeof position !== "number") {
+          return;
+        }
+        var lastPosition = _react.Children.count(_this.props.children) - 1;
+        if (position < 0) {
+          position = _this.props.infiniteLoop ? lastPosition : 0;
+        }
+        if (position > lastPosition) {
+          position = _this.props.infiniteLoop ? 0 : lastPosition;
+        }
+        _this.selectItem({
+          // if it's not a slider, we don't need to set position here
+          selectedItem: position
+        });
+        if (_this.state.autoPlay && _this.state.isMouseEntered === false) {
+          _this.resetAutoPlay();
+        }
+      });
+      _defineProperty2(_assertThisInitialized(_this), "onClickNext", function() {
+        _this.increment(1);
+      });
+      _defineProperty2(_assertThisInitialized(_this), "onClickPrev", function() {
+        _this.decrement(1);
+      });
+      _defineProperty2(_assertThisInitialized(_this), "onSwipeForward", function() {
+        _this.increment(1);
+        if (_this.props.emulateTouch) {
+          _this.setState({
+            cancelClick: true
+          });
+        }
+      });
+      _defineProperty2(_assertThisInitialized(_this), "onSwipeBackwards", function() {
+        _this.decrement(1);
+        if (_this.props.emulateTouch) {
+          _this.setState({
+            cancelClick: true
+          });
+        }
+      });
+      _defineProperty2(_assertThisInitialized(_this), "changeItem", function(newIndex) {
+        return function(e) {
+          if (!(0, _utils.isKeyboardEvent)(e) || e.key === "Enter") {
+            _this.moveTo(newIndex);
+          }
+        };
+      });
+      _defineProperty2(_assertThisInitialized(_this), "selectItem", function(state) {
+        _this.setState(_objectSpread({
+          previousItem: _this.state.selectedItem
+        }, state), function() {
+          _this.setState(_this.animationHandler(_this.props, _this.state));
+        });
+        _this.handleOnChange(state.selectedItem, _react.Children.toArray(_this.props.children)[state.selectedItem]);
+      });
+      _defineProperty2(_assertThisInitialized(_this), "getInitialImage", function() {
+        var selectedItem = _this.props.selectedItem;
+        var item = _this.itemsRef && _this.itemsRef[selectedItem];
+        var images = item && item.getElementsByTagName("img") || [];
+        return images[0];
+      });
+      _defineProperty2(_assertThisInitialized(_this), "getVariableItemHeight", function(position) {
+        var item = _this.itemsRef && _this.itemsRef[position];
+        if (_this.state.hasMount && item && item.children.length) {
+          var slideImages = item.children[0].getElementsByTagName("img") || [];
+          if (slideImages.length > 0) {
+            var image = slideImages[0];
+            if (!image.complete) {
+              var onImageLoad = function onImageLoad2() {
+                _this.forceUpdate();
+                image.removeEventListener("load", onImageLoad2);
+              };
+              image.addEventListener("load", onImageLoad);
+            }
+          }
+          var displayItem = slideImages[0] || item.children[0];
+          var height = displayItem.clientHeight;
+          return height > 0 ? height : null;
+        }
+        return null;
+      });
+      var initState = {
+        initialized: false,
+        previousItem: props.selectedItem,
+        selectedItem: props.selectedItem,
+        hasMount: false,
+        isMouseEntered: false,
+        autoPlay: props.autoPlay,
+        swiping: false,
+        swipeMovementStarted: false,
+        cancelClick: false,
+        itemSize: 1,
+        itemListStyle: {},
+        slideStyle: {},
+        selectedStyle: {},
+        prevStyle: {}
+      };
+      _this.animationHandler = typeof props.animationHandler === "function" && props.animationHandler || props.animationHandler === "fade" && _animations.fadeAnimationHandler || _animations.slideAnimationHandler;
+      _this.state = _objectSpread(_objectSpread({}, initState), _this.animationHandler(props, initState));
+      return _this;
+    }
+    _createClass(Carousel2, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        if (!this.props.children) {
+          return;
+        }
+        this.setupCarousel();
+      }
+    }, {
+      key: "componentDidUpdate",
+      value: function componentDidUpdate(prevProps, prevState) {
+        if (!prevProps.children && this.props.children && !this.state.initialized) {
+          this.setupCarousel();
+        }
+        if (!prevProps.autoFocus && this.props.autoFocus) {
+          this.forceFocus();
+        }
+        if (prevState.swiping && !this.state.swiping) {
+          this.setState(_objectSpread({}, this.props.stopSwipingHandler(this.props, this.state)));
+        }
+        if (prevProps.selectedItem !== this.props.selectedItem || prevProps.centerMode !== this.props.centerMode) {
+          this.updateSizes();
+          this.moveTo(this.props.selectedItem);
+        }
+        if (prevProps.autoPlay !== this.props.autoPlay) {
+          if (this.props.autoPlay) {
+            this.setupAutoPlay();
+          } else {
+            this.destroyAutoPlay();
+          }
+          this.setState({
+            autoPlay: this.props.autoPlay
+          });
+        }
+      }
+    }, {
+      key: "componentWillUnmount",
+      value: function componentWillUnmount() {
+        this.destroyCarousel();
+      }
+    }, {
+      key: "setupCarousel",
+      value: function setupCarousel() {
+        var _this2 = this;
+        this.bindEvents();
+        if (this.state.autoPlay && _react.Children.count(this.props.children) > 1) {
+          this.setupAutoPlay();
+        }
+        if (this.props.autoFocus) {
+          this.forceFocus();
+        }
+        this.setState({
+          initialized: true
+        }, function() {
+          var initialImage = _this2.getInitialImage();
+          if (initialImage && !initialImage.complete) {
+            initialImage.addEventListener("load", _this2.setMountState);
+          } else {
+            _this2.setMountState();
+          }
+        });
+      }
+    }, {
+      key: "destroyCarousel",
+      value: function destroyCarousel() {
+        if (this.state.initialized) {
+          this.unbindEvents();
+          this.destroyAutoPlay();
+        }
+      }
+    }, {
+      key: "setupAutoPlay",
+      value: function setupAutoPlay() {
+        this.autoPlay();
+        var carouselWrapper = this.carouselWrapperRef;
+        if (this.props.stopOnHover && carouselWrapper) {
+          carouselWrapper.addEventListener("mouseenter", this.stopOnHover);
+          carouselWrapper.addEventListener("mouseleave", this.startOnLeave);
+        }
+      }
+    }, {
+      key: "destroyAutoPlay",
+      value: function destroyAutoPlay() {
+        this.clearAutoPlay();
+        var carouselWrapper = this.carouselWrapperRef;
+        if (this.props.stopOnHover && carouselWrapper) {
+          carouselWrapper.removeEventListener("mouseenter", this.stopOnHover);
+          carouselWrapper.removeEventListener("mouseleave", this.startOnLeave);
+        }
+      }
+    }, {
+      key: "bindEvents",
+      value: function bindEvents() {
+        (0, _window.default)().addEventListener("resize", this.updateSizes);
+        (0, _window.default)().addEventListener("DOMContentLoaded", this.updateSizes);
+        if (this.props.useKeyboardArrows) {
+          (0, _document.default)().addEventListener("keydown", this.navigateWithKeyboard);
+        }
+      }
+    }, {
+      key: "unbindEvents",
+      value: function unbindEvents() {
+        (0, _window.default)().removeEventListener("resize", this.updateSizes);
+        (0, _window.default)().removeEventListener("DOMContentLoaded", this.updateSizes);
+        var initialImage = this.getInitialImage();
+        if (initialImage) {
+          initialImage.removeEventListener("load", this.setMountState);
+        }
+        if (this.props.useKeyboardArrows) {
+          (0, _document.default)().removeEventListener("keydown", this.navigateWithKeyboard);
+        }
+      }
+    }, {
+      key: "forceFocus",
+      value: function forceFocus() {
+        var _this$carouselWrapper;
+        (_this$carouselWrapper = this.carouselWrapperRef) === null || _this$carouselWrapper === void 0 ? void 0 : _this$carouselWrapper.focus();
+      }
+    }, {
+      key: "renderItems",
+      value: function renderItems(isClone) {
+        var _this3 = this;
+        if (!this.props.children) {
+          return [];
+        }
+        return _react.Children.map(this.props.children, function(item, index) {
+          var isSelected = index === _this3.state.selectedItem;
+          var isPrevious = index === _this3.state.previousItem;
+          var style = isSelected && _this3.state.selectedStyle || isPrevious && _this3.state.prevStyle || _this3.state.slideStyle || {};
+          if (_this3.props.centerMode && _this3.props.axis === "horizontal") {
+            style = _objectSpread(_objectSpread({}, style), {}, {
+              minWidth: _this3.props.centerSlidePercentage + "%"
+            });
+          }
+          if (_this3.state.swiping && _this3.state.swipeMovementStarted) {
+            style = _objectSpread(_objectSpread({}, style), {}, {
+              pointerEvents: "none"
+            });
+          }
+          var slideProps = {
+            ref: function ref(e) {
+              return _this3.setItemsRef(e, index);
+            },
+            key: "itemKey" + index + (isClone ? "clone" : ""),
+            className: _cssClasses.default.ITEM(true, index === _this3.state.selectedItem, index === _this3.state.previousItem),
+            onClick: _this3.handleClickItem.bind(_this3, index, item),
+            style
+          };
+          return /* @__PURE__ */ _react.default.createElement("li", slideProps, _this3.props.renderItem(item, {
+            isSelected: index === _this3.state.selectedItem,
+            isPrevious: index === _this3.state.previousItem
+          }));
+        });
+      }
+    }, {
+      key: "renderControls",
+      value: function renderControls() {
+        var _this4 = this;
+        var _this$props = this.props, showIndicators = _this$props.showIndicators, labels = _this$props.labels, renderIndicator = _this$props.renderIndicator, children = _this$props.children;
+        if (!showIndicators) {
+          return null;
+        }
+        return /* @__PURE__ */ _react.default.createElement("ul", {
+          className: "control-dots"
+        }, _react.Children.map(children, function(_2, index) {
+          return renderIndicator && renderIndicator(_this4.changeItem(index), index === _this4.state.selectedItem, index, labels.item);
+        }));
+      }
+    }, {
+      key: "renderStatus",
+      value: function renderStatus() {
+        if (!this.props.showStatus) {
+          return null;
+        }
+        return /* @__PURE__ */ _react.default.createElement("p", {
+          className: "carousel-status"
+        }, this.props.statusFormatter(this.state.selectedItem + 1, _react.Children.count(this.props.children)));
+      }
+    }, {
+      key: "renderThumbs",
+      value: function renderThumbs() {
+        if (!this.props.showThumbs || !this.props.children || _react.Children.count(this.props.children) === 0) {
+          return null;
+        }
+        return /* @__PURE__ */ _react.default.createElement(_Thumbs.default, {
+          ref: this.setThumbsRef,
+          onSelectItem: this.handleClickThumb,
+          selectedItem: this.state.selectedItem,
+          transitionTime: this.props.transitionTime,
+          thumbWidth: this.props.thumbWidth,
+          labels: this.props.labels,
+          emulateTouch: this.props.emulateTouch
+        }, this.props.renderThumbs(this.props.children));
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this5 = this;
+        if (!this.props.children || _react.Children.count(this.props.children) === 0) {
+          return null;
+        }
+        var isSwipeable = this.props.swipeable && _react.Children.count(this.props.children) > 1;
+        var isHorizontal = this.props.axis === "horizontal";
+        var canShowArrows = this.props.showArrows && _react.Children.count(this.props.children) > 1;
+        var hasPrev = canShowArrows && (this.state.selectedItem > 0 || this.props.infiniteLoop) || false;
+        var hasNext = canShowArrows && (this.state.selectedItem < _react.Children.count(this.props.children) - 1 || this.props.infiniteLoop) || false;
+        var itemsClone = this.renderItems(true);
+        var firstClone = itemsClone.shift();
+        var lastClone = itemsClone.pop();
+        var swiperProps = {
+          className: _cssClasses.default.SLIDER(true, this.state.swiping),
+          onSwipeMove: this.onSwipeMove,
+          onSwipeStart: this.onSwipeStart,
+          onSwipeEnd: this.onSwipeEnd,
+          style: this.state.itemListStyle,
+          tolerance: this.props.swipeScrollTolerance
+        };
+        var containerStyles = {};
+        if (isHorizontal) {
+          swiperProps.onSwipeLeft = this.onSwipeForward;
+          swiperProps.onSwipeRight = this.onSwipeBackwards;
+          if (this.props.dynamicHeight) {
+            var itemHeight = this.getVariableItemHeight(this.state.selectedItem);
+            containerStyles.height = itemHeight || "auto";
+          }
+        } else {
+          swiperProps.onSwipeUp = this.props.verticalSwipe === "natural" ? this.onSwipeBackwards : this.onSwipeForward;
+          swiperProps.onSwipeDown = this.props.verticalSwipe === "natural" ? this.onSwipeForward : this.onSwipeBackwards;
+          swiperProps.style = _objectSpread(_objectSpread({}, swiperProps.style), {}, {
+            height: this.state.itemSize
+          });
+          containerStyles.height = this.state.itemSize;
+        }
+        return /* @__PURE__ */ _react.default.createElement("div", {
+          "aria-label": this.props.ariaLabel,
+          className: _cssClasses.default.ROOT(this.props.className),
+          ref: this.setCarouselWrapperRef,
+          tabIndex: this.props.useKeyboardArrows ? 0 : void 0
+        }, /* @__PURE__ */ _react.default.createElement("div", {
+          className: _cssClasses.default.CAROUSEL(true),
+          style: {
+            width: this.props.width
+          }
+        }, this.renderControls(), this.props.renderArrowPrev(this.onClickPrev, hasPrev, this.props.labels.leftArrow), /* @__PURE__ */ _react.default.createElement("div", {
+          className: _cssClasses.default.WRAPPER(true, this.props.axis),
+          style: containerStyles
+        }, isSwipeable ? /* @__PURE__ */ _react.default.createElement(_reactEasySwipe.default, _extends({
+          tagName: "ul",
+          innerRef: this.setListRef
+        }, swiperProps, {
+          allowMouseEvents: this.props.emulateTouch
+        }), this.props.infiniteLoop && lastClone, this.renderItems(), this.props.infiniteLoop && firstClone) : /* @__PURE__ */ _react.default.createElement("ul", {
+          className: _cssClasses.default.SLIDER(true, this.state.swiping),
+          ref: function ref(node) {
+            return _this5.setListRef(node);
+          },
+          style: this.state.itemListStyle || {}
+        }, this.props.infiniteLoop && lastClone, this.renderItems(), this.props.infiniteLoop && firstClone)), this.props.renderArrowNext(this.onClickNext, hasNext, this.props.labels.rightArrow), this.renderStatus()), this.renderThumbs());
+      }
+    }]);
+    return Carousel2;
+  })(_react.default.Component);
+  Carousel.default = Carousel$1;
+  _defineProperty2(Carousel$1, "displayName", "Carousel");
+  _defineProperty2(Carousel$1, "defaultProps", {
+    ariaLabel: void 0,
+    axis: "horizontal",
+    centerSlidePercentage: 80,
+    interval: 3e3,
+    labels: {
+      leftArrow: "previous slide / item",
+      rightArrow: "next slide / item",
+      item: "slide item"
+    },
+    onClickItem: _utils.noop,
+    onClickThumb: _utils.noop,
+    onChange: _utils.noop,
+    onSwipeStart: function onSwipeStart() {
+    },
+    onSwipeEnd: function onSwipeEnd() {
+    },
+    onSwipeMove: function onSwipeMove() {
+      return false;
+    },
+    preventMovementUntilSwipeScrollTolerance: false,
+    renderArrowPrev: function renderArrowPrev(onClickHandler, hasPrev, label) {
+      return /* @__PURE__ */ _react.default.createElement("button", {
+        type: "button",
+        "aria-label": label,
+        className: _cssClasses.default.ARROW_PREV(!hasPrev),
+        onClick: onClickHandler
+      });
+    },
+    renderArrowNext: function renderArrowNext(onClickHandler, hasNext, label) {
+      return /* @__PURE__ */ _react.default.createElement("button", {
+        type: "button",
+        "aria-label": label,
+        className: _cssClasses.default.ARROW_NEXT(!hasNext),
+        onClick: onClickHandler
+      });
+    },
+    renderIndicator: function renderIndicator(onClickHandler, isSelected, index, label) {
+      return /* @__PURE__ */ _react.default.createElement("li", {
+        className: _cssClasses.default.DOT(isSelected),
+        onClick: onClickHandler,
+        onKeyDown: onClickHandler,
+        value: index,
+        key: index,
+        role: "button",
+        tabIndex: 0,
+        "aria-label": "".concat(label, " ").concat(index + 1)
+      });
+    },
+    renderItem: function renderItem(item) {
+      return item;
+    },
+    renderThumbs: function renderThumbs(children) {
+      var images = _react.Children.map(children, function(item) {
+        var img = item;
+        if (item.type !== "img") {
+          img = _react.Children.toArray(item.props.children).find(function(children2) {
+            return children2.type === "img";
+          });
+        }
+        if (!img) {
+          return void 0;
+        }
+        return img;
+      });
+      if (images.filter(function(image) {
+        return image;
+      }).length === 0) {
+        console.warn("No images found! Can't build the thumb list without images. If you don't need thumbs, set showThumbs={false} in the Carousel. Note that it's not possible to get images rendered inside custom components. More info at https://github.com/leandrowd/react-responsive-carousel/blob/master/TROUBLESHOOTING.md");
+        return [];
+      }
+      return images;
+    },
+    statusFormatter: _utils.defaultStatusFormatter,
+    selectedItem: 0,
+    showArrows: true,
+    showIndicators: true,
+    showStatus: true,
+    showThumbs: true,
+    stopOnHover: true,
+    swipeScrollTolerance: 5,
+    swipeable: true,
+    transitionTime: 350,
+    verticalSwipe: "standard",
+    width: "100%",
+    animationHandler: "slide",
+    swipeAnimationHandler: _animations.slideSwipeAnimationHandler,
+    stopSwipingHandler: _animations.slideStopSwipingHandler
+  });
+  return Carousel;
+}
+var types = {};
+var hasRequiredTypes;
+function requireTypes() {
+  if (hasRequiredTypes) return types;
+  hasRequiredTypes = 1;
+  return types;
+}
+var hasRequiredJs;
+function requireJs() {
+  if (hasRequiredJs) return js;
+  hasRequiredJs = 1;
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", {
+      value: true
+    });
+    Object.defineProperty(exports$1, "Carousel", {
+      enumerable: true,
+      get: function get() {
+        return _Carousel.default;
+      }
+    });
+    Object.defineProperty(exports$1, "CarouselProps", {
+      enumerable: true,
+      get: function get() {
+        return _types.CarouselProps;
+      }
+    });
+    Object.defineProperty(exports$1, "Thumbs", {
+      enumerable: true,
+      get: function get() {
+        return _Thumbs.default;
+      }
+    });
+    var _Carousel = _interopRequireDefault(requireCarousel());
+    var _types = requireTypes();
+    var _Thumbs = _interopRequireDefault(requireThumbs());
+    function _interopRequireDefault(obj) {
+      return obj && obj.__esModule ? obj : { default: obj };
+    }
+  })(js);
+  return js;
+}
+var jsExports = requireJs();
+var now_1;
+var hasRequiredNow;
+function requireNow() {
+  if (hasRequiredNow) return now_1;
+  hasRequiredNow = 1;
+  var root = require_root();
+  var now = function() {
+    return root.Date.now();
+  };
+  now_1 = now;
+  return now_1;
+}
+var _trimmedEndIndex;
+var hasRequired_trimmedEndIndex;
+function require_trimmedEndIndex() {
+  if (hasRequired_trimmedEndIndex) return _trimmedEndIndex;
+  hasRequired_trimmedEndIndex = 1;
+  var reWhitespace = /\s/;
+  function trimmedEndIndex(string) {
+    var index = string.length;
+    while (index-- && reWhitespace.test(string.charAt(index))) {
+    }
+    return index;
+  }
+  _trimmedEndIndex = trimmedEndIndex;
+  return _trimmedEndIndex;
+}
+var _baseTrim;
+var hasRequired_baseTrim;
+function require_baseTrim() {
+  if (hasRequired_baseTrim) return _baseTrim;
+  hasRequired_baseTrim = 1;
+  var trimmedEndIndex = require_trimmedEndIndex();
+  var reTrimStart = /^\s+/;
+  function baseTrim(string) {
+    return string ? string.slice(0, trimmedEndIndex(string) + 1).replace(reTrimStart, "") : string;
+  }
+  _baseTrim = baseTrim;
+  return _baseTrim;
+}
+var toNumber_1;
+var hasRequiredToNumber;
+function requireToNumber() {
+  if (hasRequiredToNumber) return toNumber_1;
+  hasRequiredToNumber = 1;
+  var baseTrim = require_baseTrim(), isObject = requireIsObject(), isSymbol = requireIsSymbol();
+  var NAN = 0 / 0;
+  var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+  var reIsBinary = /^0b[01]+$/i;
+  var reIsOctal = /^0o[0-7]+$/i;
+  var freeParseInt = parseInt;
+  function toNumber(value) {
+    if (typeof value == "number") {
+      return value;
+    }
+    if (isSymbol(value)) {
+      return NAN;
+    }
+    if (isObject(value)) {
+      var other = typeof value.valueOf == "function" ? value.valueOf() : value;
+      value = isObject(other) ? other + "" : other;
+    }
+    if (typeof value != "string") {
+      return value === 0 ? value : +value;
+    }
+    value = baseTrim(value);
+    var isBinary = reIsBinary.test(value);
+    return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
+  }
+  toNumber_1 = toNumber;
+  return toNumber_1;
+}
+var debounce_1;
+var hasRequiredDebounce;
+function requireDebounce() {
+  if (hasRequiredDebounce) return debounce_1;
+  hasRequiredDebounce = 1;
+  var isObject = requireIsObject(), now = requireNow(), toNumber = requireToNumber();
+  var FUNC_ERROR_TEXT = "Expected a function";
+  var nativeMax = Math.max, nativeMin = Math.min;
+  function debounce2(func, wait, options) {
+    var lastArgs, lastThis, maxWait, result, timerId, lastCallTime, lastInvokeTime = 0, leading = false, maxing = false, trailing = true;
+    if (typeof func != "function") {
+      throw new TypeError(FUNC_ERROR_TEXT);
+    }
+    wait = toNumber(wait) || 0;
+    if (isObject(options)) {
+      leading = !!options.leading;
+      maxing = "maxWait" in options;
+      maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
+      trailing = "trailing" in options ? !!options.trailing : trailing;
+    }
+    function invokeFunc(time) {
+      var args = lastArgs, thisArg = lastThis;
+      lastArgs = lastThis = void 0;
+      lastInvokeTime = time;
+      result = func.apply(thisArg, args);
+      return result;
+    }
+    function leadingEdge(time) {
+      lastInvokeTime = time;
       timerId = setTimeout(timerExpired, wait);
+      return leading ? invokeFunc(time) : result;
     }
-    return result;
+    function remainingWait(time) {
+      var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime, timeWaiting = wait - timeSinceLastCall;
+      return maxing ? nativeMin(timeWaiting, maxWait - timeSinceLastInvoke) : timeWaiting;
+    }
+    function shouldInvoke(time) {
+      var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime;
+      return lastCallTime === void 0 || timeSinceLastCall >= wait || timeSinceLastCall < 0 || maxing && timeSinceLastInvoke >= maxWait;
+    }
+    function timerExpired() {
+      var time = now();
+      if (shouldInvoke(time)) {
+        return trailingEdge(time);
+      }
+      timerId = setTimeout(timerExpired, remainingWait(time));
+    }
+    function trailingEdge(time) {
+      timerId = void 0;
+      if (trailing && lastArgs) {
+        return invokeFunc(time);
+      }
+      lastArgs = lastThis = void 0;
+      return result;
+    }
+    function cancel() {
+      if (timerId !== void 0) {
+        clearTimeout(timerId);
+      }
+      lastInvokeTime = 0;
+      lastArgs = lastCallTime = lastThis = timerId = void 0;
+    }
+    function flush() {
+      return timerId === void 0 ? result : trailingEdge(now());
+    }
+    function debounced() {
+      var time = now(), isInvoking = shouldInvoke(time);
+      lastArgs = arguments;
+      lastThis = this;
+      lastCallTime = time;
+      if (isInvoking) {
+        if (timerId === void 0) {
+          return leadingEdge(lastCallTime);
+        }
+        if (maxing) {
+          clearTimeout(timerId);
+          timerId = setTimeout(timerExpired, wait);
+          return invokeFunc(lastCallTime);
+        }
+      }
+      if (timerId === void 0) {
+        timerId = setTimeout(timerExpired, wait);
+      }
+      return result;
+    }
+    debounced.cancel = cancel;
+    debounced.flush = flush;
+    return debounced;
   }
-  debounced.cancel = cancel;
-  debounced.flush = flush;
-  return debounced;
+  debounce_1 = debounce2;
+  return debounce_1;
 }
-var debounce_1 = debounce$1;
-const debounce$2 = /* @__PURE__ */ getDefaultExportFromCjs(debounce_1);
+var debounceExports = requireDebounce();
+const debounce = /* @__PURE__ */ getDefaultExportFromCjs(debounceExports);
 function useEventListener(eventName, handler, element, passive) {
   let capture = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : false;
-  const savedHandler = React.useRef();
+  const savedHandler = React.useRef(void 0);
   savedHandler.current = handler;
   React.useEffect(() => {
     if (element === null || element.addEventListener === void 0) return;
@@ -1174,35 +4580,35 @@ const getSquareXPosFromAlign = (alignment, containerX, containerWidth, horizonta
   }
 };
 const getSquareWidth = (maxSize, containerHeight, verticalPadding) => Math.min(maxSize, containerHeight - verticalPadding * 2);
-const pointIsWithinBB = (x, y, bb) => bb.x1 <= x && x <= bb.x2 && bb.y1 <= y && y <= bb.y2;
+const pointIsWithinBB = (x2, y2, bb) => bb.x1 <= x2 && x2 <= bb.x2 && bb.y1 <= y2 && y2 <= bb.y2;
 const EditPencil = (props) => {
   var _props$fgColor;
-  const $ = compilerRuntimeExports.c(2);
+  const $2 = compilerRuntimeExports.c(2);
   const fg = (_props$fgColor = props.fgColor) !== null && _props$fgColor !== void 0 ? _props$fgColor : "currentColor";
   let t0;
-  if ($[0] !== fg) {
+  if ($2[0] !== fg) {
     t0 = /* @__PURE__ */ jsxs("svg", { viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: [
       /* @__PURE__ */ jsx("path", { d: "M12.7073 7.05029C7.87391 11.8837 10.4544 9.30322 6.03024 13.7273C5.77392 13.9836 5.58981 14.3071 5.50189 14.6587L4.52521 18.5655C4.38789 19.1148 4.88543 19.6123 5.43472 19.475L9.34146 18.4983C9.69313 18.4104 10.0143 18.2286 10.2706 17.9722L16.9499 11.2929", stroke: fg, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round", fill: "none", vectorEffect: "non-scaling-stroke" }),
       /* @__PURE__ */ jsx("path", { d: "M20.4854 4.92901L19.0712 3.5148C18.2901 2.73375 17.0238 2.73375 16.2428 3.5148L14.475 5.28257C15.5326 7.71912 16.4736 8.6278 18.7176 9.52521L20.4854 7.75744C21.2665 6.97639 21.2665 5.71006 20.4854 4.92901Z", stroke: fg, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round", fill: "none", vectorEffect: "non-scaling-stroke" })
     ] });
-    $[0] = fg;
-    $[1] = t0;
+    $2[0] = fg;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   return t0;
 };
 const Checkmark = (props) => {
   var _props$fgColor2;
-  const $ = compilerRuntimeExports.c(2);
+  const $2 = compilerRuntimeExports.c(2);
   const fg = (_props$fgColor2 = props.fgColor) !== null && _props$fgColor2 !== void 0 ? _props$fgColor2 : "currentColor";
   let t0;
-  if ($[0] !== fg) {
+  if ($2[0] !== fg) {
     t0 = /* @__PURE__ */ jsx("svg", { viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsx("path", { d: "M19 6L10.3802 17L5.34071 11.8758", vectorEffect: "non-scaling-stroke", stroke: fg, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }) });
-    $[0] = fg;
-    $[1] = t0;
+    $2[0] = fg;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   return t0;
 };
@@ -1212,9 +4618,9 @@ function useDebouncedMemo(factory, deps, time) {
   React.useEffect(() => () => {
     mountedRef.current = false;
   }, []);
-  const debouncedSetState = React.useRef(debounce$2((x) => {
+  const debouncedSetState = React.useRef(debounce((x2) => {
     if (mountedRef.current) {
-      setState(x);
+      setState(x2);
     }
   }, time));
   React.useLayoutEffect(() => {
@@ -1258,7 +4664,7 @@ function getScrollBarWidth() {
   scrollbarWidthCache = w1 - w2;
   return scrollbarWidthCache;
 }
-const empty = Symbol();
+const empty = /* @__PURE__ */ Symbol();
 function useStateWithReactiveInput(inputState) {
   const inputStateRef = React.useRef([empty, inputState]);
   if (inputStateRef.current[1] !== inputState) {
@@ -1309,7 +4715,7 @@ function useDeepMemo(value) {
   return ref.current;
 }
 const ImageOverlayEditor = (p2) => {
-  const $ = compilerRuntimeExports.c(30);
+  const $2 = compilerRuntimeExports.c(30);
   const {
     urls,
     canWrite,
@@ -1326,8 +4732,8 @@ const ImageOverlayEditor = (p2) => {
   let t5;
   let t6;
   let t7;
-  if ($[0] !== renderImage || $[1] !== urls) {
-    t7 = Symbol.for("react.early_return_sentinel");
+  if ($2[0] !== renderImage || $2[1] !== urls) {
+    t7 = /* @__PURE__ */ Symbol.for("react.early_return_sentinel");
     bb0: {
       const filtered = urls.filter(_temp$4);
       if (filtered.length === 0) {
@@ -1337,95 +4743,1189 @@ const ImageOverlayEditor = (p2) => {
       const allowMove = filtered.length > 1;
       T1 = ImageOverlayEditorStyle;
       t6 = "GDG-default-image-overlay-editor";
-      T0 = Carousel;
+      T0 = jsExports.Carousel;
       t0 = allowMove;
       t1 = false;
       t2 = allowMove;
       t3 = allowMove;
       t4 = allowMove;
       let t82;
-      if ($[12] !== renderImage) {
+      if ($2[12] !== renderImage) {
         t82 = (url) => {
           var _renderImage;
           const innerContent = (_renderImage = renderImage === null || renderImage === void 0 ? void 0 : renderImage(url)) !== null && _renderImage !== void 0 ? _renderImage : /* @__PURE__ */ jsx("img", { draggable: false, src: url });
           return /* @__PURE__ */ jsx("div", { className: "gdg-centering-container", children: innerContent }, url);
         };
-        $[12] = renderImage;
-        $[13] = t82;
+        $2[12] = renderImage;
+        $2[13] = t82;
       } else {
-        t82 = $[13];
+        t82 = $2[13];
       }
       t5 = filtered.map(t82);
     }
-    $[0] = renderImage;
-    $[1] = urls;
-    $[2] = T0;
-    $[3] = T1;
-    $[4] = t0;
-    $[5] = t1;
-    $[6] = t2;
-    $[7] = t3;
-    $[8] = t4;
-    $[9] = t5;
-    $[10] = t6;
-    $[11] = t7;
+    $2[0] = renderImage;
+    $2[1] = urls;
+    $2[2] = T0;
+    $2[3] = T1;
+    $2[4] = t0;
+    $2[5] = t1;
+    $2[6] = t2;
+    $2[7] = t3;
+    $2[8] = t4;
+    $2[9] = t5;
+    $2[10] = t6;
+    $2[11] = t7;
   } else {
-    T0 = $[2];
-    T1 = $[3];
-    t0 = $[4];
-    t1 = $[5];
-    t2 = $[6];
-    t3 = $[7];
-    t4 = $[8];
-    t5 = $[9];
-    t6 = $[10];
-    t7 = $[11];
+    T0 = $2[2];
+    T1 = $2[3];
+    t0 = $2[4];
+    t1 = $2[5];
+    t2 = $2[6];
+    t3 = $2[7];
+    t4 = $2[8];
+    t5 = $2[9];
+    t6 = $2[10];
+    t7 = $2[11];
   }
-  if (t7 !== Symbol.for("react.early_return_sentinel")) {
+  if (t7 !== /* @__PURE__ */ Symbol.for("react.early_return_sentinel")) {
     return t7;
   }
   let t8;
-  if ($[14] !== T0 || $[15] !== t0 || $[16] !== t1 || $[17] !== t2 || $[18] !== t3 || $[19] !== t4 || $[20] !== t5) {
+  if ($2[14] !== T0 || $2[15] !== t0 || $2[16] !== t1 || $2[17] !== t2 || $2[18] !== t3 || $2[19] !== t4 || $2[20] !== t5) {
     t8 = /* @__PURE__ */ jsx(T0, { showArrows: t0, showThumbs: t1, swipeable: t2, emulateTouch: t3, infiniteLoop: t4, children: t5 });
-    $[14] = T0;
-    $[15] = t0;
-    $[16] = t1;
-    $[17] = t2;
-    $[18] = t3;
-    $[19] = t4;
-    $[20] = t5;
-    $[21] = t8;
+    $2[14] = T0;
+    $2[15] = t0;
+    $2[16] = t1;
+    $2[17] = t2;
+    $2[18] = t3;
+    $2[19] = t4;
+    $2[20] = t5;
+    $2[21] = t8;
   } else {
-    t8 = $[21];
+    t8 = $2[21];
   }
   let t9;
-  if ($[22] !== canWrite || $[23] !== onEditClick) {
+  if ($2[22] !== canWrite || $2[23] !== onEditClick) {
     t9 = canWrite && onEditClick && /* @__PURE__ */ jsx("button", { className: "gdg-edit-icon", onClick: onEditClick, children: /* @__PURE__ */ jsx(EditPencil, {}) });
-    $[22] = canWrite;
-    $[23] = onEditClick;
-    $[24] = t9;
+    $2[22] = canWrite;
+    $2[23] = onEditClick;
+    $2[24] = t9;
   } else {
-    t9 = $[24];
+    t9 = $2[24];
   }
   let t10;
-  if ($[25] !== T1 || $[26] !== t6 || $[27] !== t8 || $[28] !== t9) {
+  if ($2[25] !== T1 || $2[26] !== t6 || $2[27] !== t8 || $2[28] !== t9) {
     t10 = /* @__PURE__ */ jsxs(T1, { "data-testid": t6, children: [
       t8,
       t9
     ] });
-    $[25] = T1;
-    $[26] = t6;
-    $[27] = t8;
-    $[28] = t9;
-    $[29] = t10;
+    $2[25] = T1;
+    $2[26] = t6;
+    $2[27] = t8;
+    $2[28] = t9;
+    $2[29] = t10;
   } else {
-    t10 = $[29];
+    t10 = $2[29];
   }
   return t10;
 };
 function _temp$4(u) {
   return u !== "";
 }
+function L() {
+  return { async: false, breaks: false, extensions: null, gfm: true, hooks: null, pedantic: false, renderer: null, silent: false, tokenizer: null, walkTokens: null };
+}
+var T$1 = L();
+function G(l3) {
+  T$1 = l3;
+}
+var E = { exec: () => null };
+function d$1(l3, e = "") {
+  let t = typeof l3 == "string" ? l3 : l3.source, n = { replace: (r, i) => {
+    let s = typeof i == "string" ? i : i.source;
+    return s = s.replace(m.caret, "$1"), t = t.replace(r, s), n;
+  }, getRegex: () => new RegExp(t, e) };
+  return n;
+}
+var be = (() => {
+  try {
+    return !!new RegExp("(?<=1)(?<!1)");
+  } catch {
+    return false;
+  }
+})(), m = { codeRemoveIndent: /^(?: {1,4}| {0,3}\t)/gm, outputLinkReplace: /\\([\[\]])/g, indentCodeCompensation: /^(\s+)(?:```)/, beginningSpace: /^\s+/, endingHash: /#$/, startingSpaceChar: /^ /, endingSpaceChar: / $/, nonSpaceChar: /[^ ]/, newLineCharGlobal: /\n/g, tabCharGlobal: /\t/g, multipleSpaceGlobal: /\s+/g, blankLine: /^[ \t]*$/, doubleBlankLine: /\n[ \t]*\n[ \t]*$/, blockquoteStart: /^ {0,3}>/, blockquoteSetextReplace: /\n {0,3}((?:=+|-+) *)(?=\n|$)/g, blockquoteSetextReplace2: /^ {0,3}>[ \t]?/gm, listReplaceTabs: /^\t+/, listReplaceNesting: /^ {1,4}(?=( {4})*[^ ])/g, listIsTask: /^\[[ xX]\] /, listReplaceTask: /^\[[ xX]\] +/, anyLine: /\n.*\n/, hrefBrackets: /^<(.*)>$/, tableDelimiter: /[:|]/, tableAlignChars: /^\||\| *$/g, tableRowBlankLine: /\n[ \t]*$/, tableAlignRight: /^ *-+: *$/, tableAlignCenter: /^ *:-+: *$/, tableAlignLeft: /^ *:-+ *$/, startATag: /^<a /i, endATag: /^<\/a>/i, startPreScriptTag: /^<(pre|code|kbd|script)(\s|>)/i, endPreScriptTag: /^<\/(pre|code|kbd|script)(\s|>)/i, startAngleBracket: /^</, endAngleBracket: />$/, pedanticHrefTitle: /^([^'"]*[^\s])\s+(['"])(.*)\2/, unicodeAlphaNumeric: /[\p{L}\p{N}]/u, escapeTest: /[&<>"']/, escapeReplace: /[&<>"']/g, escapeTestNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/, escapeReplaceNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/g, unescapeTest: /&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig, caret: /(^|[^\[])\^/g, percentDecode: /%25/g, findPipe: /\|/g, splitPipe: / \|/, slashPipe: /\\\|/g, carriageReturn: /\r\n|\r/g, spaceLine: /^ +$/gm, notSpaceStart: /^\S*/, endingNewline: /\n$/, listItemRegex: (l3) => new RegExp(`^( {0,3}${l3})((?:[	 ][^\\n]*)?(?:\\n|$))`), nextBulletRegex: (l3) => new RegExp(`^ {0,${Math.min(3, l3 - 1)}}(?:[*+-]|\\d{1,9}[.)])((?:[ 	][^\\n]*)?(?:\\n|$))`), hrRegex: (l3) => new RegExp(`^ {0,${Math.min(3, l3 - 1)}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)`), fencesBeginRegex: (l3) => new RegExp(`^ {0,${Math.min(3, l3 - 1)}}(?:\`\`\`|~~~)`), headingBeginRegex: (l3) => new RegExp(`^ {0,${Math.min(3, l3 - 1)}}#`), htmlBeginRegex: (l3) => new RegExp(`^ {0,${Math.min(3, l3 - 1)}}<(?:[a-z].*>|!--)`, "i") }, Re = /^(?:[ \t]*(?:\n|$))+/, Te = /^((?: {4}| {0,3}\t)[^\n]+(?:\n(?:[ \t]*(?:\n|$))*)?)+/, Oe = /^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}\1[~`]* *(?=\n|$)|$)/, I = /^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/, we = /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/, F = /(?:[*+-]|\d{1,9}[.)])/, ie = /^(?!bull |blockCode|fences|blockquote|heading|html|table)((?:.|\n(?!\s*?\n|bull |blockCode|fences|blockquote|heading|html|table))+?)\n {0,3}(=+|-+) *(?:\n+|$)/, oe = d$1(ie).replace(/bull/g, F).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/\|table/g, "").getRegex(), ye = d$1(ie).replace(/bull/g, F).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/table/g, / {0,3}\|?(?:[:\- ]*\|)+[\:\- ]*\n/).getRegex(), j = /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/, Pe = /^[^\n]+/, Q = /(?!\s*\])(?:\\[\s\S]|[^\[\]\\])+/, Se = d$1(/^ {0,3}\[(label)\]: *(?:\n[ \t]*)?([^<\s][^\s]*|<.*?>)(?:(?: +(?:\n[ \t]*)?| *\n[ \t]*)(title))? *(?:\n+|$)/).replace("label", Q).replace("title", /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/).getRegex(), $e = d$1(/^( {0,3}bull)([ \t][^\n]+?)?(?:\n|$)/).replace(/bull/g, F).getRegex(), v$1 = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul", U = /<!--(?:-?>|[\s\S]*?(?:-->|$))/, _e = d$1("^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$))", "i").replace("comment", U).replace("tag", v$1).replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex(), ae = d$1(j).replace("hr", I).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("|table", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", v$1).getRegex(), Le = d$1(/^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/).replace("paragraph", ae).getRegex(), K = { blockquote: Le, code: Te, def: Se, fences: Oe, heading: we, hr: I, html: _e, lheading: oe, list: $e, newline: Re, paragraph: ae, table: E, text: Pe }, re = d$1("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr", I).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("blockquote", " {0,3}>").replace("code", "(?: {4}| {0,3}	)[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", v$1).getRegex(), Me = { ...K, lheading: ye, table: re, paragraph: d$1(j).replace("hr", I).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("table", re).replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", v$1).getRegex() }, ze = { ...K, html: d$1(`^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`).replace("comment", U).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(), def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/, heading: /^(#{1,6})(.*)(?:\n+|$)/, fences: E, lheading: /^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/, paragraph: d$1(j).replace("hr", I).replace("heading", ` *#{1,6} *[^
+]`).replace("lheading", oe).replace("|table", "").replace("blockquote", " {0,3}>").replace("|fences", "").replace("|list", "").replace("|html", "").replace("|tag", "").getRegex() }, Ae = /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/, Ee = /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/, le = /^( {2,}|\\)\n(?!\s*$)/, Ie = /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/, D = /[\p{P}\p{S}]/u, W = /[\s\p{P}\p{S}]/u, ue = /[^\s\p{P}\p{S}]/u, Ce = d$1(/^((?![*_])punctSpace)/, "u").replace(/punctSpace/g, W).getRegex(), pe = /(?!~)[\p{P}\p{S}]/u, Be = /(?!~)[\s\p{P}\p{S}]/u, qe = /(?:[^\s\p{P}\p{S}]|~)/u, ve = d$1(/link|precode-code|html/, "g").replace("link", /\[(?:[^\[\]`]|(?<a>`+)[^`]+\k<a>(?!`))*?\]\((?:\\[\s\S]|[^\\\(\)]|\((?:\\[\s\S]|[^\\\(\)])*\))*\)/).replace("precode-", be ? "(?<!`)()" : "(^^|[^`])").replace("code", /(?<b>`+)[^`]+\k<b>(?!`)/).replace("html", /<(?! )[^<>]*?>/).getRegex(), ce = /^(?:\*+(?:((?!\*)punct)|[^\s*]))|^_+(?:((?!_)punct)|([^\s_]))/, De = d$1(ce, "u").replace(/punct/g, D).getRegex(), He = d$1(ce, "u").replace(/punct/g, pe).getRegex(), he = "^[^_*]*?__[^_*]*?\\*[^_*]*?(?=__)|[^*]+(?=[^*])|(?!\\*)punct(\\*+)(?=[\\s]|$)|notPunctSpace(\\*+)(?!\\*)(?=punctSpace|$)|(?!\\*)punctSpace(\\*+)(?=notPunctSpace)|[\\s](\\*+)(?!\\*)(?=punct)|(?!\\*)punct(\\*+)(?!\\*)(?=punct)|notPunctSpace(\\*+)(?=notPunctSpace)", Ze = d$1(he, "gu").replace(/notPunctSpace/g, ue).replace(/punctSpace/g, W).replace(/punct/g, D).getRegex(), Ge = d$1(he, "gu").replace(/notPunctSpace/g, qe).replace(/punctSpace/g, Be).replace(/punct/g, pe).getRegex(), Ne = d$1("^[^_*]*?\\*\\*[^_*]*?_[^_*]*?(?=\\*\\*)|[^_]+(?=[^_])|(?!_)punct(_+)(?=[\\s]|$)|notPunctSpace(_+)(?!_)(?=punctSpace|$)|(?!_)punctSpace(_+)(?=notPunctSpace)|[\\s](_+)(?!_)(?=punct)|(?!_)punct(_+)(?!_)(?=punct)", "gu").replace(/notPunctSpace/g, ue).replace(/punctSpace/g, W).replace(/punct/g, D).getRegex(), Fe = d$1(/\\(punct)/, "gu").replace(/punct/g, D).getRegex(), je = d$1(/^<(scheme:[^\s\x00-\x1f<>]*|email)>/).replace("scheme", /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/).replace("email", /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/).getRegex(), Qe = d$1(U).replace("(?:-->|$)", "-->").getRegex(), Ue = d$1("^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>").replace("comment", Qe).replace("attribute", /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/).getRegex(), q = /(?:\[(?:\\[\s\S]|[^\[\]\\])*\]|\\[\s\S]|`+[^`]*?`+(?!`)|[^\[\]\\`])*?/, Ke = d$1(/^!?\[(label)\]\(\s*(href)(?:(?:[ \t]*(?:\n[ \t]*)?)(title))?\s*\)/).replace("label", q).replace("href", /<(?:\\.|[^\n<>\\])+>|[^ \t\n\x00-\x1f]*/).replace("title", /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/).getRegex(), de = d$1(/^!?\[(label)\]\[(ref)\]/).replace("label", q).replace("ref", Q).getRegex(), ke = d$1(/^!?\[(ref)\](?:\[\])?/).replace("ref", Q).getRegex(), We = d$1("reflink|nolink(?!\\()", "g").replace("reflink", de).replace("nolink", ke).getRegex(), se = /[hH][tT][tT][pP][sS]?|[fF][tT][pP]/, X = { _backpedal: E, anyPunctuation: Fe, autolink: je, blockSkip: ve, br: le, code: Ee, del: E, emStrongLDelim: De, emStrongRDelimAst: Ze, emStrongRDelimUnd: Ne, escape: Ae, link: Ke, nolink: ke, punctuation: Ce, reflink: de, reflinkSearch: We, tag: Ue, text: Ie, url: E }, Xe = { ...X, link: d$1(/^!?\[(label)\]\((.*?)\)/).replace("label", q).getRegex(), reflink: d$1(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label", q).getRegex() }, N = { ...X, emStrongRDelimAst: Ge, emStrongLDelim: He, url: d$1(/^((?:protocol):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/).replace("protocol", se).replace("email", /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/).getRegex(), _backpedal: /(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/, del: /^(~~?)(?=[^\s~])((?:\\[\s\S]|[^\\])*?(?:\\[\s\S]|[^\s~\\]))\1(?=[^~]|$)/, text: d$1(/^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|protocol:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/).replace("protocol", se).getRegex() }, Je = { ...N, br: d$1(le).replace("{2,}", "*").getRegex(), text: d$1(N.text).replace("\\b_", "\\b_| {2,}\\n").replace(/\{2,\}/g, "*").getRegex() }, C = { normal: K, gfm: Me, pedantic: ze }, M = { normal: X, gfm: N, breaks: Je, pedantic: Xe };
+var Ve = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }, ge = (l3) => Ve[l3];
+function w$1(l3, e) {
+  if (e) {
+    if (m.escapeTest.test(l3)) return l3.replace(m.escapeReplace, ge);
+  } else if (m.escapeTestNoEncode.test(l3)) return l3.replace(m.escapeReplaceNoEncode, ge);
+  return l3;
+}
+function J(l3) {
+  try {
+    l3 = encodeURI(l3).replace(m.percentDecode, "%");
+  } catch {
+    return null;
+  }
+  return l3;
+}
+function V(l3, e) {
+  let t = l3.replace(m.findPipe, (i, s, a) => {
+    let o = false, p2 = s;
+    for (; --p2 >= 0 && a[p2] === "\\"; ) o = !o;
+    return o ? "|" : " |";
+  }), n = t.split(m.splitPipe), r = 0;
+  if (n[0].trim() || n.shift(), n.length > 0 && !n.at(-1)?.trim() && n.pop(), e) if (n.length > e) n.splice(e);
+  else for (; n.length < e; ) n.push("");
+  for (; r < n.length; r++) n[r] = n[r].trim().replace(m.slashPipe, "|");
+  return n;
+}
+function z$1(l3, e, t) {
+  let n = l3.length;
+  if (n === 0) return "";
+  let r = 0;
+  for (; r < n; ) {
+    let i = l3.charAt(n - r - 1);
+    if (i === e && true) r++;
+    else break;
+  }
+  return l3.slice(0, n - r);
+}
+function fe(l3, e) {
+  if (l3.indexOf(e[1]) === -1) return -1;
+  let t = 0;
+  for (let n = 0; n < l3.length; n++) if (l3[n] === "\\") n++;
+  else if (l3[n] === e[0]) t++;
+  else if (l3[n] === e[1] && (t--, t < 0)) return n;
+  return t > 0 ? -2 : -1;
+}
+function me(l3, e, t, n, r) {
+  let i = e.href, s = e.title || null, a = l3[1].replace(r.other.outputLinkReplace, "$1");
+  n.state.inLink = true;
+  let o = { type: l3[0].charAt(0) === "!" ? "image" : "link", raw: t, href: i, title: s, text: a, tokens: n.inlineTokens(a) };
+  return n.state.inLink = false, o;
+}
+function Ye(l3, e, t) {
+  let n = l3.match(t.other.indentCodeCompensation);
+  if (n === null) return e;
+  let r = n[1];
+  return e.split(`
+`).map((i) => {
+    let s = i.match(t.other.beginningSpace);
+    if (s === null) return i;
+    let [a] = s;
+    return a.length >= r.length ? i.slice(r.length) : i;
+  }).join(`
+`);
+}
+var y = class {
+  options;
+  rules;
+  lexer;
+  constructor(e) {
+    this.options = e || T$1;
+  }
+  space(e) {
+    let t = this.rules.block.newline.exec(e);
+    if (t && t[0].length > 0) return { type: "space", raw: t[0] };
+  }
+  code(e) {
+    let t = this.rules.block.code.exec(e);
+    if (t) {
+      let n = t[0].replace(this.rules.other.codeRemoveIndent, "");
+      return { type: "code", raw: t[0], codeBlockStyle: "indented", text: this.options.pedantic ? n : z$1(n, `
+`) };
+    }
+  }
+  fences(e) {
+    let t = this.rules.block.fences.exec(e);
+    if (t) {
+      let n = t[0], r = Ye(n, t[3] || "", this.rules);
+      return { type: "code", raw: n, lang: t[2] ? t[2].trim().replace(this.rules.inline.anyPunctuation, "$1") : t[2], text: r };
+    }
+  }
+  heading(e) {
+    let t = this.rules.block.heading.exec(e);
+    if (t) {
+      let n = t[2].trim();
+      if (this.rules.other.endingHash.test(n)) {
+        let r = z$1(n, "#");
+        (this.options.pedantic || !r || this.rules.other.endingSpaceChar.test(r)) && (n = r.trim());
+      }
+      return { type: "heading", raw: t[0], depth: t[1].length, text: n, tokens: this.lexer.inline(n) };
+    }
+  }
+  hr(e) {
+    let t = this.rules.block.hr.exec(e);
+    if (t) return { type: "hr", raw: z$1(t[0], `
+`) };
+  }
+  blockquote(e) {
+    let t = this.rules.block.blockquote.exec(e);
+    if (t) {
+      let n = z$1(t[0], `
+`).split(`
+`), r = "", i = "", s = [];
+      for (; n.length > 0; ) {
+        let a = false, o = [], p2;
+        for (p2 = 0; p2 < n.length; p2++) if (this.rules.other.blockquoteStart.test(n[p2])) o.push(n[p2]), a = true;
+        else if (!a) o.push(n[p2]);
+        else break;
+        n = n.slice(p2);
+        let u = o.join(`
+`), c = u.replace(this.rules.other.blockquoteSetextReplace, `
+    $1`).replace(this.rules.other.blockquoteSetextReplace2, "");
+        r = r ? `${r}
+${u}` : u, i = i ? `${i}
+${c}` : c;
+        let g = this.lexer.state.top;
+        if (this.lexer.state.top = true, this.lexer.blockTokens(c, s, true), this.lexer.state.top = g, n.length === 0) break;
+        let h = s.at(-1);
+        if (h?.type === "code") break;
+        if (h?.type === "blockquote") {
+          let R2 = h, f = R2.raw + `
+` + n.join(`
+`), O = this.blockquote(f);
+          s[s.length - 1] = O, r = r.substring(0, r.length - R2.raw.length) + O.raw, i = i.substring(0, i.length - R2.text.length) + O.text;
+          break;
+        } else if (h?.type === "list") {
+          let R2 = h, f = R2.raw + `
+` + n.join(`
+`), O = this.list(f);
+          s[s.length - 1] = O, r = r.substring(0, r.length - h.raw.length) + O.raw, i = i.substring(0, i.length - R2.raw.length) + O.raw, n = f.substring(s.at(-1).raw.length).split(`
+`);
+          continue;
+        }
+      }
+      return { type: "blockquote", raw: r, tokens: s, text: i };
+    }
+  }
+  list(e) {
+    let t = this.rules.block.list.exec(e);
+    if (t) {
+      let n = t[1].trim(), r = n.length > 1, i = { type: "list", raw: "", ordered: r, start: r ? +n.slice(0, -1) : "", loose: false, items: [] };
+      n = r ? `\\d{1,9}\\${n.slice(-1)}` : `\\${n}`, this.options.pedantic && (n = r ? n : "[*+-]");
+      let s = this.rules.other.listItemRegex(n), a = false;
+      for (; e; ) {
+        let p2 = false, u = "", c = "";
+        if (!(t = s.exec(e)) || this.rules.block.hr.test(e)) break;
+        u = t[0], e = e.substring(u.length);
+        let g = t[2].split(`
+`, 1)[0].replace(this.rules.other.listReplaceTabs, (H) => " ".repeat(3 * H.length)), h = e.split(`
+`, 1)[0], R2 = !g.trim(), f = 0;
+        if (this.options.pedantic ? (f = 2, c = g.trimStart()) : R2 ? f = t[1].length + 1 : (f = t[2].search(this.rules.other.nonSpaceChar), f = f > 4 ? 1 : f, c = g.slice(f), f += t[1].length), R2 && this.rules.other.blankLine.test(h) && (u += h + `
+`, e = e.substring(h.length + 1), p2 = true), !p2) {
+          let H = this.rules.other.nextBulletRegex(f), ee = this.rules.other.hrRegex(f), te = this.rules.other.fencesBeginRegex(f), ne = this.rules.other.headingBeginRegex(f), xe = this.rules.other.htmlBeginRegex(f);
+          for (; e; ) {
+            let Z = e.split(`
+`, 1)[0], A;
+            if (h = Z, this.options.pedantic ? (h = h.replace(this.rules.other.listReplaceNesting, "  "), A = h) : A = h.replace(this.rules.other.tabCharGlobal, "    "), te.test(h) || ne.test(h) || xe.test(h) || H.test(h) || ee.test(h)) break;
+            if (A.search(this.rules.other.nonSpaceChar) >= f || !h.trim()) c += `
+` + A.slice(f);
+            else {
+              if (R2 || g.replace(this.rules.other.tabCharGlobal, "    ").search(this.rules.other.nonSpaceChar) >= 4 || te.test(g) || ne.test(g) || ee.test(g)) break;
+              c += `
+` + h;
+            }
+            !R2 && !h.trim() && (R2 = true), u += Z + `
+`, e = e.substring(Z.length + 1), g = A.slice(f);
+          }
+        }
+        i.loose || (a ? i.loose = true : this.rules.other.doubleBlankLine.test(u) && (a = true));
+        let O = null, Y;
+        this.options.gfm && (O = this.rules.other.listIsTask.exec(c), O && (Y = O[0] !== "[ ] ", c = c.replace(this.rules.other.listReplaceTask, ""))), i.items.push({ type: "list_item", raw: u, task: !!O, checked: Y, loose: false, text: c, tokens: [] }), i.raw += u;
+      }
+      let o = i.items.at(-1);
+      if (o) o.raw = o.raw.trimEnd(), o.text = o.text.trimEnd();
+      else return;
+      i.raw = i.raw.trimEnd();
+      for (let p2 = 0; p2 < i.items.length; p2++) if (this.lexer.state.top = false, i.items[p2].tokens = this.lexer.blockTokens(i.items[p2].text, []), !i.loose) {
+        let u = i.items[p2].tokens.filter((g) => g.type === "space"), c = u.length > 0 && u.some((g) => this.rules.other.anyLine.test(g.raw));
+        i.loose = c;
+      }
+      if (i.loose) for (let p2 = 0; p2 < i.items.length; p2++) i.items[p2].loose = true;
+      return i;
+    }
+  }
+  html(e) {
+    let t = this.rules.block.html.exec(e);
+    if (t) return { type: "html", block: true, raw: t[0], pre: t[1] === "pre" || t[1] === "script" || t[1] === "style", text: t[0] };
+  }
+  def(e) {
+    let t = this.rules.block.def.exec(e);
+    if (t) {
+      let n = t[1].toLowerCase().replace(this.rules.other.multipleSpaceGlobal, " "), r = t[2] ? t[2].replace(this.rules.other.hrefBrackets, "$1").replace(this.rules.inline.anyPunctuation, "$1") : "", i = t[3] ? t[3].substring(1, t[3].length - 1).replace(this.rules.inline.anyPunctuation, "$1") : t[3];
+      return { type: "def", tag: n, raw: t[0], href: r, title: i };
+    }
+  }
+  table(e) {
+    let t = this.rules.block.table.exec(e);
+    if (!t || !this.rules.other.tableDelimiter.test(t[2])) return;
+    let n = V(t[1]), r = t[2].replace(this.rules.other.tableAlignChars, "").split("|"), i = t[3]?.trim() ? t[3].replace(this.rules.other.tableRowBlankLine, "").split(`
+`) : [], s = { type: "table", raw: t[0], header: [], align: [], rows: [] };
+    if (n.length === r.length) {
+      for (let a of r) this.rules.other.tableAlignRight.test(a) ? s.align.push("right") : this.rules.other.tableAlignCenter.test(a) ? s.align.push("center") : this.rules.other.tableAlignLeft.test(a) ? s.align.push("left") : s.align.push(null);
+      for (let a = 0; a < n.length; a++) s.header.push({ text: n[a], tokens: this.lexer.inline(n[a]), header: true, align: s.align[a] });
+      for (let a of i) s.rows.push(V(a, s.header.length).map((o, p2) => ({ text: o, tokens: this.lexer.inline(o), header: false, align: s.align[p2] })));
+      return s;
+    }
+  }
+  lheading(e) {
+    let t = this.rules.block.lheading.exec(e);
+    if (t) return { type: "heading", raw: t[0], depth: t[2].charAt(0) === "=" ? 1 : 2, text: t[1], tokens: this.lexer.inline(t[1]) };
+  }
+  paragraph(e) {
+    let t = this.rules.block.paragraph.exec(e);
+    if (t) {
+      let n = t[1].charAt(t[1].length - 1) === `
+` ? t[1].slice(0, -1) : t[1];
+      return { type: "paragraph", raw: t[0], text: n, tokens: this.lexer.inline(n) };
+    }
+  }
+  text(e) {
+    let t = this.rules.block.text.exec(e);
+    if (t) return { type: "text", raw: t[0], text: t[0], tokens: this.lexer.inline(t[0]) };
+  }
+  escape(e) {
+    let t = this.rules.inline.escape.exec(e);
+    if (t) return { type: "escape", raw: t[0], text: t[1] };
+  }
+  tag(e) {
+    let t = this.rules.inline.tag.exec(e);
+    if (t) return !this.lexer.state.inLink && this.rules.other.startATag.test(t[0]) ? this.lexer.state.inLink = true : this.lexer.state.inLink && this.rules.other.endATag.test(t[0]) && (this.lexer.state.inLink = false), !this.lexer.state.inRawBlock && this.rules.other.startPreScriptTag.test(t[0]) ? this.lexer.state.inRawBlock = true : this.lexer.state.inRawBlock && this.rules.other.endPreScriptTag.test(t[0]) && (this.lexer.state.inRawBlock = false), { type: "html", raw: t[0], inLink: this.lexer.state.inLink, inRawBlock: this.lexer.state.inRawBlock, block: false, text: t[0] };
+  }
+  link(e) {
+    let t = this.rules.inline.link.exec(e);
+    if (t) {
+      let n = t[2].trim();
+      if (!this.options.pedantic && this.rules.other.startAngleBracket.test(n)) {
+        if (!this.rules.other.endAngleBracket.test(n)) return;
+        let s = z$1(n.slice(0, -1), "\\");
+        if ((n.length - s.length) % 2 === 0) return;
+      } else {
+        let s = fe(t[2], "()");
+        if (s === -2) return;
+        if (s > -1) {
+          let o = (t[0].indexOf("!") === 0 ? 5 : 4) + t[1].length + s;
+          t[2] = t[2].substring(0, s), t[0] = t[0].substring(0, o).trim(), t[3] = "";
+        }
+      }
+      let r = t[2], i = "";
+      if (this.options.pedantic) {
+        let s = this.rules.other.pedanticHrefTitle.exec(r);
+        s && (r = s[1], i = s[3]);
+      } else i = t[3] ? t[3].slice(1, -1) : "";
+      return r = r.trim(), this.rules.other.startAngleBracket.test(r) && (this.options.pedantic && !this.rules.other.endAngleBracket.test(n) ? r = r.slice(1) : r = r.slice(1, -1)), me(t, { href: r && r.replace(this.rules.inline.anyPunctuation, "$1"), title: i && i.replace(this.rules.inline.anyPunctuation, "$1") }, t[0], this.lexer, this.rules);
+    }
+  }
+  reflink(e, t) {
+    let n;
+    if ((n = this.rules.inline.reflink.exec(e)) || (n = this.rules.inline.nolink.exec(e))) {
+      let r = (n[2] || n[1]).replace(this.rules.other.multipleSpaceGlobal, " "), i = t[r.toLowerCase()];
+      if (!i) {
+        let s = n[0].charAt(0);
+        return { type: "text", raw: s, text: s };
+      }
+      return me(n, i, n[0], this.lexer, this.rules);
+    }
+  }
+  emStrong(e, t, n = "") {
+    let r = this.rules.inline.emStrongLDelim.exec(e);
+    if (!r || r[3] && n.match(this.rules.other.unicodeAlphaNumeric)) return;
+    if (!(r[1] || r[2] || "") || !n || this.rules.inline.punctuation.exec(n)) {
+      let s = [...r[0]].length - 1, a, o, p2 = s, u = 0, c = r[0][0] === "*" ? this.rules.inline.emStrongRDelimAst : this.rules.inline.emStrongRDelimUnd;
+      for (c.lastIndex = 0, t = t.slice(-1 * e.length + s); (r = c.exec(t)) != null; ) {
+        if (a = r[1] || r[2] || r[3] || r[4] || r[5] || r[6], !a) continue;
+        if (o = [...a].length, r[3] || r[4]) {
+          p2 += o;
+          continue;
+        } else if ((r[5] || r[6]) && s % 3 && !((s + o) % 3)) {
+          u += o;
+          continue;
+        }
+        if (p2 -= o, p2 > 0) continue;
+        o = Math.min(o, o + p2 + u);
+        let g = [...r[0]][0].length, h = e.slice(0, s + r.index + g + o);
+        if (Math.min(s, o) % 2) {
+          let f = h.slice(1, -1);
+          return { type: "em", raw: h, text: f, tokens: this.lexer.inlineTokens(f) };
+        }
+        let R2 = h.slice(2, -2);
+        return { type: "strong", raw: h, text: R2, tokens: this.lexer.inlineTokens(R2) };
+      }
+    }
+  }
+  codespan(e) {
+    let t = this.rules.inline.code.exec(e);
+    if (t) {
+      let n = t[2].replace(this.rules.other.newLineCharGlobal, " "), r = this.rules.other.nonSpaceChar.test(n), i = this.rules.other.startingSpaceChar.test(n) && this.rules.other.endingSpaceChar.test(n);
+      return r && i && (n = n.substring(1, n.length - 1)), { type: "codespan", raw: t[0], text: n };
+    }
+  }
+  br(e) {
+    let t = this.rules.inline.br.exec(e);
+    if (t) return { type: "br", raw: t[0] };
+  }
+  del(e) {
+    let t = this.rules.inline.del.exec(e);
+    if (t) return { type: "del", raw: t[0], text: t[2], tokens: this.lexer.inlineTokens(t[2]) };
+  }
+  autolink(e) {
+    let t = this.rules.inline.autolink.exec(e);
+    if (t) {
+      let n, r;
+      return t[2] === "@" ? (n = t[1], r = "mailto:" + n) : (n = t[1], r = n), { type: "link", raw: t[0], text: n, href: r, tokens: [{ type: "text", raw: n, text: n }] };
+    }
+  }
+  url(e) {
+    let t;
+    if (t = this.rules.inline.url.exec(e)) {
+      let n, r;
+      if (t[2] === "@") n = t[0], r = "mailto:" + n;
+      else {
+        let i;
+        do
+          i = t[0], t[0] = this.rules.inline._backpedal.exec(t[0])?.[0] ?? "";
+        while (i !== t[0]);
+        n = t[0], t[1] === "www." ? r = "http://" + t[0] : r = t[0];
+      }
+      return { type: "link", raw: t[0], text: n, href: r, tokens: [{ type: "text", raw: n, text: n }] };
+    }
+  }
+  inlineText(e) {
+    let t = this.rules.inline.text.exec(e);
+    if (t) {
+      let n = this.lexer.state.inRawBlock;
+      return { type: "text", raw: t[0], text: t[0], escaped: n };
+    }
+  }
+};
+var x = class l {
+  tokens;
+  options;
+  state;
+  tokenizer;
+  inlineQueue;
+  constructor(e) {
+    this.tokens = [], this.tokens.links = /* @__PURE__ */ Object.create(null), this.options = e || T$1, this.options.tokenizer = this.options.tokenizer || new y(), this.tokenizer = this.options.tokenizer, this.tokenizer.options = this.options, this.tokenizer.lexer = this, this.inlineQueue = [], this.state = { inLink: false, inRawBlock: false, top: true };
+    let t = { other: m, block: C.normal, inline: M.normal };
+    this.options.pedantic ? (t.block = C.pedantic, t.inline = M.pedantic) : this.options.gfm && (t.block = C.gfm, this.options.breaks ? t.inline = M.breaks : t.inline = M.gfm), this.tokenizer.rules = t;
+  }
+  static get rules() {
+    return { block: C, inline: M };
+  }
+  static lex(e, t) {
+    return new l(t).lex(e);
+  }
+  static lexInline(e, t) {
+    return new l(t).inlineTokens(e);
+  }
+  lex(e) {
+    e = e.replace(m.carriageReturn, `
+`), this.blockTokens(e, this.tokens);
+    for (let t = 0; t < this.inlineQueue.length; t++) {
+      let n = this.inlineQueue[t];
+      this.inlineTokens(n.src, n.tokens);
+    }
+    return this.inlineQueue = [], this.tokens;
+  }
+  blockTokens(e, t = [], n = false) {
+    for (this.options.pedantic && (e = e.replace(m.tabCharGlobal, "    ").replace(m.spaceLine, "")); e; ) {
+      let r;
+      if (this.options.extensions?.block?.some((s) => (r = s.call({ lexer: this }, e, t)) ? (e = e.substring(r.raw.length), t.push(r), true) : false)) continue;
+      if (r = this.tokenizer.space(e)) {
+        e = e.substring(r.raw.length);
+        let s = t.at(-1);
+        r.raw.length === 1 && s !== void 0 ? s.raw += `
+` : t.push(r);
+        continue;
+      }
+      if (r = this.tokenizer.code(e)) {
+        e = e.substring(r.raw.length);
+        let s = t.at(-1);
+        s?.type === "paragraph" || s?.type === "text" ? (s.raw += (s.raw.endsWith(`
+`) ? "" : `
+`) + r.raw, s.text += `
+` + r.text, this.inlineQueue.at(-1).src = s.text) : t.push(r);
+        continue;
+      }
+      if (r = this.tokenizer.fences(e)) {
+        e = e.substring(r.raw.length), t.push(r);
+        continue;
+      }
+      if (r = this.tokenizer.heading(e)) {
+        e = e.substring(r.raw.length), t.push(r);
+        continue;
+      }
+      if (r = this.tokenizer.hr(e)) {
+        e = e.substring(r.raw.length), t.push(r);
+        continue;
+      }
+      if (r = this.tokenizer.blockquote(e)) {
+        e = e.substring(r.raw.length), t.push(r);
+        continue;
+      }
+      if (r = this.tokenizer.list(e)) {
+        e = e.substring(r.raw.length), t.push(r);
+        continue;
+      }
+      if (r = this.tokenizer.html(e)) {
+        e = e.substring(r.raw.length), t.push(r);
+        continue;
+      }
+      if (r = this.tokenizer.def(e)) {
+        e = e.substring(r.raw.length);
+        let s = t.at(-1);
+        s?.type === "paragraph" || s?.type === "text" ? (s.raw += (s.raw.endsWith(`
+`) ? "" : `
+`) + r.raw, s.text += `
+` + r.raw, this.inlineQueue.at(-1).src = s.text) : this.tokens.links[r.tag] || (this.tokens.links[r.tag] = { href: r.href, title: r.title }, t.push(r));
+        continue;
+      }
+      if (r = this.tokenizer.table(e)) {
+        e = e.substring(r.raw.length), t.push(r);
+        continue;
+      }
+      if (r = this.tokenizer.lheading(e)) {
+        e = e.substring(r.raw.length), t.push(r);
+        continue;
+      }
+      let i = e;
+      if (this.options.extensions?.startBlock) {
+        let s = 1 / 0, a = e.slice(1), o;
+        this.options.extensions.startBlock.forEach((p2) => {
+          o = p2.call({ lexer: this }, a), typeof o == "number" && o >= 0 && (s = Math.min(s, o));
+        }), s < 1 / 0 && s >= 0 && (i = e.substring(0, s + 1));
+      }
+      if (this.state.top && (r = this.tokenizer.paragraph(i))) {
+        let s = t.at(-1);
+        n && s?.type === "paragraph" ? (s.raw += (s.raw.endsWith(`
+`) ? "" : `
+`) + r.raw, s.text += `
+` + r.text, this.inlineQueue.pop(), this.inlineQueue.at(-1).src = s.text) : t.push(r), n = i.length !== e.length, e = e.substring(r.raw.length);
+        continue;
+      }
+      if (r = this.tokenizer.text(e)) {
+        e = e.substring(r.raw.length);
+        let s = t.at(-1);
+        s?.type === "text" ? (s.raw += (s.raw.endsWith(`
+`) ? "" : `
+`) + r.raw, s.text += `
+` + r.text, this.inlineQueue.pop(), this.inlineQueue.at(-1).src = s.text) : t.push(r);
+        continue;
+      }
+      if (e) {
+        let s = "Infinite loop on byte: " + e.charCodeAt(0);
+        if (this.options.silent) {
+          console.error(s);
+          break;
+        } else throw new Error(s);
+      }
+    }
+    return this.state.top = true, t;
+  }
+  inline(e, t = []) {
+    return this.inlineQueue.push({ src: e, tokens: t }), t;
+  }
+  inlineTokens(e, t = []) {
+    let n = e, r = null;
+    if (this.tokens.links) {
+      let o = Object.keys(this.tokens.links);
+      if (o.length > 0) for (; (r = this.tokenizer.rules.inline.reflinkSearch.exec(n)) != null; ) o.includes(r[0].slice(r[0].lastIndexOf("[") + 1, -1)) && (n = n.slice(0, r.index) + "[" + "a".repeat(r[0].length - 2) + "]" + n.slice(this.tokenizer.rules.inline.reflinkSearch.lastIndex));
+    }
+    for (; (r = this.tokenizer.rules.inline.anyPunctuation.exec(n)) != null; ) n = n.slice(0, r.index) + "++" + n.slice(this.tokenizer.rules.inline.anyPunctuation.lastIndex);
+    let i;
+    for (; (r = this.tokenizer.rules.inline.blockSkip.exec(n)) != null; ) i = r[2] ? r[2].length : 0, n = n.slice(0, r.index + i) + "[" + "a".repeat(r[0].length - i - 2) + "]" + n.slice(this.tokenizer.rules.inline.blockSkip.lastIndex);
+    n = this.options.hooks?.emStrongMask?.call({ lexer: this }, n) ?? n;
+    let s = false, a = "";
+    for (; e; ) {
+      s || (a = ""), s = false;
+      let o;
+      if (this.options.extensions?.inline?.some((u) => (o = u.call({ lexer: this }, e, t)) ? (e = e.substring(o.raw.length), t.push(o), true) : false)) continue;
+      if (o = this.tokenizer.escape(e)) {
+        e = e.substring(o.raw.length), t.push(o);
+        continue;
+      }
+      if (o = this.tokenizer.tag(e)) {
+        e = e.substring(o.raw.length), t.push(o);
+        continue;
+      }
+      if (o = this.tokenizer.link(e)) {
+        e = e.substring(o.raw.length), t.push(o);
+        continue;
+      }
+      if (o = this.tokenizer.reflink(e, this.tokens.links)) {
+        e = e.substring(o.raw.length);
+        let u = t.at(-1);
+        o.type === "text" && u?.type === "text" ? (u.raw += o.raw, u.text += o.text) : t.push(o);
+        continue;
+      }
+      if (o = this.tokenizer.emStrong(e, n, a)) {
+        e = e.substring(o.raw.length), t.push(o);
+        continue;
+      }
+      if (o = this.tokenizer.codespan(e)) {
+        e = e.substring(o.raw.length), t.push(o);
+        continue;
+      }
+      if (o = this.tokenizer.br(e)) {
+        e = e.substring(o.raw.length), t.push(o);
+        continue;
+      }
+      if (o = this.tokenizer.del(e)) {
+        e = e.substring(o.raw.length), t.push(o);
+        continue;
+      }
+      if (o = this.tokenizer.autolink(e)) {
+        e = e.substring(o.raw.length), t.push(o);
+        continue;
+      }
+      if (!this.state.inLink && (o = this.tokenizer.url(e))) {
+        e = e.substring(o.raw.length), t.push(o);
+        continue;
+      }
+      let p2 = e;
+      if (this.options.extensions?.startInline) {
+        let u = 1 / 0, c = e.slice(1), g;
+        this.options.extensions.startInline.forEach((h) => {
+          g = h.call({ lexer: this }, c), typeof g == "number" && g >= 0 && (u = Math.min(u, g));
+        }), u < 1 / 0 && u >= 0 && (p2 = e.substring(0, u + 1));
+      }
+      if (o = this.tokenizer.inlineText(p2)) {
+        e = e.substring(o.raw.length), o.raw.slice(-1) !== "_" && (a = o.raw.slice(-1)), s = true;
+        let u = t.at(-1);
+        u?.type === "text" ? (u.raw += o.raw, u.text += o.text) : t.push(o);
+        continue;
+      }
+      if (e) {
+        let u = "Infinite loop on byte: " + e.charCodeAt(0);
+        if (this.options.silent) {
+          console.error(u);
+          break;
+        } else throw new Error(u);
+      }
+    }
+    return t;
+  }
+};
+var P = class {
+  options;
+  parser;
+  constructor(e) {
+    this.options = e || T$1;
+  }
+  space(e) {
+    return "";
+  }
+  code({ text: e, lang: t, escaped: n }) {
+    let r = (t || "").match(m.notSpaceStart)?.[0], i = e.replace(m.endingNewline, "") + `
+`;
+    return r ? '<pre><code class="language-' + w$1(r) + '">' + (n ? i : w$1(i, true)) + `</code></pre>
+` : "<pre><code>" + (n ? i : w$1(i, true)) + `</code></pre>
+`;
+  }
+  blockquote({ tokens: e }) {
+    return `<blockquote>
+${this.parser.parse(e)}</blockquote>
+`;
+  }
+  html({ text: e }) {
+    return e;
+  }
+  def(e) {
+    return "";
+  }
+  heading({ tokens: e, depth: t }) {
+    return `<h${t}>${this.parser.parseInline(e)}</h${t}>
+`;
+  }
+  hr(e) {
+    return `<hr>
+`;
+  }
+  list(e) {
+    let t = e.ordered, n = e.start, r = "";
+    for (let a = 0; a < e.items.length; a++) {
+      let o = e.items[a];
+      r += this.listitem(o);
+    }
+    let i = t ? "ol" : "ul", s = t && n !== 1 ? ' start="' + n + '"' : "";
+    return "<" + i + s + `>
+` + r + "</" + i + `>
+`;
+  }
+  listitem(e) {
+    let t = "";
+    if (e.task) {
+      let n = this.checkbox({ checked: !!e.checked });
+      e.loose ? e.tokens[0]?.type === "paragraph" ? (e.tokens[0].text = n + " " + e.tokens[0].text, e.tokens[0].tokens && e.tokens[0].tokens.length > 0 && e.tokens[0].tokens[0].type === "text" && (e.tokens[0].tokens[0].text = n + " " + w$1(e.tokens[0].tokens[0].text), e.tokens[0].tokens[0].escaped = true)) : e.tokens.unshift({ type: "text", raw: n + " ", text: n + " ", escaped: true }) : t += n + " ";
+    }
+    return t += this.parser.parse(e.tokens, !!e.loose), `<li>${t}</li>
+`;
+  }
+  checkbox({ checked: e }) {
+    return "<input " + (e ? 'checked="" ' : "") + 'disabled="" type="checkbox">';
+  }
+  paragraph({ tokens: e }) {
+    return `<p>${this.parser.parseInline(e)}</p>
+`;
+  }
+  table(e) {
+    let t = "", n = "";
+    for (let i = 0; i < e.header.length; i++) n += this.tablecell(e.header[i]);
+    t += this.tablerow({ text: n });
+    let r = "";
+    for (let i = 0; i < e.rows.length; i++) {
+      let s = e.rows[i];
+      n = "";
+      for (let a = 0; a < s.length; a++) n += this.tablecell(s[a]);
+      r += this.tablerow({ text: n });
+    }
+    return r && (r = `<tbody>${r}</tbody>`), `<table>
+<thead>
+` + t + `</thead>
+` + r + `</table>
+`;
+  }
+  tablerow({ text: e }) {
+    return `<tr>
+${e}</tr>
+`;
+  }
+  tablecell(e) {
+    let t = this.parser.parseInline(e.tokens), n = e.header ? "th" : "td";
+    return (e.align ? `<${n} align="${e.align}">` : `<${n}>`) + t + `</${n}>
+`;
+  }
+  strong({ tokens: e }) {
+    return `<strong>${this.parser.parseInline(e)}</strong>`;
+  }
+  em({ tokens: e }) {
+    return `<em>${this.parser.parseInline(e)}</em>`;
+  }
+  codespan({ text: e }) {
+    return `<code>${w$1(e, true)}</code>`;
+  }
+  br(e) {
+    return "<br>";
+  }
+  del({ tokens: e }) {
+    return `<del>${this.parser.parseInline(e)}</del>`;
+  }
+  link({ href: e, title: t, tokens: n }) {
+    let r = this.parser.parseInline(n), i = J(e);
+    if (i === null) return r;
+    e = i;
+    let s = '<a href="' + e + '"';
+    return t && (s += ' title="' + w$1(t) + '"'), s += ">" + r + "</a>", s;
+  }
+  image({ href: e, title: t, text: n, tokens: r }) {
+    r && (n = this.parser.parseInline(r, this.parser.textRenderer));
+    let i = J(e);
+    if (i === null) return w$1(n);
+    e = i;
+    let s = `<img src="${e}" alt="${n}"`;
+    return t && (s += ` title="${w$1(t)}"`), s += ">", s;
+  }
+  text(e) {
+    return "tokens" in e && e.tokens ? this.parser.parseInline(e.tokens) : "escaped" in e && e.escaped ? e.text : w$1(e.text);
+  }
+};
+var $ = class {
+  strong({ text: e }) {
+    return e;
+  }
+  em({ text: e }) {
+    return e;
+  }
+  codespan({ text: e }) {
+    return e;
+  }
+  del({ text: e }) {
+    return e;
+  }
+  html({ text: e }) {
+    return e;
+  }
+  text({ text: e }) {
+    return e;
+  }
+  link({ text: e }) {
+    return "" + e;
+  }
+  image({ text: e }) {
+    return "" + e;
+  }
+  br() {
+    return "";
+  }
+};
+var b$1 = class l2 {
+  options;
+  renderer;
+  textRenderer;
+  constructor(e) {
+    this.options = e || T$1, this.options.renderer = this.options.renderer || new P(), this.renderer = this.options.renderer, this.renderer.options = this.options, this.renderer.parser = this, this.textRenderer = new $();
+  }
+  static parse(e, t) {
+    return new l2(t).parse(e);
+  }
+  static parseInline(e, t) {
+    return new l2(t).parseInline(e);
+  }
+  parse(e, t = true) {
+    let n = "";
+    for (let r = 0; r < e.length; r++) {
+      let i = e[r];
+      if (this.options.extensions?.renderers?.[i.type]) {
+        let a = i, o = this.options.extensions.renderers[a.type].call({ parser: this }, a);
+        if (o !== false || !["space", "hr", "heading", "code", "table", "blockquote", "list", "html", "def", "paragraph", "text"].includes(a.type)) {
+          n += o || "";
+          continue;
+        }
+      }
+      let s = i;
+      switch (s.type) {
+        case "space": {
+          n += this.renderer.space(s);
+          continue;
+        }
+        case "hr": {
+          n += this.renderer.hr(s);
+          continue;
+        }
+        case "heading": {
+          n += this.renderer.heading(s);
+          continue;
+        }
+        case "code": {
+          n += this.renderer.code(s);
+          continue;
+        }
+        case "table": {
+          n += this.renderer.table(s);
+          continue;
+        }
+        case "blockquote": {
+          n += this.renderer.blockquote(s);
+          continue;
+        }
+        case "list": {
+          n += this.renderer.list(s);
+          continue;
+        }
+        case "html": {
+          n += this.renderer.html(s);
+          continue;
+        }
+        case "def": {
+          n += this.renderer.def(s);
+          continue;
+        }
+        case "paragraph": {
+          n += this.renderer.paragraph(s);
+          continue;
+        }
+        case "text": {
+          let a = s, o = this.renderer.text(a);
+          for (; r + 1 < e.length && e[r + 1].type === "text"; ) a = e[++r], o += `
+` + this.renderer.text(a);
+          t ? n += this.renderer.paragraph({ type: "paragraph", raw: o, text: o, tokens: [{ type: "text", raw: o, text: o, escaped: true }] }) : n += o;
+          continue;
+        }
+        default: {
+          let a = 'Token with "' + s.type + '" type was not found.';
+          if (this.options.silent) return console.error(a), "";
+          throw new Error(a);
+        }
+      }
+    }
+    return n;
+  }
+  parseInline(e, t = this.renderer) {
+    let n = "";
+    for (let r = 0; r < e.length; r++) {
+      let i = e[r];
+      if (this.options.extensions?.renderers?.[i.type]) {
+        let a = this.options.extensions.renderers[i.type].call({ parser: this }, i);
+        if (a !== false || !["escape", "html", "link", "image", "strong", "em", "codespan", "br", "del", "text"].includes(i.type)) {
+          n += a || "";
+          continue;
+        }
+      }
+      let s = i;
+      switch (s.type) {
+        case "escape": {
+          n += t.text(s);
+          break;
+        }
+        case "html": {
+          n += t.html(s);
+          break;
+        }
+        case "link": {
+          n += t.link(s);
+          break;
+        }
+        case "image": {
+          n += t.image(s);
+          break;
+        }
+        case "strong": {
+          n += t.strong(s);
+          break;
+        }
+        case "em": {
+          n += t.em(s);
+          break;
+        }
+        case "codespan": {
+          n += t.codespan(s);
+          break;
+        }
+        case "br": {
+          n += t.br(s);
+          break;
+        }
+        case "del": {
+          n += t.del(s);
+          break;
+        }
+        case "text": {
+          n += t.text(s);
+          break;
+        }
+        default: {
+          let a = 'Token with "' + s.type + '" type was not found.';
+          if (this.options.silent) return console.error(a), "";
+          throw new Error(a);
+        }
+      }
+    }
+    return n;
+  }
+};
+var S = class {
+  options;
+  block;
+  constructor(e) {
+    this.options = e || T$1;
+  }
+  static passThroughHooks = /* @__PURE__ */ new Set(["preprocess", "postprocess", "processAllTokens", "emStrongMask"]);
+  static passThroughHooksRespectAsync = /* @__PURE__ */ new Set(["preprocess", "postprocess", "processAllTokens"]);
+  preprocess(e) {
+    return e;
+  }
+  postprocess(e) {
+    return e;
+  }
+  processAllTokens(e) {
+    return e;
+  }
+  emStrongMask(e) {
+    return e;
+  }
+  provideLexer() {
+    return this.block ? x.lex : x.lexInline;
+  }
+  provideParser() {
+    return this.block ? b$1.parse : b$1.parseInline;
+  }
+};
+var B = class {
+  defaults = L();
+  options = this.setOptions;
+  parse = this.parseMarkdown(true);
+  parseInline = this.parseMarkdown(false);
+  Parser = b$1;
+  Renderer = P;
+  TextRenderer = $;
+  Lexer = x;
+  Tokenizer = y;
+  Hooks = S;
+  constructor(...e) {
+    this.use(...e);
+  }
+  walkTokens(e, t) {
+    let n = [];
+    for (let r of e) switch (n = n.concat(t.call(this, r)), r.type) {
+      case "table": {
+        let i = r;
+        for (let s of i.header) n = n.concat(this.walkTokens(s.tokens, t));
+        for (let s of i.rows) for (let a of s) n = n.concat(this.walkTokens(a.tokens, t));
+        break;
+      }
+      case "list": {
+        let i = r;
+        n = n.concat(this.walkTokens(i.items, t));
+        break;
+      }
+      default: {
+        let i = r;
+        this.defaults.extensions?.childTokens?.[i.type] ? this.defaults.extensions.childTokens[i.type].forEach((s) => {
+          let a = i[s].flat(1 / 0);
+          n = n.concat(this.walkTokens(a, t));
+        }) : i.tokens && (n = n.concat(this.walkTokens(i.tokens, t)));
+      }
+    }
+    return n;
+  }
+  use(...e) {
+    let t = this.defaults.extensions || { renderers: {}, childTokens: {} };
+    return e.forEach((n) => {
+      let r = { ...n };
+      if (r.async = this.defaults.async || r.async || false, n.extensions && (n.extensions.forEach((i) => {
+        if (!i.name) throw new Error("extension name required");
+        if ("renderer" in i) {
+          let s = t.renderers[i.name];
+          s ? t.renderers[i.name] = function(...a) {
+            let o = i.renderer.apply(this, a);
+            return o === false && (o = s.apply(this, a)), o;
+          } : t.renderers[i.name] = i.renderer;
+        }
+        if ("tokenizer" in i) {
+          if (!i.level || i.level !== "block" && i.level !== "inline") throw new Error("extension level must be 'block' or 'inline'");
+          let s = t[i.level];
+          s ? s.unshift(i.tokenizer) : t[i.level] = [i.tokenizer], i.start && (i.level === "block" ? t.startBlock ? t.startBlock.push(i.start) : t.startBlock = [i.start] : i.level === "inline" && (t.startInline ? t.startInline.push(i.start) : t.startInline = [i.start]));
+        }
+        "childTokens" in i && i.childTokens && (t.childTokens[i.name] = i.childTokens);
+      }), r.extensions = t), n.renderer) {
+        let i = this.defaults.renderer || new P(this.defaults);
+        for (let s in n.renderer) {
+          if (!(s in i)) throw new Error(`renderer '${s}' does not exist`);
+          if (["options", "parser"].includes(s)) continue;
+          let a = s, o = n.renderer[a], p2 = i[a];
+          i[a] = (...u) => {
+            let c = o.apply(i, u);
+            return c === false && (c = p2.apply(i, u)), c || "";
+          };
+        }
+        r.renderer = i;
+      }
+      if (n.tokenizer) {
+        let i = this.defaults.tokenizer || new y(this.defaults);
+        for (let s in n.tokenizer) {
+          if (!(s in i)) throw new Error(`tokenizer '${s}' does not exist`);
+          if (["options", "rules", "lexer"].includes(s)) continue;
+          let a = s, o = n.tokenizer[a], p2 = i[a];
+          i[a] = (...u) => {
+            let c = o.apply(i, u);
+            return c === false && (c = p2.apply(i, u)), c;
+          };
+        }
+        r.tokenizer = i;
+      }
+      if (n.hooks) {
+        let i = this.defaults.hooks || new S();
+        for (let s in n.hooks) {
+          if (!(s in i)) throw new Error(`hook '${s}' does not exist`);
+          if (["options", "block"].includes(s)) continue;
+          let a = s, o = n.hooks[a], p2 = i[a];
+          S.passThroughHooks.has(s) ? i[a] = (u) => {
+            if (this.defaults.async && S.passThroughHooksRespectAsync.has(s)) return (async () => {
+              let g = await o.call(i, u);
+              return p2.call(i, g);
+            })();
+            let c = o.call(i, u);
+            return p2.call(i, c);
+          } : i[a] = (...u) => {
+            if (this.defaults.async) return (async () => {
+              let g = await o.apply(i, u);
+              return g === false && (g = await p2.apply(i, u)), g;
+            })();
+            let c = o.apply(i, u);
+            return c === false && (c = p2.apply(i, u)), c;
+          };
+        }
+        r.hooks = i;
+      }
+      if (n.walkTokens) {
+        let i = this.defaults.walkTokens, s = n.walkTokens;
+        r.walkTokens = function(a) {
+          let o = [];
+          return o.push(s.call(this, a)), i && (o = o.concat(i.call(this, a))), o;
+        };
+      }
+      this.defaults = { ...this.defaults, ...r };
+    }), this;
+  }
+  setOptions(e) {
+    return this.defaults = { ...this.defaults, ...e }, this;
+  }
+  lexer(e, t) {
+    return x.lex(e, t ?? this.defaults);
+  }
+  parser(e, t) {
+    return b$1.parse(e, t ?? this.defaults);
+  }
+  parseMarkdown(e) {
+    return (n, r) => {
+      let i = { ...r }, s = { ...this.defaults, ...i }, a = this.onError(!!s.silent, !!s.async);
+      if (this.defaults.async === true && i.async === false) return a(new Error("marked(): The async option was set to true by an extension. Remove async: false from the parse options object to return a Promise."));
+      if (typeof n > "u" || n === null) return a(new Error("marked(): input parameter is undefined or null"));
+      if (typeof n != "string") return a(new Error("marked(): input parameter is of type " + Object.prototype.toString.call(n) + ", string expected"));
+      if (s.hooks && (s.hooks.options = s, s.hooks.block = e), s.async) return (async () => {
+        let o = s.hooks ? await s.hooks.preprocess(n) : n, u = await (s.hooks ? await s.hooks.provideLexer() : e ? x.lex : x.lexInline)(o, s), c = s.hooks ? await s.hooks.processAllTokens(u) : u;
+        s.walkTokens && await Promise.all(this.walkTokens(c, s.walkTokens));
+        let h = await (s.hooks ? await s.hooks.provideParser() : e ? b$1.parse : b$1.parseInline)(c, s);
+        return s.hooks ? await s.hooks.postprocess(h) : h;
+      })().catch(a);
+      try {
+        s.hooks && (n = s.hooks.preprocess(n));
+        let p2 = (s.hooks ? s.hooks.provideLexer() : e ? x.lex : x.lexInline)(n, s);
+        s.hooks && (p2 = s.hooks.processAllTokens(p2)), s.walkTokens && this.walkTokens(p2, s.walkTokens);
+        let c = (s.hooks ? s.hooks.provideParser() : e ? b$1.parse : b$1.parseInline)(p2, s);
+        return s.hooks && (c = s.hooks.postprocess(c)), c;
+      } catch (o) {
+        return a(o);
+      }
+    };
+  }
+  onError(e, t) {
+    return (n) => {
+      if (n.message += `
+Please report this to https://github.com/markedjs/marked.`, e) {
+        let r = "<p>An error occurred:</p><pre>" + w$1(n.message + "", true) + "</pre>";
+        return t ? Promise.resolve(r) : r;
+      }
+      if (t) return Promise.reject(n);
+      throw n;
+    };
+  }
+};
+var _$1 = new B();
+function k(l3, e) {
+  return _$1.parse(l3, e);
+}
+k.options = k.setOptions = function(l3) {
+  return _$1.setOptions(l3), k.defaults = _$1.defaults, G(k.defaults), k;
+};
+k.getDefaults = L;
+k.defaults = T$1;
+k.use = function(...l3) {
+  return _$1.use(...l3), k.defaults = _$1.defaults, G(k.defaults), k;
+};
+k.walkTokens = function(l3, e) {
+  return _$1.walkTokens(l3, e);
+};
+k.parseInline = _$1.parseInline;
+k.Parser = b$1;
+k.parser = b$1.parse;
+k.Renderer = P;
+k.TextRenderer = $;
+k.Lexer = x;
+k.lexer = x.lex;
+k.Tokenizer = y;
+k.Hooks = S;
+k.parse = k;
+k.options;
+k.setOptions;
+k.use;
+k.walkTokens;
+k.parseInline;
+b$1.parse;
+x.lex;
 const MarkdownContainer = /* @__PURE__ */ styled_default("div")({
   name: "MarkdownContainer",
   class: "gdg-mtzwuwq",
@@ -1450,7 +5950,7 @@ class MarkdownDiv extends React__default.PureComponent {
       contents,
       createNode
     } = props;
-    const innerHTML = marked(contents);
+    const innerHTML = k(contents);
     const childRange = document.createRange();
     childRange.selectNodeContents(targetElement);
     childRange.deleteContents();
@@ -1554,12 +6054,12 @@ function parseToRgba(color) {
   if (result.length < 4) {
     result.push(1);
   }
-  result = result.map((x) => {
-    const isNaN2 = Number.isNaN(x);
+  result = result.map((x2) => {
+    const isNaN2 = Number.isNaN(x2);
     if (process.env.NODE_ENV !== "production" && isNaN2) {
       console.warn("Could not parse color", color);
     }
-    return isNaN2 ? 0 : x;
+    return isNaN2 ? 0 : x2;
   });
   cache[normalizedColor] = result;
   return result;
@@ -1610,8 +6110,8 @@ function interpolateColors(leftColor, rightColor, val) {
 }
 function getLuminance(color) {
   if (color === "transparent") return 0;
-  function f(x) {
-    const channel = x / 255;
+  function f(x2) {
+    const channel = x2 / 255;
     return channel <= 0.04045 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
   }
   const [r, g, b2] = parseToRgba(color);
@@ -1764,27 +6264,27 @@ const DataGridOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
   }
 });
 function useRefState() {
-  const $ = compilerRuntimeExports.c(2);
+  const $2 = compilerRuntimeExports.c(2);
   const [refState, setRefState] = React.useState();
   const t0 = refState !== null && refState !== void 0 ? refState : void 0;
   let t1;
-  if ($[0] !== t0) {
+  if ($2[0] !== t0) {
     t1 = [t0, setRefState];
-    $[0] = t0;
-    $[1] = t1;
+    $2[0] = t0;
+    $2[1] = t1;
   } else {
-    t1 = $[1];
+    t1 = $2[1];
   }
   return t1;
 }
 function useStayOnScreen() {
-  const $ = compilerRuntimeExports.c(12);
+  const $2 = compilerRuntimeExports.c(12);
   const [ref, setRef] = useRefState();
   const [xOffset, setXOffset] = React.useState(0);
   const [isIntersecting, setIsIntersecting] = React.useState(true);
   let t0;
   let t1;
-  if ($[0] !== ref) {
+  if ($2[0] !== ref) {
     t0 = () => {
       if (ref === void 0) {
         return;
@@ -1804,17 +6304,17 @@ function useStayOnScreen() {
       return () => observer.disconnect();
     };
     t1 = [ref];
-    $[0] = ref;
-    $[1] = t0;
-    $[2] = t1;
+    $2[0] = ref;
+    $2[1] = t0;
+    $2[2] = t1;
   } else {
-    t0 = $[1];
-    t1 = $[2];
+    t0 = $2[1];
+    t1 = $2[2];
   }
   React.useLayoutEffect(t0, t1);
   let t2;
   let t3;
-  if ($[3] !== isIntersecting || $[4] !== ref) {
+  if ($2[3] !== isIntersecting || $2[4] !== ref) {
     t2 = () => {
       if (isIntersecting || ref === void 0) {
         return;
@@ -1835,38 +6335,38 @@ function useStayOnScreen() {
       };
     };
     t3 = [ref, isIntersecting];
-    $[3] = isIntersecting;
-    $[4] = ref;
-    $[5] = t2;
-    $[6] = t3;
+    $2[3] = isIntersecting;
+    $2[4] = ref;
+    $2[5] = t2;
+    $2[6] = t3;
   } else {
-    t2 = $[5];
-    t3 = $[6];
+    t2 = $2[5];
+    t3 = $2[6];
   }
   React.useEffect(t2, t3);
   const t4 = `translateX(${xOffset}px)`;
   let t5;
-  if ($[7] !== t4) {
+  if ($2[7] !== t4) {
     t5 = {
       transform: t4
     };
-    $[7] = t4;
-    $[8] = t5;
+    $2[7] = t4;
+    $2[8] = t5;
   } else {
-    t5 = $[8];
+    t5 = $2[8];
   }
   const style = t5;
   let t6;
-  if ($[9] !== setRef || $[10] !== style) {
+  if ($2[9] !== setRef || $2[10] !== style) {
     t6 = {
       ref: setRef,
       style
     };
-    $[9] = setRef;
-    $[10] = style;
-    $[11] = t6;
+    $2[9] = setRef;
+    $2[10] = style;
+    $2[11] = t6;
   } else {
-    t6 = $[11];
+    t6 = $2[11];
   }
   return t6;
 }
@@ -2083,41 +6583,41 @@ var d = /* @__PURE__ */ new Map(), b = /* @__PURE__ */ new Map(), z = /* @__PURE
 function v() {
   d.clear(), z.clear(), b.clear();
 }
-function w(l, s, e, c, t) {
+function w(l3, s, e, c, t) {
   var n, r, o;
   let f = 0, a = {};
-  for (let i of l) f += (n = e.get(i)) != null ? n : t, a[i] = ((r = a[i]) != null ? r : 0) + 1;
+  for (let i of l3) f += (n = e.get(i)) != null ? n : t, a[i] = ((r = a[i]) != null ? r : 0) + 1;
   let g = s - f;
   for (let i of Object.keys(a)) {
-    let m = a[i], u = (o = e.get(i)) != null ? o : t, h = u * m / f, M = g * h * c / m, C = u + M;
-    e.set(i, C);
+    let m2 = a[i], u = (o = e.get(i)) != null ? o : t, h = u * m2 / f, M2 = g * h * c / m2, C2 = u + M2;
+    e.set(i, C2);
   }
 }
-function R(l, s) {
+function R(l3, s) {
   var n;
   let e = /* @__PURE__ */ new Map(), c = 0;
   for (let r of "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.-+=?") {
-    let o = l.measureText(r).width;
+    let o = l3.measureText(r).width;
     e.set(r, o), c += o;
   }
   let t = c / e.size, f = 3, a = (s / t + f) / (f + 1), g = e.keys();
   for (let r of g) e.set(r, ((n = e.get(r)) != null ? n : t) * a);
   return e;
 }
-function p(l, s, e, c) {
+function p(l3, s, e, c) {
   var g, n;
   let t = b.get(e);
   if (c && t !== void 0 && t.count > 2e4) {
     let r = z.get(e);
-    if (r === void 0 && (r = R(l, t.size), z.set(e, r)), t.count > 5e5) {
+    if (r === void 0 && (r = R(l3, t.size), z.set(e, r)), t.count > 5e5) {
       let i = 0;
-      for (let m of s) i += (g = r.get(m)) != null ? g : t.size;
+      for (let m2 of s) i += (g = r.get(m2)) != null ? g : t.size;
       return i * 1.01;
     }
-    let o = l.measureText(s);
+    let o = l3.measureText(s);
     return w(s, o.width, r, Math.max(0.05, 1 - t.count / 2e5), t.size), b.set(e, { count: t.count + s.length, size: t.size }), o.width;
   }
-  let f = l.measureText(s), a = f.width / s.length;
+  let f = l3.measureText(s), a = f.width / s.length;
   if (((n = t == null ? void 0 : t.count) != null ? n : 0) > 2e4) return f.width;
   if (t === void 0) b.set(e, { count: s.length, size: a });
   else {
@@ -2126,16 +6626,16 @@ function p(l, s, e, c) {
   }
   return f.width;
 }
-function T(l, s, e, c, t, f, a, g) {
+function T(l3, s, e, c, t, f, a, g) {
   if (s.length <= 1) return s.length;
   if (t < e) return -1;
-  let n = Math.floor(e / t * f), r = p(l, s.slice(0, Math.max(0, n)), c, a);
+  let n = Math.floor(e / t * f), r = p(l3, s.slice(0, Math.max(0, n)), c, a);
   if (r !== e) if (r < e) {
-    for (; r < e; ) n++, r = p(l, s.slice(0, Math.max(0, n)), c, a);
+    for (; r < e; ) n++, r = p(l3, s.slice(0, Math.max(0, n)), c, a);
     n--;
   } else for (; r > e; ) {
     let i = s.lastIndexOf(" ", n - 1);
-    i > 0 ? n = i : n--, r = p(l, s.slice(0, Math.max(0, n)), c, a);
+    i > 0 ? n = i : n--, r = p(l3, s.slice(0, Math.max(0, n)), c, a);
   }
   if (s[n] !== " ") {
     let i = 0;
@@ -2144,19 +6644,19 @@ function T(l, s, e, c, t, f, a, g) {
   }
   return n;
 }
-function _(l, s, e, c, t, f) {
+function _(l3, s, e, c, t, f) {
   let a = `${s}_${e}_${c}px`, g = d.get(a);
   if (g !== void 0) return g;
   if (c <= 0) return [];
   let n = [], r = s.split(`
-`), o = b.get(e), i = o === void 0 ? s.length : c / o.size * 1.5, m = t && o !== void 0 && o.count > 2e4;
+`), o = b.get(e), i = o === void 0 ? s.length : c / o.size * 1.5, m2 = t && o !== void 0 && o.count > 2e4;
   for (let u of r) {
-    let h = p(l, u.slice(0, Math.max(0, i)), e, m), M = Math.min(u.length, i);
+    let h = p(l3, u.slice(0, Math.max(0, i)), e, m2), M2 = Math.min(u.length, i);
     if (h <= c) n.push(u);
     else {
       for (; h > c; ) {
-        let C = T(l, u, c, e, h, M, m), k = u.slice(0, Math.max(0, C));
-        u = u.slice(k.length), n.push(k), h = p(l, u.slice(0, Math.max(0, i)), e, m), M = Math.min(u.length, i);
+        let C2 = T(l3, u, c, e, h, M2, m2), k2 = u.slice(0, Math.max(0, C2));
+        u = u.slice(k2.length), n.push(k2), h = p(l3, u.slice(0, Math.max(0, i)), e, m2), M2 = Math.min(u.length, i);
       }
       h > 0 && n.push(u);
     }
@@ -2164,11 +6664,11 @@ function _(l, s, e, c, t, f) {
   return n = n.map((u, h) => h === 0 ? u.trimEnd() : u.trim()), d.set(a, n), d.size > 500 && d.delete(d.keys().next().value), n;
 }
 function useMappedColumns(columns, freezeColumns) {
-  const $ = compilerRuntimeExports.c(5);
+  const $2 = compilerRuntimeExports.c(5);
   let t0;
-  if ($[0] !== columns || $[1] !== freezeColumns) {
+  if ($2[0] !== columns || $2[1] !== freezeColumns) {
     let t1;
-    if ($[3] !== freezeColumns) {
+    if ($2[3] !== freezeColumns) {
       t1 = (c, i) => ({
         group: c.group,
         grow: c.grow,
@@ -2194,17 +6694,17 @@ function useMappedColumns(columns, freezeColumns) {
         rowGroupBorder: c.rowGroupBorder,
         required: c.required
       });
-      $[3] = freezeColumns;
-      $[4] = t1;
+      $2[3] = freezeColumns;
+      $2[4] = t1;
     } else {
-      t1 = $[4];
+      t1 = $2[4];
     }
     t0 = columns.map(t1);
-    $[0] = columns;
-    $[1] = freezeColumns;
-    $[2] = t0;
+    $2[0] = columns;
+    $2[1] = freezeColumns;
+    $2[2] = t0;
   } else {
-    t0 = $[2];
+    t0 = $2[2];
   }
   return t0;
 }
@@ -2241,10 +6741,10 @@ function isGroupEqual(left, right) {
   return leftStr === rightStr;
 }
 function isGroupEqualAtLevel(left, right, level, totalLevels) {
-  for (let l = 0; l <= level; l++) {
+  for (let l3 = 0; l3 <= level; l3++) {
     var _getGroupAtLevel, _getGroupAtLevel2;
-    const leftStr = (_getGroupAtLevel = getGroupAtLevel(left, l, totalLevels)) !== null && _getGroupAtLevel !== void 0 ? _getGroupAtLevel : "";
-    const rightStr = (_getGroupAtLevel2 = getGroupAtLevel(right, l, totalLevels)) !== null && _getGroupAtLevel2 !== void 0 ? _getGroupAtLevel2 : "";
+    const leftStr = (_getGroupAtLevel = getGroupAtLevel(left, l3, totalLevels)) !== null && _getGroupAtLevel !== void 0 ? _getGroupAtLevel : "";
+    const rightStr = (_getGroupAtLevel2 = getGroupAtLevel(right, l3, totalLevels)) !== null && _getGroupAtLevel2 !== void 0 ? _getGroupAtLevel2 : "";
     if (leftStr !== rightStr) {
       return false;
     }
@@ -2260,8 +6760,8 @@ function cellIsSelected(location, cell, selection) {
   return selection.current.cell[0] >= cell.span[0] && selection.current.cell[0] <= cell.span[1];
 }
 function itemIsInRect(location, rect) {
-  const [x, y] = location;
-  return x >= rect.x && x < rect.x + rect.width && y >= rect.y && y < rect.y + rect.height;
+  const [x2, y2] = location;
+  return x2 >= rect.x && x2 < rect.x + rect.width && y2 >= rect.y && y2 < rect.y + rect.height;
 }
 function itemsAreEqual(a, b2) {
   return (a === null || a === void 0 ? void 0 : a[0]) === (b2 === null || b2 === void 0 ? void 0 : b2[0]) && (a === null || a === void 0 ? void 0 : a[1]) === (b2 === null || b2 === void 0 ? void 0 : b2[1]);
@@ -2367,13 +6867,13 @@ function getEffectiveColumns(columns, cellXOffset, width, dndState, tx) {
   return sticky;
 }
 function getColumnIndexForX(targetX, effectiveColumns, translateX) {
-  let x = 0;
+  let x2 = 0;
   for (const c of effectiveColumns) {
-    const cx3 = c.sticky ? x : x + (translateX !== null && translateX !== void 0 ? translateX : 0);
+    const cx3 = c.sticky ? x2 : x2 + (translateX !== null && translateX !== void 0 ? translateX : 0);
     if (targetX <= cx3 + c.width) {
       return c.sourceIndex;
     }
-    x += c.width;
+    x2 += c.width;
   }
   return -1;
 }
@@ -2393,12 +6893,12 @@ function getRowIndexForY(targetY, height, hasGroups, headerHeight, groupHeaderHe
     }
   }
   if (targetY <= totalHeaderHeight) return -1;
-  let y = height;
+  let y2 = height;
   for (let fr = 0; fr < freezeTrailingRows; fr++) {
     const row = rows - 1 - fr;
     const rh = typeof rowHeight === "number" ? rowHeight : rowHeight(row);
-    y -= rh;
-    if (targetY >= y) {
+    y2 -= rh;
+    if (targetY >= y2) {
       return row;
     }
   }
@@ -2468,8 +6968,8 @@ function loadMetric(ctx, baseline) {
 }
 const biasCache = [];
 function getMiddleCenterBiasInner(ctx, font) {
-  for (const x of biasCache) {
-    if (x.key === font) return x.val;
+  for (const x2 of biasCache) {
+    if (x2.key === font) return x2.val;
   }
   const alphabeticMetrics = loadMetric(ctx, "alphabetic");
   const middleMetrics = loadMetric(ctx, "middle");
@@ -2529,13 +7029,13 @@ function drawTextCellExternal(args, data, contentAlign, allowWrapping, hyperWrap
     theme
   }, data, contentAlign, allowWrapping, hyperWrapping);
 }
-function drawSingleTextLine(ctx, data, x, y, w2, h, bias, theme, contentAlign) {
+function drawSingleTextLine(ctx, data, x2, y2, w2, h, bias, theme, contentAlign) {
   if (contentAlign === "right") {
-    ctx.fillText(data, x + w2 - (theme.cellHorizontalPadding + 0.5), y + h / 2 + bias);
+    ctx.fillText(data, x2 + w2 - (theme.cellHorizontalPadding + 0.5), y2 + h / 2 + bias);
   } else if (contentAlign === "center") {
-    ctx.fillText(data, x + w2 / 2, y + h / 2 + bias);
+    ctx.fillText(data, x2 + w2 / 2, y2 + h / 2 + bias);
   } else {
-    ctx.fillText(data, x + theme.cellHorizontalPadding + 0.5, y + h / 2 + bias);
+    ctx.fillText(data, x2 + theme.cellHorizontalPadding + 0.5, y2 + h / 2 + bias);
   }
 }
 function getEmHeight(ctx, fontStyle) {
@@ -2553,7 +7053,7 @@ function truncateString(data, w2) {
   }
   return data;
 }
-function drawMultiLineText(ctx, data, x, y, w2, h, bias, theme, contentAlign, hyperWrapping) {
+function drawMultiLineText(ctx, data, x2, y2, w2, h, bias, theme, contentAlign, hyperWrapping) {
   const fontStyle = theme.baseFontFull;
   const split = _(ctx, data, fontStyle, w2 - theme.cellHorizontalPadding * 2, hyperWrapping !== null && hyperWrapping !== void 0 ? hyperWrapping : false);
   const emHeight = getEmHeight(ctx, fontStyle);
@@ -2562,15 +7062,15 @@ function drawMultiLineText(ctx, data, x, y, w2, h, bias, theme, contentAlign, hy
   const mustClip = actualHeight + theme.cellVerticalPadding > h;
   if (mustClip) {
     ctx.save();
-    ctx.rect(x, y, w2, h);
+    ctx.rect(x2, y2, w2, h);
     ctx.clip();
   }
-  const optimalY = y + h / 2 - actualHeight / 2;
-  let drawY = Math.max(y + theme.cellVerticalPadding, optimalY);
+  const optimalY = y2 + h / 2 - actualHeight / 2;
+  let drawY = Math.max(y2 + theme.cellVerticalPadding, optimalY);
   for (const line of split) {
-    drawSingleTextLine(ctx, line, x, drawY, w2, emHeight, bias, theme, contentAlign);
+    drawSingleTextLine(ctx, line, x2, drawY, w2, emHeight, bias, theme, contentAlign);
     drawY += lineHeight;
-    if (drawY > y + h) break;
+    if (drawY > y2 + h) break;
   }
   if (mustClip) {
     ctx.restore();
@@ -2583,8 +7083,8 @@ function drawTextCell(args, data, contentAlign, allowWrapping, hyperWrapping) {
     theme
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width: w2,
     height: h
   } = rect;
@@ -2610,9 +7110,9 @@ function drawTextCell(args, data, contentAlign, allowWrapping, hyperWrapping) {
       changed = true;
     }
     if (!allowWrapping) {
-      drawSingleTextLine(ctx, data, x, y, w2, h, bias, theme, contentAlign);
+      drawSingleTextLine(ctx, data, x2, y2, w2, h, bias, theme, contentAlign);
     } else {
-      drawMultiLineText(ctx, data, x, y, w2, h, bias, theme, contentAlign, hyperWrapping);
+      drawMultiLineText(ctx, data, x2, y2, w2, h, bias, theme, contentAlign, hyperWrapping);
     }
     if (changed) {
       ctx.textAlign = "start";
@@ -2622,7 +7122,7 @@ function drawTextCell(args, data, contentAlign, allowWrapping, hyperWrapping) {
     }
   }
 }
-function roundedRect(ctx, x, y, width, height, radius) {
+function roundedRect(ctx, x2, y2, width, height, radius) {
   if (typeof radius === "number") {
     radius = {
       tl: radius,
@@ -2637,11 +7137,11 @@ function roundedRect(ctx, x, y, width, height, radius) {
     bl: Math.max(0, Math.min(radius.bl, height / 2, width / 2)),
     br: Math.max(0, Math.min(radius.br, height / 2, width / 2))
   };
-  ctx.moveTo(x + radius.tl, y);
-  ctx.arcTo(x + width, y, x + width, y + radius.tr, radius.tr);
-  ctx.arcTo(x + width, y + height, x + width - radius.br, y + height, radius.br);
-  ctx.arcTo(x, y + height, x, y + height - radius.bl, radius.bl);
-  ctx.arcTo(x, y, x + radius.tl, y, radius.tl);
+  ctx.moveTo(x2 + radius.tl, y2);
+  ctx.arcTo(x2 + width, y2, x2 + width, y2 + radius.tr, radius.tr);
+  ctx.arcTo(x2 + width, y2 + height, x2 + width - radius.br, y2 + height, radius.br);
+  ctx.arcTo(x2, y2 + height, x2, y2 + height - radius.bl, radius.bl);
+  ctx.arcTo(x2, y2, x2 + radius.tl, y2, radius.tl);
 }
 function drawMenuDots(ctx, dotsX, dotsY) {
   const radius = 1.25;
@@ -2702,11 +7202,11 @@ function roundedPoly(ctx, points, radiusAll) {
     } else {
       cRadius = radius;
     }
-    let x = p2.x + v2.nx * lenOut;
-    let y = p2.y + v2.ny * lenOut;
-    x += -v2.ny * cRadius * radDirection;
-    y += v2.nx * cRadius * radDirection;
-    ctx.arc(x, y, cRadius, v1.ang + Math.PI / 2 * radDirection, v2.ang - Math.PI / 2 * radDirection, drawDirection);
+    let x2 = p2.x + v2.nx * lenOut;
+    let y2 = p2.y + v2.ny * lenOut;
+    x2 += -v2.ny * cRadius * radDirection;
+    y2 += v2.nx * cRadius * radDirection;
+    ctx.arc(x2, y2, cRadius, v1.ang + Math.PI / 2 * radDirection, v2.ang - Math.PI / 2 * radDirection, drawDirection);
     p1 = p2;
     p2 = p3;
   }
@@ -2869,7 +7369,7 @@ class CellSet {
   constructor() {
     let items = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : [];
     this.cells = void 0;
-    this.cells = new Set(items.map((x) => packColRowToNumber(x[0], x[1])));
+    this.cells = new Set(items.map((x2) => packColRowToNumber(x2[0], x2[1])));
   }
   add(cell) {
     this.cells.add(packColRowToNumber(cell[0], cell[1]));
@@ -2980,7 +7480,7 @@ function useColumnSizer(columns, rows, getCellsForSelection, clientWidth, minCol
     };
   }, [canvas]);
   const memoMap = React.useRef({});
-  const lastColumns = React.useRef();
+  const lastColumns = React.useRef(void 0);
   const [selectedData, setSelectionData] = React.useState();
   React.useLayoutEffect(() => {
     const getCells = getCellsForSelectionRef.current;
@@ -3091,279 +7591,479 @@ function useColumnSizer(columns, rows, getCellsForSelection, clientWidth, minCol
     nonGrowWidth: totalWidth
   };
 }
-function baseClamp$1(number, lower, upper) {
-  if (number === number) {
+var _baseClamp;
+var hasRequired_baseClamp;
+function require_baseClamp() {
+  if (hasRequired_baseClamp) return _baseClamp;
+  hasRequired_baseClamp = 1;
+  function baseClamp(number, lower, upper) {
+    if (number === number) {
+      if (upper !== void 0) {
+        number = number <= upper ? number : upper;
+      }
+      if (lower !== void 0) {
+        number = number >= lower ? number : lower;
+      }
+    }
+    return number;
+  }
+  _baseClamp = baseClamp;
+  return _baseClamp;
+}
+var clamp_1;
+var hasRequiredClamp;
+function requireClamp() {
+  if (hasRequiredClamp) return clamp_1;
+  hasRequiredClamp = 1;
+  var baseClamp = require_baseClamp(), toNumber = requireToNumber();
+  function clamp2(number, lower, upper) {
+    if (upper === void 0) {
+      upper = lower;
+      lower = void 0;
+    }
     if (upper !== void 0) {
-      number = number <= upper ? number : upper;
+      upper = toNumber(upper);
+      upper = upper === upper ? upper : 0;
     }
     if (lower !== void 0) {
-      number = number >= lower ? number : lower;
+      lower = toNumber(lower);
+      lower = lower === lower ? lower : 0;
     }
+    return baseClamp(toNumber(number), lower, upper);
   }
-  return number;
+  clamp_1 = clamp2;
+  return clamp_1;
 }
-var _baseClamp = baseClamp$1;
-var baseClamp = _baseClamp, toNumber$1 = toNumber_1;
-function clamp$1(number, lower, upper) {
-  if (upper === void 0) {
-    upper = lower;
-    lower = void 0;
+var clampExports = requireClamp();
+const clamp$1 = /* @__PURE__ */ getDefaultExportFromCjs(clampExports);
+var _setCacheAdd;
+var hasRequired_setCacheAdd;
+function require_setCacheAdd() {
+  if (hasRequired_setCacheAdd) return _setCacheAdd;
+  hasRequired_setCacheAdd = 1;
+  var HASH_UNDEFINED = "__lodash_hash_undefined__";
+  function setCacheAdd(value) {
+    this.__data__.set(value, HASH_UNDEFINED);
+    return this;
   }
-  if (upper !== void 0) {
-    upper = toNumber$1(upper);
-    upper = upper === upper ? upper : 0;
+  _setCacheAdd = setCacheAdd;
+  return _setCacheAdd;
+}
+var _setCacheHas;
+var hasRequired_setCacheHas;
+function require_setCacheHas() {
+  if (hasRequired_setCacheHas) return _setCacheHas;
+  hasRequired_setCacheHas = 1;
+  function setCacheHas(value) {
+    return this.__data__.has(value);
   }
-  if (lower !== void 0) {
-    lower = toNumber$1(lower);
-    lower = lower === lower ? lower : 0;
-  }
-  return baseClamp(toNumber$1(number), lower, upper);
+  _setCacheHas = setCacheHas;
+  return _setCacheHas;
 }
-var clamp_1 = clamp$1;
-const clamp$2 = /* @__PURE__ */ getDefaultExportFromCjs(clamp_1);
-var HASH_UNDEFINED = "__lodash_hash_undefined__";
-function setCacheAdd$1(value) {
-  this.__data__.set(value, HASH_UNDEFINED);
-  return this;
-}
-var _setCacheAdd = setCacheAdd$1;
-function setCacheHas$1(value) {
-  return this.__data__.has(value);
-}
-var _setCacheHas = setCacheHas$1;
-var MapCache$1 = _MapCache, setCacheAdd = _setCacheAdd, setCacheHas = _setCacheHas;
-function SetCache$2(values) {
-  var index = -1, length = values == null ? 0 : values.length;
-  this.__data__ = new MapCache$1();
-  while (++index < length) {
-    this.add(values[index]);
-  }
-}
-SetCache$2.prototype.add = SetCache$2.prototype.push = setCacheAdd;
-SetCache$2.prototype.has = setCacheHas;
-var _SetCache = SetCache$2;
-function baseFindIndex$1(array, predicate, fromIndex, fromRight) {
-  var length = array.length, index = fromIndex + (fromRight ? 1 : -1);
-  while (fromRight ? index-- : ++index < length) {
-    if (predicate(array[index], index, array)) {
-      return index;
-    }
-  }
-  return -1;
-}
-var _baseFindIndex = baseFindIndex$1;
-function baseIsNaN$1(value) {
-  return value !== value;
-}
-var _baseIsNaN = baseIsNaN$1;
-function strictIndexOf$1(array, value, fromIndex) {
-  var index = fromIndex - 1, length = array.length;
-  while (++index < length) {
-    if (array[index] === value) {
-      return index;
-    }
-  }
-  return -1;
-}
-var _strictIndexOf = strictIndexOf$1;
-var baseFindIndex = _baseFindIndex, baseIsNaN = _baseIsNaN, strictIndexOf = _strictIndexOf;
-function baseIndexOf$1(array, value, fromIndex) {
-  return value === value ? strictIndexOf(array, value, fromIndex) : baseFindIndex(array, baseIsNaN, fromIndex);
-}
-var _baseIndexOf = baseIndexOf$1;
-var baseIndexOf = _baseIndexOf;
-function arrayIncludes$1(array, value) {
-  var length = array == null ? 0 : array.length;
-  return !!length && baseIndexOf(array, value, 0) > -1;
-}
-var _arrayIncludes = arrayIncludes$1;
-function arrayIncludesWith$1(array, value, comparator) {
-  var index = -1, length = array == null ? 0 : array.length;
-  while (++index < length) {
-    if (comparator(value, array[index])) {
-      return true;
-    }
-  }
-  return false;
-}
-var _arrayIncludesWith = arrayIncludesWith$1;
-function cacheHas$2(cache2, key) {
-  return cache2.has(key);
-}
-var _cacheHas = cacheHas$2;
-var getNative$4 = _getNative, root$4 = _root;
-var Set$3 = getNative$4(root$4, "Set");
-var _Set = Set$3;
-function noop$2() {
-}
-var noop_1 = noop$2;
-function setToArray$3(set) {
-  var index = -1, result = Array(set.size);
-  set.forEach(function(value) {
-    result[++index] = value;
-  });
-  return result;
-}
-var _setToArray = setToArray$3;
-var Set$2 = _Set, noop$1 = noop_1, setToArray$2 = _setToArray;
-var INFINITY$1 = 1 / 0;
-var createSet$1 = !(Set$2 && 1 / setToArray$2(new Set$2([, -0]))[1] == INFINITY$1) ? noop$1 : function(values) {
-  return new Set$2(values);
-};
-var _createSet = createSet$1;
-var SetCache$1 = _SetCache, arrayIncludes = _arrayIncludes, arrayIncludesWith = _arrayIncludesWith, cacheHas$1 = _cacheHas, createSet = _createSet, setToArray$1 = _setToArray;
-var LARGE_ARRAY_SIZE$1 = 200;
-function baseUniq$1(array, iteratee, comparator) {
-  var index = -1, includes = arrayIncludes, length = array.length, isCommon = true, result = [], seen = result;
-  if (comparator) {
-    isCommon = false;
-    includes = arrayIncludesWith;
-  } else if (length >= LARGE_ARRAY_SIZE$1) {
-    var set = iteratee ? null : createSet(array);
-    if (set) {
-      return setToArray$1(set);
-    }
-    isCommon = false;
-    includes = cacheHas$1;
-    seen = new SetCache$1();
-  } else {
-    seen = iteratee ? [] : result;
-  }
-  outer:
+var _SetCache;
+var hasRequired_SetCache;
+function require_SetCache() {
+  if (hasRequired_SetCache) return _SetCache;
+  hasRequired_SetCache = 1;
+  var MapCache = require_MapCache(), setCacheAdd = require_setCacheAdd(), setCacheHas = require_setCacheHas();
+  function SetCache(values) {
+    var index = -1, length = values == null ? 0 : values.length;
+    this.__data__ = new MapCache();
     while (++index < length) {
-      var value = array[index], computed = iteratee ? iteratee(value) : value;
-      value = comparator || value !== 0 ? value : 0;
-      if (isCommon && computed === computed) {
-        var seenIndex = seen.length;
-        while (seenIndex--) {
-          if (seen[seenIndex] === computed) {
-            continue outer;
-          }
-        }
-        if (iteratee) {
-          seen.push(computed);
-        }
-        result.push(value);
-      } else if (!includes(seen, computed, comparator)) {
-        if (seen !== result) {
-          seen.push(computed);
-        }
-        result.push(value);
-      }
-    }
-  return result;
-}
-var _baseUniq = baseUniq$1;
-var baseUniq = _baseUniq;
-function uniq(array) {
-  return array && array.length ? baseUniq(array) : [];
-}
-var uniq_1 = uniq;
-const uniq$1 = /* @__PURE__ */ getDefaultExportFromCjs(uniq_1);
-function arrayPush$2(array, values) {
-  var index = -1, length = values.length, offset = array.length;
-  while (++index < length) {
-    array[offset + index] = values[index];
-  }
-  return array;
-}
-var _arrayPush = arrayPush$2;
-var Symbol$2 = _Symbol, isArguments$1 = isArguments_1, isArray$5 = isArray_1;
-var spreadableSymbol = Symbol$2 ? Symbol$2.isConcatSpreadable : void 0;
-function isFlattenable$1(value) {
-  return isArray$5(value) || isArguments$1(value) || !!(spreadableSymbol && value && value[spreadableSymbol]);
-}
-var _isFlattenable = isFlattenable$1;
-var arrayPush$1 = _arrayPush, isFlattenable = _isFlattenable;
-function baseFlatten$1(array, depth, predicate, isStrict, result) {
-  var index = -1, length = array.length;
-  predicate || (predicate = isFlattenable);
-  result || (result = []);
-  while (++index < length) {
-    var value = array[index];
-    if (depth > 0 && predicate(value)) {
-      if (depth > 1) {
-        baseFlatten$1(value, depth - 1, predicate, isStrict, result);
-      } else {
-        arrayPush$1(result, value);
-      }
-    } else if (!isStrict) {
-      result[result.length] = value;
+      this.add(values[index]);
     }
   }
-  return result;
+  SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
+  SetCache.prototype.has = setCacheHas;
+  _SetCache = SetCache;
+  return _SetCache;
 }
-var _baseFlatten = baseFlatten$1;
-var baseFlatten = _baseFlatten;
-function flatten(array) {
-  var length = array == null ? 0 : array.length;
-  return length ? baseFlatten(array, 1) : [];
-}
-var flatten_1 = flatten;
-const flatten$1 = /* @__PURE__ */ getDefaultExportFromCjs(flatten_1);
-var nativeCeil = Math.ceil, nativeMax = Math.max;
-function baseRange$1(start, end, step, fromRight) {
-  var index = -1, length = nativeMax(nativeCeil((end - start) / (step || 1)), 0), result = Array(length);
-  while (length--) {
-    result[fromRight ? length : ++index] = start;
-    start += step;
+var _baseFindIndex;
+var hasRequired_baseFindIndex;
+function require_baseFindIndex() {
+  if (hasRequired_baseFindIndex) return _baseFindIndex;
+  hasRequired_baseFindIndex = 1;
+  function baseFindIndex(array, predicate, fromIndex, fromRight) {
+    var length = array.length, index = fromIndex + (fromRight ? 1 : -1);
+    while (fromRight ? index-- : ++index < length) {
+      if (predicate(array[index], index, array)) {
+        return index;
+      }
+    }
+    return -1;
   }
-  return result;
+  _baseFindIndex = baseFindIndex;
+  return _baseFindIndex;
 }
-var _baseRange = baseRange$1;
-var isFunction = isFunction_1, isLength$1 = isLength_1;
-function isArrayLike$3(value) {
-  return value != null && isLength$1(value.length) && !isFunction(value);
+var _baseIsNaN;
+var hasRequired_baseIsNaN;
+function require_baseIsNaN() {
+  if (hasRequired_baseIsNaN) return _baseIsNaN;
+  hasRequired_baseIsNaN = 1;
+  function baseIsNaN(value) {
+    return value !== value;
+  }
+  _baseIsNaN = baseIsNaN;
+  return _baseIsNaN;
 }
-var isArrayLike_1 = isArrayLike$3;
-var eq$1 = eq_1, isArrayLike$2 = isArrayLike_1, isIndex$1 = _isIndex, isObject$2 = isObject_1;
-function isIterateeCall$1(value, index, object) {
-  if (!isObject$2(object)) {
+var _strictIndexOf;
+var hasRequired_strictIndexOf;
+function require_strictIndexOf() {
+  if (hasRequired_strictIndexOf) return _strictIndexOf;
+  hasRequired_strictIndexOf = 1;
+  function strictIndexOf(array, value, fromIndex) {
+    var index = fromIndex - 1, length = array.length;
+    while (++index < length) {
+      if (array[index] === value) {
+        return index;
+      }
+    }
+    return -1;
+  }
+  _strictIndexOf = strictIndexOf;
+  return _strictIndexOf;
+}
+var _baseIndexOf;
+var hasRequired_baseIndexOf;
+function require_baseIndexOf() {
+  if (hasRequired_baseIndexOf) return _baseIndexOf;
+  hasRequired_baseIndexOf = 1;
+  var baseFindIndex = require_baseFindIndex(), baseIsNaN = require_baseIsNaN(), strictIndexOf = require_strictIndexOf();
+  function baseIndexOf(array, value, fromIndex) {
+    return value === value ? strictIndexOf(array, value, fromIndex) : baseFindIndex(array, baseIsNaN, fromIndex);
+  }
+  _baseIndexOf = baseIndexOf;
+  return _baseIndexOf;
+}
+var _arrayIncludes;
+var hasRequired_arrayIncludes;
+function require_arrayIncludes() {
+  if (hasRequired_arrayIncludes) return _arrayIncludes;
+  hasRequired_arrayIncludes = 1;
+  var baseIndexOf = require_baseIndexOf();
+  function arrayIncludes(array, value) {
+    var length = array == null ? 0 : array.length;
+    return !!length && baseIndexOf(array, value, 0) > -1;
+  }
+  _arrayIncludes = arrayIncludes;
+  return _arrayIncludes;
+}
+var _arrayIncludesWith;
+var hasRequired_arrayIncludesWith;
+function require_arrayIncludesWith() {
+  if (hasRequired_arrayIncludesWith) return _arrayIncludesWith;
+  hasRequired_arrayIncludesWith = 1;
+  function arrayIncludesWith(array, value, comparator) {
+    var index = -1, length = array == null ? 0 : array.length;
+    while (++index < length) {
+      if (comparator(value, array[index])) {
+        return true;
+      }
+    }
     return false;
   }
-  var type = typeof index;
-  if (type == "number" ? isArrayLike$2(object) && isIndex$1(index, object.length) : type == "string" && index in object) {
-    return eq$1(object[index], value);
-  }
-  return false;
+  _arrayIncludesWith = arrayIncludesWith;
+  return _arrayIncludesWith;
 }
-var _isIterateeCall = isIterateeCall$1;
-var toNumber = toNumber_1;
-var INFINITY = 1 / 0, MAX_INTEGER = 17976931348623157e292;
-function toFinite$1(value) {
-  if (!value) {
-    return value === 0 ? value : 0;
+var _cacheHas;
+var hasRequired_cacheHas;
+function require_cacheHas() {
+  if (hasRequired_cacheHas) return _cacheHas;
+  hasRequired_cacheHas = 1;
+  function cacheHas(cache2, key) {
+    return cache2.has(key);
   }
-  value = toNumber(value);
-  if (value === INFINITY || value === -INFINITY) {
-    var sign = value < 0 ? -1 : 1;
-    return sign * MAX_INTEGER;
-  }
-  return value === value ? value : 0;
+  _cacheHas = cacheHas;
+  return _cacheHas;
 }
-var toFinite_1 = toFinite$1;
-var baseRange = _baseRange, isIterateeCall = _isIterateeCall, toFinite = toFinite_1;
-function createRange$1(fromRight) {
-  return function(start, end, step) {
-    if (step && typeof step != "number" && isIterateeCall(start, end, step)) {
-      end = step = void 0;
-    }
-    start = toFinite(start);
-    if (end === void 0) {
-      end = start;
-      start = 0;
-    } else {
-      end = toFinite(end);
-    }
-    step = step === void 0 ? start < end ? 1 : -1 : toFinite(step);
-    return baseRange(start, end, step, fromRight);
+var _Set;
+var hasRequired_Set;
+function require_Set() {
+  if (hasRequired_Set) return _Set;
+  hasRequired_Set = 1;
+  var getNative = require_getNative(), root = require_root();
+  var Set2 = getNative(root, "Set");
+  _Set = Set2;
+  return _Set;
+}
+var noop_1;
+var hasRequiredNoop;
+function requireNoop() {
+  if (hasRequiredNoop) return noop_1;
+  hasRequiredNoop = 1;
+  function noop2() {
+  }
+  noop_1 = noop2;
+  return noop_1;
+}
+var _setToArray;
+var hasRequired_setToArray;
+function require_setToArray() {
+  if (hasRequired_setToArray) return _setToArray;
+  hasRequired_setToArray = 1;
+  function setToArray(set) {
+    var index = -1, result = Array(set.size);
+    set.forEach(function(value) {
+      result[++index] = value;
+    });
+    return result;
+  }
+  _setToArray = setToArray;
+  return _setToArray;
+}
+var _createSet;
+var hasRequired_createSet;
+function require_createSet() {
+  if (hasRequired_createSet) return _createSet;
+  hasRequired_createSet = 1;
+  var Set2 = require_Set(), noop2 = requireNoop(), setToArray = require_setToArray();
+  var INFINITY = 1 / 0;
+  var createSet = !(Set2 && 1 / setToArray(new Set2([, -0]))[1] == INFINITY) ? noop2 : function(values) {
+    return new Set2(values);
   };
+  _createSet = createSet;
+  return _createSet;
 }
-var _createRange = createRange$1;
-var createRange = _createRange;
-var range = createRange();
-var range_1 = range;
-const range$1 = /* @__PURE__ */ getDefaultExportFromCjs(range_1);
+var _baseUniq;
+var hasRequired_baseUniq;
+function require_baseUniq() {
+  if (hasRequired_baseUniq) return _baseUniq;
+  hasRequired_baseUniq = 1;
+  var SetCache = require_SetCache(), arrayIncludes = require_arrayIncludes(), arrayIncludesWith = require_arrayIncludesWith(), cacheHas = require_cacheHas(), createSet = require_createSet(), setToArray = require_setToArray();
+  var LARGE_ARRAY_SIZE = 200;
+  function baseUniq(array, iteratee, comparator) {
+    var index = -1, includes = arrayIncludes, length = array.length, isCommon = true, result = [], seen = result;
+    if (comparator) {
+      isCommon = false;
+      includes = arrayIncludesWith;
+    } else if (length >= LARGE_ARRAY_SIZE) {
+      var set = iteratee ? null : createSet(array);
+      if (set) {
+        return setToArray(set);
+      }
+      isCommon = false;
+      includes = cacheHas;
+      seen = new SetCache();
+    } else {
+      seen = iteratee ? [] : result;
+    }
+    outer:
+      while (++index < length) {
+        var value = array[index], computed = iteratee ? iteratee(value) : value;
+        value = comparator || value !== 0 ? value : 0;
+        if (isCommon && computed === computed) {
+          var seenIndex = seen.length;
+          while (seenIndex--) {
+            if (seen[seenIndex] === computed) {
+              continue outer;
+            }
+          }
+          if (iteratee) {
+            seen.push(computed);
+          }
+          result.push(value);
+        } else if (!includes(seen, computed, comparator)) {
+          if (seen !== result) {
+            seen.push(computed);
+          }
+          result.push(value);
+        }
+      }
+    return result;
+  }
+  _baseUniq = baseUniq;
+  return _baseUniq;
+}
+var uniq_1;
+var hasRequiredUniq;
+function requireUniq() {
+  if (hasRequiredUniq) return uniq_1;
+  hasRequiredUniq = 1;
+  var baseUniq = require_baseUniq();
+  function uniq2(array) {
+    return array && array.length ? baseUniq(array) : [];
+  }
+  uniq_1 = uniq2;
+  return uniq_1;
+}
+var uniqExports = requireUniq();
+const uniq = /* @__PURE__ */ getDefaultExportFromCjs(uniqExports);
+var _arrayPush;
+var hasRequired_arrayPush;
+function require_arrayPush() {
+  if (hasRequired_arrayPush) return _arrayPush;
+  hasRequired_arrayPush = 1;
+  function arrayPush(array, values) {
+    var index = -1, length = values.length, offset = array.length;
+    while (++index < length) {
+      array[offset + index] = values[index];
+    }
+    return array;
+  }
+  _arrayPush = arrayPush;
+  return _arrayPush;
+}
+var _isFlattenable;
+var hasRequired_isFlattenable;
+function require_isFlattenable() {
+  if (hasRequired_isFlattenable) return _isFlattenable;
+  hasRequired_isFlattenable = 1;
+  var Symbol2 = require_Symbol(), isArguments = requireIsArguments(), isArray = requireIsArray();
+  var spreadableSymbol = Symbol2 ? Symbol2.isConcatSpreadable : void 0;
+  function isFlattenable(value) {
+    return isArray(value) || isArguments(value) || !!(spreadableSymbol && value && value[spreadableSymbol]);
+  }
+  _isFlattenable = isFlattenable;
+  return _isFlattenable;
+}
+var _baseFlatten;
+var hasRequired_baseFlatten;
+function require_baseFlatten() {
+  if (hasRequired_baseFlatten) return _baseFlatten;
+  hasRequired_baseFlatten = 1;
+  var arrayPush = require_arrayPush(), isFlattenable = require_isFlattenable();
+  function baseFlatten(array, depth, predicate, isStrict, result) {
+    var index = -1, length = array.length;
+    predicate || (predicate = isFlattenable);
+    result || (result = []);
+    while (++index < length) {
+      var value = array[index];
+      if (depth > 0 && predicate(value)) {
+        if (depth > 1) {
+          baseFlatten(value, depth - 1, predicate, isStrict, result);
+        } else {
+          arrayPush(result, value);
+        }
+      } else if (!isStrict) {
+        result[result.length] = value;
+      }
+    }
+    return result;
+  }
+  _baseFlatten = baseFlatten;
+  return _baseFlatten;
+}
+var flatten_1;
+var hasRequiredFlatten;
+function requireFlatten() {
+  if (hasRequiredFlatten) return flatten_1;
+  hasRequiredFlatten = 1;
+  var baseFlatten = require_baseFlatten();
+  function flatten2(array) {
+    var length = array == null ? 0 : array.length;
+    return length ? baseFlatten(array, 1) : [];
+  }
+  flatten_1 = flatten2;
+  return flatten_1;
+}
+var flattenExports = requireFlatten();
+const flatten = /* @__PURE__ */ getDefaultExportFromCjs(flattenExports);
+var _baseRange;
+var hasRequired_baseRange;
+function require_baseRange() {
+  if (hasRequired_baseRange) return _baseRange;
+  hasRequired_baseRange = 1;
+  var nativeCeil = Math.ceil, nativeMax = Math.max;
+  function baseRange(start, end, step, fromRight) {
+    var index = -1, length = nativeMax(nativeCeil((end - start) / (step || 1)), 0), result = Array(length);
+    while (length--) {
+      result[fromRight ? length : ++index] = start;
+      start += step;
+    }
+    return result;
+  }
+  _baseRange = baseRange;
+  return _baseRange;
+}
+var isArrayLike_1;
+var hasRequiredIsArrayLike;
+function requireIsArrayLike() {
+  if (hasRequiredIsArrayLike) return isArrayLike_1;
+  hasRequiredIsArrayLike = 1;
+  var isFunction = requireIsFunction(), isLength = requireIsLength();
+  function isArrayLike(value) {
+    return value != null && isLength(value.length) && !isFunction(value);
+  }
+  isArrayLike_1 = isArrayLike;
+  return isArrayLike_1;
+}
+var _isIterateeCall;
+var hasRequired_isIterateeCall;
+function require_isIterateeCall() {
+  if (hasRequired_isIterateeCall) return _isIterateeCall;
+  hasRequired_isIterateeCall = 1;
+  var eq = requireEq(), isArrayLike = requireIsArrayLike(), isIndex = require_isIndex(), isObject = requireIsObject();
+  function isIterateeCall(value, index, object) {
+    if (!isObject(object)) {
+      return false;
+    }
+    var type = typeof index;
+    if (type == "number" ? isArrayLike(object) && isIndex(index, object.length) : type == "string" && index in object) {
+      return eq(object[index], value);
+    }
+    return false;
+  }
+  _isIterateeCall = isIterateeCall;
+  return _isIterateeCall;
+}
+var toFinite_1;
+var hasRequiredToFinite;
+function requireToFinite() {
+  if (hasRequiredToFinite) return toFinite_1;
+  hasRequiredToFinite = 1;
+  var toNumber = requireToNumber();
+  var INFINITY = 1 / 0, MAX_INTEGER = 17976931348623157e292;
+  function toFinite(value) {
+    if (!value) {
+      return value === 0 ? value : 0;
+    }
+    value = toNumber(value);
+    if (value === INFINITY || value === -INFINITY) {
+      var sign = value < 0 ? -1 : 1;
+      return sign * MAX_INTEGER;
+    }
+    return value === value ? value : 0;
+  }
+  toFinite_1 = toFinite;
+  return toFinite_1;
+}
+var _createRange;
+var hasRequired_createRange;
+function require_createRange() {
+  if (hasRequired_createRange) return _createRange;
+  hasRequired_createRange = 1;
+  var baseRange = require_baseRange(), isIterateeCall = require_isIterateeCall(), toFinite = requireToFinite();
+  function createRange(fromRight) {
+    return function(start, end, step) {
+      if (step && typeof step != "number" && isIterateeCall(start, end, step)) {
+        end = step = void 0;
+      }
+      start = toFinite(start);
+      if (end === void 0) {
+        end = start;
+        start = 0;
+      } else {
+        end = toFinite(end);
+      }
+      step = step === void 0 ? start < end ? 1 : -1 : toFinite(step);
+      return baseRange(start, end, step, fromRight);
+    };
+  }
+  _createRange = createRange;
+  return _createRange;
+}
+var range_1;
+var hasRequiredRange;
+function requireRange() {
+  if (hasRequiredRange) return range_1;
+  hasRequiredRange = 1;
+  var createRange = require_createRange();
+  var range2 = createRange();
+  range_1 = range2;
+  return range_1;
+}
+var rangeExports = requireRange();
+const range = /* @__PURE__ */ getDefaultExportFromCjs(rangeExports);
 const iconHead = `<svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">`;
 const headerRowID = (props) => {
   const fg = props.fgColor;
@@ -3694,7 +8394,7 @@ class SpriteManager {
     this.inFlight = 0;
     this.headerIcons = headerIcons !== null && headerIcons !== void 0 ? headerIcons : {};
   }
-  drawSprite(sprite, variant, ctx, x, y, size, theme) {
+  drawSprite(sprite, variant, ctx, x2, y2, size, theme) {
     let alpha = arguments.length > 7 && arguments[7] !== void 0 ? arguments[7] : 1;
     const [bgColor, fgColor] = getColors(variant, theme);
     const rSize = size * Math.ceil(window.devicePixelRatio);
@@ -3727,7 +8427,7 @@ class SpriteManager {
       if (alpha < 1) {
         ctx.globalAlpha = alpha;
       }
-      ctx.drawImage(spriteCanvas, 0, 0, rSize, rSize, x, y, size, size);
+      ctx.drawImage(spriteCanvas, 0, 0, rSize, rSize, x2, y2, size, size);
       if (alpha < 1) {
         ctx.globalAlpha = 1;
       }
@@ -3744,43 +8444,43 @@ function getSkipPoint(drawRegions) {
 }
 function walkRowsInCol(startRow, drawY, height, rows, getRowHeight, freezeTrailingRows, hasAppendRow, skipToY, cb) {
   skipToY = skipToY !== null && skipToY !== void 0 ? skipToY : drawY;
-  let y = drawY;
+  let y2 = drawY;
   let row = startRow;
   const rowEnd = rows - freezeTrailingRows;
   let didBreak = false;
-  while (y < height && row < rowEnd) {
+  while (y2 < height && row < rowEnd) {
     const rh = getRowHeight(row);
-    if (y + rh > skipToY && cb(y, row, rh, false, hasAppendRow && row === rows - 1) === true) {
+    if (y2 + rh > skipToY && cb(y2, row, rh, false, hasAppendRow && row === rows - 1) === true) {
       didBreak = true;
       break;
     }
-    y += rh;
+    y2 += rh;
     row++;
   }
   if (didBreak) return;
-  y = height;
+  y2 = height;
   for (let fr = 0; fr < freezeTrailingRows; fr++) {
     row = rows - 1 - fr;
     const rh = getRowHeight(row);
-    y -= rh;
-    cb(y, row, rh, true, hasAppendRow && row === rows - 1);
+    y2 -= rh;
+    cb(y2, row, rh, true, hasAppendRow && row === rows - 1);
   }
 }
 function walkColumns(effectiveCols, cellYOffset, translateX, translateY, totalHeaderHeight, cb) {
-  let x = 0;
+  let x2 = 0;
   let clipX = 0;
   const drawY = totalHeaderHeight + translateY;
   for (const c of effectiveCols) {
-    const drawX = c.sticky ? clipX : x + translateX;
+    const drawX = c.sticky ? clipX : x2 + translateX;
     if (cb(c, drawX, drawY, c.sticky ? 0 : clipX, cellYOffset) === true) {
       break;
     }
-    x += c.width;
+    x2 += c.width;
     clipX += c.sticky ? c.width : 0;
   }
 }
 function walkGroups(effectiveCols, width, translateX, groupHeaderHeight, cb) {
-  let x = 0;
+  let x2 = 0;
   let clipX = 0;
   for (let index = 0; index < effectiveCols.length; index++) {
     const startCol = effectiveCols[index];
@@ -3799,11 +8499,11 @@ function walkGroups(effectiveCols, width, translateX, groupHeaderHeight, cb) {
       }
     }
     const t = startCol.sticky ? 0 : translateX;
-    const localX = x + t;
+    const localX = x2 + t;
     const delta = startCol.sticky ? 0 : Math.max(0, clipX - localX);
     const w2 = Math.min(boxWidth - delta, width - (localX + delta));
     cb([startCol.sourceIndex, effectiveCols[end - 1].sourceIndex], getGroupName(startCol.group), localX + delta, 0, w2, groupHeaderHeight);
-    x += boxWidth;
+    x2 += boxWidth;
   }
 }
 function walkMultiLevelGroups(effectiveCols, width, translateX, groupHeaderHeights, groupLevels, cb) {
@@ -3872,17 +8572,17 @@ function getSpanBounds(span, cellX, cellY, cellW, cellH, column, allColumns) {
   const [startCol, endCol] = span;
   let frozenRect;
   let contentRect;
-  const firstNonSticky = (_allColumns$find$sour = (_allColumns$find = allColumns.find((x) => !x.sticky)) === null || _allColumns$find === void 0 ? void 0 : _allColumns$find.sourceIndex) !== null && _allColumns$find$sour !== void 0 ? _allColumns$find$sour : 0;
+  const firstNonSticky = (_allColumns$find$sour = (_allColumns$find = allColumns.find((x2) => !x2.sticky)) === null || _allColumns$find === void 0 ? void 0 : _allColumns$find.sourceIndex) !== null && _allColumns$find$sour !== void 0 ? _allColumns$find$sour : 0;
   if (endCol > firstNonSticky) {
     const renderFromCol = Math.max(startCol, firstNonSticky);
     let tempX = cellX;
     let tempW = cellW;
-    for (let x = column.sourceIndex - 1; x >= renderFromCol; x--) {
-      tempX -= allColumns[x].width;
-      tempW += allColumns[x].width;
+    for (let x2 = column.sourceIndex - 1; x2 >= renderFromCol; x2--) {
+      tempX -= allColumns[x2].width;
+      tempW += allColumns[x2].width;
     }
-    for (let x = column.sourceIndex + 1; x <= endCol; x++) {
-      tempW += allColumns[x].width;
+    for (let x2 = column.sourceIndex + 1; x2 <= endCol; x2++) {
+      tempW += allColumns[x2].width;
     }
     contentRect = {
       x: tempX,
@@ -3895,12 +8595,12 @@ function getSpanBounds(span, cellX, cellY, cellW, cellH, column, allColumns) {
     const renderToCol = Math.min(endCol, firstNonSticky - 1);
     let tempX = cellX;
     let tempW = cellW;
-    for (let x = column.sourceIndex - 1; x >= startCol; x--) {
-      tempX -= allColumns[x].width;
-      tempW += allColumns[x].width;
+    for (let x2 = column.sourceIndex - 1; x2 >= startCol; x2--) {
+      tempX -= allColumns[x2].width;
+      tempW += allColumns[x2].width;
     }
-    for (let x = column.sourceIndex + 1; x <= renderToCol; x++) {
-      tempW += allColumns[x].width;
+    for (let x2 = column.sourceIndex + 1; x2 <= renderToCol; x2++) {
+      tempW += allColumns[x2].width;
     }
     frozenRect = {
       x: tempX,
@@ -3961,17 +8661,17 @@ function getClosestRect(rect, px, py, allowedDirections) {
 function intersectRect(x1, y1, w1, h1, x2, y2, w2, h2) {
   return x1 <= x2 + w2 && x2 <= x1 + w1 && y1 <= y2 + h2 && y2 <= y1 + h1;
 }
-function pointInRect(rect, x, y) {
-  return x >= rect.x && x <= rect.x + rect.width && y >= rect.y && y <= rect.y + rect.height;
+function pointInRect(rect, x2, y2) {
+  return x2 >= rect.x && x2 <= rect.x + rect.width && y2 >= rect.y && y2 <= rect.y + rect.height;
 }
 function combineRects(a, b2) {
-  const x = Math.min(a.x, b2.x);
-  const y = Math.min(a.y, b2.y);
-  const width = Math.max(a.x + a.width, b2.x + b2.width) - x;
-  const height = Math.max(a.y + a.height, b2.y + b2.height) - y;
+  const x2 = Math.min(a.x, b2.x);
+  const y2 = Math.min(a.y, b2.y);
+  const width = Math.max(a.x + a.width, b2.x + b2.width) - x2;
+  const height = Math.max(a.y + a.height, b2.y + b2.height) - y2;
   return {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width,
     height
   };
@@ -4026,16 +8726,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
   const isOverCenterHoriz = inY >= tSplit && inY < bSplit || inBottom > tSplit && inBottom <= bSplit || inY < tSplit && inBottom > bSplit;
   const isOverCenter = isOverCenterVert && isOverCenterHoriz;
   if (isOverCenter) {
-    const x = Math.max(inX, lSplit);
-    const y = Math.max(inY, tSplit);
+    const x2 = Math.max(inX, lSplit);
+    const y2 = Math.max(inY, tSplit);
     const right = Math.min(inRight, rSplit);
     const bottom = Math.min(inBottom, bSplit);
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: lClip,
@@ -4046,16 +8746,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverLeft && isOverTop) {
-    const x = inX;
-    const y = inY;
+    const x2 = inX;
+    const y2 = inY;
     const right = Math.min(inRight, lSplit);
     const bottom = Math.min(inBottom, tSplit);
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: 0,
@@ -4066,16 +8766,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverTop && isOverCenterVert) {
-    const x = Math.max(inX, lSplit);
-    const y = inY;
+    const x2 = Math.max(inX, lSplit);
+    const y2 = inY;
     const right = Math.min(inRight, rSplit);
     const bottom = Math.min(inBottom, tSplit);
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: lClip,
@@ -4086,16 +8786,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverTop && isOverRight) {
-    const x = Math.max(inX, rSplit);
-    const y = inY;
+    const x2 = Math.max(inX, rSplit);
+    const y2 = inY;
     const right = inRight;
     const bottom = Math.min(inBottom, tSplit);
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: rClip,
@@ -4106,16 +8806,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverLeft && isOverCenterHoriz) {
-    const x = inX;
-    const y = Math.max(inY, tSplit);
+    const x2 = inX;
+    const y2 = Math.max(inY, tSplit);
     const right = Math.min(inRight, lSplit);
     const bottom = Math.min(inBottom, bSplit);
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: 0,
@@ -4126,16 +8826,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverRight && isOverCenterHoriz) {
-    const x = Math.max(inX, rSplit);
-    const y = Math.max(inY, tSplit);
+    const x2 = Math.max(inX, rSplit);
+    const y2 = Math.max(inY, tSplit);
     const right = inRight;
     const bottom = Math.min(inBottom, bSplit);
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: rClip,
@@ -4146,16 +8846,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverLeft && isOverBottom) {
-    const x = inX;
-    const y = Math.max(inY, bSplit);
+    const x2 = inX;
+    const y2 = Math.max(inY, bSplit);
     const right = Math.min(inRight, lSplit);
     const bottom = inBottom;
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: 0,
@@ -4166,16 +8866,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverBottom && isOverCenterVert) {
-    const x = Math.max(inX, lSplit);
-    const y = Math.max(inY, bSplit);
+    const x2 = Math.max(inX, lSplit);
+    const y2 = Math.max(inY, bSplit);
     const right = Math.min(inRight, rSplit);
     const bottom = inBottom;
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: lClip,
@@ -4186,16 +8886,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverRight && isOverBottom) {
-    const x = Math.max(inX, rSplit);
-    const y = Math.max(inY, bSplit);
+    const x2 = Math.max(inX, rSplit);
+    const y2 = Math.max(inY, bSplit);
     const right = inRight;
     const bottom = inBottom;
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: rClip,
@@ -4509,7 +9209,7 @@ let animationFrameRequested = false;
 function animRequest() {
   animationFrameRequested = true;
 }
-function drawCell(ctx, cell, col, row, isLastCol, isLastRow, x, y, w2, h, highlighted, theme, finalCellFillColor, imageLoader, spriteManager, hoverAmount, hoverInfo, hyperWrapping, frameTime, drawCellCallback, lastPrep, enqueue, renderStateProvider, getCellRenderer, overrideCursor, vtrans) {
+function drawCell(ctx, cell, col, row, isLastCol, isLastRow, x2, y2, w2, h, highlighted, theme, finalCellFillColor, imageLoader, spriteManager, hoverAmount, hoverInfo, hyperWrapping, frameTime, drawCellCallback, lastPrep, enqueue, renderStateProvider, getCellRenderer, overrideCursor, vtrans) {
   let hoverX;
   let hoverY;
   if (hoverInfo !== void 0 && hoverInfo[0][0] === col && hoverInfo[0][1] === row) {
@@ -4519,8 +9219,8 @@ function drawCell(ctx, cell, col, row, isLastCol, isLastRow, x, y, w2, h, highli
   let result = void 0;
   allocatedItem[0] = col;
   allocatedItem[1] = row;
-  reusableRect.x = x;
-  reusableRect.y = y;
+  reusableRect.x = x2;
+  reusableRect.y = y2;
   reusableRect.width = w2;
   reusableRect.height = h;
   drawState[0] = renderStateProvider.getValue(allocatedItem);
@@ -4574,7 +9274,7 @@ function drawCell(ctx, cell, col, row, isLastCol, isLastRow, x, y, w2, h, highli
   if (needsAnim || animationFrameRequested) enqueue === null || enqueue === void 0 || enqueue(allocatedItem);
   return result;
 }
-function drawCheckbox(ctx, theme, checked, x, y, width, height, highlighted) {
+function drawCheckbox(ctx, theme, checked, x2, y2, width, height, highlighted) {
   var _theme$roundingRadius;
   let hoverX = arguments.length > 8 && arguments[8] !== void 0 ? arguments[8] : -20;
   let hoverY = arguments.length > 9 && arguments[9] !== void 0 ? arguments[9] : -20;
@@ -4582,13 +9282,13 @@ function drawCheckbox(ctx, theme, checked, x, y, width, height, highlighted) {
   let alignment = arguments.length > 11 && arguments[11] !== void 0 ? arguments[11] : "center";
   let style = arguments.length > 12 && arguments[12] !== void 0 ? arguments[12] : "square";
   let disabled = arguments.length > 13 && arguments[13] !== void 0 ? arguments[13] : false;
-  const centerY = Math.floor(y + height / 2);
+  const centerY = Math.floor(y2 + height / 2);
   const rectBordRadius = style === "circle" ? 1e4 : (_theme$roundingRadius = theme.roundingRadius) !== null && _theme$roundingRadius !== void 0 ? _theme$roundingRadius : 4;
   let checkBoxWidth = getSquareWidth(maxSize !== null && maxSize !== void 0 ? maxSize : theme.checkboxMaxSize, height, theme.cellVerticalPadding);
   let checkBoxHalfWidth = checkBoxWidth / 2;
-  const posX = getSquareXPosFromAlign(alignment, x, width, theme.cellHorizontalPadding, checkBoxWidth);
+  const posX = getSquareXPosFromAlign(alignment, x2, width, theme.cellHorizontalPadding, checkBoxWidth);
   const bb = getSquareBB(posX, centerY, checkBoxWidth);
-  const hovered = pointIsWithinBB(x + hoverX, y + hoverY, bb);
+  const hovered = pointIsWithinBB(x2 + hoverX, y2 + hoverY, bb);
   switch (checked) {
     case true: {
       ctx.beginPath();
@@ -4660,13 +9360,13 @@ function drawGridHeaders(ctx, effectiveCols, allColumns, enableGroups, hovered, 
   const hPosY = hovered === null || hovered === void 0 || (_hovered$4 = hovered[1]) === null || _hovered$4 === void 0 ? void 0 : _hovered$4[1];
   const font = outerTheme.headerFontFull;
   ctx.font = font;
-  walkColumns(effectiveCols, 0, translateX, 0, totalHeaderHeight, (c, x, _y, clipX) => {
+  walkColumns(effectiveCols, 0, translateX, 0, totalHeaderHeight, (c, x2, _y, clipX) => {
     var _hoverValues$find$hov, _hoverValues$find;
     if (damage !== void 0 && !damage.has([c.sourceIndex, -1])) return;
-    const diff = Math.max(0, clipX - x);
+    const diff = Math.max(0, clipX - x2);
     ctx.save();
     ctx.beginPath();
-    ctx.rect(x + diff, totalGroupHeaderHeight, c.width - diff, headerHeight);
+    ctx.rect(x2 + diff, totalGroupHeaderHeight, c.width - diff, headerHeight);
     ctx.clip();
     const groupTheme = getGroupDetails(getGroupName(c.group)).overrideTheme;
     const theme = c.themeOverride === void 0 && groupTheme === void 0 ? outerTheme : mergeAndRealizeTheme(outerTheme, groupTheme, c.themeOverride);
@@ -4683,14 +9383,14 @@ function drawGridHeaders(ctx, effectiveCols, allColumns, enableGroups, hovered, 
     const hover = noHover ? 0 : (_hoverValues$find$hov = (_hoverValues$find = hoverValues.find((s) => s.item[0] === c.sourceIndex && s.item[1] === -1)) === null || _hoverValues$find === void 0 ? void 0 : _hoverValues$find.hoverAmount) !== null && _hoverValues$find$hov !== void 0 ? _hoverValues$find$hov : 0;
     const hasSelectedCell = (selection === null || selection === void 0 ? void 0 : selection.current) !== void 0 && selection.current.cell[0] === c.sourceIndex;
     const bgFillStyle = selected ? theme.accentColor : hasSelectedCell ? theme.bgHeaderHasFocus : theme.bgHeader;
-    const y = enableGroups ? totalGroupHeaderHeight : 0;
+    const y2 = enableGroups ? totalGroupHeaderHeight : 0;
     const xOffset = c.sourceIndex === 0 ? 0 : 1;
     if (selected) {
       ctx.fillStyle = bgFillStyle;
-      ctx.fillRect(x + xOffset, y, c.width - xOffset, headerHeight);
+      ctx.fillRect(x2 + xOffset, y2, c.width - xOffset, headerHeight);
     } else if (hasSelectedCell || hover > 0) {
       ctx.beginPath();
-      ctx.rect(x + xOffset, y, c.width - xOffset, headerHeight);
+      ctx.rect(x2 + xOffset, y2, c.width - xOffset, headerHeight);
       if (hasSelectedCell) {
         ctx.fillStyle = theme.bgHeaderHasFocus;
         ctx.fill();
@@ -4702,7 +9402,7 @@ function drawGridHeaders(ctx, effectiveCols, allColumns, enableGroups, hovered, 
         ctx.globalAlpha = 1;
       }
     }
-    drawHeader(ctx, x, y, c.width, headerHeight, c, selected, theme, hoveredBoolean, hoveredBoolean ? hPosX : void 0, hoveredBoolean ? hPosY : void 0, hasSelectedCell, hover, spriteManager, drawHeaderCallback, touchMode);
+    drawHeader(ctx, x2, y2, c.width, headerHeight, c, selected, theme, hoveredBoolean, hoveredBoolean ? hPosX : void 0, hoveredBoolean ? hPosY : void 0, hasSelectedCell, hover, spriteManager, drawHeaderCallback, touchMode);
     ctx.restore();
   });
   if (enableGroups) {
@@ -4725,7 +9425,7 @@ function drawGroups(ctx, effectiveCols, width, translateX, groupHeaderHeight, ho
   var _hovered$5;
   const [hCol, hRow] = (_hovered$5 = hovered === null || hovered === void 0 ? void 0 : hovered[0]) !== null && _hovered$5 !== void 0 ? _hovered$5 : [];
   let finalX = 0;
-  walkGroups(effectiveCols, width, translateX, groupHeaderHeight, (span, groupName, x, y, w2, h) => {
+  walkGroups(effectiveCols, width, translateX, groupHeaderHeight, (span, groupName, x2, y2, w2, h) => {
     var _groupTheme$bgGroupHe, _groupTheme$bgGroupHe2, _groupTheme$textGroup;
     if (damage !== void 0 && !damage.hasItemInRectangle({
       x: span[0],
@@ -4735,7 +9435,7 @@ function drawGroups(ctx, effectiveCols, width, translateX, groupHeaderHeight, ho
     })) return;
     ctx.save();
     ctx.beginPath();
-    ctx.rect(x, y, w2, h);
+    ctx.rect(x2, y2, w2, h);
     ctx.clip();
     const group = getGroupDetails(groupName);
     const groupTheme = (group === null || group === void 0 ? void 0 : group.overrideTheme) === void 0 ? theme : mergeAndRealizeTheme(theme, group.overrideTheme);
@@ -4752,7 +9452,7 @@ function drawGroups(ctx, effectiveCols, width, translateX, groupHeaderHeight, ho
       const textWidth = textMetrics.width;
       const iconWidth = group.icon !== void 0 ? 26 : 0;
       const totalContentWidth = iconWidth + textWidth;
-      const centerX = x + (w2 - totalContentWidth) / 2;
+      const centerX = x2 + (w2 - totalContentWidth) / 2;
       if (group.icon !== void 0) {
         spriteManager.drawSprite(group.icon, "normal", ctx, centerX, (groupHeaderHeight - 20) / 2, 20, groupTheme);
       }
@@ -4760,14 +9460,14 @@ function drawGroups(ctx, effectiveCols, width, translateX, groupHeaderHeight, ho
       if (group.actions !== void 0 && isHovered) {
         var _hovered$6;
         const actionBoxes = getActionBoundsForGroup({
-          x,
-          y,
+          x: x2,
+          y: y2,
           width: w2,
           height: h
         }, group.actions);
         ctx.beginPath();
         const fadeStartX = actionBoxes[0].x - 10;
-        const fadeWidth = x + w2 - fadeStartX;
+        const fadeWidth = x2 + w2 - fadeStartX;
         ctx.rect(fadeStartX, 0, fadeWidth, groupHeaderHeight);
         const grad = ctx.createLinearGradient(fadeStartX, 0, fadeStartX + fadeWidth, 0);
         const trans = withAlpha(fillColor, 0);
@@ -4781,7 +9481,7 @@ function drawGroups(ctx, effectiveCols, width, translateX, groupHeaderHeight, ho
         for (let i = 0; i < group.actions.length; i++) {
           const action = group.actions[i];
           const box = actionBoxes[i];
-          const actionHovered = pointInRect(box, mouseX + x, mouseY);
+          const actionHovered = pointInRect(box, mouseX + x2, mouseY);
           if (actionHovered) {
             ctx.globalAlpha = 1;
           }
@@ -4793,16 +9493,16 @@ function drawGroups(ctx, effectiveCols, width, translateX, groupHeaderHeight, ho
         ctx.globalAlpha = 1;
       }
     }
-    if (x !== 0 && verticalBorder(span[0])) {
+    if (x2 !== 0 && verticalBorder(span[0])) {
       ctx.beginPath();
-      ctx.moveTo(x + 0.5, 0);
-      ctx.lineTo(x + 0.5, groupHeaderHeight);
+      ctx.moveTo(x2 + 0.5, 0);
+      ctx.lineTo(x2 + 0.5, groupHeaderHeight);
       ctx.strokeStyle = theme.borderColor;
       ctx.lineWidth = 1;
       ctx.stroke();
     }
     ctx.restore();
-    finalX = x + w2;
+    finalX = x2 + w2;
   });
   ctx.beginPath();
   ctx.moveTo(finalX + 0.5, 0);
@@ -4823,7 +9523,7 @@ function drawMultiLevelGroups(ctx, effectiveCols, width, translateX, groupHeader
     ctx.fillRect(0, 0, width, totalGroupHeaderHeight);
   }
   let finalX = 0;
-  walkMultiLevelGroups(effectiveCols, width, translateX, groupHeaderHeights, groupLevels, (span, groupName, x, y, w2, h, level) => {
+  walkMultiLevelGroups(effectiveCols, width, translateX, groupHeaderHeights, groupLevels, (span, groupName, x2, y2, w2, h, level) => {
     var _groupTheme$bgGroupHe3, _groupTheme$bgGroupHe4, _groupTheme$textGroup2, _group$name;
     const damageRow = -(level + 2);
     if (damage !== void 0 && !damage.hasItemInRectangle({
@@ -4834,37 +9534,37 @@ function drawMultiLevelGroups(ctx, effectiveCols, width, translateX, groupHeader
     })) return;
     ctx.save();
     ctx.beginPath();
-    ctx.rect(x, y, w2, h);
+    ctx.rect(x2, y2, w2, h);
     ctx.clip();
     const group = getGroupDetails(groupName);
     const groupTheme = (group === null || group === void 0 ? void 0 : group.overrideTheme) === void 0 ? theme : mergeAndRealizeTheme(theme, group.overrideTheme);
     const isHovered = hRow === damageRow && hCol !== void 0 && hCol >= span[0] && hCol <= span[1];
     const fillColor = isHovered ? (_groupTheme$bgGroupHe3 = groupTheme.bgGroupHeaderHovered) !== null && _groupTheme$bgGroupHe3 !== void 0 ? _groupTheme$bgGroupHe3 : groupTheme.bgHeaderHovered : (_groupTheme$bgGroupHe4 = groupTheme.bgGroupHeader) !== null && _groupTheme$bgGroupHe4 !== void 0 ? _groupTheme$bgGroupHe4 : groupTheme.bgHeader;
     ctx.fillStyle = fillColor;
-    ctx.fillRect(x, y, w2, h);
+    ctx.fillRect(x2, y2, w2, h);
     ctx.fillStyle = (_groupTheme$textGroup2 = groupTheme.textGroupHeader) !== null && _groupTheme$textGroup2 !== void 0 ? _groupTheme$textGroup2 : groupTheme.textHeader;
     const displayName = (_group$name = group === null || group === void 0 ? void 0 : group.name) !== null && _group$name !== void 0 ? _group$name : groupName;
     const textMetrics = ctx.measureText(displayName);
     const textWidth = textMetrics.width;
     const iconWidth = (group === null || group === void 0 ? void 0 : group.icon) !== void 0 ? 26 : 0;
     const totalContentWidth = iconWidth + textWidth;
-    const centerX = x + (w2 - totalContentWidth) / 2;
+    const centerX = x2 + (w2 - totalContentWidth) / 2;
     if ((group === null || group === void 0 ? void 0 : group.icon) !== void 0) {
-      spriteManager.drawSprite(group.icon, "normal", ctx, centerX, y + (h - 20) / 2, 20, groupTheme);
+      spriteManager.drawSprite(group.icon, "normal", ctx, centerX, y2 + (h - 20) / 2, 20, groupTheme);
     }
-    ctx.fillText(displayName, centerX + iconWidth, y + h / 2 + getMiddleCenterBias(ctx, theme.headerFontFull));
+    ctx.fillText(displayName, centerX + iconWidth, y2 + h / 2 + getMiddleCenterBias(ctx, theme.headerFontFull));
     if (group !== void 0 && group.actions !== void 0 && isHovered) {
       var _hovered$8;
       const actionBoxes = getActionBoundsForGroup({
-        x,
-        y,
+        x: x2,
+        y: y2,
         width: w2,
         height: h
       }, group.actions);
       ctx.beginPath();
       const fadeStartX = actionBoxes[0].x - 10;
-      const fadeWidth = x + w2 - fadeStartX;
-      ctx.rect(fadeStartX, y, fadeWidth, h);
+      const fadeWidth = x2 + w2 - fadeStartX;
+      ctx.rect(fadeStartX, y2, fadeWidth, h);
       const grad = ctx.createLinearGradient(fadeStartX, 0, fadeStartX + fadeWidth, 0);
       const trans = withAlpha(fillColor, 0);
       grad.addColorStop(0, trans);
@@ -4877,7 +9577,7 @@ function drawMultiLevelGroups(ctx, effectiveCols, width, translateX, groupHeader
       for (let i = 0; i < group.actions.length; i++) {
         const action = group.actions[i];
         const box = actionBoxes[i];
-        const actionHovered = pointInRect(box, mouseX + x, mouseY);
+        const actionHovered = pointInRect(box, mouseX + x2, mouseY);
         if (actionHovered) {
           ctx.globalAlpha = 1;
         }
@@ -4890,20 +9590,20 @@ function drawMultiLevelGroups(ctx, effectiveCols, width, translateX, groupHeader
     }
     ctx.strokeStyle = theme.borderColor;
     ctx.lineWidth = 1;
-    if (x !== 0 && verticalBorder(span[0])) {
+    if (x2 !== 0 && verticalBorder(span[0])) {
       ctx.beginPath();
-      ctx.moveTo(x + 0.5, y);
-      ctx.lineTo(x + 0.5, y + h);
+      ctx.moveTo(x2 + 0.5, y2);
+      ctx.lineTo(x2 + 0.5, y2 + h);
       ctx.stroke();
     }
     if (level < groupLevels - 1 || damage === void 0) {
       ctx.beginPath();
-      ctx.moveTo(x, y + h + 0.5);
-      ctx.lineTo(x + w2, y + h + 0.5);
+      ctx.moveTo(x2, y2 + h + 0.5);
+      ctx.lineTo(x2 + w2, y2 + h + 0.5);
       ctx.stroke();
     }
     ctx.restore();
-    finalX = Math.max(finalX, x + w2);
+    finalX = Math.max(finalX, x2 + w2);
   });
   if (damage === void 0) {
     ctx.beginPath();
@@ -4921,28 +9621,28 @@ function drawMultiLevelGroups(ctx, effectiveCols, width, translateX, groupHeader
   }
 }
 const menuButtonSize = 30;
-function getHeaderMenuBounds(x, y, width, height, isRtl) {
+function getHeaderMenuBounds(x2, y2, width, height, isRtl) {
   return {
-    x: x + width - menuButtonSize,
-    y: Math.max(y, y + height / 2 - menuButtonSize / 2),
+    x: x2 + width - menuButtonSize,
+    y: Math.max(y2, y2 + height / 2 - menuButtonSize / 2),
     width: menuButtonSize,
     height: Math.min(menuButtonSize, height)
   };
 }
 function getActionBoundsForGroup(box, actions) {
   const result = [];
-  let x = box.x + box.width - 26 * actions.length;
-  const y = box.y + box.height / 2 - 13;
+  let x2 = box.x + box.width - 26 * actions.length;
+  const y2 = box.y + box.height / 2 - 13;
   const height = 26;
   const width = 26;
   for (let i = 0; i < actions.length; i++) {
     result.push({
-      x,
-      y,
+      x: x2,
+      y: y2,
       width,
       height
     });
-    x += 26;
+    x2 += 26;
   }
   return result;
 }
@@ -4951,18 +9651,18 @@ function flipHorizontal(toFlip, mirrorX, isRTL) {
   toFlip.x = mirrorX - (toFlip.x - mirrorX) - toFlip.width;
   return toFlip;
 }
-function computeHeaderLayout(ctx, c, x, y, width, height, theme, isRTL) {
+function computeHeaderLayout(ctx, c, x2, y2, width, height, theme, isRTL) {
   var _getMeasuredTextCache, _getMeasuredTextCache2;
   const xPad = theme.cellHorizontalPadding;
   const headerIconSize = theme.headerIconSize;
-  const menuBounds = getHeaderMenuBounds(x, y, width, height);
+  const menuBounds = getHeaderMenuBounds(x2, y2, width, height);
   const textWidth = ctx === void 0 ? (_getMeasuredTextCache = (_getMeasuredTextCache2 = getMeasuredTextCache(c.title, theme.headerFontFull)) === null || _getMeasuredTextCache2 === void 0 ? void 0 : _getMeasuredTextCache2.width) !== null && _getMeasuredTextCache !== void 0 ? _getMeasuredTextCache : 0 : measureTextCached(c.title, ctx, theme.headerFontFull).width;
   const iconAreaWidth = c.icon !== void 0 ? Math.ceil(headerIconSize * 1.3) : 0;
   const coreContentWidth = iconAreaWidth + textWidth;
-  const centerStartX = x + Math.max(xPad, (width - coreContentWidth) / 2);
+  const centerStartX = x2 + Math.max(xPad, (width - coreContentWidth) / 2);
   const iconBounds = c.icon === void 0 ? void 0 : {
     x: centerStartX,
-    y: y + (height - headerIconSize) / 2,
+    y: y2 + (height - headerIconSize) / 2,
     width: headerIconSize,
     height: headerIconSize
   };
@@ -4974,7 +9674,7 @@ function computeHeaderLayout(ctx, c, x, y, width, height, theme, isRTL) {
   };
   const textBounds = {
     x: centerStartX + iconAreaWidth,
-    y,
+    y: y2,
     width: textWidth,
     height
   };
@@ -4982,12 +9682,12 @@ function computeHeaderLayout(ctx, c, x, y, width, height, theme, isRTL) {
   if (c.indicatorIcon !== void 0) {
     indicatorIconBounds = {
       x: textBounds.x + textWidth + xPad,
-      y: y + (height - headerIconSize) / 2,
+      y: y2 + (height - headerIconSize) / 2,
       width: headerIconSize,
       height: headerIconSize
     };
   }
-  const mirrorPoint = x + width / 2;
+  const mirrorPoint = x2 + width / 2;
   return {
     menuBounds: flipHorizontal(menuBounds, mirrorPoint, isRTL),
     iconBounds: flipHorizontal(iconBounds, mirrorPoint, isRTL),
@@ -4996,14 +9696,14 @@ function computeHeaderLayout(ctx, c, x, y, width, height, theme, isRTL) {
     indicatorIconBounds: flipHorizontal(indicatorIconBounds, mirrorPoint, isRTL)
   };
 }
-function drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered, posX, posY, hoverAmount, spriteManager, touchMode, isRtl, headerLayout) {
+function drawHeaderInner(ctx, x2, y2, width, height, c, selected, theme, isHovered, posX, posY, hoverAmount, spriteManager, touchMode, isRtl, headerLayout) {
   if (c.rowMarker !== void 0 && c.headerRowMarkerDisabled !== true) {
     const checked = c.rowMarkerChecked;
     if (checked !== true && c.headerRowMarkerAlwaysVisible !== true) {
       ctx.globalAlpha = hoverAmount;
     }
     const markerTheme = c.headerRowMarkerTheme !== void 0 ? mergeAndRealizeTheme(theme, c.headerRowMarkerTheme) : theme;
-    drawCheckbox(ctx, markerTheme, checked, x, y, width, height, false, void 0, void 0, theme.checkboxMaxSize, "center", c.rowMarker);
+    drawCheckbox(ctx, markerTheme, checked, x2, y2, width, height, false, void 0, void 0, theme.checkboxMaxSize, "center", c.rowMarker);
     if (checked !== true && c.headerRowMarkerAlwaysVisible !== true) {
       ctx.globalAlpha = 1;
     }
@@ -5027,7 +9727,7 @@ function drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered
     const fadeEnd = isRtl ? fadeWidth * 0.7 : width - fadeWidth * 0.7;
     const fadeStartPercent = fadeStart / width;
     const fadeEndPercent = fadeEnd / width;
-    const grad = ctx.createLinearGradient(x, 0, x + width, 0);
+    const grad = ctx.createLinearGradient(x2, 0, x2 + width, 0);
     const trans = withAlpha(fillStyle, 0);
     grad.addColorStop(isRtl ? 1 : 0, fillStyle);
     grad.addColorStop(fadeStartPercent, fillStyle);
@@ -5041,7 +9741,7 @@ function drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered
     ctx.textAlign = "right";
   }
   if (headerLayout.textBounds !== void 0) {
-    ctx.fillText(c.title, isRtl ? headerLayout.textBounds.x + headerLayout.textBounds.width : headerLayout.textBounds.x, y + height / 2 + getMiddleCenterBias(ctx, theme.headerFontFull));
+    ctx.fillText(c.title, isRtl ? headerLayout.textBounds.x + headerLayout.textBounds.width : headerLayout.textBounds.x, y2 + height / 2 + getMiddleCenterBias(ctx, theme.headerFontFull));
   }
   if (isRtl) {
     ctx.textAlign = "left";
@@ -5055,7 +9755,7 @@ function drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered
   }
   if (shouldDrawMenu && headerLayout.menuBounds !== void 0) {
     const menuBounds = headerLayout.menuBounds;
-    const hovered = posX !== void 0 && posY !== void 0 && pointInRect(menuBounds, posX + x, posY + y);
+    const hovered = posX !== void 0 && posY !== void 0 && pointInRect(menuBounds, posX + x2, posY + y2);
     if (!hovered) {
       ctx.globalAlpha = 0.7;
     }
@@ -5092,17 +9792,17 @@ function drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered
     }
   }
 }
-function drawHeader(ctx, x, y, width, height, c, selected, theme, isHovered, posX, posY, hasSelectedCell, hoverAmount, spriteManager, drawHeaderCallback, touchMode) {
+function drawHeader(ctx, x2, y2, width, height, c, selected, theme, isHovered, posX, posY, hasSelectedCell, hoverAmount, spriteManager, drawHeaderCallback, touchMode) {
   const isRtl = direction(c.title) === "rtl";
-  const headerLayout = computeHeaderLayout(ctx, c, x, y, width, height, theme, isRtl);
+  const headerLayout = computeHeaderLayout(ctx, c, x2, y2, width, height, theme, isRtl);
   if (drawHeaderCallback !== void 0) {
     var _headerLayout$menuBou;
     drawHeaderCallback({
       ctx,
       theme,
       rect: {
-        x,
-        y,
+        x: x2,
+        y: y2,
         width,
         height
       },
@@ -5121,725 +9821,1156 @@ function drawHeader(ctx, x, y, width, height, c, selected, theme, isHovered, pos
       },
       hoverX: posX,
       hoverY: posY
-    }, () => drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered, posX, posY, hoverAmount, spriteManager, touchMode, isRtl, headerLayout));
+    }, () => drawHeaderInner(ctx, x2, y2, width, height, c, selected, theme, isHovered, posX, posY, hoverAmount, spriteManager, touchMode, isRtl, headerLayout));
   } else {
-    drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered, posX, posY, hoverAmount, spriteManager, touchMode, isRtl, headerLayout);
+    drawHeaderInner(ctx, x2, y2, width, height, c, selected, theme, isHovered, posX, posY, hoverAmount, spriteManager, touchMode, isRtl, headerLayout);
   }
 }
-var getNative$3 = _getNative;
-var defineProperty$1 = function() {
-  try {
-    var func = getNative$3(Object, "defineProperty");
-    func({}, "", {});
-    return func;
-  } catch (e) {
-  }
-}();
-var _defineProperty = defineProperty$1;
-var defineProperty = _defineProperty;
-function baseAssignValue$1(object, key, value) {
-  if (key == "__proto__" && defineProperty) {
-    defineProperty(object, key, {
-      "configurable": true,
-      "enumerable": true,
-      "value": value,
-      "writable": true
-    });
-  } else {
-    object[key] = value;
-  }
-}
-var _baseAssignValue = baseAssignValue$1;
-function arrayAggregator$1(array, setter, iteratee, accumulator) {
-  var index = -1, length = array == null ? 0 : array.length;
-  while (++index < length) {
-    var value = array[index];
-    setter(accumulator, value, iteratee(value), array);
-  }
-  return accumulator;
-}
-var _arrayAggregator = arrayAggregator$1;
-function createBaseFor$1(fromRight) {
-  return function(object, iteratee, keysFunc) {
-    var index = -1, iterable = Object(object), props = keysFunc(object), length = props.length;
-    while (length--) {
-      var key = props[fromRight ? length : ++index];
-      if (iteratee(iterable[key], key, iterable) === false) {
-        break;
-      }
-    }
-    return object;
-  };
-}
-var _createBaseFor = createBaseFor$1;
-var createBaseFor = _createBaseFor;
-var baseFor$1 = createBaseFor();
-var _baseFor = baseFor$1;
-function baseTimes$1(n, iteratee) {
-  var index = -1, result = Array(n);
-  while (++index < n) {
-    result[index] = iteratee(index);
-  }
-  return result;
-}
-var _baseTimes = baseTimes$1;
-var isBuffer$2 = { exports: {} };
-function stubFalse() {
-  return false;
-}
-var stubFalse_1 = stubFalse;
-isBuffer$2.exports;
-(function(module, exports) {
-  var root2 = _root, stubFalse2 = stubFalse_1;
-  var freeExports = exports && !exports.nodeType && exports;
-  var freeModule = freeExports && true && module && !module.nodeType && module;
-  var moduleExports = freeModule && freeModule.exports === freeExports;
-  var Buffer = moduleExports ? root2.Buffer : void 0;
-  var nativeIsBuffer = Buffer ? Buffer.isBuffer : void 0;
-  var isBuffer2 = nativeIsBuffer || stubFalse2;
-  module.exports = isBuffer2;
-})(isBuffer$2, isBuffer$2.exports);
-var isBufferExports = isBuffer$2.exports;
-var baseGetTag$1 = _baseGetTag, isLength = isLength_1, isObjectLike$1 = isObjectLike_1;
-var argsTag$1 = "[object Arguments]", arrayTag$1 = "[object Array]", boolTag$1 = "[object Boolean]", dateTag$1 = "[object Date]", errorTag$1 = "[object Error]", funcTag = "[object Function]", mapTag$2 = "[object Map]", numberTag$1 = "[object Number]", objectTag$2 = "[object Object]", regexpTag$1 = "[object RegExp]", setTag$2 = "[object Set]", stringTag$1 = "[object String]", weakMapTag$1 = "[object WeakMap]";
-var arrayBufferTag$1 = "[object ArrayBuffer]", dataViewTag$2 = "[object DataView]", float32Tag = "[object Float32Array]", float64Tag = "[object Float64Array]", int8Tag = "[object Int8Array]", int16Tag = "[object Int16Array]", int32Tag = "[object Int32Array]", uint8Tag = "[object Uint8Array]", uint8ClampedTag = "[object Uint8ClampedArray]", uint16Tag = "[object Uint16Array]", uint32Tag = "[object Uint32Array]";
-var typedArrayTags = {};
-typedArrayTags[float32Tag] = typedArrayTags[float64Tag] = typedArrayTags[int8Tag] = typedArrayTags[int16Tag] = typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] = typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] = typedArrayTags[uint32Tag] = true;
-typedArrayTags[argsTag$1] = typedArrayTags[arrayTag$1] = typedArrayTags[arrayBufferTag$1] = typedArrayTags[boolTag$1] = typedArrayTags[dataViewTag$2] = typedArrayTags[dateTag$1] = typedArrayTags[errorTag$1] = typedArrayTags[funcTag] = typedArrayTags[mapTag$2] = typedArrayTags[numberTag$1] = typedArrayTags[objectTag$2] = typedArrayTags[regexpTag$1] = typedArrayTags[setTag$2] = typedArrayTags[stringTag$1] = typedArrayTags[weakMapTag$1] = false;
-function baseIsTypedArray$1(value) {
-  return isObjectLike$1(value) && isLength(value.length) && !!typedArrayTags[baseGetTag$1(value)];
-}
-var _baseIsTypedArray = baseIsTypedArray$1;
-function baseUnary$1(func) {
-  return function(value) {
-    return func(value);
-  };
-}
-var _baseUnary = baseUnary$1;
-var _nodeUtil = { exports: {} };
-_nodeUtil.exports;
-(function(module, exports) {
-  var freeGlobal2 = _freeGlobal;
-  var freeExports = exports && !exports.nodeType && exports;
-  var freeModule = freeExports && true && module && !module.nodeType && module;
-  var moduleExports = freeModule && freeModule.exports === freeExports;
-  var freeProcess = moduleExports && freeGlobal2.process;
-  var nodeUtil2 = function() {
+var _defineProperty;
+var hasRequired_defineProperty;
+function require_defineProperty() {
+  if (hasRequired_defineProperty) return _defineProperty;
+  hasRequired_defineProperty = 1;
+  var getNative = require_getNative();
+  var defineProperty = (function() {
     try {
-      var types = freeModule && freeModule.require && freeModule.require("util").types;
-      if (types) {
-        return types;
-      }
-      return freeProcess && freeProcess.binding && freeProcess.binding("util");
+      var func = getNative(Object, "defineProperty");
+      func({}, "", {});
+      return func;
     } catch (e) {
     }
-  }();
-  module.exports = nodeUtil2;
-})(_nodeUtil, _nodeUtil.exports);
-var _nodeUtilExports = _nodeUtil.exports;
-var baseIsTypedArray = _baseIsTypedArray, baseUnary = _baseUnary, nodeUtil = _nodeUtilExports;
-var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
-var isTypedArray$2 = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
-var isTypedArray_1 = isTypedArray$2;
-var baseTimes = _baseTimes, isArguments = isArguments_1, isArray$4 = isArray_1, isBuffer$1 = isBufferExports, isIndex = _isIndex, isTypedArray$1 = isTypedArray_1;
-var objectProto$6 = Object.prototype;
-var hasOwnProperty$4 = objectProto$6.hasOwnProperty;
-function arrayLikeKeys$1(value, inherited) {
-  var isArr = isArray$4(value), isArg = !isArr && isArguments(value), isBuff = !isArr && !isArg && isBuffer$1(value), isType = !isArr && !isArg && !isBuff && isTypedArray$1(value), skipIndexes = isArr || isArg || isBuff || isType, result = skipIndexes ? baseTimes(value.length, String) : [], length = result.length;
-  for (var key in value) {
-    if ((inherited || hasOwnProperty$4.call(value, key)) && !(skipIndexes && // Safari 9 has enumerable `arguments.length` in strict mode.
-    (key == "length" || // Node.js 0.10 has enumerable non-index properties on buffers.
-    isBuff && (key == "offset" || key == "parent") || // PhantomJS 2 has enumerable non-index properties on typed arrays.
-    isType && (key == "buffer" || key == "byteLength" || key == "byteOffset") || // Skip index properties.
-    isIndex(key, length)))) {
-      result.push(key);
+  })();
+  _defineProperty = defineProperty;
+  return _defineProperty;
+}
+var _baseAssignValue;
+var hasRequired_baseAssignValue;
+function require_baseAssignValue() {
+  if (hasRequired_baseAssignValue) return _baseAssignValue;
+  hasRequired_baseAssignValue = 1;
+  var defineProperty = require_defineProperty();
+  function baseAssignValue(object, key, value) {
+    if (key == "__proto__" && defineProperty) {
+      defineProperty(object, key, {
+        "configurable": true,
+        "enumerable": true,
+        "value": value,
+        "writable": true
+      });
+    } else {
+      object[key] = value;
     }
   }
-  return result;
+  _baseAssignValue = baseAssignValue;
+  return _baseAssignValue;
 }
-var _arrayLikeKeys = arrayLikeKeys$1;
-var objectProto$5 = Object.prototype;
-function isPrototype$1(value) {
-  var Ctor = value && value.constructor, proto = typeof Ctor == "function" && Ctor.prototype || objectProto$5;
-  return value === proto;
-}
-var _isPrototype = isPrototype$1;
-function overArg$1(func, transform) {
-  return function(arg) {
-    return func(transform(arg));
-  };
-}
-var _overArg = overArg$1;
-var overArg = _overArg;
-var nativeKeys$1 = overArg(Object.keys, Object);
-var _nativeKeys = nativeKeys$1;
-var isPrototype = _isPrototype, nativeKeys = _nativeKeys;
-var objectProto$4 = Object.prototype;
-var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
-function baseKeys$1(object) {
-  if (!isPrototype(object)) {
-    return nativeKeys(object);
+var _arrayAggregator;
+var hasRequired_arrayAggregator;
+function require_arrayAggregator() {
+  if (hasRequired_arrayAggregator) return _arrayAggregator;
+  hasRequired_arrayAggregator = 1;
+  function arrayAggregator(array, setter, iteratee, accumulator) {
+    var index = -1, length = array == null ? 0 : array.length;
+    while (++index < length) {
+      var value = array[index];
+      setter(accumulator, value, iteratee(value), array);
+    }
+    return accumulator;
   }
-  var result = [];
-  for (var key in Object(object)) {
-    if (hasOwnProperty$3.call(object, key) && key != "constructor") {
-      result.push(key);
-    }
-  }
-  return result;
+  _arrayAggregator = arrayAggregator;
+  return _arrayAggregator;
 }
-var _baseKeys = baseKeys$1;
-var arrayLikeKeys = _arrayLikeKeys, baseKeys = _baseKeys, isArrayLike$1 = isArrayLike_1;
-function keys$3(object) {
-  return isArrayLike$1(object) ? arrayLikeKeys(object) : baseKeys(object);
-}
-var keys_1 = keys$3;
-var baseFor = _baseFor, keys$2 = keys_1;
-function baseForOwn$1(object, iteratee) {
-  return object && baseFor(object, iteratee, keys$2);
-}
-var _baseForOwn = baseForOwn$1;
-var isArrayLike = isArrayLike_1;
-function createBaseEach$1(eachFunc, fromRight) {
-  return function(collection, iteratee) {
-    if (collection == null) {
-      return collection;
-    }
-    if (!isArrayLike(collection)) {
-      return eachFunc(collection, iteratee);
-    }
-    var length = collection.length, index = fromRight ? length : -1, iterable = Object(collection);
-    while (fromRight ? index-- : ++index < length) {
-      if (iteratee(iterable[index], index, iterable) === false) {
-        break;
-      }
-    }
-    return collection;
-  };
-}
-var _createBaseEach = createBaseEach$1;
-var baseForOwn = _baseForOwn, createBaseEach = _createBaseEach;
-var baseEach$1 = createBaseEach(baseForOwn);
-var _baseEach = baseEach$1;
-var baseEach = _baseEach;
-function baseAggregator$1(collection, setter, iteratee, accumulator) {
-  baseEach(collection, function(value, key, collection2) {
-    setter(accumulator, value, iteratee(value), collection2);
-  });
-  return accumulator;
-}
-var _baseAggregator = baseAggregator$1;
-var ListCache$2 = _ListCache;
-function stackClear$1() {
-  this.__data__ = new ListCache$2();
-  this.size = 0;
-}
-var _stackClear = stackClear$1;
-function stackDelete$1(key) {
-  var data = this.__data__, result = data["delete"](key);
-  this.size = data.size;
-  return result;
-}
-var _stackDelete = stackDelete$1;
-function stackGet$1(key) {
-  return this.__data__.get(key);
-}
-var _stackGet = stackGet$1;
-function stackHas$1(key) {
-  return this.__data__.has(key);
-}
-var _stackHas = stackHas$1;
-var ListCache$1 = _ListCache, Map$2 = _Map, MapCache = _MapCache;
-var LARGE_ARRAY_SIZE = 200;
-function stackSet$1(key, value) {
-  var data = this.__data__;
-  if (data instanceof ListCache$1) {
-    var pairs = data.__data__;
-    if (!Map$2 || pairs.length < LARGE_ARRAY_SIZE - 1) {
-      pairs.push([key, value]);
-      this.size = ++data.size;
-      return this;
-    }
-    data = this.__data__ = new MapCache(pairs);
-  }
-  data.set(key, value);
-  this.size = data.size;
-  return this;
-}
-var _stackSet = stackSet$1;
-var ListCache = _ListCache, stackClear = _stackClear, stackDelete = _stackDelete, stackGet = _stackGet, stackHas = _stackHas, stackSet = _stackSet;
-function Stack$2(entries) {
-  var data = this.__data__ = new ListCache(entries);
-  this.size = data.size;
-}
-Stack$2.prototype.clear = stackClear;
-Stack$2.prototype["delete"] = stackDelete;
-Stack$2.prototype.get = stackGet;
-Stack$2.prototype.has = stackHas;
-Stack$2.prototype.set = stackSet;
-var _Stack = Stack$2;
-function arraySome$1(array, predicate) {
-  var index = -1, length = array == null ? 0 : array.length;
-  while (++index < length) {
-    if (predicate(array[index], index, array)) {
-      return true;
-    }
-  }
-  return false;
-}
-var _arraySome = arraySome$1;
-var SetCache = _SetCache, arraySome = _arraySome, cacheHas = _cacheHas;
-var COMPARE_PARTIAL_FLAG$5 = 1, COMPARE_UNORDERED_FLAG$3 = 2;
-function equalArrays$2(array, other, bitmask, customizer, equalFunc, stack) {
-  var isPartial = bitmask & COMPARE_PARTIAL_FLAG$5, arrLength = array.length, othLength = other.length;
-  if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
-    return false;
-  }
-  var arrStacked = stack.get(array);
-  var othStacked = stack.get(other);
-  if (arrStacked && othStacked) {
-    return arrStacked == other && othStacked == array;
-  }
-  var index = -1, result = true, seen = bitmask & COMPARE_UNORDERED_FLAG$3 ? new SetCache() : void 0;
-  stack.set(array, other);
-  stack.set(other, array);
-  while (++index < arrLength) {
-    var arrValue = array[index], othValue = other[index];
-    if (customizer) {
-      var compared = isPartial ? customizer(othValue, arrValue, index, other, array, stack) : customizer(arrValue, othValue, index, array, other, stack);
-    }
-    if (compared !== void 0) {
-      if (compared) {
-        continue;
-      }
-      result = false;
-      break;
-    }
-    if (seen) {
-      if (!arraySome(other, function(othValue2, othIndex) {
-        if (!cacheHas(seen, othIndex) && (arrValue === othValue2 || equalFunc(arrValue, othValue2, bitmask, customizer, stack))) {
-          return seen.push(othIndex);
+var _createBaseFor;
+var hasRequired_createBaseFor;
+function require_createBaseFor() {
+  if (hasRequired_createBaseFor) return _createBaseFor;
+  hasRequired_createBaseFor = 1;
+  function createBaseFor(fromRight) {
+    return function(object, iteratee, keysFunc) {
+      var index = -1, iterable = Object(object), props = keysFunc(object), length = props.length;
+      while (length--) {
+        var key = props[fromRight ? length : ++index];
+        if (iteratee(iterable[key], key, iterable) === false) {
+          break;
         }
-      })) {
-        result = false;
-        break;
       }
-    } else if (!(arrValue === othValue || equalFunc(arrValue, othValue, bitmask, customizer, stack))) {
-      result = false;
-      break;
+      return object;
+    };
+  }
+  _createBaseFor = createBaseFor;
+  return _createBaseFor;
+}
+var _baseFor;
+var hasRequired_baseFor;
+function require_baseFor() {
+  if (hasRequired_baseFor) return _baseFor;
+  hasRequired_baseFor = 1;
+  var createBaseFor = require_createBaseFor();
+  var baseFor = createBaseFor();
+  _baseFor = baseFor;
+  return _baseFor;
+}
+var _baseTimes;
+var hasRequired_baseTimes;
+function require_baseTimes() {
+  if (hasRequired_baseTimes) return _baseTimes;
+  hasRequired_baseTimes = 1;
+  function baseTimes(n, iteratee) {
+    var index = -1, result = Array(n);
+    while (++index < n) {
+      result[index] = iteratee(index);
     }
+    return result;
   }
-  stack["delete"](array);
-  stack["delete"](other);
-  return result;
+  _baseTimes = baseTimes;
+  return _baseTimes;
 }
-var _equalArrays = equalArrays$2;
-var root$3 = _root;
-var Uint8Array$1 = root$3.Uint8Array;
-var _Uint8Array = Uint8Array$1;
-function mapToArray$1(map) {
-  var index = -1, result = Array(map.size);
-  map.forEach(function(value, key) {
-    result[++index] = [key, value];
-  });
-  return result;
-}
-var _mapToArray = mapToArray$1;
-var Symbol$1 = _Symbol, Uint8Array = _Uint8Array, eq = eq_1, equalArrays$1 = _equalArrays, mapToArray = _mapToArray, setToArray = _setToArray;
-var COMPARE_PARTIAL_FLAG$4 = 1, COMPARE_UNORDERED_FLAG$2 = 2;
-var boolTag = "[object Boolean]", dateTag = "[object Date]", errorTag = "[object Error]", mapTag$1 = "[object Map]", numberTag = "[object Number]", regexpTag = "[object RegExp]", setTag$1 = "[object Set]", stringTag = "[object String]", symbolTag = "[object Symbol]";
-var arrayBufferTag = "[object ArrayBuffer]", dataViewTag$1 = "[object DataView]";
-var symbolProto = Symbol$1 ? Symbol$1.prototype : void 0, symbolValueOf = symbolProto ? symbolProto.valueOf : void 0;
-function equalByTag$1(object, other, tag, bitmask, customizer, equalFunc, stack) {
-  switch (tag) {
-    case dataViewTag$1:
-      if (object.byteLength != other.byteLength || object.byteOffset != other.byteOffset) {
-        return false;
-      }
-      object = object.buffer;
-      other = other.buffer;
-    case arrayBufferTag:
-      if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array(object), new Uint8Array(other))) {
-        return false;
-      }
-      return true;
-    case boolTag:
-    case dateTag:
-    case numberTag:
-      return eq(+object, +other);
-    case errorTag:
-      return object.name == other.name && object.message == other.message;
-    case regexpTag:
-    case stringTag:
-      return object == other + "";
-    case mapTag$1:
-      var convert = mapToArray;
-    case setTag$1:
-      var isPartial = bitmask & COMPARE_PARTIAL_FLAG$4;
-      convert || (convert = setToArray);
-      if (object.size != other.size && !isPartial) {
-        return false;
-      }
-      var stacked = stack.get(object);
-      if (stacked) {
-        return stacked == other;
-      }
-      bitmask |= COMPARE_UNORDERED_FLAG$2;
-      stack.set(object, other);
-      var result = equalArrays$1(convert(object), convert(other), bitmask, customizer, equalFunc, stack);
-      stack["delete"](object);
-      return result;
-    case symbolTag:
-      if (symbolValueOf) {
-        return symbolValueOf.call(object) == symbolValueOf.call(other);
-      }
-  }
-  return false;
-}
-var _equalByTag = equalByTag$1;
-var arrayPush = _arrayPush, isArray$3 = isArray_1;
-function baseGetAllKeys$1(object, keysFunc, symbolsFunc) {
-  var result = keysFunc(object);
-  return isArray$3(object) ? result : arrayPush(result, symbolsFunc(object));
-}
-var _baseGetAllKeys = baseGetAllKeys$1;
-function arrayFilter$1(array, predicate) {
-  var index = -1, length = array == null ? 0 : array.length, resIndex = 0, result = [];
-  while (++index < length) {
-    var value = array[index];
-    if (predicate(value, index, array)) {
-      result[resIndex++] = value;
-    }
-  }
-  return result;
-}
-var _arrayFilter = arrayFilter$1;
-function stubArray$1() {
-  return [];
-}
-var stubArray_1 = stubArray$1;
-var arrayFilter = _arrayFilter, stubArray = stubArray_1;
-var objectProto$3 = Object.prototype;
-var propertyIsEnumerable = objectProto$3.propertyIsEnumerable;
-var nativeGetSymbols = Object.getOwnPropertySymbols;
-var getSymbols$1 = !nativeGetSymbols ? stubArray : function(object) {
-  if (object == null) {
-    return [];
-  }
-  object = Object(object);
-  return arrayFilter(nativeGetSymbols(object), function(symbol) {
-    return propertyIsEnumerable.call(object, symbol);
-  });
-};
-var _getSymbols = getSymbols$1;
-var baseGetAllKeys = _baseGetAllKeys, getSymbols = _getSymbols, keys$1 = keys_1;
-function getAllKeys$1(object) {
-  return baseGetAllKeys(object, keys$1, getSymbols);
-}
-var _getAllKeys = getAllKeys$1;
-var getAllKeys = _getAllKeys;
-var COMPARE_PARTIAL_FLAG$3 = 1;
-var objectProto$2 = Object.prototype;
-var hasOwnProperty$2 = objectProto$2.hasOwnProperty;
-function equalObjects$1(object, other, bitmask, customizer, equalFunc, stack) {
-  var isPartial = bitmask & COMPARE_PARTIAL_FLAG$3, objProps = getAllKeys(object), objLength = objProps.length, othProps = getAllKeys(other), othLength = othProps.length;
-  if (objLength != othLength && !isPartial) {
+var isBuffer = { exports: {} };
+var stubFalse_1;
+var hasRequiredStubFalse;
+function requireStubFalse() {
+  if (hasRequiredStubFalse) return stubFalse_1;
+  hasRequiredStubFalse = 1;
+  function stubFalse() {
     return false;
   }
-  var index = objLength;
-  while (index--) {
-    var key = objProps[index];
-    if (!(isPartial ? key in other : hasOwnProperty$2.call(other, key))) {
-      return false;
-    }
-  }
-  var objStacked = stack.get(object);
-  var othStacked = stack.get(other);
-  if (objStacked && othStacked) {
-    return objStacked == other && othStacked == object;
-  }
-  var result = true;
-  stack.set(object, other);
-  stack.set(other, object);
-  var skipCtor = isPartial;
-  while (++index < objLength) {
-    key = objProps[index];
-    var objValue = object[key], othValue = other[key];
-    if (customizer) {
-      var compared = isPartial ? customizer(othValue, objValue, key, other, object, stack) : customizer(objValue, othValue, key, object, other, stack);
-    }
-    if (!(compared === void 0 ? objValue === othValue || equalFunc(objValue, othValue, bitmask, customizer, stack) : compared)) {
-      result = false;
-      break;
-    }
-    skipCtor || (skipCtor = key == "constructor");
-  }
-  if (result && !skipCtor) {
-    var objCtor = object.constructor, othCtor = other.constructor;
-    if (objCtor != othCtor && ("constructor" in object && "constructor" in other) && !(typeof objCtor == "function" && objCtor instanceof objCtor && typeof othCtor == "function" && othCtor instanceof othCtor)) {
-      result = false;
-    }
-  }
-  stack["delete"](object);
-  stack["delete"](other);
-  return result;
+  stubFalse_1 = stubFalse;
+  return stubFalse_1;
 }
-var _equalObjects = equalObjects$1;
-var getNative$2 = _getNative, root$2 = _root;
-var DataView$1 = getNative$2(root$2, "DataView");
-var _DataView = DataView$1;
-var getNative$1 = _getNative, root$1 = _root;
-var Promise$2 = getNative$1(root$1, "Promise");
-var _Promise = Promise$2;
-var getNative = _getNative, root = _root;
-var WeakMap$1 = getNative(root, "WeakMap");
-var _WeakMap = WeakMap$1;
-var DataView = _DataView, Map$1 = _Map, Promise$1 = _Promise, Set$1 = _Set, WeakMap = _WeakMap, baseGetTag = _baseGetTag, toSource = _toSource;
-var mapTag = "[object Map]", objectTag$1 = "[object Object]", promiseTag = "[object Promise]", setTag = "[object Set]", weakMapTag = "[object WeakMap]";
-var dataViewTag = "[object DataView]";
-var dataViewCtorString = toSource(DataView), mapCtorString = toSource(Map$1), promiseCtorString = toSource(Promise$1), setCtorString = toSource(Set$1), weakMapCtorString = toSource(WeakMap);
-var getTag$1 = baseGetTag;
-if (DataView && getTag$1(new DataView(new ArrayBuffer(1))) != dataViewTag || Map$1 && getTag$1(new Map$1()) != mapTag || Promise$1 && getTag$1(Promise$1.resolve()) != promiseTag || Set$1 && getTag$1(new Set$1()) != setTag || WeakMap && getTag$1(new WeakMap()) != weakMapTag) {
-  getTag$1 = function(value) {
-    var result = baseGetTag(value), Ctor = result == objectTag$1 ? value.constructor : void 0, ctorString = Ctor ? toSource(Ctor) : "";
-    if (ctorString) {
-      switch (ctorString) {
-        case dataViewCtorString:
-          return dataViewTag;
-        case mapCtorString:
-          return mapTag;
-        case promiseCtorString:
-          return promiseTag;
-        case setCtorString:
-          return setTag;
-        case weakMapCtorString:
-          return weakMapTag;
+isBuffer.exports;
+var hasRequiredIsBuffer;
+function requireIsBuffer() {
+  if (hasRequiredIsBuffer) return isBuffer.exports;
+  hasRequiredIsBuffer = 1;
+  (function(module, exports$1) {
+    var root = require_root(), stubFalse = requireStubFalse();
+    var freeExports = exports$1 && !exports$1.nodeType && exports$1;
+    var freeModule = freeExports && true && module && !module.nodeType && module;
+    var moduleExports = freeModule && freeModule.exports === freeExports;
+    var Buffer = moduleExports ? root.Buffer : void 0;
+    var nativeIsBuffer = Buffer ? Buffer.isBuffer : void 0;
+    var isBuffer2 = nativeIsBuffer || stubFalse;
+    module.exports = isBuffer2;
+  })(isBuffer, isBuffer.exports);
+  return isBuffer.exports;
+}
+var _baseIsTypedArray;
+var hasRequired_baseIsTypedArray;
+function require_baseIsTypedArray() {
+  if (hasRequired_baseIsTypedArray) return _baseIsTypedArray;
+  hasRequired_baseIsTypedArray = 1;
+  var baseGetTag = require_baseGetTag(), isLength = requireIsLength(), isObjectLike = requireIsObjectLike();
+  var argsTag = "[object Arguments]", arrayTag = "[object Array]", boolTag = "[object Boolean]", dateTag = "[object Date]", errorTag = "[object Error]", funcTag = "[object Function]", mapTag = "[object Map]", numberTag = "[object Number]", objectTag = "[object Object]", regexpTag = "[object RegExp]", setTag = "[object Set]", stringTag = "[object String]", weakMapTag = "[object WeakMap]";
+  var arrayBufferTag = "[object ArrayBuffer]", dataViewTag = "[object DataView]", float32Tag = "[object Float32Array]", float64Tag = "[object Float64Array]", int8Tag = "[object Int8Array]", int16Tag = "[object Int16Array]", int32Tag = "[object Int32Array]", uint8Tag = "[object Uint8Array]", uint8ClampedTag = "[object Uint8ClampedArray]", uint16Tag = "[object Uint16Array]", uint32Tag = "[object Uint32Array]";
+  var typedArrayTags = {};
+  typedArrayTags[float32Tag] = typedArrayTags[float64Tag] = typedArrayTags[int8Tag] = typedArrayTags[int16Tag] = typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] = typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] = typedArrayTags[uint32Tag] = true;
+  typedArrayTags[argsTag] = typedArrayTags[arrayTag] = typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] = typedArrayTags[dataViewTag] = typedArrayTags[dateTag] = typedArrayTags[errorTag] = typedArrayTags[funcTag] = typedArrayTags[mapTag] = typedArrayTags[numberTag] = typedArrayTags[objectTag] = typedArrayTags[regexpTag] = typedArrayTags[setTag] = typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
+  function baseIsTypedArray(value) {
+    return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[baseGetTag(value)];
+  }
+  _baseIsTypedArray = baseIsTypedArray;
+  return _baseIsTypedArray;
+}
+var _baseUnary;
+var hasRequired_baseUnary;
+function require_baseUnary() {
+  if (hasRequired_baseUnary) return _baseUnary;
+  hasRequired_baseUnary = 1;
+  function baseUnary(func) {
+    return function(value) {
+      return func(value);
+    };
+  }
+  _baseUnary = baseUnary;
+  return _baseUnary;
+}
+var _nodeUtil = { exports: {} };
+_nodeUtil.exports;
+var hasRequired_nodeUtil;
+function require_nodeUtil() {
+  if (hasRequired_nodeUtil) return _nodeUtil.exports;
+  hasRequired_nodeUtil = 1;
+  (function(module, exports$1) {
+    var freeGlobal = require_freeGlobal();
+    var freeExports = exports$1 && !exports$1.nodeType && exports$1;
+    var freeModule = freeExports && true && module && !module.nodeType && module;
+    var moduleExports = freeModule && freeModule.exports === freeExports;
+    var freeProcess = moduleExports && freeGlobal.process;
+    var nodeUtil = (function() {
+      try {
+        var types2 = freeModule && freeModule.require && freeModule.require("util").types;
+        if (types2) {
+          return types2;
+        }
+        return freeProcess && freeProcess.binding && freeProcess.binding("util");
+      } catch (e) {
+      }
+    })();
+    module.exports = nodeUtil;
+  })(_nodeUtil, _nodeUtil.exports);
+  return _nodeUtil.exports;
+}
+var isTypedArray_1;
+var hasRequiredIsTypedArray;
+function requireIsTypedArray() {
+  if (hasRequiredIsTypedArray) return isTypedArray_1;
+  hasRequiredIsTypedArray = 1;
+  var baseIsTypedArray = require_baseIsTypedArray(), baseUnary = require_baseUnary(), nodeUtil = require_nodeUtil();
+  var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
+  var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
+  isTypedArray_1 = isTypedArray;
+  return isTypedArray_1;
+}
+var _arrayLikeKeys;
+var hasRequired_arrayLikeKeys;
+function require_arrayLikeKeys() {
+  if (hasRequired_arrayLikeKeys) return _arrayLikeKeys;
+  hasRequired_arrayLikeKeys = 1;
+  var baseTimes = require_baseTimes(), isArguments = requireIsArguments(), isArray = requireIsArray(), isBuffer2 = requireIsBuffer(), isIndex = require_isIndex(), isTypedArray = requireIsTypedArray();
+  var objectProto = Object.prototype;
+  var hasOwnProperty = objectProto.hasOwnProperty;
+  function arrayLikeKeys(value, inherited) {
+    var isArr = isArray(value), isArg = !isArr && isArguments(value), isBuff = !isArr && !isArg && isBuffer2(value), isType = !isArr && !isArg && !isBuff && isTypedArray(value), skipIndexes = isArr || isArg || isBuff || isType, result = skipIndexes ? baseTimes(value.length, String) : [], length = result.length;
+    for (var key in value) {
+      if ((inherited || hasOwnProperty.call(value, key)) && !(skipIndexes && // Safari 9 has enumerable `arguments.length` in strict mode.
+      (key == "length" || // Node.js 0.10 has enumerable non-index properties on buffers.
+      isBuff && (key == "offset" || key == "parent") || // PhantomJS 2 has enumerable non-index properties on typed arrays.
+      isType && (key == "buffer" || key == "byteLength" || key == "byteOffset") || // Skip index properties.
+      isIndex(key, length)))) {
+        result.push(key);
       }
     }
     return result;
-  };
+  }
+  _arrayLikeKeys = arrayLikeKeys;
+  return _arrayLikeKeys;
 }
-var _getTag = getTag$1;
-var Stack$1 = _Stack, equalArrays = _equalArrays, equalByTag = _equalByTag, equalObjects = _equalObjects, getTag = _getTag, isArray$2 = isArray_1, isBuffer = isBufferExports, isTypedArray = isTypedArray_1;
-var COMPARE_PARTIAL_FLAG$2 = 1;
-var argsTag = "[object Arguments]", arrayTag = "[object Array]", objectTag = "[object Object]";
-var objectProto$1 = Object.prototype;
-var hasOwnProperty$1 = objectProto$1.hasOwnProperty;
-function baseIsEqualDeep$1(object, other, bitmask, customizer, equalFunc, stack) {
-  var objIsArr = isArray$2(object), othIsArr = isArray$2(other), objTag = objIsArr ? arrayTag : getTag(object), othTag = othIsArr ? arrayTag : getTag(other);
-  objTag = objTag == argsTag ? objectTag : objTag;
-  othTag = othTag == argsTag ? objectTag : othTag;
-  var objIsObj = objTag == objectTag, othIsObj = othTag == objectTag, isSameTag = objTag == othTag;
-  if (isSameTag && isBuffer(object)) {
-    if (!isBuffer(other)) {
-      return false;
+var _isPrototype;
+var hasRequired_isPrototype;
+function require_isPrototype() {
+  if (hasRequired_isPrototype) return _isPrototype;
+  hasRequired_isPrototype = 1;
+  var objectProto = Object.prototype;
+  function isPrototype(value) {
+    var Ctor = value && value.constructor, proto = typeof Ctor == "function" && Ctor.prototype || objectProto;
+    return value === proto;
+  }
+  _isPrototype = isPrototype;
+  return _isPrototype;
+}
+var _overArg;
+var hasRequired_overArg;
+function require_overArg() {
+  if (hasRequired_overArg) return _overArg;
+  hasRequired_overArg = 1;
+  function overArg(func, transform) {
+    return function(arg) {
+      return func(transform(arg));
+    };
+  }
+  _overArg = overArg;
+  return _overArg;
+}
+var _nativeKeys;
+var hasRequired_nativeKeys;
+function require_nativeKeys() {
+  if (hasRequired_nativeKeys) return _nativeKeys;
+  hasRequired_nativeKeys = 1;
+  var overArg = require_overArg();
+  var nativeKeys = overArg(Object.keys, Object);
+  _nativeKeys = nativeKeys;
+  return _nativeKeys;
+}
+var _baseKeys;
+var hasRequired_baseKeys;
+function require_baseKeys() {
+  if (hasRequired_baseKeys) return _baseKeys;
+  hasRequired_baseKeys = 1;
+  var isPrototype = require_isPrototype(), nativeKeys = require_nativeKeys();
+  var objectProto = Object.prototype;
+  var hasOwnProperty = objectProto.hasOwnProperty;
+  function baseKeys(object) {
+    if (!isPrototype(object)) {
+      return nativeKeys(object);
     }
-    objIsArr = true;
-    objIsObj = false;
-  }
-  if (isSameTag && !objIsObj) {
-    stack || (stack = new Stack$1());
-    return objIsArr || isTypedArray(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
-  }
-  if (!(bitmask & COMPARE_PARTIAL_FLAG$2)) {
-    var objIsWrapped = objIsObj && hasOwnProperty$1.call(object, "__wrapped__"), othIsWrapped = othIsObj && hasOwnProperty$1.call(other, "__wrapped__");
-    if (objIsWrapped || othIsWrapped) {
-      var objUnwrapped = objIsWrapped ? object.value() : object, othUnwrapped = othIsWrapped ? other.value() : other;
-      stack || (stack = new Stack$1());
-      return equalFunc(objUnwrapped, othUnwrapped, bitmask, customizer, stack);
+    var result = [];
+    for (var key in Object(object)) {
+      if (hasOwnProperty.call(object, key) && key != "constructor") {
+        result.push(key);
+      }
     }
+    return result;
   }
-  if (!isSameTag) {
+  _baseKeys = baseKeys;
+  return _baseKeys;
+}
+var keys_1;
+var hasRequiredKeys;
+function requireKeys() {
+  if (hasRequiredKeys) return keys_1;
+  hasRequiredKeys = 1;
+  var arrayLikeKeys = require_arrayLikeKeys(), baseKeys = require_baseKeys(), isArrayLike = requireIsArrayLike();
+  function keys(object) {
+    return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+  }
+  keys_1 = keys;
+  return keys_1;
+}
+var _baseForOwn;
+var hasRequired_baseForOwn;
+function require_baseForOwn() {
+  if (hasRequired_baseForOwn) return _baseForOwn;
+  hasRequired_baseForOwn = 1;
+  var baseFor = require_baseFor(), keys = requireKeys();
+  function baseForOwn(object, iteratee) {
+    return object && baseFor(object, iteratee, keys);
+  }
+  _baseForOwn = baseForOwn;
+  return _baseForOwn;
+}
+var _createBaseEach;
+var hasRequired_createBaseEach;
+function require_createBaseEach() {
+  if (hasRequired_createBaseEach) return _createBaseEach;
+  hasRequired_createBaseEach = 1;
+  var isArrayLike = requireIsArrayLike();
+  function createBaseEach(eachFunc, fromRight) {
+    return function(collection, iteratee) {
+      if (collection == null) {
+        return collection;
+      }
+      if (!isArrayLike(collection)) {
+        return eachFunc(collection, iteratee);
+      }
+      var length = collection.length, index = fromRight ? length : -1, iterable = Object(collection);
+      while (fromRight ? index-- : ++index < length) {
+        if (iteratee(iterable[index], index, iterable) === false) {
+          break;
+        }
+      }
+      return collection;
+    };
+  }
+  _createBaseEach = createBaseEach;
+  return _createBaseEach;
+}
+var _baseEach;
+var hasRequired_baseEach;
+function require_baseEach() {
+  if (hasRequired_baseEach) return _baseEach;
+  hasRequired_baseEach = 1;
+  var baseForOwn = require_baseForOwn(), createBaseEach = require_createBaseEach();
+  var baseEach = createBaseEach(baseForOwn);
+  _baseEach = baseEach;
+  return _baseEach;
+}
+var _baseAggregator;
+var hasRequired_baseAggregator;
+function require_baseAggregator() {
+  if (hasRequired_baseAggregator) return _baseAggregator;
+  hasRequired_baseAggregator = 1;
+  var baseEach = require_baseEach();
+  function baseAggregator(collection, setter, iteratee, accumulator) {
+    baseEach(collection, function(value, key, collection2) {
+      setter(accumulator, value, iteratee(value), collection2);
+    });
+    return accumulator;
+  }
+  _baseAggregator = baseAggregator;
+  return _baseAggregator;
+}
+var _stackClear;
+var hasRequired_stackClear;
+function require_stackClear() {
+  if (hasRequired_stackClear) return _stackClear;
+  hasRequired_stackClear = 1;
+  var ListCache = require_ListCache();
+  function stackClear() {
+    this.__data__ = new ListCache();
+    this.size = 0;
+  }
+  _stackClear = stackClear;
+  return _stackClear;
+}
+var _stackDelete;
+var hasRequired_stackDelete;
+function require_stackDelete() {
+  if (hasRequired_stackDelete) return _stackDelete;
+  hasRequired_stackDelete = 1;
+  function stackDelete(key) {
+    var data = this.__data__, result = data["delete"](key);
+    this.size = data.size;
+    return result;
+  }
+  _stackDelete = stackDelete;
+  return _stackDelete;
+}
+var _stackGet;
+var hasRequired_stackGet;
+function require_stackGet() {
+  if (hasRequired_stackGet) return _stackGet;
+  hasRequired_stackGet = 1;
+  function stackGet(key) {
+    return this.__data__.get(key);
+  }
+  _stackGet = stackGet;
+  return _stackGet;
+}
+var _stackHas;
+var hasRequired_stackHas;
+function require_stackHas() {
+  if (hasRequired_stackHas) return _stackHas;
+  hasRequired_stackHas = 1;
+  function stackHas(key) {
+    return this.__data__.has(key);
+  }
+  _stackHas = stackHas;
+  return _stackHas;
+}
+var _stackSet;
+var hasRequired_stackSet;
+function require_stackSet() {
+  if (hasRequired_stackSet) return _stackSet;
+  hasRequired_stackSet = 1;
+  var ListCache = require_ListCache(), Map2 = require_Map(), MapCache = require_MapCache();
+  var LARGE_ARRAY_SIZE = 200;
+  function stackSet(key, value) {
+    var data = this.__data__;
+    if (data instanceof ListCache) {
+      var pairs = data.__data__;
+      if (!Map2 || pairs.length < LARGE_ARRAY_SIZE - 1) {
+        pairs.push([key, value]);
+        this.size = ++data.size;
+        return this;
+      }
+      data = this.__data__ = new MapCache(pairs);
+    }
+    data.set(key, value);
+    this.size = data.size;
+    return this;
+  }
+  _stackSet = stackSet;
+  return _stackSet;
+}
+var _Stack;
+var hasRequired_Stack;
+function require_Stack() {
+  if (hasRequired_Stack) return _Stack;
+  hasRequired_Stack = 1;
+  var ListCache = require_ListCache(), stackClear = require_stackClear(), stackDelete = require_stackDelete(), stackGet = require_stackGet(), stackHas = require_stackHas(), stackSet = require_stackSet();
+  function Stack(entries) {
+    var data = this.__data__ = new ListCache(entries);
+    this.size = data.size;
+  }
+  Stack.prototype.clear = stackClear;
+  Stack.prototype["delete"] = stackDelete;
+  Stack.prototype.get = stackGet;
+  Stack.prototype.has = stackHas;
+  Stack.prototype.set = stackSet;
+  _Stack = Stack;
+  return _Stack;
+}
+var _arraySome;
+var hasRequired_arraySome;
+function require_arraySome() {
+  if (hasRequired_arraySome) return _arraySome;
+  hasRequired_arraySome = 1;
+  function arraySome(array, predicate) {
+    var index = -1, length = array == null ? 0 : array.length;
+    while (++index < length) {
+      if (predicate(array[index], index, array)) {
+        return true;
+      }
+    }
     return false;
   }
-  stack || (stack = new Stack$1());
-  return equalObjects(object, other, bitmask, customizer, equalFunc, stack);
+  _arraySome = arraySome;
+  return _arraySome;
 }
-var _baseIsEqualDeep = baseIsEqualDeep$1;
-var baseIsEqualDeep = _baseIsEqualDeep, isObjectLike = isObjectLike_1;
-function baseIsEqual$2(value, other, bitmask, customizer, stack) {
-  if (value === other) {
+var _equalArrays;
+var hasRequired_equalArrays;
+function require_equalArrays() {
+  if (hasRequired_equalArrays) return _equalArrays;
+  hasRequired_equalArrays = 1;
+  var SetCache = require_SetCache(), arraySome = require_arraySome(), cacheHas = require_cacheHas();
+  var COMPARE_PARTIAL_FLAG = 1, COMPARE_UNORDERED_FLAG = 2;
+  function equalArrays(array, other, bitmask, customizer, equalFunc, stack) {
+    var isPartial = bitmask & COMPARE_PARTIAL_FLAG, arrLength = array.length, othLength = other.length;
+    if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
+      return false;
+    }
+    var arrStacked = stack.get(array);
+    var othStacked = stack.get(other);
+    if (arrStacked && othStacked) {
+      return arrStacked == other && othStacked == array;
+    }
+    var index = -1, result = true, seen = bitmask & COMPARE_UNORDERED_FLAG ? new SetCache() : void 0;
+    stack.set(array, other);
+    stack.set(other, array);
+    while (++index < arrLength) {
+      var arrValue = array[index], othValue = other[index];
+      if (customizer) {
+        var compared = isPartial ? customizer(othValue, arrValue, index, other, array, stack) : customizer(arrValue, othValue, index, array, other, stack);
+      }
+      if (compared !== void 0) {
+        if (compared) {
+          continue;
+        }
+        result = false;
+        break;
+      }
+      if (seen) {
+        if (!arraySome(other, function(othValue2, othIndex) {
+          if (!cacheHas(seen, othIndex) && (arrValue === othValue2 || equalFunc(arrValue, othValue2, bitmask, customizer, stack))) {
+            return seen.push(othIndex);
+          }
+        })) {
+          result = false;
+          break;
+        }
+      } else if (!(arrValue === othValue || equalFunc(arrValue, othValue, bitmask, customizer, stack))) {
+        result = false;
+        break;
+      }
+    }
+    stack["delete"](array);
+    stack["delete"](other);
+    return result;
+  }
+  _equalArrays = equalArrays;
+  return _equalArrays;
+}
+var _Uint8Array;
+var hasRequired_Uint8Array;
+function require_Uint8Array() {
+  if (hasRequired_Uint8Array) return _Uint8Array;
+  hasRequired_Uint8Array = 1;
+  var root = require_root();
+  var Uint8Array = root.Uint8Array;
+  _Uint8Array = Uint8Array;
+  return _Uint8Array;
+}
+var _mapToArray;
+var hasRequired_mapToArray;
+function require_mapToArray() {
+  if (hasRequired_mapToArray) return _mapToArray;
+  hasRequired_mapToArray = 1;
+  function mapToArray(map) {
+    var index = -1, result = Array(map.size);
+    map.forEach(function(value, key) {
+      result[++index] = [key, value];
+    });
+    return result;
+  }
+  _mapToArray = mapToArray;
+  return _mapToArray;
+}
+var _equalByTag;
+var hasRequired_equalByTag;
+function require_equalByTag() {
+  if (hasRequired_equalByTag) return _equalByTag;
+  hasRequired_equalByTag = 1;
+  var Symbol2 = require_Symbol(), Uint8Array = require_Uint8Array(), eq = requireEq(), equalArrays = require_equalArrays(), mapToArray = require_mapToArray(), setToArray = require_setToArray();
+  var COMPARE_PARTIAL_FLAG = 1, COMPARE_UNORDERED_FLAG = 2;
+  var boolTag = "[object Boolean]", dateTag = "[object Date]", errorTag = "[object Error]", mapTag = "[object Map]", numberTag = "[object Number]", regexpTag = "[object RegExp]", setTag = "[object Set]", stringTag = "[object String]", symbolTag = "[object Symbol]";
+  var arrayBufferTag = "[object ArrayBuffer]", dataViewTag = "[object DataView]";
+  var symbolProto = Symbol2 ? Symbol2.prototype : void 0, symbolValueOf = symbolProto ? symbolProto.valueOf : void 0;
+  function equalByTag(object, other, tag, bitmask, customizer, equalFunc, stack) {
+    switch (tag) {
+      case dataViewTag:
+        if (object.byteLength != other.byteLength || object.byteOffset != other.byteOffset) {
+          return false;
+        }
+        object = object.buffer;
+        other = other.buffer;
+      case arrayBufferTag:
+        if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array(object), new Uint8Array(other))) {
+          return false;
+        }
+        return true;
+      case boolTag:
+      case dateTag:
+      case numberTag:
+        return eq(+object, +other);
+      case errorTag:
+        return object.name == other.name && object.message == other.message;
+      case regexpTag:
+      case stringTag:
+        return object == other + "";
+      case mapTag:
+        var convert = mapToArray;
+      case setTag:
+        var isPartial = bitmask & COMPARE_PARTIAL_FLAG;
+        convert || (convert = setToArray);
+        if (object.size != other.size && !isPartial) {
+          return false;
+        }
+        var stacked = stack.get(object);
+        if (stacked) {
+          return stacked == other;
+        }
+        bitmask |= COMPARE_UNORDERED_FLAG;
+        stack.set(object, other);
+        var result = equalArrays(convert(object), convert(other), bitmask, customizer, equalFunc, stack);
+        stack["delete"](object);
+        return result;
+      case symbolTag:
+        if (symbolValueOf) {
+          return symbolValueOf.call(object) == symbolValueOf.call(other);
+        }
+    }
+    return false;
+  }
+  _equalByTag = equalByTag;
+  return _equalByTag;
+}
+var _baseGetAllKeys;
+var hasRequired_baseGetAllKeys;
+function require_baseGetAllKeys() {
+  if (hasRequired_baseGetAllKeys) return _baseGetAllKeys;
+  hasRequired_baseGetAllKeys = 1;
+  var arrayPush = require_arrayPush(), isArray = requireIsArray();
+  function baseGetAllKeys(object, keysFunc, symbolsFunc) {
+    var result = keysFunc(object);
+    return isArray(object) ? result : arrayPush(result, symbolsFunc(object));
+  }
+  _baseGetAllKeys = baseGetAllKeys;
+  return _baseGetAllKeys;
+}
+var _arrayFilter;
+var hasRequired_arrayFilter;
+function require_arrayFilter() {
+  if (hasRequired_arrayFilter) return _arrayFilter;
+  hasRequired_arrayFilter = 1;
+  function arrayFilter(array, predicate) {
+    var index = -1, length = array == null ? 0 : array.length, resIndex = 0, result = [];
+    while (++index < length) {
+      var value = array[index];
+      if (predicate(value, index, array)) {
+        result[resIndex++] = value;
+      }
+    }
+    return result;
+  }
+  _arrayFilter = arrayFilter;
+  return _arrayFilter;
+}
+var stubArray_1;
+var hasRequiredStubArray;
+function requireStubArray() {
+  if (hasRequiredStubArray) return stubArray_1;
+  hasRequiredStubArray = 1;
+  function stubArray() {
+    return [];
+  }
+  stubArray_1 = stubArray;
+  return stubArray_1;
+}
+var _getSymbols;
+var hasRequired_getSymbols;
+function require_getSymbols() {
+  if (hasRequired_getSymbols) return _getSymbols;
+  hasRequired_getSymbols = 1;
+  var arrayFilter = require_arrayFilter(), stubArray = requireStubArray();
+  var objectProto = Object.prototype;
+  var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+  var nativeGetSymbols = Object.getOwnPropertySymbols;
+  var getSymbols = !nativeGetSymbols ? stubArray : function(object) {
+    if (object == null) {
+      return [];
+    }
+    object = Object(object);
+    return arrayFilter(nativeGetSymbols(object), function(symbol) {
+      return propertyIsEnumerable.call(object, symbol);
+    });
+  };
+  _getSymbols = getSymbols;
+  return _getSymbols;
+}
+var _getAllKeys;
+var hasRequired_getAllKeys;
+function require_getAllKeys() {
+  if (hasRequired_getAllKeys) return _getAllKeys;
+  hasRequired_getAllKeys = 1;
+  var baseGetAllKeys = require_baseGetAllKeys(), getSymbols = require_getSymbols(), keys = requireKeys();
+  function getAllKeys(object) {
+    return baseGetAllKeys(object, keys, getSymbols);
+  }
+  _getAllKeys = getAllKeys;
+  return _getAllKeys;
+}
+var _equalObjects;
+var hasRequired_equalObjects;
+function require_equalObjects() {
+  if (hasRequired_equalObjects) return _equalObjects;
+  hasRequired_equalObjects = 1;
+  var getAllKeys = require_getAllKeys();
+  var COMPARE_PARTIAL_FLAG = 1;
+  var objectProto = Object.prototype;
+  var hasOwnProperty = objectProto.hasOwnProperty;
+  function equalObjects(object, other, bitmask, customizer, equalFunc, stack) {
+    var isPartial = bitmask & COMPARE_PARTIAL_FLAG, objProps = getAllKeys(object), objLength = objProps.length, othProps = getAllKeys(other), othLength = othProps.length;
+    if (objLength != othLength && !isPartial) {
+      return false;
+    }
+    var index = objLength;
+    while (index--) {
+      var key = objProps[index];
+      if (!(isPartial ? key in other : hasOwnProperty.call(other, key))) {
+        return false;
+      }
+    }
+    var objStacked = stack.get(object);
+    var othStacked = stack.get(other);
+    if (objStacked && othStacked) {
+      return objStacked == other && othStacked == object;
+    }
+    var result = true;
+    stack.set(object, other);
+    stack.set(other, object);
+    var skipCtor = isPartial;
+    while (++index < objLength) {
+      key = objProps[index];
+      var objValue = object[key], othValue = other[key];
+      if (customizer) {
+        var compared = isPartial ? customizer(othValue, objValue, key, other, object, stack) : customizer(objValue, othValue, key, object, other, stack);
+      }
+      if (!(compared === void 0 ? objValue === othValue || equalFunc(objValue, othValue, bitmask, customizer, stack) : compared)) {
+        result = false;
+        break;
+      }
+      skipCtor || (skipCtor = key == "constructor");
+    }
+    if (result && !skipCtor) {
+      var objCtor = object.constructor, othCtor = other.constructor;
+      if (objCtor != othCtor && ("constructor" in object && "constructor" in other) && !(typeof objCtor == "function" && objCtor instanceof objCtor && typeof othCtor == "function" && othCtor instanceof othCtor)) {
+        result = false;
+      }
+    }
+    stack["delete"](object);
+    stack["delete"](other);
+    return result;
+  }
+  _equalObjects = equalObjects;
+  return _equalObjects;
+}
+var _DataView;
+var hasRequired_DataView;
+function require_DataView() {
+  if (hasRequired_DataView) return _DataView;
+  hasRequired_DataView = 1;
+  var getNative = require_getNative(), root = require_root();
+  var DataView = getNative(root, "DataView");
+  _DataView = DataView;
+  return _DataView;
+}
+var _Promise;
+var hasRequired_Promise;
+function require_Promise() {
+  if (hasRequired_Promise) return _Promise;
+  hasRequired_Promise = 1;
+  var getNative = require_getNative(), root = require_root();
+  var Promise2 = getNative(root, "Promise");
+  _Promise = Promise2;
+  return _Promise;
+}
+var _WeakMap;
+var hasRequired_WeakMap;
+function require_WeakMap() {
+  if (hasRequired_WeakMap) return _WeakMap;
+  hasRequired_WeakMap = 1;
+  var getNative = require_getNative(), root = require_root();
+  var WeakMap2 = getNative(root, "WeakMap");
+  _WeakMap = WeakMap2;
+  return _WeakMap;
+}
+var _getTag;
+var hasRequired_getTag;
+function require_getTag() {
+  if (hasRequired_getTag) return _getTag;
+  hasRequired_getTag = 1;
+  var DataView = require_DataView(), Map2 = require_Map(), Promise2 = require_Promise(), Set2 = require_Set(), WeakMap2 = require_WeakMap(), baseGetTag = require_baseGetTag(), toSource = require_toSource();
+  var mapTag = "[object Map]", objectTag = "[object Object]", promiseTag = "[object Promise]", setTag = "[object Set]", weakMapTag = "[object WeakMap]";
+  var dataViewTag = "[object DataView]";
+  var dataViewCtorString = toSource(DataView), mapCtorString = toSource(Map2), promiseCtorString = toSource(Promise2), setCtorString = toSource(Set2), weakMapCtorString = toSource(WeakMap2);
+  var getTag = baseGetTag;
+  if (DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag || Map2 && getTag(new Map2()) != mapTag || Promise2 && getTag(Promise2.resolve()) != promiseTag || Set2 && getTag(new Set2()) != setTag || WeakMap2 && getTag(new WeakMap2()) != weakMapTag) {
+    getTag = function(value) {
+      var result = baseGetTag(value), Ctor = result == objectTag ? value.constructor : void 0, ctorString = Ctor ? toSource(Ctor) : "";
+      if (ctorString) {
+        switch (ctorString) {
+          case dataViewCtorString:
+            return dataViewTag;
+          case mapCtorString:
+            return mapTag;
+          case promiseCtorString:
+            return promiseTag;
+          case setCtorString:
+            return setTag;
+          case weakMapCtorString:
+            return weakMapTag;
+        }
+      }
+      return result;
+    };
+  }
+  _getTag = getTag;
+  return _getTag;
+}
+var _baseIsEqualDeep;
+var hasRequired_baseIsEqualDeep;
+function require_baseIsEqualDeep() {
+  if (hasRequired_baseIsEqualDeep) return _baseIsEqualDeep;
+  hasRequired_baseIsEqualDeep = 1;
+  var Stack = require_Stack(), equalArrays = require_equalArrays(), equalByTag = require_equalByTag(), equalObjects = require_equalObjects(), getTag = require_getTag(), isArray = requireIsArray(), isBuffer2 = requireIsBuffer(), isTypedArray = requireIsTypedArray();
+  var COMPARE_PARTIAL_FLAG = 1;
+  var argsTag = "[object Arguments]", arrayTag = "[object Array]", objectTag = "[object Object]";
+  var objectProto = Object.prototype;
+  var hasOwnProperty = objectProto.hasOwnProperty;
+  function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
+    var objIsArr = isArray(object), othIsArr = isArray(other), objTag = objIsArr ? arrayTag : getTag(object), othTag = othIsArr ? arrayTag : getTag(other);
+    objTag = objTag == argsTag ? objectTag : objTag;
+    othTag = othTag == argsTag ? objectTag : othTag;
+    var objIsObj = objTag == objectTag, othIsObj = othTag == objectTag, isSameTag = objTag == othTag;
+    if (isSameTag && isBuffer2(object)) {
+      if (!isBuffer2(other)) {
+        return false;
+      }
+      objIsArr = true;
+      objIsObj = false;
+    }
+    if (isSameTag && !objIsObj) {
+      stack || (stack = new Stack());
+      return objIsArr || isTypedArray(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
+    }
+    if (!(bitmask & COMPARE_PARTIAL_FLAG)) {
+      var objIsWrapped = objIsObj && hasOwnProperty.call(object, "__wrapped__"), othIsWrapped = othIsObj && hasOwnProperty.call(other, "__wrapped__");
+      if (objIsWrapped || othIsWrapped) {
+        var objUnwrapped = objIsWrapped ? object.value() : object, othUnwrapped = othIsWrapped ? other.value() : other;
+        stack || (stack = new Stack());
+        return equalFunc(objUnwrapped, othUnwrapped, bitmask, customizer, stack);
+      }
+    }
+    if (!isSameTag) {
+      return false;
+    }
+    stack || (stack = new Stack());
+    return equalObjects(object, other, bitmask, customizer, equalFunc, stack);
+  }
+  _baseIsEqualDeep = baseIsEqualDeep;
+  return _baseIsEqualDeep;
+}
+var _baseIsEqual;
+var hasRequired_baseIsEqual;
+function require_baseIsEqual() {
+  if (hasRequired_baseIsEqual) return _baseIsEqual;
+  hasRequired_baseIsEqual = 1;
+  var baseIsEqualDeep = require_baseIsEqualDeep(), isObjectLike = requireIsObjectLike();
+  function baseIsEqual(value, other, bitmask, customizer, stack) {
+    if (value === other) {
+      return true;
+    }
+    if (value == null || other == null || !isObjectLike(value) && !isObjectLike(other)) {
+      return value !== value && other !== other;
+    }
+    return baseIsEqualDeep(value, other, bitmask, customizer, baseIsEqual, stack);
+  }
+  _baseIsEqual = baseIsEqual;
+  return _baseIsEqual;
+}
+var _baseIsMatch;
+var hasRequired_baseIsMatch;
+function require_baseIsMatch() {
+  if (hasRequired_baseIsMatch) return _baseIsMatch;
+  hasRequired_baseIsMatch = 1;
+  var Stack = require_Stack(), baseIsEqual = require_baseIsEqual();
+  var COMPARE_PARTIAL_FLAG = 1, COMPARE_UNORDERED_FLAG = 2;
+  function baseIsMatch(object, source, matchData, customizer) {
+    var index = matchData.length, length = index, noCustomizer = !customizer;
+    if (object == null) {
+      return !length;
+    }
+    object = Object(object);
+    while (index--) {
+      var data = matchData[index];
+      if (noCustomizer && data[2] ? data[1] !== object[data[0]] : !(data[0] in object)) {
+        return false;
+      }
+    }
+    while (++index < length) {
+      data = matchData[index];
+      var key = data[0], objValue = object[key], srcValue = data[1];
+      if (noCustomizer && data[2]) {
+        if (objValue === void 0 && !(key in object)) {
+          return false;
+        }
+      } else {
+        var stack = new Stack();
+        if (customizer) {
+          var result = customizer(objValue, srcValue, key, object, source, stack);
+        }
+        if (!(result === void 0 ? baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG | COMPARE_UNORDERED_FLAG, customizer, stack) : result)) {
+          return false;
+        }
+      }
+    }
     return true;
   }
-  if (value == null || other == null || !isObjectLike(value) && !isObjectLike(other)) {
-    return value !== value && other !== other;
-  }
-  return baseIsEqualDeep(value, other, bitmask, customizer, baseIsEqual$2, stack);
+  _baseIsMatch = baseIsMatch;
+  return _baseIsMatch;
 }
-var _baseIsEqual = baseIsEqual$2;
-var Stack = _Stack, baseIsEqual$1 = _baseIsEqual;
-var COMPARE_PARTIAL_FLAG$1 = 1, COMPARE_UNORDERED_FLAG$1 = 2;
-function baseIsMatch$1(object, source, matchData, customizer) {
-  var index = matchData.length, length = index, noCustomizer = !customizer;
-  if (object == null) {
-    return !length;
+var _isStrictComparable;
+var hasRequired_isStrictComparable;
+function require_isStrictComparable() {
+  if (hasRequired_isStrictComparable) return _isStrictComparable;
+  hasRequired_isStrictComparable = 1;
+  var isObject = requireIsObject();
+  function isStrictComparable(value) {
+    return value === value && !isObject(value);
   }
-  object = Object(object);
-  while (index--) {
-    var data = matchData[index];
-    if (noCustomizer && data[2] ? data[1] !== object[data[0]] : !(data[0] in object)) {
-      return false;
+  _isStrictComparable = isStrictComparable;
+  return _isStrictComparable;
+}
+var _getMatchData;
+var hasRequired_getMatchData;
+function require_getMatchData() {
+  if (hasRequired_getMatchData) return _getMatchData;
+  hasRequired_getMatchData = 1;
+  var isStrictComparable = require_isStrictComparable(), keys = requireKeys();
+  function getMatchData(object) {
+    var result = keys(object), length = result.length;
+    while (length--) {
+      var key = result[length], value = object[key];
+      result[length] = [key, value, isStrictComparable(value)];
     }
+    return result;
   }
-  while (++index < length) {
-    data = matchData[index];
-    var key = data[0], objValue = object[key], srcValue = data[1];
-    if (noCustomizer && data[2]) {
-      if (objValue === void 0 && !(key in object)) {
+  _getMatchData = getMatchData;
+  return _getMatchData;
+}
+var _matchesStrictComparable;
+var hasRequired_matchesStrictComparable;
+function require_matchesStrictComparable() {
+  if (hasRequired_matchesStrictComparable) return _matchesStrictComparable;
+  hasRequired_matchesStrictComparable = 1;
+  function matchesStrictComparable(key, srcValue) {
+    return function(object) {
+      if (object == null) {
         return false;
       }
-    } else {
-      var stack = new Stack();
-      if (customizer) {
-        var result = customizer(objValue, srcValue, key, object, source, stack);
-      }
-      if (!(result === void 0 ? baseIsEqual$1(srcValue, objValue, COMPARE_PARTIAL_FLAG$1 | COMPARE_UNORDERED_FLAG$1, customizer, stack) : result)) {
-        return false;
-      }
+      return object[key] === srcValue && (srcValue !== void 0 || key in Object(object));
+    };
+  }
+  _matchesStrictComparable = matchesStrictComparable;
+  return _matchesStrictComparable;
+}
+var _baseMatches;
+var hasRequired_baseMatches;
+function require_baseMatches() {
+  if (hasRequired_baseMatches) return _baseMatches;
+  hasRequired_baseMatches = 1;
+  var baseIsMatch = require_baseIsMatch(), getMatchData = require_getMatchData(), matchesStrictComparable = require_matchesStrictComparable();
+  function baseMatches(source) {
+    var matchData = getMatchData(source);
+    if (matchData.length == 1 && matchData[0][2]) {
+      return matchesStrictComparable(matchData[0][0], matchData[0][1]);
     }
+    return function(object) {
+      return object === source || baseIsMatch(object, source, matchData);
+    };
   }
-  return true;
+  _baseMatches = baseMatches;
+  return _baseMatches;
 }
-var _baseIsMatch = baseIsMatch$1;
-var isObject$1 = isObject_1;
-function isStrictComparable$2(value) {
-  return value === value && !isObject$1(value);
-}
-var _isStrictComparable = isStrictComparable$2;
-var isStrictComparable$1 = _isStrictComparable, keys = keys_1;
-function getMatchData$1(object) {
-  var result = keys(object), length = result.length;
-  while (length--) {
-    var key = result[length], value = object[key];
-    result[length] = [key, value, isStrictComparable$1(value)];
-  }
-  return result;
-}
-var _getMatchData = getMatchData$1;
-function matchesStrictComparable$2(key, srcValue) {
-  return function(object) {
-    if (object == null) {
-      return false;
+var _baseGet;
+var hasRequired_baseGet;
+function require_baseGet() {
+  if (hasRequired_baseGet) return _baseGet;
+  hasRequired_baseGet = 1;
+  var castPath = require_castPath(), toKey = require_toKey();
+  function baseGet(object, path) {
+    path = castPath(path, object);
+    var index = 0, length = path.length;
+    while (object != null && index < length) {
+      object = object[toKey(path[index++])];
     }
-    return object[key] === srcValue && (srcValue !== void 0 || key in Object(object));
-  };
-}
-var _matchesStrictComparable = matchesStrictComparable$2;
-var baseIsMatch = _baseIsMatch, getMatchData = _getMatchData, matchesStrictComparable$1 = _matchesStrictComparable;
-function baseMatches$1(source) {
-  var matchData = getMatchData(source);
-  if (matchData.length == 1 && matchData[0][2]) {
-    return matchesStrictComparable$1(matchData[0][0], matchData[0][1]);
+    return index && index == length ? object : void 0;
   }
-  return function(object) {
-    return object === source || baseIsMatch(object, source, matchData);
-  };
+  _baseGet = baseGet;
+  return _baseGet;
 }
-var _baseMatches = baseMatches$1;
-var castPath = _castPath, toKey$2 = _toKey;
-function baseGet$2(object, path) {
-  path = castPath(path, object);
-  var index = 0, length = path.length;
-  while (object != null && index < length) {
-    object = object[toKey$2(path[index++])];
+var get_1;
+var hasRequiredGet;
+function requireGet() {
+  if (hasRequiredGet) return get_1;
+  hasRequiredGet = 1;
+  var baseGet = require_baseGet();
+  function get(object, path, defaultValue) {
+    var result = object == null ? void 0 : baseGet(object, path);
+    return result === void 0 ? defaultValue : result;
   }
-  return index && index == length ? object : void 0;
+  get_1 = get;
+  return get_1;
 }
-var _baseGet = baseGet$2;
-var baseGet$1 = _baseGet;
-function get$1(object, path, defaultValue) {
-  var result = object == null ? void 0 : baseGet$1(object, path);
-  return result === void 0 ? defaultValue : result;
-}
-var get_1 = get$1;
-function baseHasIn$1(object, key) {
-  return object != null && key in Object(object);
-}
-var _baseHasIn = baseHasIn$1;
-var baseHasIn = _baseHasIn, hasPath = _hasPath;
-function hasIn$1(object, path) {
-  return object != null && hasPath(object, path, baseHasIn);
-}
-var hasIn_1 = hasIn$1;
-var baseIsEqual = _baseIsEqual, get = get_1, hasIn = hasIn_1, isKey$1 = _isKey, isStrictComparable = _isStrictComparable, matchesStrictComparable = _matchesStrictComparable, toKey$1 = _toKey;
-var COMPARE_PARTIAL_FLAG = 1, COMPARE_UNORDERED_FLAG = 2;
-function baseMatchesProperty$1(path, srcValue) {
-  if (isKey$1(path) && isStrictComparable(srcValue)) {
-    return matchesStrictComparable(toKey$1(path), srcValue);
+var _baseHasIn;
+var hasRequired_baseHasIn;
+function require_baseHasIn() {
+  if (hasRequired_baseHasIn) return _baseHasIn;
+  hasRequired_baseHasIn = 1;
+  function baseHasIn(object, key) {
+    return object != null && key in Object(object);
   }
-  return function(object) {
-    var objValue = get(object, path);
-    return objValue === void 0 && objValue === srcValue ? hasIn(object, path) : baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG | COMPARE_UNORDERED_FLAG);
-  };
+  _baseHasIn = baseHasIn;
+  return _baseHasIn;
 }
-var _baseMatchesProperty = baseMatchesProperty$1;
-function identity$1(value) {
-  return value;
+var hasIn_1;
+var hasRequiredHasIn;
+function requireHasIn() {
+  if (hasRequiredHasIn) return hasIn_1;
+  hasRequiredHasIn = 1;
+  var baseHasIn = require_baseHasIn(), hasPath = require_hasPath();
+  function hasIn(object, path) {
+    return object != null && hasPath(object, path, baseHasIn);
+  }
+  hasIn_1 = hasIn;
+  return hasIn_1;
 }
-var identity_1 = identity$1;
-function baseProperty$1(key) {
-  return function(object) {
-    return object == null ? void 0 : object[key];
-  };
+var _baseMatchesProperty;
+var hasRequired_baseMatchesProperty;
+function require_baseMatchesProperty() {
+  if (hasRequired_baseMatchesProperty) return _baseMatchesProperty;
+  hasRequired_baseMatchesProperty = 1;
+  var baseIsEqual = require_baseIsEqual(), get = requireGet(), hasIn = requireHasIn(), isKey = require_isKey(), isStrictComparable = require_isStrictComparable(), matchesStrictComparable = require_matchesStrictComparable(), toKey = require_toKey();
+  var COMPARE_PARTIAL_FLAG = 1, COMPARE_UNORDERED_FLAG = 2;
+  function baseMatchesProperty(path, srcValue) {
+    if (isKey(path) && isStrictComparable(srcValue)) {
+      return matchesStrictComparable(toKey(path), srcValue);
+    }
+    return function(object) {
+      var objValue = get(object, path);
+      return objValue === void 0 && objValue === srcValue ? hasIn(object, path) : baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG | COMPARE_UNORDERED_FLAG);
+    };
+  }
+  _baseMatchesProperty = baseMatchesProperty;
+  return _baseMatchesProperty;
 }
-var _baseProperty = baseProperty$1;
-var baseGet = _baseGet;
-function basePropertyDeep$1(path) {
-  return function(object) {
-    return baseGet(object, path);
-  };
-}
-var _basePropertyDeep = basePropertyDeep$1;
-var baseProperty = _baseProperty, basePropertyDeep = _basePropertyDeep, isKey = _isKey, toKey = _toKey;
-function property$1(path) {
-  return isKey(path) ? baseProperty(toKey(path)) : basePropertyDeep(path);
-}
-var property_1 = property$1;
-var baseMatches = _baseMatches, baseMatchesProperty = _baseMatchesProperty, identity = identity_1, isArray$1 = isArray_1, property = property_1;
-function baseIteratee$1(value) {
-  if (typeof value == "function") {
+var identity_1;
+var hasRequiredIdentity;
+function requireIdentity() {
+  if (hasRequiredIdentity) return identity_1;
+  hasRequiredIdentity = 1;
+  function identity(value) {
     return value;
   }
-  if (value == null) {
-    return identity;
-  }
-  if (typeof value == "object") {
-    return isArray$1(value) ? baseMatchesProperty(value[0], value[1]) : baseMatches(value);
-  }
-  return property(value);
+  identity_1 = identity;
+  return identity_1;
 }
-var _baseIteratee = baseIteratee$1;
-var arrayAggregator = _arrayAggregator, baseAggregator = _baseAggregator, baseIteratee = _baseIteratee, isArray = isArray_1;
-function createAggregator$1(setter, initializer) {
-  return function(collection, iteratee) {
-    var func = isArray(collection) ? arrayAggregator : baseAggregator, accumulator = initializer ? initializer() : {};
-    return func(collection, setter, baseIteratee(iteratee), accumulator);
-  };
-}
-var _createAggregator = createAggregator$1;
-var baseAssignValue = _baseAssignValue, createAggregator = _createAggregator;
-var objectProto = Object.prototype;
-var hasOwnProperty = objectProto.hasOwnProperty;
-var groupBy = createAggregator(function(result, value, key) {
-  if (hasOwnProperty.call(result, key)) {
-    result[key].push(value);
-  } else {
-    baseAssignValue(result, key, [value]);
+var _baseProperty;
+var hasRequired_baseProperty;
+function require_baseProperty() {
+  if (hasRequired_baseProperty) return _baseProperty;
+  hasRequired_baseProperty = 1;
+  function baseProperty(key) {
+    return function(object) {
+      return object == null ? void 0 : object[key];
+    };
   }
-});
-var groupBy_1 = groupBy;
-const groupBy$1 = /* @__PURE__ */ getDefaultExportFromCjs(groupBy_1);
+  _baseProperty = baseProperty;
+  return _baseProperty;
+}
+var _basePropertyDeep;
+var hasRequired_basePropertyDeep;
+function require_basePropertyDeep() {
+  if (hasRequired_basePropertyDeep) return _basePropertyDeep;
+  hasRequired_basePropertyDeep = 1;
+  var baseGet = require_baseGet();
+  function basePropertyDeep(path) {
+    return function(object) {
+      return baseGet(object, path);
+    };
+  }
+  _basePropertyDeep = basePropertyDeep;
+  return _basePropertyDeep;
+}
+var property_1;
+var hasRequiredProperty;
+function requireProperty() {
+  if (hasRequiredProperty) return property_1;
+  hasRequiredProperty = 1;
+  var baseProperty = require_baseProperty(), basePropertyDeep = require_basePropertyDeep(), isKey = require_isKey(), toKey = require_toKey();
+  function property(path) {
+    return isKey(path) ? baseProperty(toKey(path)) : basePropertyDeep(path);
+  }
+  property_1 = property;
+  return property_1;
+}
+var _baseIteratee;
+var hasRequired_baseIteratee;
+function require_baseIteratee() {
+  if (hasRequired_baseIteratee) return _baseIteratee;
+  hasRequired_baseIteratee = 1;
+  var baseMatches = require_baseMatches(), baseMatchesProperty = require_baseMatchesProperty(), identity = requireIdentity(), isArray = requireIsArray(), property = requireProperty();
+  function baseIteratee(value) {
+    if (typeof value == "function") {
+      return value;
+    }
+    if (value == null) {
+      return identity;
+    }
+    if (typeof value == "object") {
+      return isArray(value) ? baseMatchesProperty(value[0], value[1]) : baseMatches(value);
+    }
+    return property(value);
+  }
+  _baseIteratee = baseIteratee;
+  return _baseIteratee;
+}
+var _createAggregator;
+var hasRequired_createAggregator;
+function require_createAggregator() {
+  if (hasRequired_createAggregator) return _createAggregator;
+  hasRequired_createAggregator = 1;
+  var arrayAggregator = require_arrayAggregator(), baseAggregator = require_baseAggregator(), baseIteratee = require_baseIteratee(), isArray = requireIsArray();
+  function createAggregator(setter, initializer) {
+    return function(collection, iteratee) {
+      var func = isArray(collection) ? arrayAggregator : baseAggregator, accumulator = initializer ? initializer() : {};
+      return func(collection, setter, baseIteratee(iteratee, 2), accumulator);
+    };
+  }
+  _createAggregator = createAggregator;
+  return _createAggregator;
+}
+var groupBy_1;
+var hasRequiredGroupBy;
+function requireGroupBy() {
+  if (hasRequiredGroupBy) return groupBy_1;
+  hasRequiredGroupBy = 1;
+  var baseAssignValue = require_baseAssignValue(), createAggregator = require_createAggregator();
+  var objectProto = Object.prototype;
+  var hasOwnProperty = objectProto.hasOwnProperty;
+  var groupBy2 = createAggregator(function(result, value, key) {
+    if (hasOwnProperty.call(result, key)) {
+      result[key].push(value);
+    } else {
+      baseAssignValue(result, key, [value]);
+    }
+  });
+  groupBy_1 = groupBy2;
+  return groupBy_1;
+}
+var groupByExports = requireGroupBy();
+const groupBy = /* @__PURE__ */ getDefaultExportFromCjs(groupByExports);
 function drawBlanks(ctx, effectiveColumns, allColumns, width, height, totalHeaderHeight, translateX, translateY, cellYOffset, rows, getRowHeight, getRowTheme, selectedRows, disabledRows, freezeTrailingRows, hasAppendRow, drawRegions, damage, theme) {
   if (damage !== void 0 || effectiveColumns[effectiveColumns.length - 1] !== allColumns[effectiveColumns.length - 1]) return;
   const skipPoint = getSkipPoint(drawRegions);
   walkColumns(effectiveColumns, cellYOffset, translateX, translateY, totalHeaderHeight, (c, drawX, colDrawY, clipX, startRow) => {
     if (c !== effectiveColumns[effectiveColumns.length - 1]) return;
     drawX += c.width;
-    const x = Math.max(drawX, clipX);
-    if (x > width) return;
+    const x2 = Math.max(drawX, clipX);
+    if (x2 > width) return;
     ctx.save();
     ctx.beginPath();
-    ctx.rect(x, totalHeaderHeight + 1, 1e4, height - totalHeaderHeight - 1);
+    ctx.rect(x2, totalHeaderHeight + 1, 1e4, height - totalHeaderHeight - 1);
     ctx.clip();
     walkRowsInCol(startRow, colDrawY, height, rows, getRowHeight, freezeTrailingRows, hasAppendRow, skipPoint, (drawY, row, rh, isSticky) => {
       if (!isSticky && drawRegions.length > 0 && !drawRegions.some((dr) => intersectRect(drawX, drawY, 1e4, rh, dr.x, dr.y, dr.width, dr.height))) {
@@ -5930,11 +11061,11 @@ function drawExtraRowThemes(ctx, effectiveCols, cellYOffset, translateX, transla
   } = getMinMaxXY(drawRegions, width, height);
   const toDraw = [];
   const freezeY = height - getFreezeTrailingHeight(rows, freezeTrailingRows, getRowHeight);
-  let y = totalHeaderHeight;
+  let y2 = totalHeaderHeight;
   let row = cellYOffset;
   let extraRowsStartY = 0;
-  while (y + translateY < freezeY) {
-    const ty = y + translateY;
+  while (y2 + translateY < freezeY) {
+    const ty = y2 + translateY;
     const rh = getRowHeight(row);
     if (ty >= minY && ty <= maxY - 1) {
       const rowTheme = getRowThemeOverride === null || getRowThemeOverride === void 0 ? void 0 : getRowThemeOverride(row);
@@ -5950,18 +11081,18 @@ function drawExtraRowThemes(ctx, effectiveCols, cellYOffset, translateX, transla
         });
       }
     }
-    y += rh;
-    if (row < rows - freezeTrailingRows) extraRowsStartY = y;
+    y2 += rh;
+    if (row < rows - freezeTrailingRows) extraRowsStartY = y2;
     row++;
   }
-  let x = 0;
+  let x2 = 0;
   const h = Math.min(freezeY, maxY) - extraRowsStartY;
   if (h > 0) {
     for (let index = 0; index < effectiveCols.length; index++) {
       var _c$themeOverride;
       const c = effectiveCols[index];
       if (c.width === 0) continue;
-      const tx = c.sticky ? x : x + translateX;
+      const tx = c.sticky ? x2 : x2 + translateX;
       const colThemeBgCell = (_c$themeOverride = c.themeOverride) === null || _c$themeOverride === void 0 ? void 0 : _c$themeOverride.bgCell;
       if (colThemeBgCell !== void 0 && colThemeBgCell !== bgCell && tx >= minX && tx <= maxX && verticalBorder(index + 1)) {
         toDraw.push({
@@ -5972,7 +11103,7 @@ function drawExtraRowThemes(ctx, effectiveCols, cellYOffset, translateX, transla
           color: colThemeBgCell
         });
       }
-      x += c.width;
+      x2 += c.width;
     }
   }
   if (toDraw.length === 0) return;
@@ -6018,12 +11149,12 @@ function drawGridLines(ctx, effectiveCols, cellYOffset, translateX, translateY, 
   } = getMinMaxXY(drawRegions, width, height);
   const toDraw = [];
   ctx.beginPath();
-  let x = 0.5;
+  let x2 = 0.5;
   for (let index = 0; index < effectiveCols.length; index++) {
     const c = effectiveCols[index];
     if (c.width === 0) continue;
-    x += c.width;
-    const tx = c.sticky ? x : x + translateX;
+    x2 += c.width;
+    const tx = c.sticky ? x2 : x2 + translateX;
     if (tx >= minX && tx <= maxX && verticalBorder(index + 1)) {
       toDraw.push({
         x1: tx,
@@ -6047,11 +11178,11 @@ function drawGridLines(ctx, effectiveCols, cellYOffset, translateX, translateY, 
     });
   }
   if (verticalOnly !== true) {
-    let y = totalHeaderHeight + 0.5;
+    let y2 = totalHeaderHeight + 0.5;
     let row = cellYOffset;
     const target = freezeY;
-    while (y + translateY < target) {
-      const ty = y + translateY;
+    while (y2 + translateY < target) {
+      const ty = y2 + translateY;
       if (ty >= minY && ty <= maxY - 1) {
         var _ref, _rowTheme$horizontalB;
         const rowTheme = getRowThemeOverride === null || getRowThemeOverride === void 0 ? void 0 : getRowThemeOverride(row);
@@ -6063,11 +11194,11 @@ function drawGridLines(ctx, effectiveCols, cellYOffset, translateX, translateY, 
           color: (_ref = (_rowTheme$horizontalB = rowTheme === null || rowTheme === void 0 ? void 0 : rowTheme.horizontalBorderColor) !== null && _rowTheme$horizontalB !== void 0 ? _rowTheme$horizontalB : rowTheme === null || rowTheme === void 0 ? void 0 : rowTheme.borderColor) !== null && _ref !== void 0 ? _ref : hColor
         });
       }
-      y += getRowHeight(row);
+      y2 += getRowHeight(row);
       row++;
     }
   }
-  const groups = groupBy$1(toDraw, (line) => line.color);
+  const groups = groupBy(toDraw, (line) => line.color);
   for (const g of Object.keys(groups)) {
     ctx.strokeStyle = g;
     for (const line of groups[g]) {
@@ -6182,10 +11313,10 @@ function blitLastFrame(ctx, blitSource, blitSourceScroll, targetScroll, last, ce
         ctx.drawImage(blitSource, 0, 0, w2, h, 0, 0, w2, h);
       }
       if (freezeTrailingRowsHeight > 0 && deltaX === 0 && deltaY !== 0 && (targetScroll === void 0 || (blitSourceScroll === null || blitSourceScroll === void 0 ? void 0 : blitSourceScroll[0]) !== false)) {
-        const y = (height - freezeTrailingRowsHeight) * dpr;
+        const y2 = (height - freezeTrailingRowsHeight) * dpr;
         const w2 = width * dpr;
         const h = freezeTrailingRowsHeight * dpr;
-        ctx.drawImage(blitSource, 0, y, w2, h, 0, y, w2, h);
+        ctx.drawImage(blitSource, 0, y2, w2, h, 0, y2, w2, h);
       }
     }
     ctx.drawImage(blitSource, args.sx, args.sy, args.sw, args.sh, args.dx, args.dy, args.dw, args.dh);
@@ -6203,11 +11334,11 @@ function blitResizedCol(last, cellXOffset, cellYOffset, translateX, translateY, 
   }
   walkColumns(effectiveCols, cellYOffset, translateX, translateY, totalHeaderHeight, (c, drawX, _drawY, clipX) => {
     if (c.sourceIndex === resizedIndex) {
-      const x = Math.max(drawX, clipX) + 1;
+      const x2 = Math.max(drawX, clipX) + 1;
       drawRegions.push({
-        x,
+        x: x2,
         y: 0,
-        width: width - x,
+        width: width - x2,
         height
       });
       return true;
@@ -6250,7 +11381,7 @@ function computeCanBlit(current, last) {
   return true;
 }
 function drawHighlightRings(ctx, width, height, cellXOffset, cellYOffset, translateX, translateY, mappedColumns, freezeColumns, headerHeight, totalGroupHeaderHeight, rowHeight, freezeTrailingRows, rows, allHighlightRegions, theme, groupLevels, groupHeaderHeights) {
-  const highlightRegions = allHighlightRegions === null || allHighlightRegions === void 0 ? void 0 : allHighlightRegions.filter((x) => x.style !== "no-outline");
+  const highlightRegions = allHighlightRegions === null || allHighlightRegions === void 0 ? void 0 : allHighlightRegions.filter((x2) => x2.style !== "no-outline");
   if (highlightRegions === void 0 || highlightRegions.length === 0) return void 0;
   const freezeLeft = getStickyWidth(mappedColumns);
   const freezeBottom = getFreezeTrailingHeight(rows, freezeTrailingRows, rowHeight);
@@ -6688,13 +11819,13 @@ function drawGrid(arg, lastArg) {
   highlightRedraw === null || highlightRedraw === void 0 || highlightRedraw();
   focusRedraw === null || focusRedraw === void 0 || focusRedraw();
   if (isResizing && resizeIndicator !== "none") {
-    walkColumns(effectiveCols, 0, translateX, 0, totalHeaderHeight, (c, x) => {
+    walkColumns(effectiveCols, 0, translateX, 0, totalHeaderHeight, (c, x2) => {
       if (c.sourceIndex === resizeCol) {
         var _theme$resizeIndicato;
-        drawColumnResizeOutline(overlayCtx, x + c.width, 0, totalHeaderHeight + 1, blend((_theme$resizeIndicato = theme.resizeIndicatorColor) !== null && _theme$resizeIndicato !== void 0 ? _theme$resizeIndicato : theme.accentLight, theme.bgHeader));
+        drawColumnResizeOutline(overlayCtx, x2 + c.width, 0, totalHeaderHeight + 1, blend((_theme$resizeIndicato = theme.resizeIndicatorColor) !== null && _theme$resizeIndicato !== void 0 ? _theme$resizeIndicato : theme.accentLight, theme.bgHeader));
         if (resizeIndicator === "full") {
           var _theme$resizeIndicato2;
-          drawColumnResizeOutline(targetCtx, x + c.width, totalHeaderHeight, height, blend((_theme$resizeIndicato2 = theme.resizeIndicatorColor) !== null && _theme$resizeIndicato2 !== void 0 ? _theme$resizeIndicato2 : theme.accentLight, theme.bgCell));
+          drawColumnResizeOutline(targetCtx, x2 + c.width, totalHeaderHeight, height, blend((_theme$resizeIndicato2 = theme.resizeIndicatorColor) !== null && _theme$resizeIndicato2 !== void 0 ? _theme$resizeIndicato2 : theme.accentLight, theme.bgCell));
         }
         return true;
       }
@@ -6732,8 +11863,8 @@ function drawGrid(arg, lastArg) {
   overlayCtx.restore();
 }
 const hoverTime = 80;
-function easeOutCubic(x) {
-  const x1 = x - 1;
+function easeOutCubic(x2) {
+  const x1 = x2 - 1;
   return x1 * x1 * x1 + 1;
 }
 class AnimationManager {
@@ -6767,9 +11898,9 @@ class AnimationManager {
       if (this.currentHoveredItem !== void 0) {
         return [...this.leavingItems, this.currentHoveredItem];
       }
-      return this.leavingItems.map((x) => ({
-        ...x,
-        hoverAmount: easeOutCubic(x.hoverAmount)
+      return this.leavingItems.map((x2) => ({
+        ...x2,
+        hoverAmount: easeOutCubic(x2.hoverAmount)
       }));
     };
     this.step = (timestamp) => {
@@ -6779,10 +11910,10 @@ class AnimationManager {
         const step = timestamp - this.lastAnimationTime;
         const delta = step / hoverTime;
         for (const item of this.leavingItems) {
-          item.hoverAmount = clamp$2(item.hoverAmount - delta, 0, 1);
+          item.hoverAmount = clamp$1(item.hoverAmount - delta, 0, 1);
         }
         if (this.currentHoveredItem !== void 0) {
-          this.currentHoveredItem.hoverAmount = clamp$2(this.currentHoveredItem.hoverAmount + delta, 0, 1);
+          this.currentHoveredItem.hoverAmount = clamp$1(this.currentHoveredItem.hoverAmount + delta, 0, 1);
         }
         const animating = this.getAnimatingItems();
         this.callback(animating);
@@ -6963,10 +12094,10 @@ const DataGrid = (p2, forwardedRef) => {
   const windowEventTargetRef = React.useRef((_experimental$eventTa = experimental === null || experimental === void 0 ? void 0 : experimental.eventTarget) !== null && _experimental$eventTa !== void 0 ? _experimental$eventTa : window);
   const windowEventTarget = windowEventTargetRef.current;
   const imageLoader = imageWindowLoader;
-  const damageRegion = React.useRef();
+  const damageRegion = React.useRef(void 0);
   const [scrolling, setScrolling] = React.useState(false);
   const hoverValues = React.useRef([]);
-  const lastBlitData = React.useRef();
+  const lastBlitData = React.useRef(void 0);
   const [hoveredItemInfo, setHoveredItemInfo] = React.useState();
   const [hoveredOnEdge, setHoveredOnEdge] = React.useState();
   const overlayRef = React.useRef(null);
@@ -7016,8 +12147,8 @@ const DataGrid = (p2, forwardedRef) => {
   const getMouseArgsForPosition = React.useCallback((canvas_0, posX, posY, ev) => {
     const rect_0 = canvas_0.getBoundingClientRect();
     const scale_0 = rect_0.width / width;
-    const x = (posX - rect_0.left) / scale_0;
-    const y = (posY - rect_0.top) / scale_0;
+    const x2 = (posX - rect_0.left) / scale_0;
+    const y2 = (posY - rect_0.top) / scale_0;
     const edgeDetectionBuffer = 5;
     const effectiveCols = getEffectiveColumns(mappedColumns, cellXOffset, width, void 0, translateX);
     let button = 0;
@@ -7028,16 +12159,16 @@ const DataGrid = (p2, forwardedRef) => {
       button = ev.button;
       buttons = ev.buttons;
     }
-    const col_0 = getColumnIndexForX(x, effectiveCols, translateX);
-    const row_0 = getRowIndexForY(y, height, enableGroups, headerHeight, groupHeaderHeight, rows, rowHeight, cellYOffset, translateY, freezeTrailingRows, groupLevels, groupHeaderHeights);
+    const col_0 = getColumnIndexForX(x2, effectiveCols, translateX);
+    const row_0 = getRowIndexForY(y2, height, enableGroups, headerHeight, groupHeaderHeight, rows, rowHeight, cellYOffset, translateY, freezeTrailingRows, groupLevels, groupHeaderHeights);
     const shiftKey = (ev === null || ev === void 0 ? void 0 : ev.shiftKey) === true;
     const ctrlKey = (ev === null || ev === void 0 ? void 0 : ev.ctrlKey) === true;
     const metaKey = (ev === null || ev === void 0 ? void 0 : ev.metaKey) === true;
-    const scrollEdge = [x < 0 ? -1 : width < x ? 1 : 0, y < totalHeaderHeight ? -1 : height < y ? 1 : 0];
+    const scrollEdge = [x2 < 0 ? -1 : width < x2 ? 1 : 0, y2 < totalHeaderHeight ? -1 : height < y2 ? 1 : 0];
     let result_0;
-    if (col_0 === -1 || y < 0 || x < 0 || row_0 === void 0 || x > width || y > height) {
-      const horizontal = x > width ? 1 : x < 0 ? -1 : 0;
-      const vertical = y > height ? 1 : y < 0 ? -1 : 0;
+    if (col_0 === -1 || y2 < 0 || x2 < 0 || row_0 === void 0 || x2 > width || y2 > height) {
+      const horizontal = x2 > width ? 1 : x2 < 0 ? -1 : 0;
+      const vertical = y2 > height ? 1 : y2 < 0 ? -1 : 0;
       let innerHorizontal = horizontal * 2;
       let innerVertical = vertical * 2;
       if (horizontal === 0) innerHorizontal = col_0 === -1 ? OutOfBoundsRegionAxis.EndPadding : OutOfBoundsRegionAxis.Center;
@@ -7048,10 +12179,10 @@ const DataGrid = (p2, forwardedRef) => {
         assert(b_0 !== void 0);
         isEdge = posX < b_0.x + b_0.width + edgeDetectionBuffer;
       }
-      const isMaybeScrollbar = x > width && x < width + getScrollBarWidth() || y > height && y < height + getScrollBarWidth();
+      const isMaybeScrollbar = x2 > width && x2 < width + getScrollBarWidth() || y2 > height && y2 < height + getScrollBarWidth();
       result_0 = {
         kind: outOfBoundsKind,
-        location: [col_0 !== -1 ? col_0 : x < 0 ? 0 : mappedColumns.length - 1, row_0 !== null && row_0 !== void 0 ? row_0 : rows - 1],
+        location: [col_0 !== -1 ? col_0 : x2 < 0 ? 0 : mappedColumns.length - 1, row_0 !== null && row_0 !== void 0 ? row_0 : rows - 1],
         region: [innerHorizontal, innerVertical],
         shiftKey,
         ctrlKey,
@@ -7180,7 +12311,7 @@ const DataGrid = (p2, forwardedRef) => {
   const renderStateProvider = React.useMemo(() => new RenderStateProvider(), []);
   const maxDPR = enableFirefoxRescaling && scrolling ? 1 : enableSafariRescaling && scrolling ? 2 : 5;
   const minimumCellWidth = (experimental === null || experimental === void 0 ? void 0 : experimental.disableMinimumCellWidth) === true ? 1 : 10;
-  const lastArgsRef = React.useRef();
+  const lastArgsRef = React.useRef(void 0);
   const canvasCtx = React.useRef(null);
   const overlayCtx = React.useRef(null);
   const draw = React.useCallback(() => {
@@ -7365,7 +12496,7 @@ const DataGrid = (p2, forwardedRef) => {
     return void 0;
   }, [mappedColumns, getBoundsForItem, hoveredOnEdge, isDragging, isResizing, theme]);
   const downTime = React.useRef(0);
-  const downPosition = React.useRef();
+  const downPosition = React.useRef(void 0);
   const mouseDown = React.useRef(false);
   const onPointerDown = React.useCallback((ev_0) => {
     const canvas_3 = ref.current;
@@ -7518,7 +12649,7 @@ const DataGrid = (p2, forwardedRef) => {
     const cellNeedsHover = r === void 0 && cell_0.kind === GridCellKind.Custom || (r === null || r === void 0 ? void 0 : r.needsHover) !== void 0 && (typeof r.needsHover === "boolean" ? r.needsHover : r.needsHover(cell_0));
     am.setHovered(cellNeedsHover ? hoveredItem : void 0);
   }, [getCellContent, getCellRenderer, hoveredItem]);
-  const hoveredRef = React.useRef();
+  const hoveredRef = React.useRef(void 0);
   const onPointerMove = React.useCallback((ev_4) => {
     const canvas_7 = ref.current;
     if (canvas_7 === null) return;
@@ -7711,7 +12842,7 @@ const DataGrid = (p2, forwardedRef) => {
     }
   }, [isDraggable, isResizing, getMouseArgsForPosition, onDragStart, getBoundsForItem, theme, mappedColumns, spriteManager, drawHeaderCallback, getCellContent, imageLoader, renderStateProvider, getCellRenderer]);
   useEventListener("dragstart", onDragStartImpl, (_eventTargetRef$curre2 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current) !== null && _eventTargetRef$curre2 !== void 0 ? _eventTargetRef$curre2 : null, false, false);
-  const activeDropTarget = React.useRef();
+  const activeDropTarget = React.useRef(void 0);
   const onDragOverImpl = React.useCallback((event_2) => {
     var _activeDropTarget$cur;
     const canvas_11 = ref.current;
@@ -7797,7 +12928,7 @@ const DataGrid = (p2, forwardedRef) => {
       return getMouseArgsForPosition(canvasRef.current, posX_0, posY_0, ev_5);
     }
   }), [canvasRef, damage, getBoundsForItem, getMouseArgsForPosition]);
-  const lastFocusedSubdomNode = React.useRef();
+  const lastFocusedSubdomNode = React.useRef(void 0);
   const accessibilityTree = useDebouncedMemo(() => {
     var _effectiveCols_0$, _selection$current$ce, _selection$current, _selection$current2;
     if (width < 50 || (experimental === null || experimental === void 0 ? void 0 : experimental.disableAccessibilityTree) === true) return null;
@@ -7807,9 +12938,9 @@ const DataGrid = (p2, forwardedRef) => {
       effectiveCols_0 = effectiveCols_0.slice(1);
     }
     const [fCol, fRow] = (_selection$current$ce = (_selection$current = selection.current) === null || _selection$current === void 0 ? void 0 : _selection$current.cell) !== null && _selection$current$ce !== void 0 ? _selection$current$ce : [];
-    const range2 = (_selection$current2 = selection.current) === null || _selection$current2 === void 0 ? void 0 : _selection$current2.range;
+    const range$1 = (_selection$current2 = selection.current) === null || _selection$current2 === void 0 ? void 0 : _selection$current2.range;
     const visibleCols = effectiveCols_0.map((c) => c.sourceIndex);
-    const visibleRows = range$1(cellYOffset, Math.min(rows, cellYOffset + accessibilityHeight));
+    const visibleRows = range(cellYOffset, Math.min(rows, cellYOffset + accessibilityHeight));
     if (fCol !== void 0 && fRow !== void 0 && !(visibleCols.includes(fCol) && visibleRows.includes(fRow))) {
       focusElement(null);
     }
@@ -7822,7 +12953,7 @@ const DataGrid = (p2, forwardedRef) => {
         const col_8 = c_1.sourceIndex;
         const key = packColRowToNumber(col_8, row_5);
         const focused = fCol === col_8 && fRow === row_5;
-        const selected = range2 !== void 0 && col_8 >= range2.x && col_8 < range2.x + range2.width && row_5 >= range2.y && row_5 < range2.y + range2.height;
+        const selected = range$1 !== void 0 && col_8 >= range$1.x && col_8 < range$1.x + range$1.width && row_5 >= range$1.y && row_5 < range$1.y + range$1.height;
         const id = `glide-cell-${col_8}-${row_5}`;
         const location_1 = [col_8, row_5];
         const cellContent = getCellContent(location_1, true);
@@ -7852,9 +12983,9 @@ const DataGrid = (p2, forwardedRef) => {
       }) }, row_5)) })
     ] }, "access-tree");
   }, [width, mappedColumns, cellXOffset, dragAndDropState, translateX, rows, cellYOffset, accessibilityHeight, selection, focusElement, getCellContent, canvasRef, onKeyDown, getBoundsForItem, onCellFocused], 200);
-  const opacityX = freezeColumns === 0 || !fixedShadowX ? 0 : cellXOffset > freezeColumns ? 1 : clamp$2(-translateX / 100, 0, 1);
+  const opacityX = freezeColumns === 0 || !fixedShadowX ? 0 : cellXOffset > freezeColumns ? 1 : clamp$1(-translateX / 100, 0, 1);
   const absoluteOffsetY = -cellYOffset * 32 + translateY;
-  const opacityY = !fixedShadowY ? 0 : clamp$2(-absoluteOffsetY / 100, 0, 1);
+  const opacityY = !fixedShadowY ? 0 : clamp$1(-absoluteOffsetY / 100, 0, 1);
   const stickyShadow = React.useMemo(() => {
     if (!opacityX && !opacityY) {
       return null;
@@ -7902,11 +13033,11 @@ const DataGrid = (p2, forwardedRef) => {
 const DataGrid$1 = React.memo(React.forwardRef(DataGrid));
 function offsetColumnSize(column, width, min, max) {
   var _column$growOffset;
-  return clamp$2(Math.round(width - ((_column$growOffset = column.growOffset) !== null && _column$growOffset !== void 0 ? _column$growOffset : 0)), Math.ceil(min), Math.floor(max));
+  return clamp$1(Math.round(width - ((_column$growOffset = column.growOffset) !== null && _column$growOffset !== void 0 ? _column$growOffset : 0)), Math.ceil(min), Math.floor(max));
 }
 const DataGridDnd = (p2) => {
   var _ref;
-  const $ = compilerRuntimeExports.c(137);
+  const $2 = compilerRuntimeExports.c(137);
   const [resizeColStartX, setResizeColStartX] = React.useState();
   const [resizeCol, setResizeCol] = React.useState();
   const [dragCol, setDragCol] = React.useState();
@@ -7944,7 +13075,7 @@ const DataGridDnd = (p2) => {
   } = p2;
   const selectedColumns = selection.columns;
   let t0;
-  if ($[0] !== dragCol || $[1] !== dragColActive || $[2] !== dragRow || $[3] !== dragRowActive || $[4] !== dropCol || $[5] !== lockColumns || $[6] !== onItemHovered || $[7] !== resizeCol) {
+  if ($2[0] !== dragCol || $2[1] !== dragColActive || $2[2] !== dragRow || $2[3] !== dragRowActive || $2[4] !== dropCol || $2[5] !== lockColumns || $2[6] !== onItemHovered || $2[7] !== resizeCol) {
     t0 = (args) => {
       const [col, row] = args.location;
       if (dragCol !== void 0 && dropCol !== col && col >= lockColumns) {
@@ -7961,22 +13092,22 @@ const DataGridDnd = (p2) => {
         }
       }
     };
-    $[0] = dragCol;
-    $[1] = dragColActive;
-    $[2] = dragRow;
-    $[3] = dragRowActive;
-    $[4] = dropCol;
-    $[5] = lockColumns;
-    $[6] = onItemHovered;
-    $[7] = resizeCol;
-    $[8] = t0;
+    $2[0] = dragCol;
+    $2[1] = dragColActive;
+    $2[2] = dragRow;
+    $2[3] = dragRowActive;
+    $2[4] = dropCol;
+    $2[5] = lockColumns;
+    $2[6] = onItemHovered;
+    $2[7] = resizeCol;
+    $2[8] = t0;
   } else {
-    t0 = $[8];
+    t0 = $2[8];
   }
   const onItemHoveredImpl = t0;
   const canDragCol = onColumnMoved !== void 0;
   let t1;
-  if ($[9] !== canDragCol || $[10] !== canResize || $[11] !== canvasRef || $[12] !== columns || $[13] !== gridRef || $[14] !== lockColumns || $[15] !== onColumnResizeStart || $[16] !== onMouseDown || $[17] !== onRowMoved) {
+  if ($2[9] !== canDragCol || $2[10] !== canResize || $2[11] !== canvasRef || $2[12] !== columns || $2[13] !== gridRef || $2[14] !== lockColumns || $2[15] !== onColumnResizeStart || $2[16] !== onMouseDown || $2[17] !== onRowMoved) {
     t1 = (args_0) => {
       if (args_0.button === 0) {
         const [col_0, row_0] = args_0.location;
@@ -8014,55 +13145,55 @@ const DataGridDnd = (p2) => {
       }
       onMouseDown === null || onMouseDown === void 0 || onMouseDown(args_0);
     };
-    $[9] = canDragCol;
-    $[10] = canResize;
-    $[11] = canvasRef;
-    $[12] = columns;
-    $[13] = gridRef;
-    $[14] = lockColumns;
-    $[15] = onColumnResizeStart;
-    $[16] = onMouseDown;
-    $[17] = onRowMoved;
-    $[18] = t1;
+    $2[9] = canDragCol;
+    $2[10] = canResize;
+    $2[11] = canvasRef;
+    $2[12] = columns;
+    $2[13] = gridRef;
+    $2[14] = lockColumns;
+    $2[15] = onColumnResizeStart;
+    $2[16] = onMouseDown;
+    $2[17] = onRowMoved;
+    $2[18] = t1;
   } else {
-    t1 = $[18];
+    t1 = $2[18];
   }
   const onMouseDownImpl = t1;
   let t2;
-  if ($[19] !== dragColActive || $[20] !== dragRowActive || $[21] !== onHeaderMenuClick) {
+  if ($2[19] !== dragColActive || $2[20] !== dragRowActive || $2[21] !== onHeaderMenuClick) {
     t2 = (col_1, screenPosition) => {
       if (dragColActive || dragRowActive) {
         return;
       }
       onHeaderMenuClick === null || onHeaderMenuClick === void 0 || onHeaderMenuClick(col_1, screenPosition);
     };
-    $[19] = dragColActive;
-    $[20] = dragRowActive;
-    $[21] = onHeaderMenuClick;
-    $[22] = t2;
+    $2[19] = dragColActive;
+    $2[20] = dragRowActive;
+    $2[21] = onHeaderMenuClick;
+    $2[22] = t2;
   } else {
-    t2 = $[22];
+    t2 = $2[22];
   }
   const onHeaderMenuClickMangled = t2;
   let t3;
-  if ($[23] !== dragColActive || $[24] !== dragRowActive || $[25] !== onHeaderIndicatorClick) {
+  if ($2[23] !== dragColActive || $2[24] !== dragRowActive || $2[25] !== onHeaderIndicatorClick) {
     t3 = (col_2, screenPosition_0) => {
       if (dragColActive || dragRowActive) {
         return;
       }
       onHeaderIndicatorClick === null || onHeaderIndicatorClick === void 0 || onHeaderIndicatorClick(col_2, screenPosition_0);
     };
-    $[23] = dragColActive;
-    $[24] = dragRowActive;
-    $[25] = onHeaderIndicatorClick;
-    $[26] = t3;
+    $2[23] = dragColActive;
+    $2[24] = dragRowActive;
+    $2[25] = onHeaderIndicatorClick;
+    $2[26] = t3;
   } else {
-    t3 = $[26];
+    t3 = $2[26];
   }
   const onHeaderIndicatorClickMangled = t3;
   const lastResizeWidthRef = React.useRef(-1);
   let t4;
-  if ($[27] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[27] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t4 = () => {
       lastResizeWidthRef.current = -1;
       setDragRow(void 0);
@@ -8076,13 +13207,13 @@ const DataGridDnd = (p2) => {
       setResizeCol(void 0);
       setResizeColStartX(void 0);
     };
-    $[27] = t4;
+    $2[27] = t4;
   } else {
-    t4 = $[27];
+    t4 = $2[27];
   }
   const clearAll = t4;
   let t5;
-  if ($[28] !== columns || $[29] !== dragCol || $[30] !== dragRow || $[31] !== dropCol || $[32] !== dropRow || $[33] !== maxColumnWidth || $[34] !== minColumnWidth || $[35] !== onColumnMoved || $[36] !== onColumnProposeMove || $[37] !== onColumnResize || $[38] !== onColumnResizeEnd || $[39] !== onMouseUp || $[40] !== onRowMoved || $[41] !== resizeCol || $[42] !== selectedColumns) {
+  if ($2[28] !== columns || $2[29] !== dragCol || $2[30] !== dragRow || $2[31] !== dropCol || $2[32] !== dropRow || $2[33] !== maxColumnWidth || $2[34] !== minColumnWidth || $2[35] !== onColumnMoved || $2[36] !== onColumnProposeMove || $2[37] !== onColumnResize || $2[38] !== onColumnResizeEnd || $2[39] !== onMouseUp || $2[40] !== onRowMoved || $2[41] !== resizeCol || $2[42] !== selectedColumns) {
     t5 = (args_1, isOutside) => {
       if (args_1.button === 0) {
         if (resizeCol !== void 0) {
@@ -8122,24 +13253,24 @@ const DataGridDnd = (p2) => {
       }
       onMouseUp === null || onMouseUp === void 0 || onMouseUp(args_1, isOutside);
     };
-    $[28] = columns;
-    $[29] = dragCol;
-    $[30] = dragRow;
-    $[31] = dropCol;
-    $[32] = dropRow;
-    $[33] = maxColumnWidth;
-    $[34] = minColumnWidth;
-    $[35] = onColumnMoved;
-    $[36] = onColumnProposeMove;
-    $[37] = onColumnResize;
-    $[38] = onColumnResizeEnd;
-    $[39] = onMouseUp;
-    $[40] = onRowMoved;
-    $[41] = resizeCol;
-    $[42] = selectedColumns;
-    $[43] = t5;
+    $2[28] = columns;
+    $2[29] = dragCol;
+    $2[30] = dragRow;
+    $2[31] = dropCol;
+    $2[32] = dropRow;
+    $2[33] = maxColumnWidth;
+    $2[34] = minColumnWidth;
+    $2[35] = onColumnMoved;
+    $2[36] = onColumnProposeMove;
+    $2[37] = onColumnResize;
+    $2[38] = onColumnResizeEnd;
+    $2[39] = onMouseUp;
+    $2[40] = onRowMoved;
+    $2[41] = resizeCol;
+    $2[42] = selectedColumns;
+    $2[43] = t5;
   } else {
-    t5 = $[43];
+    t5 = $2[43];
   }
   const onMouseUpImpl = t5;
   let t6;
@@ -8157,22 +13288,22 @@ const DataGridDnd = (p2) => {
       break bb0;
     }
     let t72;
-    if ($[44] !== dragCol || $[45] !== dropCol) {
+    if ($2[44] !== dragCol || $2[45] !== dropCol) {
       t72 = {
         src: dragCol,
         dest: dropCol
       };
-      $[44] = dragCol;
-      $[45] = dropCol;
-      $[46] = t72;
+      $2[44] = dragCol;
+      $2[45] = dropCol;
+      $2[46] = t72;
     } else {
-      t72 = $[46];
+      t72 = $2[46];
     }
     t6 = t72;
   }
   const dragOffset = t6;
   let t7;
-  if ($[47] !== canvasRef || $[48] !== columns || $[49] !== dragCol || $[50] !== dragRow || $[51] !== dragStartX || $[52] !== dragStartY || $[53] !== maxColumnWidth || $[54] !== minColumnWidth || $[55] !== onColumnResize || $[56] !== resizeCol || $[57] !== resizeColStartX || $[58] !== selectedColumns) {
+  if ($2[47] !== canvasRef || $2[48] !== columns || $2[49] !== dragCol || $2[50] !== dragRow || $2[51] !== dragStartX || $2[52] !== dragStartY || $2[53] !== maxColumnWidth || $2[54] !== minColumnWidth || $2[55] !== onColumnResize || $2[56] !== resizeCol || $2[57] !== resizeColStartX || $2[58] !== selectedColumns) {
     t7 = (event) => {
       const canvas_0 = canvasRef === null || canvasRef === void 0 ? void 0 : canvasRef.current;
       if (dragCol !== void 0 && dragStartX !== void 0) {
@@ -8211,25 +13342,25 @@ const DataGridDnd = (p2) => {
         }
       }
     };
-    $[47] = canvasRef;
-    $[48] = columns;
-    $[49] = dragCol;
-    $[50] = dragRow;
-    $[51] = dragStartX;
-    $[52] = dragStartY;
-    $[53] = maxColumnWidth;
-    $[54] = minColumnWidth;
-    $[55] = onColumnResize;
-    $[56] = resizeCol;
-    $[57] = resizeColStartX;
-    $[58] = selectedColumns;
-    $[59] = t7;
+    $2[47] = canvasRef;
+    $2[48] = columns;
+    $2[49] = dragCol;
+    $2[50] = dragRow;
+    $2[51] = dragStartX;
+    $2[52] = dragStartY;
+    $2[53] = maxColumnWidth;
+    $2[54] = minColumnWidth;
+    $2[55] = onColumnResize;
+    $2[56] = resizeCol;
+    $2[57] = resizeColStartX;
+    $2[58] = selectedColumns;
+    $2[59] = t7;
   } else {
-    t7 = $[59];
+    t7 = $2[59];
   }
   const onMouseMove = t7;
   let t8;
-  if ($[60] !== dragRow || $[61] !== dropRow || $[62] !== getCellContent) {
+  if ($2[60] !== dragRow || $2[61] !== dropRow || $2[62] !== getCellContent) {
     t8 = (cell, forceStrict) => {
       if (dragRow === void 0 || dropRow === void 0) {
         return getCellContent(cell, forceStrict);
@@ -8247,105 +13378,105 @@ const DataGridDnd = (p2) => {
       }
       return getCellContent([col_6, row_1], forceStrict);
     };
-    $[60] = dragRow;
-    $[61] = dropRow;
-    $[62] = getCellContent;
-    $[63] = t8;
+    $2[60] = dragRow;
+    $2[61] = dropRow;
+    $2[62] = getCellContent;
+    $2[63] = t8;
   } else {
-    t8 = $[63];
+    t8 = $2[63];
   }
   const getMangledCellContent = t8;
   let t9;
-  if ($[64] !== onDragStart) {
+  if ($2[64] !== onDragStart) {
     t9 = (args_2) => {
       onDragStart === null || onDragStart === void 0 || onDragStart(args_2);
       if (!args_2.defaultPrevented()) {
         clearAll();
       }
     };
-    $[64] = onDragStart;
-    $[65] = t9;
+    $2[64] = onDragStart;
+    $2[65] = t9;
   } else {
-    t9 = $[65];
+    t9 = $2[65];
   }
   const onDragStartImpl = t9;
   const t10 = resizeCol !== void 0;
   let t11;
-  if ($[66] !== canResize || $[67] !== dragColActive || $[68] !== dragOffset || $[69] !== getMangledCellContent || $[70] !== gridRef || $[71] !== onDragStartImpl || $[72] !== onHeaderIndicatorClickMangled || $[73] !== onHeaderMenuClickMangled || $[74] !== onItemHoveredImpl || $[75] !== onMouseDownImpl || $[76] !== onMouseMove || $[77] !== onMouseUpImpl || $[78] !== p2.accessibilityHeight || $[79] !== p2.canvasRef || $[80] !== p2.cellXOffset || $[81] !== p2.cellYOffset || $[82] !== p2.columns || $[83] !== p2.disabledRows || $[84] !== p2.drawCell || $[85] !== p2.drawFocusRing || $[86] !== p2.drawHeader || $[87] !== p2.enableGroups || $[88] !== p2.eventTargetRef || $[89] !== p2.experimental || $[90] !== p2.fillHandle || $[91] !== p2.firstColAccessible || $[92] !== p2.fixedShadowX || $[93] !== p2.fixedShadowY || $[94] !== p2.freezeColumns || $[95] !== p2.freezeTrailingRows || $[96] !== p2.getCellRenderer || $[97] !== p2.getGroupDetails || $[98] !== p2.getRowThemeOverride || $[99] !== p2.groupHeaderHeight || $[100] !== p2.groupHeaderHeights || $[101] !== p2.groupLevels || $[102] !== p2.hasAppendRow || $[103] !== p2.headerHeight || $[104] !== p2.headerIcons || $[105] !== p2.height || $[106] !== p2.highlightRegions || $[107] !== p2.imageWindowLoader || $[108] !== p2.isDraggable || $[109] !== p2.isFilling || $[110] !== p2.isFocused || $[111] !== p2.onCanvasBlur || $[112] !== p2.onCanvasFocused || $[113] !== p2.onCellFocused || $[114] !== p2.onContextMenu || $[115] !== p2.onDragEnd || $[116] !== p2.onDragLeave || $[117] !== p2.onDragOverCell || $[118] !== p2.onDrop || $[119] !== p2.onKeyDown || $[120] !== p2.onKeyUp || $[121] !== p2.onMouseMove || $[122] !== p2.prelightCells || $[123] !== p2.resizeIndicator || $[124] !== p2.rowHeight || $[125] !== p2.rows || $[126] !== p2.selection || $[127] !== p2.smoothScrollX || $[128] !== p2.smoothScrollY || $[129] !== p2.theme || $[130] !== p2.translateX || $[131] !== p2.translateY || $[132] !== p2.verticalBorder || $[133] !== p2.width || $[134] !== resizeCol || $[135] !== t10) {
+  if ($2[66] !== canResize || $2[67] !== dragColActive || $2[68] !== dragOffset || $2[69] !== getMangledCellContent || $2[70] !== gridRef || $2[71] !== onDragStartImpl || $2[72] !== onHeaderIndicatorClickMangled || $2[73] !== onHeaderMenuClickMangled || $2[74] !== onItemHoveredImpl || $2[75] !== onMouseDownImpl || $2[76] !== onMouseMove || $2[77] !== onMouseUpImpl || $2[78] !== p2.accessibilityHeight || $2[79] !== p2.canvasRef || $2[80] !== p2.cellXOffset || $2[81] !== p2.cellYOffset || $2[82] !== p2.columns || $2[83] !== p2.disabledRows || $2[84] !== p2.drawCell || $2[85] !== p2.drawFocusRing || $2[86] !== p2.drawHeader || $2[87] !== p2.enableGroups || $2[88] !== p2.eventTargetRef || $2[89] !== p2.experimental || $2[90] !== p2.fillHandle || $2[91] !== p2.firstColAccessible || $2[92] !== p2.fixedShadowX || $2[93] !== p2.fixedShadowY || $2[94] !== p2.freezeColumns || $2[95] !== p2.freezeTrailingRows || $2[96] !== p2.getCellRenderer || $2[97] !== p2.getGroupDetails || $2[98] !== p2.getRowThemeOverride || $2[99] !== p2.groupHeaderHeight || $2[100] !== p2.groupHeaderHeights || $2[101] !== p2.groupLevels || $2[102] !== p2.hasAppendRow || $2[103] !== p2.headerHeight || $2[104] !== p2.headerIcons || $2[105] !== p2.height || $2[106] !== p2.highlightRegions || $2[107] !== p2.imageWindowLoader || $2[108] !== p2.isDraggable || $2[109] !== p2.isFilling || $2[110] !== p2.isFocused || $2[111] !== p2.onCanvasBlur || $2[112] !== p2.onCanvasFocused || $2[113] !== p2.onCellFocused || $2[114] !== p2.onContextMenu || $2[115] !== p2.onDragEnd || $2[116] !== p2.onDragLeave || $2[117] !== p2.onDragOverCell || $2[118] !== p2.onDrop || $2[119] !== p2.onKeyDown || $2[120] !== p2.onKeyUp || $2[121] !== p2.onMouseMove || $2[122] !== p2.prelightCells || $2[123] !== p2.resizeIndicator || $2[124] !== p2.rowHeight || $2[125] !== p2.rows || $2[126] !== p2.selection || $2[127] !== p2.smoothScrollX || $2[128] !== p2.smoothScrollY || $2[129] !== p2.theme || $2[130] !== p2.translateX || $2[131] !== p2.translateY || $2[132] !== p2.verticalBorder || $2[133] !== p2.width || $2[134] !== resizeCol || $2[135] !== t10) {
     t11 = /* @__PURE__ */ jsx(DataGrid$1, { accessibilityHeight: p2.accessibilityHeight, canvasRef: p2.canvasRef, cellXOffset: p2.cellXOffset, cellYOffset: p2.cellYOffset, columns: p2.columns, disabledRows: p2.disabledRows, drawFocusRing: p2.drawFocusRing, drawHeader: p2.drawHeader, drawCell: p2.drawCell, enableGroups: p2.enableGroups, groupLevels: p2.groupLevels, groupHeaderHeights: p2.groupHeaderHeights, eventTargetRef: p2.eventTargetRef, experimental: p2.experimental, fillHandle: p2.fillHandle, firstColAccessible: p2.firstColAccessible, fixedShadowX: p2.fixedShadowX, fixedShadowY: p2.fixedShadowY, freezeColumns: p2.freezeColumns, getCellRenderer: p2.getCellRenderer, getGroupDetails: p2.getGroupDetails, getRowThemeOverride: p2.getRowThemeOverride, groupHeaderHeight: p2.groupHeaderHeight, headerHeight: p2.headerHeight, headerIcons: p2.headerIcons, height: p2.height, highlightRegions: p2.highlightRegions, imageWindowLoader: p2.imageWindowLoader, resizeColumn: resizeCol, isDraggable: p2.isDraggable, isFilling: p2.isFilling, isFocused: p2.isFocused, onCanvasBlur: p2.onCanvasBlur, onCanvasFocused: p2.onCanvasFocused, onCellFocused: p2.onCellFocused, onContextMenu: p2.onContextMenu, onDragEnd: p2.onDragEnd, onDragLeave: p2.onDragLeave, onDragOverCell: p2.onDragOverCell, onDrop: p2.onDrop, onKeyDown: p2.onKeyDown, onKeyUp: p2.onKeyUp, onMouseMove: p2.onMouseMove, prelightCells: p2.prelightCells, rowHeight: p2.rowHeight, rows: p2.rows, selection: p2.selection, smoothScrollX: p2.smoothScrollX, smoothScrollY: p2.smoothScrollY, theme: p2.theme, freezeTrailingRows: p2.freezeTrailingRows, hasAppendRow: p2.hasAppendRow, translateX: p2.translateX, translateY: p2.translateY, resizeIndicator: p2.resizeIndicator, verticalBorder: p2.verticalBorder, width: p2.width, getCellContent: getMangledCellContent, isResizing: t10, onHeaderMenuClick: onHeaderMenuClickMangled, onHeaderIndicatorClick: onHeaderIndicatorClickMangled, isDragging: dragColActive, onItemHovered: onItemHoveredImpl, onDragStart: onDragStartImpl, onMouseDown: onMouseDownImpl, allowResize: canResize, onMouseUp: onMouseUpImpl, dragAndDropState: dragOffset, onMouseMoveRaw: onMouseMove, ref: gridRef });
-    $[66] = canResize;
-    $[67] = dragColActive;
-    $[68] = dragOffset;
-    $[69] = getMangledCellContent;
-    $[70] = gridRef;
-    $[71] = onDragStartImpl;
-    $[72] = onHeaderIndicatorClickMangled;
-    $[73] = onHeaderMenuClickMangled;
-    $[74] = onItemHoveredImpl;
-    $[75] = onMouseDownImpl;
-    $[76] = onMouseMove;
-    $[77] = onMouseUpImpl;
-    $[78] = p2.accessibilityHeight;
-    $[79] = p2.canvasRef;
-    $[80] = p2.cellXOffset;
-    $[81] = p2.cellYOffset;
-    $[82] = p2.columns;
-    $[83] = p2.disabledRows;
-    $[84] = p2.drawCell;
-    $[85] = p2.drawFocusRing;
-    $[86] = p2.drawHeader;
-    $[87] = p2.enableGroups;
-    $[88] = p2.eventTargetRef;
-    $[89] = p2.experimental;
-    $[90] = p2.fillHandle;
-    $[91] = p2.firstColAccessible;
-    $[92] = p2.fixedShadowX;
-    $[93] = p2.fixedShadowY;
-    $[94] = p2.freezeColumns;
-    $[95] = p2.freezeTrailingRows;
-    $[96] = p2.getCellRenderer;
-    $[97] = p2.getGroupDetails;
-    $[98] = p2.getRowThemeOverride;
-    $[99] = p2.groupHeaderHeight;
-    $[100] = p2.groupHeaderHeights;
-    $[101] = p2.groupLevels;
-    $[102] = p2.hasAppendRow;
-    $[103] = p2.headerHeight;
-    $[104] = p2.headerIcons;
-    $[105] = p2.height;
-    $[106] = p2.highlightRegions;
-    $[107] = p2.imageWindowLoader;
-    $[108] = p2.isDraggable;
-    $[109] = p2.isFilling;
-    $[110] = p2.isFocused;
-    $[111] = p2.onCanvasBlur;
-    $[112] = p2.onCanvasFocused;
-    $[113] = p2.onCellFocused;
-    $[114] = p2.onContextMenu;
-    $[115] = p2.onDragEnd;
-    $[116] = p2.onDragLeave;
-    $[117] = p2.onDragOverCell;
-    $[118] = p2.onDrop;
-    $[119] = p2.onKeyDown;
-    $[120] = p2.onKeyUp;
-    $[121] = p2.onMouseMove;
-    $[122] = p2.prelightCells;
-    $[123] = p2.resizeIndicator;
-    $[124] = p2.rowHeight;
-    $[125] = p2.rows;
-    $[126] = p2.selection;
-    $[127] = p2.smoothScrollX;
-    $[128] = p2.smoothScrollY;
-    $[129] = p2.theme;
-    $[130] = p2.translateX;
-    $[131] = p2.translateY;
-    $[132] = p2.verticalBorder;
-    $[133] = p2.width;
-    $[134] = resizeCol;
-    $[135] = t10;
-    $[136] = t11;
+    $2[66] = canResize;
+    $2[67] = dragColActive;
+    $2[68] = dragOffset;
+    $2[69] = getMangledCellContent;
+    $2[70] = gridRef;
+    $2[71] = onDragStartImpl;
+    $2[72] = onHeaderIndicatorClickMangled;
+    $2[73] = onHeaderMenuClickMangled;
+    $2[74] = onItemHoveredImpl;
+    $2[75] = onMouseDownImpl;
+    $2[76] = onMouseMove;
+    $2[77] = onMouseUpImpl;
+    $2[78] = p2.accessibilityHeight;
+    $2[79] = p2.canvasRef;
+    $2[80] = p2.cellXOffset;
+    $2[81] = p2.cellYOffset;
+    $2[82] = p2.columns;
+    $2[83] = p2.disabledRows;
+    $2[84] = p2.drawCell;
+    $2[85] = p2.drawFocusRing;
+    $2[86] = p2.drawHeader;
+    $2[87] = p2.enableGroups;
+    $2[88] = p2.eventTargetRef;
+    $2[89] = p2.experimental;
+    $2[90] = p2.fillHandle;
+    $2[91] = p2.firstColAccessible;
+    $2[92] = p2.fixedShadowX;
+    $2[93] = p2.fixedShadowY;
+    $2[94] = p2.freezeColumns;
+    $2[95] = p2.freezeTrailingRows;
+    $2[96] = p2.getCellRenderer;
+    $2[97] = p2.getGroupDetails;
+    $2[98] = p2.getRowThemeOverride;
+    $2[99] = p2.groupHeaderHeight;
+    $2[100] = p2.groupHeaderHeights;
+    $2[101] = p2.groupLevels;
+    $2[102] = p2.hasAppendRow;
+    $2[103] = p2.headerHeight;
+    $2[104] = p2.headerIcons;
+    $2[105] = p2.height;
+    $2[106] = p2.highlightRegions;
+    $2[107] = p2.imageWindowLoader;
+    $2[108] = p2.isDraggable;
+    $2[109] = p2.isFilling;
+    $2[110] = p2.isFocused;
+    $2[111] = p2.onCanvasBlur;
+    $2[112] = p2.onCanvasFocused;
+    $2[113] = p2.onCellFocused;
+    $2[114] = p2.onContextMenu;
+    $2[115] = p2.onDragEnd;
+    $2[116] = p2.onDragLeave;
+    $2[117] = p2.onDragOverCell;
+    $2[118] = p2.onDrop;
+    $2[119] = p2.onKeyDown;
+    $2[120] = p2.onKeyUp;
+    $2[121] = p2.onMouseMove;
+    $2[122] = p2.prelightCells;
+    $2[123] = p2.resizeIndicator;
+    $2[124] = p2.rowHeight;
+    $2[125] = p2.rows;
+    $2[126] = p2.selection;
+    $2[127] = p2.smoothScrollX;
+    $2[128] = p2.smoothScrollY;
+    $2[129] = p2.theme;
+    $2[130] = p2.translateX;
+    $2[131] = p2.translateY;
+    $2[132] = p2.verticalBorder;
+    $2[133] = p2.width;
+    $2[134] = resizeCol;
+    $2[135] = t10;
+    $2[136] = t11;
   } else {
-    t11 = $[136];
+    t11 = $2[136];
   }
   return t11;
 };
@@ -8451,32 +13582,32 @@ const ScrollRegionStyle = /* @__PURE__ */ styled_default("div")({
 const BROWSER_MAX_DIV_HEIGHT = 33554400;
 const MAX_PADDER_SEGMENT_HEIGHT = 5e6;
 function useTouchUpDelayed(delay) {
-  const $ = compilerRuntimeExports.c(3);
+  const $2 = compilerRuntimeExports.c(3);
   const [hasTouches, setHasTouches] = React.useState(false);
   const safeWindow = typeof window === "undefined" ? null : window;
   const cbTimer = React.useRef(0);
   let t0;
-  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t0 = () => {
       window.clearTimeout(cbTimer.current);
       setHasTouches(true);
     };
-    $[0] = t0;
+    $2[0] = t0;
   } else {
-    t0 = $[0];
+    t0 = $2[0];
   }
   useEventListener("touchstart", t0, safeWindow, true, false);
   let t1;
-  if ($[1] !== delay) {
+  if ($2[1] !== delay) {
     t1 = (e) => {
       if (e.touches.length === 0) {
         cbTimer.current = window.setTimeout(() => setHasTouches(false), delay);
       }
     };
-    $[1] = delay;
-    $[2] = t1;
+    $2[1] = delay;
+    $2[2] = t1;
   } else {
-    t1 = $[2];
+    t1 = $2[2];
   }
   useEventListener("touchend", t1, safeWindow, true, false);
   return hasTouches;
@@ -8597,7 +13728,7 @@ const InfiniteScroller = (p2) => {
   useKineticScroll(kineticScrollPerfHack && browserIsSafari.value, onScroll, scroller);
   const onScrollRef = React.useRef(onScroll);
   onScrollRef.current = onScroll;
-  const lastProps = React.useRef();
+  const lastProps = React.useRef(void 0);
   const didFirstScroll = React.useRef(false);
   React.useLayoutEffect(() => {
     if (didFirstScroll.current) onScroll();
@@ -8693,7 +13824,7 @@ const InfiniteScroller = (p2) => {
   });
 };
 const GridScroller = (p2) => {
-  const $ = compilerRuntimeExports.c(105);
+  const $2 = compilerRuntimeExports.c(105);
   const {
     columns,
     rows,
@@ -8721,22 +13852,22 @@ const GridScroller = (p2) => {
   const smoothScrollX = t0 === void 0 ? false : t0;
   const smoothScrollY = t1 === void 0 ? false : t1;
   let t2;
-  if ($[0] !== experimental) {
+  if ($2[0] !== experimental) {
     t2 = experimental !== null && experimental !== void 0 ? experimental : {};
-    $[0] = experimental;
-    $[1] = t2;
+    $2[0] = experimental;
+    $2[1] = t2;
   } else {
-    t2 = $[1];
+    t2 = $2[1];
   }
   const {
     paddingRight,
     paddingBottom
   } = t2;
   const [clientWidth, clientHeight] = clientSize;
-  const last = React.useRef();
-  const lastX = React.useRef();
-  const lastY = React.useRef();
-  const lastSize = React.useRef();
+  const last = React.useRef(void 0);
+  const lastX = React.useRef(void 0);
+  const lastY = React.useRef(void 0);
+  const lastSize = React.useRef(void 0);
   const width = nonGrowWidth + Math.max(0, overscrollX !== null && overscrollX !== void 0 ? overscrollX : 0);
   let height = enableGroups ? headerHeight + groupHeaderHeight : headerHeight;
   if (typeof rowHeight === "number") {
@@ -8749,9 +13880,9 @@ const GridScroller = (p2) => {
   if (overscrollY !== void 0) {
     height = height + overscrollY;
   }
-  const lastArgs = React.useRef();
+  const lastArgs = React.useRef(void 0);
   let t3;
-  if ($[2] !== columns || $[3] !== freezeColumns || $[4] !== onVisibleRegionChanged || $[5] !== rowHeight || $[6] !== rows || $[7] !== smoothScrollX || $[8] !== smoothScrollY) {
+  if ($2[2] !== columns || $2[3] !== freezeColumns || $2[4] !== onVisibleRegionChanged || $2[5] !== rowHeight || $2[6] !== rows || $2[7] !== smoothScrollX || $2[8] !== smoothScrollY) {
     t3 = () => {
       var _lastSize$current, _lastSize$current2;
       if (lastArgs.current === void 0) {
@@ -8760,7 +13891,7 @@ const GridScroller = (p2) => {
       const args = {
         ...lastArgs.current
       };
-      let x = 0;
+      let x2 = 0;
       let tx = args.x < 0 ? -args.x : 0;
       let cellRight = 0;
       let cellX = 0;
@@ -8770,14 +13901,14 @@ const GridScroller = (p2) => {
         stickyColWidth = stickyColWidth + columns[i].width;
       }
       for (const c of columns) {
-        const cx3 = x - stickyColWidth;
+        const cx3 = x2 - stickyColWidth;
         if (args.x >= cx3 + c.width) {
-          x = x + c.width;
+          x2 = x2 + c.width;
           cellX++;
           cellRight++;
         } else {
           if (args.x > cx3) {
-            x = x + c.width;
+            x2 = x2 + c.width;
             if (smoothScrollX) {
               tx = tx + (cx3 - args.x);
             } else {
@@ -8786,7 +13917,7 @@ const GridScroller = (p2) => {
             cellRight++;
           } else {
             if (args.x + args.width > cx3) {
-              x = x + c.width;
+              x2 = x2 + c.width;
               cellRight++;
             } else {
               break;
@@ -8809,17 +13940,17 @@ const GridScroller = (p2) => {
           cellBottom++;
         }
       } else {
-        let y = 0;
+        let y2 = 0;
         for (let row = 0; row < rows; row++) {
           const rh = rowHeight(row);
-          const cy = y + (smoothScrollY ? 0 : rh / 2);
-          if (args.y >= y + rh) {
-            y = y + rh;
+          const cy = y2 + (smoothScrollY ? 0 : rh / 2);
+          if (args.y >= y2 + rh) {
+            y2 = y2 + rh;
             cellY++;
             cellBottom++;
           } else {
             if (args.y > cy) {
-              y = y + rh;
+              y2 = y2 + rh;
               if (smoothScrollY) {
                 ty = ty + (cy - args.y);
               } else {
@@ -8827,8 +13958,8 @@ const GridScroller = (p2) => {
               }
               cellBottom++;
             } else {
-              if (args.y + args.height > rh / 2 + y) {
-                y = y + rh;
+              if (args.y + args.height > rh / 2 + y2) {
+                y2 = y2 + rh;
                 cellBottom++;
               } else {
                 break;
@@ -8860,43 +13991,43 @@ const GridScroller = (p2) => {
         lastSize.current = [args.width, args.height];
       }
     };
-    $[2] = columns;
-    $[3] = freezeColumns;
-    $[4] = onVisibleRegionChanged;
-    $[5] = rowHeight;
-    $[6] = rows;
-    $[7] = smoothScrollX;
-    $[8] = smoothScrollY;
-    $[9] = t3;
+    $2[2] = columns;
+    $2[3] = freezeColumns;
+    $2[4] = onVisibleRegionChanged;
+    $2[5] = rowHeight;
+    $2[6] = rows;
+    $2[7] = smoothScrollX;
+    $2[8] = smoothScrollY;
+    $2[9] = t3;
   } else {
-    t3 = $[9];
+    t3 = $2[9];
   }
   const processArgs = t3;
   let t4;
-  if ($[10] !== processArgs) {
+  if ($2[10] !== processArgs) {
     t4 = (args_0) => {
       lastArgs.current = args_0;
       processArgs();
     };
-    $[10] = processArgs;
-    $[11] = t4;
+    $2[10] = processArgs;
+    $2[11] = t4;
   } else {
-    t4 = $[11];
+    t4 = $2[11];
   }
   const onScrollUpdate = t4;
   let t5;
   let t6;
-  if ($[12] !== processArgs) {
+  if ($2[12] !== processArgs) {
     t5 = () => {
       processArgs();
     };
     t6 = [processArgs];
-    $[12] = processArgs;
-    $[13] = t5;
-    $[14] = t6;
+    $2[12] = processArgs;
+    $2[13] = t5;
+    $2[14] = t6;
   } else {
-    t5 = $[13];
-    t6 = $[14];
+    t5 = $2[13];
+    t6 = $2[14];
   }
   React.useEffect(t5, t6);
   const t7 = experimental === null || experimental === void 0 ? void 0 : experimental.kineticScrollPerfHack;
@@ -8904,106 +14035,106 @@ const GridScroller = (p2) => {
   const t9 = width + (paddingRight !== null && paddingRight !== void 0 ? paddingRight : 0);
   const t10 = height + (paddingBottom !== null && paddingBottom !== void 0 ? paddingBottom : 0);
   let t11;
-  if ($[15] !== clientHeight || $[16] !== clientWidth || $[17] !== p2.accessibilityHeight || $[18] !== p2.canvasRef || $[19] !== p2.cellXOffset || $[20] !== p2.cellYOffset || $[21] !== p2.columns || $[22] !== p2.disabledRows || $[23] !== p2.drawCell || $[24] !== p2.drawFocusRing || $[25] !== p2.drawHeader || $[26] !== p2.enableGroups || $[27] !== p2.experimental || $[28] !== p2.fillHandle || $[29] !== p2.firstColAccessible || $[30] !== p2.fixedShadowX || $[31] !== p2.fixedShadowY || $[32] !== p2.freezeColumns || $[33] !== p2.freezeTrailingRows || $[34] !== p2.getCellContent || $[35] !== p2.getCellRenderer || $[36] !== p2.getGroupDetails || $[37] !== p2.getRowThemeOverride || $[38] !== p2.gridRef || $[39] !== p2.groupHeaderHeight || $[40] !== p2.groupHeaderHeights || $[41] !== p2.groupLevels || $[42] !== p2.hasAppendRow || $[43] !== p2.headerHeight || $[44] !== p2.headerIcons || $[45] !== p2.highlightRegions || $[46] !== p2.imageWindowLoader || $[47] !== p2.isDraggable || $[48] !== p2.isFilling || $[49] !== p2.isFocused || $[50] !== p2.lockColumns || $[51] !== p2.maxColumnWidth || $[52] !== p2.minColumnWidth || $[53] !== p2.onCanvasBlur || $[54] !== p2.onCanvasFocused || $[55] !== p2.onCellFocused || $[56] !== p2.onColumnMoved || $[57] !== p2.onColumnProposeMove || $[58] !== p2.onColumnResize || $[59] !== p2.onColumnResizeEnd || $[60] !== p2.onColumnResizeStart || $[61] !== p2.onContextMenu || $[62] !== p2.onDragEnd || $[63] !== p2.onDragLeave || $[64] !== p2.onDragOverCell || $[65] !== p2.onDragStart || $[66] !== p2.onDrop || $[67] !== p2.onHeaderIndicatorClick || $[68] !== p2.onHeaderMenuClick || $[69] !== p2.onItemHovered || $[70] !== p2.onKeyDown || $[71] !== p2.onKeyUp || $[72] !== p2.onMouseDown || $[73] !== p2.onMouseMove || $[74] !== p2.onMouseUp || $[75] !== p2.onRowMoved || $[76] !== p2.prelightCells || $[77] !== p2.resizeIndicator || $[78] !== p2.rowHeight || $[79] !== p2.rows || $[80] !== p2.selection || $[81] !== p2.smoothScrollX || $[82] !== p2.smoothScrollY || $[83] !== p2.theme || $[84] !== p2.translateX || $[85] !== p2.translateY || $[86] !== p2.verticalBorder || $[87] !== scrollRef) {
+  if ($2[15] !== clientHeight || $2[16] !== clientWidth || $2[17] !== p2.accessibilityHeight || $2[18] !== p2.canvasRef || $2[19] !== p2.cellXOffset || $2[20] !== p2.cellYOffset || $2[21] !== p2.columns || $2[22] !== p2.disabledRows || $2[23] !== p2.drawCell || $2[24] !== p2.drawFocusRing || $2[25] !== p2.drawHeader || $2[26] !== p2.enableGroups || $2[27] !== p2.experimental || $2[28] !== p2.fillHandle || $2[29] !== p2.firstColAccessible || $2[30] !== p2.fixedShadowX || $2[31] !== p2.fixedShadowY || $2[32] !== p2.freezeColumns || $2[33] !== p2.freezeTrailingRows || $2[34] !== p2.getCellContent || $2[35] !== p2.getCellRenderer || $2[36] !== p2.getGroupDetails || $2[37] !== p2.getRowThemeOverride || $2[38] !== p2.gridRef || $2[39] !== p2.groupHeaderHeight || $2[40] !== p2.groupHeaderHeights || $2[41] !== p2.groupLevels || $2[42] !== p2.hasAppendRow || $2[43] !== p2.headerHeight || $2[44] !== p2.headerIcons || $2[45] !== p2.highlightRegions || $2[46] !== p2.imageWindowLoader || $2[47] !== p2.isDraggable || $2[48] !== p2.isFilling || $2[49] !== p2.isFocused || $2[50] !== p2.lockColumns || $2[51] !== p2.maxColumnWidth || $2[52] !== p2.minColumnWidth || $2[53] !== p2.onCanvasBlur || $2[54] !== p2.onCanvasFocused || $2[55] !== p2.onCellFocused || $2[56] !== p2.onColumnMoved || $2[57] !== p2.onColumnProposeMove || $2[58] !== p2.onColumnResize || $2[59] !== p2.onColumnResizeEnd || $2[60] !== p2.onColumnResizeStart || $2[61] !== p2.onContextMenu || $2[62] !== p2.onDragEnd || $2[63] !== p2.onDragLeave || $2[64] !== p2.onDragOverCell || $2[65] !== p2.onDragStart || $2[66] !== p2.onDrop || $2[67] !== p2.onHeaderIndicatorClick || $2[68] !== p2.onHeaderMenuClick || $2[69] !== p2.onItemHovered || $2[70] !== p2.onKeyDown || $2[71] !== p2.onKeyUp || $2[72] !== p2.onMouseDown || $2[73] !== p2.onMouseMove || $2[74] !== p2.onMouseUp || $2[75] !== p2.onRowMoved || $2[76] !== p2.prelightCells || $2[77] !== p2.resizeIndicator || $2[78] !== p2.rowHeight || $2[79] !== p2.rows || $2[80] !== p2.selection || $2[81] !== p2.smoothScrollX || $2[82] !== p2.smoothScrollY || $2[83] !== p2.theme || $2[84] !== p2.translateX || $2[85] !== p2.translateY || $2[86] !== p2.verticalBorder || $2[87] !== scrollRef) {
     t11 = /* @__PURE__ */ jsx(DataGridDnd, { eventTargetRef: scrollRef, width: clientWidth, height: clientHeight, accessibilityHeight: p2.accessibilityHeight, canvasRef: p2.canvasRef, cellXOffset: p2.cellXOffset, cellYOffset: p2.cellYOffset, columns: p2.columns, disabledRows: p2.disabledRows, enableGroups: p2.enableGroups, groupLevels: p2.groupLevels, groupHeaderHeights: p2.groupHeaderHeights, fillHandle: p2.fillHandle, firstColAccessible: p2.firstColAccessible, fixedShadowX: p2.fixedShadowX, fixedShadowY: p2.fixedShadowY, freezeColumns: p2.freezeColumns, getCellContent: p2.getCellContent, getCellRenderer: p2.getCellRenderer, getGroupDetails: p2.getGroupDetails, getRowThemeOverride: p2.getRowThemeOverride, groupHeaderHeight: p2.groupHeaderHeight, headerHeight: p2.headerHeight, highlightRegions: p2.highlightRegions, imageWindowLoader: p2.imageWindowLoader, isFilling: p2.isFilling, isFocused: p2.isFocused, lockColumns: p2.lockColumns, maxColumnWidth: p2.maxColumnWidth, minColumnWidth: p2.minColumnWidth, onHeaderMenuClick: p2.onHeaderMenuClick, onHeaderIndicatorClick: p2.onHeaderIndicatorClick, onMouseMove: p2.onMouseMove, prelightCells: p2.prelightCells, rowHeight: p2.rowHeight, rows: p2.rows, selection: p2.selection, theme: p2.theme, freezeTrailingRows: p2.freezeTrailingRows, hasAppendRow: p2.hasAppendRow, translateX: p2.translateX, translateY: p2.translateY, onColumnProposeMove: p2.onColumnProposeMove, verticalBorder: p2.verticalBorder, drawFocusRing: p2.drawFocusRing, drawHeader: p2.drawHeader, drawCell: p2.drawCell, experimental: p2.experimental, gridRef: p2.gridRef, headerIcons: p2.headerIcons, isDraggable: p2.isDraggable, onCanvasBlur: p2.onCanvasBlur, onCanvasFocused: p2.onCanvasFocused, onCellFocused: p2.onCellFocused, onColumnMoved: p2.onColumnMoved, onColumnResize: p2.onColumnResize, onColumnResizeEnd: p2.onColumnResizeEnd, onColumnResizeStart: p2.onColumnResizeStart, onContextMenu: p2.onContextMenu, onDragEnd: p2.onDragEnd, onDragLeave: p2.onDragLeave, onDragOverCell: p2.onDragOverCell, onDragStart: p2.onDragStart, onDrop: p2.onDrop, onItemHovered: p2.onItemHovered, onKeyDown: p2.onKeyDown, onKeyUp: p2.onKeyUp, onMouseDown: p2.onMouseDown, onMouseUp: p2.onMouseUp, onRowMoved: p2.onRowMoved, smoothScrollX: p2.smoothScrollX, smoothScrollY: p2.smoothScrollY, resizeIndicator: p2.resizeIndicator });
-    $[15] = clientHeight;
-    $[16] = clientWidth;
-    $[17] = p2.accessibilityHeight;
-    $[18] = p2.canvasRef;
-    $[19] = p2.cellXOffset;
-    $[20] = p2.cellYOffset;
-    $[21] = p2.columns;
-    $[22] = p2.disabledRows;
-    $[23] = p2.drawCell;
-    $[24] = p2.drawFocusRing;
-    $[25] = p2.drawHeader;
-    $[26] = p2.enableGroups;
-    $[27] = p2.experimental;
-    $[28] = p2.fillHandle;
-    $[29] = p2.firstColAccessible;
-    $[30] = p2.fixedShadowX;
-    $[31] = p2.fixedShadowY;
-    $[32] = p2.freezeColumns;
-    $[33] = p2.freezeTrailingRows;
-    $[34] = p2.getCellContent;
-    $[35] = p2.getCellRenderer;
-    $[36] = p2.getGroupDetails;
-    $[37] = p2.getRowThemeOverride;
-    $[38] = p2.gridRef;
-    $[39] = p2.groupHeaderHeight;
-    $[40] = p2.groupHeaderHeights;
-    $[41] = p2.groupLevels;
-    $[42] = p2.hasAppendRow;
-    $[43] = p2.headerHeight;
-    $[44] = p2.headerIcons;
-    $[45] = p2.highlightRegions;
-    $[46] = p2.imageWindowLoader;
-    $[47] = p2.isDraggable;
-    $[48] = p2.isFilling;
-    $[49] = p2.isFocused;
-    $[50] = p2.lockColumns;
-    $[51] = p2.maxColumnWidth;
-    $[52] = p2.minColumnWidth;
-    $[53] = p2.onCanvasBlur;
-    $[54] = p2.onCanvasFocused;
-    $[55] = p2.onCellFocused;
-    $[56] = p2.onColumnMoved;
-    $[57] = p2.onColumnProposeMove;
-    $[58] = p2.onColumnResize;
-    $[59] = p2.onColumnResizeEnd;
-    $[60] = p2.onColumnResizeStart;
-    $[61] = p2.onContextMenu;
-    $[62] = p2.onDragEnd;
-    $[63] = p2.onDragLeave;
-    $[64] = p2.onDragOverCell;
-    $[65] = p2.onDragStart;
-    $[66] = p2.onDrop;
-    $[67] = p2.onHeaderIndicatorClick;
-    $[68] = p2.onHeaderMenuClick;
-    $[69] = p2.onItemHovered;
-    $[70] = p2.onKeyDown;
-    $[71] = p2.onKeyUp;
-    $[72] = p2.onMouseDown;
-    $[73] = p2.onMouseMove;
-    $[74] = p2.onMouseUp;
-    $[75] = p2.onRowMoved;
-    $[76] = p2.prelightCells;
-    $[77] = p2.resizeIndicator;
-    $[78] = p2.rowHeight;
-    $[79] = p2.rows;
-    $[80] = p2.selection;
-    $[81] = p2.smoothScrollX;
-    $[82] = p2.smoothScrollY;
-    $[83] = p2.theme;
-    $[84] = p2.translateX;
-    $[85] = p2.translateY;
-    $[86] = p2.verticalBorder;
-    $[87] = scrollRef;
-    $[88] = t11;
+    $2[15] = clientHeight;
+    $2[16] = clientWidth;
+    $2[17] = p2.accessibilityHeight;
+    $2[18] = p2.canvasRef;
+    $2[19] = p2.cellXOffset;
+    $2[20] = p2.cellYOffset;
+    $2[21] = p2.columns;
+    $2[22] = p2.disabledRows;
+    $2[23] = p2.drawCell;
+    $2[24] = p2.drawFocusRing;
+    $2[25] = p2.drawHeader;
+    $2[26] = p2.enableGroups;
+    $2[27] = p2.experimental;
+    $2[28] = p2.fillHandle;
+    $2[29] = p2.firstColAccessible;
+    $2[30] = p2.fixedShadowX;
+    $2[31] = p2.fixedShadowY;
+    $2[32] = p2.freezeColumns;
+    $2[33] = p2.freezeTrailingRows;
+    $2[34] = p2.getCellContent;
+    $2[35] = p2.getCellRenderer;
+    $2[36] = p2.getGroupDetails;
+    $2[37] = p2.getRowThemeOverride;
+    $2[38] = p2.gridRef;
+    $2[39] = p2.groupHeaderHeight;
+    $2[40] = p2.groupHeaderHeights;
+    $2[41] = p2.groupLevels;
+    $2[42] = p2.hasAppendRow;
+    $2[43] = p2.headerHeight;
+    $2[44] = p2.headerIcons;
+    $2[45] = p2.highlightRegions;
+    $2[46] = p2.imageWindowLoader;
+    $2[47] = p2.isDraggable;
+    $2[48] = p2.isFilling;
+    $2[49] = p2.isFocused;
+    $2[50] = p2.lockColumns;
+    $2[51] = p2.maxColumnWidth;
+    $2[52] = p2.minColumnWidth;
+    $2[53] = p2.onCanvasBlur;
+    $2[54] = p2.onCanvasFocused;
+    $2[55] = p2.onCellFocused;
+    $2[56] = p2.onColumnMoved;
+    $2[57] = p2.onColumnProposeMove;
+    $2[58] = p2.onColumnResize;
+    $2[59] = p2.onColumnResizeEnd;
+    $2[60] = p2.onColumnResizeStart;
+    $2[61] = p2.onContextMenu;
+    $2[62] = p2.onDragEnd;
+    $2[63] = p2.onDragLeave;
+    $2[64] = p2.onDragOverCell;
+    $2[65] = p2.onDragStart;
+    $2[66] = p2.onDrop;
+    $2[67] = p2.onHeaderIndicatorClick;
+    $2[68] = p2.onHeaderMenuClick;
+    $2[69] = p2.onItemHovered;
+    $2[70] = p2.onKeyDown;
+    $2[71] = p2.onKeyUp;
+    $2[72] = p2.onMouseDown;
+    $2[73] = p2.onMouseMove;
+    $2[74] = p2.onMouseUp;
+    $2[75] = p2.onRowMoved;
+    $2[76] = p2.prelightCells;
+    $2[77] = p2.resizeIndicator;
+    $2[78] = p2.rowHeight;
+    $2[79] = p2.rows;
+    $2[80] = p2.selection;
+    $2[81] = p2.smoothScrollX;
+    $2[82] = p2.smoothScrollY;
+    $2[83] = p2.theme;
+    $2[84] = p2.translateX;
+    $2[85] = p2.translateY;
+    $2[86] = p2.verticalBorder;
+    $2[87] = scrollRef;
+    $2[88] = t11;
   } else {
-    t11 = $[88];
+    t11 = $2[88];
   }
   let t12;
-  if ($[89] !== className || $[90] !== clientHeight || $[91] !== initialSize || $[92] !== onScrollUpdate || $[93] !== paddingBottom || $[94] !== paddingRight || $[95] !== preventDiagonalScrolling || $[96] !== rightElement || $[97] !== rightElementProps || $[98] !== scrollRef || $[99] !== t10 || $[100] !== t11 || $[101] !== t7 || $[102] !== t8 || $[103] !== t9) {
+  if ($2[89] !== className || $2[90] !== clientHeight || $2[91] !== initialSize || $2[92] !== onScrollUpdate || $2[93] !== paddingBottom || $2[94] !== paddingRight || $2[95] !== preventDiagonalScrolling || $2[96] !== rightElement || $2[97] !== rightElementProps || $2[98] !== scrollRef || $2[99] !== t10 || $2[100] !== t11 || $2[101] !== t7 || $2[102] !== t8 || $2[103] !== t9) {
     t12 = /* @__PURE__ */ jsx(InfiniteScroller, { scrollRef, className, kineticScrollPerfHack: t7, preventDiagonalScrolling, draggable: t8, scrollWidth: t9, scrollHeight: t10, clientHeight, rightElement, paddingBottom, paddingRight, rightElementProps, update: onScrollUpdate, initialSize, children: t11 });
-    $[89] = className;
-    $[90] = clientHeight;
-    $[91] = initialSize;
-    $[92] = onScrollUpdate;
-    $[93] = paddingBottom;
-    $[94] = paddingRight;
-    $[95] = preventDiagonalScrolling;
-    $[96] = rightElement;
-    $[97] = rightElementProps;
-    $[98] = scrollRef;
-    $[99] = t10;
-    $[100] = t11;
-    $[101] = t7;
-    $[102] = t8;
-    $[103] = t9;
-    $[104] = t12;
+    $2[89] = className;
+    $2[90] = clientHeight;
+    $2[91] = initialSize;
+    $2[92] = onScrollUpdate;
+    $2[93] = paddingBottom;
+    $2[94] = paddingRight;
+    $2[95] = preventDiagonalScrolling;
+    $2[96] = rightElement;
+    $2[97] = rightElementProps;
+    $2[98] = scrollRef;
+    $2[99] = t10;
+    $2[100] = t11;
+    $2[101] = t7;
+    $2[102] = t8;
+    $2[103] = t9;
+    $2[104] = t12;
   } else {
-    t12 = $[104];
+    t12 = $2[104];
   }
   return t12;
 };
@@ -9056,9 +14187,8 @@ const DataGridSearch = (p2) => {
       setSearchStatus(void 0);
     }
   }, [rows, searchResultsIn]);
-  const abortControllerRef = React.useRef();
-  if (abortControllerRef.current === void 0) abortControllerRef.current = new AbortController();
-  const searchHandle = React.useRef();
+  const abortControllerRef = React.useRef(new AbortController());
+  const searchHandle = React.useRef(void 0);
   const [searchResultsInner, setSearchResultsInner] = React.useState([]);
   const searchResults = searchResultsIn !== null && searchResultsIn !== void 0 ? searchResultsIn : searchResultsInner;
   const cancelSearch = React.useCallback(() => {
@@ -9287,7 +14417,7 @@ const RenameInput = /* @__PURE__ */ styled_default("input")({
   }
 });
 const GroupRename = (p2) => {
-  const $ = compilerRuntimeExports.c(23);
+  const $2 = compilerRuntimeExports.c(23);
   const {
     bounds,
     group,
@@ -9300,7 +14430,7 @@ const GroupRename = (p2) => {
   const t1 = bounds.y - canvasBounds.top;
   const t2 = bounds.width - 2;
   let t3;
-  if ($[0] !== bounds.height || $[1] !== t0 || $[2] !== t1 || $[3] !== t2) {
+  if ($2[0] !== bounds.height || $2[1] !== t0 || $2[2] !== t1 || $2[3] !== t2) {
     t3 = {
       position: "absolute",
       left: t0,
@@ -9308,38 +14438,38 @@ const GroupRename = (p2) => {
       width: t2,
       height: bounds.height
     };
-    $[0] = bounds.height;
-    $[1] = t0;
-    $[2] = t1;
-    $[3] = t2;
-    $[4] = t3;
+    $2[0] = bounds.height;
+    $2[1] = t0;
+    $2[2] = t1;
+    $2[3] = t2;
+    $2[4] = t3;
   } else {
-    t3 = $[4];
+    t3 = $2[4];
   }
   let t4;
-  if ($[5] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[5] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t4 = "gdg-g1sqdbw3";
-    $[5] = t4;
+    $2[5] = t4;
   } else {
-    t4 = $[5];
+    t4 = $2[5];
   }
   let t5;
-  if ($[6] !== value.length) {
+  if ($2[6] !== value.length) {
     t5 = (e) => e.target.setSelectionRange(0, value.length);
-    $[6] = value.length;
-    $[7] = t5;
+    $2[6] = value.length;
+    $2[7] = t5;
   } else {
-    t5 = $[7];
+    t5 = $2[7];
   }
   let t6;
-  if ($[8] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[8] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t6 = (e_0) => setValue(e_0.target.value);
-    $[8] = t6;
+    $2[8] = t6;
   } else {
-    t6 = $[8];
+    t6 = $2[8];
   }
   let t7;
-  if ($[9] !== onClose || $[10] !== onFinish || $[11] !== value) {
+  if ($2[9] !== onClose || $2[10] !== onFinish || $2[11] !== value) {
     t7 = (e_1) => {
       if (e_1.key === "Enter") {
         onFinish(value);
@@ -9349,15 +14479,15 @@ const GroupRename = (p2) => {
         }
       }
     };
-    $[9] = onClose;
-    $[10] = onFinish;
-    $[11] = value;
-    $[12] = t7;
+    $2[9] = onClose;
+    $2[10] = onFinish;
+    $2[11] = value;
+    $2[12] = t7;
   } else {
-    t7 = $[12];
+    t7 = $2[12];
   }
   let t8;
-  if ($[13] !== bounds.height || $[14] !== onClose || $[15] !== t5 || $[16] !== t7 || $[17] !== value) {
+  if ($2[13] !== bounds.height || $2[14] !== onClose || $2[15] !== t5 || $2[16] !== t7 || $2[17] !== value) {
     t8 = /* @__PURE__ */ jsx(RenameInput, {
       targetHeight: bounds.height,
       "data-testid": "group-rename-input",
@@ -9368,29 +14498,29 @@ const GroupRename = (p2) => {
       onKeyDown: t7,
       autoFocus: true
     });
-    $[13] = bounds.height;
-    $[14] = onClose;
-    $[15] = t5;
-    $[16] = t7;
-    $[17] = value;
-    $[18] = t8;
+    $2[13] = bounds.height;
+    $2[14] = onClose;
+    $2[15] = t5;
+    $2[16] = t7;
+    $2[17] = value;
+    $2[18] = t8;
   } else {
-    t8 = $[18];
+    t8 = $2[18];
   }
   let t9;
-  if ($[19] !== onClose || $[20] !== t3 || $[21] !== t8) {
+  if ($2[19] !== onClose || $2[20] !== t3 || $2[21] !== t8) {
     t9 = /* @__PURE__ */ jsx(ClickOutsideContainer, {
       style: t3,
       className: t4,
       onClickOutside: onClose,
       children: t8
     });
-    $[19] = onClose;
-    $[20] = t3;
-    $[21] = t8;
-    $[22] = t9;
+    $2[19] = onClose;
+    $2[20] = t3;
+    $2[21] = t8;
+    $2[22] = t9;
   } else {
-    t9 = $[22];
+    t9 = $2[22];
   }
   return t9;
 };
@@ -9484,8 +14614,8 @@ function convertCellToBuffer(cell) {
       };
     case GridCellKind.Drilldown:
       return {
-        formatted: cell.data.map((x) => x.text),
-        rawValue: cell.data.map((x) => x.text),
+        formatted: cell.data.map((x2) => x2.text),
+        rawValue: cell.data.map((x2) => x2.text),
         format: "string-array"
       };
     case GridCellKind.Text:
@@ -9558,7 +14688,7 @@ function createTextBuffer(copyBuffer) {
         var _cell$rawValue$toStri, _cell$rawValue;
         line.push((_cell$rawValue$toStri = (_cell$rawValue = cell.rawValue) === null || _cell$rawValue === void 0 ? void 0 : _cell$rawValue.toString()) !== null && _cell$rawValue$toStri !== void 0 ? _cell$rawValue$toStri : "");
       } else if (cell.format === "string-array") {
-        line.push(cell.formatted.map((x) => escapeIfNeeded(x, true)).join(","));
+        line.push(cell.formatted.map((x2) => escapeIfNeeded(x2, true)).join(","));
       } else {
         line.push(cell.doNotEscape === true ? cell.formatted : escapeIfNeeded(cell.formatted, false));
       }
@@ -9587,7 +14717,7 @@ function createHtmlBuffer(copyBuffer) {
         lines.push(`<td ${formatStr}><a href="${cell.rawValue}">${formatHtmlTextContent(cell.formatted)}</a></td>`);
       } else {
         if (cell.format === "string-array") {
-          lines.push(`<td ${formatStr}><ol>${cell.formatted.map((x, ind) => `<li gdg-raw-value=${formatHtmlAttributeContent(cell.rawValue[ind])}>` + formatHtmlTextContent(x) + "</li>").join("")}</ol></td>`);
+          lines.push(`<td ${formatStr}><ol>${cell.formatted.map((x2, ind) => `<li gdg-raw-value=${formatHtmlAttributeContent(cell.rawValue[ind])}>` + formatHtmlTextContent(x2) + "</li>").join("")}</ol></td>`);
         } else {
           var _cell$rawValue$toStri2, _cell$rawValue2;
           lines.push(`<td gdg-raw-value=${formatHtmlAttributeContent((_cell$rawValue$toStri2 = (_cell$rawValue2 = cell.rawValue) === null || _cell$rawValue2 === void 0 ? void 0 : _cell$rawValue2.toString()) !== null && _cell$rawValue$toStri2 !== void 0 ? _cell$rawValue$toStri2 : "")} ${formatStr}>${formatHtmlTextContent(cell.formatted)}</td>`);
@@ -9650,13 +14780,13 @@ function decodeHTML(html) {
         var _current2;
         const rawValues = clone.querySelectorAll("li");
         (_current2 = current) === null || _current2 === void 0 || _current2.push({
-          rawValue: [...rawValues].map((x) => {
+          rawValue: [...rawValues].map((x2) => {
             var _x$getAttribute;
-            return (_x$getAttribute = x.getAttribute("gdg-raw-value")) !== null && _x$getAttribute !== void 0 ? _x$getAttribute : "";
+            return (_x$getAttribute = x2.getAttribute("gdg-raw-value")) !== null && _x$getAttribute !== void 0 ? _x$getAttribute : "";
           }),
-          formatted: [...rawValues].map((x) => {
+          formatted: [...rawValues].map((x2) => {
             var _x$textContent;
-            return (_x$textContent = x.textContent) !== null && _x$textContent !== void 0 ? _x$textContent : "";
+            return (_x$textContent = x2.textContent) !== null && _x$textContent !== void 0 ? _x$textContent : "";
           }),
           format: "string-array"
         });
@@ -9925,8 +15055,8 @@ function useKeyboardHandlers(args) {
     } = event;
     const selectedColumns = gridSelection.columns;
     const selectedRows = gridSelection.rows;
-    const keys2 = keybindings;
-    if (!overlayOpen && isHotkey(keys2.clear, event, details)) {
+    const keys = keybindings;
+    if (!overlayOpen && isHotkey(keys.clear, event, details)) {
       var _gridSelection$curren, _gridSelection$curren2;
       const clearedCell = (_gridSelection$curren = (_gridSelection$curren2 = gridSelection.current) === null || _gridSelection$curren2 === void 0 ? void 0 : _gridSelection$curren2.cell) !== null && _gridSelection$curren !== void 0 ? _gridSelection$curren : [rowMarkerOffset, 0];
       setGridSelection({
@@ -9945,7 +15075,7 @@ function useKeyboardHandlers(args) {
       }, false);
       onSelectionCleared === null || onSelectionCleared === void 0 || onSelectionCleared();
       focus();
-    } else if (!overlayOpen && isHotkey(keys2.selectAll, event, details)) {
+    } else if (!overlayOpen && isHotkey(keys.selectAll, event, details)) {
       var _gridSelection$curren3, _gridSelection$curren4;
       setGridSelection({
         columns: CompactSelection.empty(),
@@ -9961,13 +15091,13 @@ function useKeyboardHandlers(args) {
           rangeStack: []
         }
       }, false);
-    } else if (isHotkey(keys2.search, event, details)) {
+    } else if (isHotkey(keys.search, event, details)) {
       var _searchInputRef$curre;
       searchInputRef === null || searchInputRef === void 0 || (_searchInputRef$curre = searchInputRef.current) === null || _searchInputRef$curre === void 0 || _searchInputRef$curre.focus({
         preventScroll: true
       });
       setShowSearchInner(true);
-    } else if (isHotkey(keys2.delete, event, details)) {
+    } else if (isHotkey(keys.delete, event, details)) {
       var _onDelete;
       const callbackResult = (_onDelete = onDelete === null || onDelete === void 0 ? void 0 : onDelete(gridSelection)) !== null && _onDelete !== void 0 ? _onDelete : true;
       if (callbackResult !== false) {
@@ -10005,9 +15135,9 @@ function useKeyboardHandlers(args) {
     const [, startRow] = gridSelection.current.cell;
     let freeMove = false;
     let cancelOnlyOnMove = false;
-    if (isHotkey(keys2.scrollToSelectedCell, event, details)) {
+    if (isHotkey(keys.scrollToSelectedCell, event, details)) {
       scrollToRef.current(col - rowMarkerOffset, row);
-    } else if (columnSelect !== "none" && isHotkey(keys2.selectColumn, event, details)) {
+    } else if (columnSelect !== "none" && isHotkey(keys.selectColumn, event, details)) {
       if (selectedColumns.hasIndex(col)) {
         setSelectedColumns(selectedColumns.remove(col), void 0, true);
       } else {
@@ -10017,7 +15147,7 @@ function useKeyboardHandlers(args) {
           setSelectedColumns(void 0, col, true);
         }
       }
-    } else if (rowSelect !== "none" && isHotkey(keys2.selectRow, event, details)) {
+    } else if (rowSelect !== "none" && isHotkey(keys.selectRow, event, details)) {
       if (selectedRows.hasIndex(row)) {
         setSelectedRows(selectedRows.remove(row), void 0, true);
       } else {
@@ -10027,7 +15157,7 @@ function useKeyboardHandlers(args) {
           setSelectedRows(void 0, row, true);
         }
       }
-    } else if (!overlayOpen && bounds !== void 0 && isHotkey(keys2.activateCell, event, details)) {
+    } else if (!overlayOpen && bounds !== void 0 && isHotkey(keys.activateCell, event, details)) {
       if (row === rows && showTrailingBlankRow) {
         window.setTimeout(() => {
           const customTargetColumn = getCustomNewRowTargetColumn(col);
@@ -10057,94 +15187,94 @@ function useKeyboardHandlers(args) {
           reselect(bounds, activationEvent);
         }
       }
-    } else if (gridSelection.current.range.height > 1 && isHotkey(keys2.downFill, event, details)) {
+    } else if (gridSelection.current.range.height > 1 && isHotkey(keys.downFill, event, details)) {
       fillDown();
-    } else if (gridSelection.current.range.width > 1 && isHotkey(keys2.rightFill, event, details)) {
+    } else if (gridSelection.current.range.width > 1 && isHotkey(keys.rightFill, event, details)) {
       fillRight();
-    } else if (isHotkey(keys2.goToNextPage, event, details)) {
+    } else if (isHotkey(keys.goToNextPage, event, details)) {
       row += Math.max(1, visibleRegionRef.current.height - 4);
-    } else if (isHotkey(keys2.goToPreviousPage, event, details)) {
+    } else if (isHotkey(keys.goToPreviousPage, event, details)) {
       row -= Math.max(1, visibleRegionRef.current.height - 4);
-    } else if (isHotkey(keys2.goToFirstCell, event, details)) {
+    } else if (isHotkey(keys.goToFirstCell, event, details)) {
       setOverlay(void 0);
       row = 0;
       col = 0;
-    } else if (isHotkey(keys2.goToLastCell, event, details)) {
+    } else if (isHotkey(keys.goToLastCell, event, details)) {
       setOverlay(void 0);
       row = Number.MAX_SAFE_INTEGER;
       col = Number.MAX_SAFE_INTEGER;
-    } else if (isHotkey(keys2.selectToFirstCell, event, details)) {
+    } else if (isHotkey(keys.selectToFirstCell, event, details)) {
       setOverlay(void 0);
       adjustSelection([-2, -2]);
-    } else if (isHotkey(keys2.selectToLastCell, event, details)) {
+    } else if (isHotkey(keys.selectToLastCell, event, details)) {
       setOverlay(void 0);
       adjustSelection([2, 2]);
     } else if (!overlayOpen) {
-      if (isHotkey(keys2.goDownCell, event, details)) {
+      if (isHotkey(keys.goDownCell, event, details)) {
         row += 1;
-      } else if (isHotkey(keys2.goUpCell, event, details)) {
+      } else if (isHotkey(keys.goUpCell, event, details)) {
         row -= 1;
-      } else if (isHotkey(keys2.goRightCell, event, details)) {
+      } else if (isHotkey(keys.goRightCell, event, details)) {
         col += 1;
-      } else if (isHotkey(keys2.goLeftCell, event, details)) {
+      } else if (isHotkey(keys.goLeftCell, event, details)) {
         col -= 1;
-      } else if (isHotkey(keys2.goDownCellRetainSelection, event, details)) {
+      } else if (isHotkey(keys.goDownCellRetainSelection, event, details)) {
         row += 1;
         freeMove = true;
-      } else if (isHotkey(keys2.goUpCellRetainSelection, event, details)) {
+      } else if (isHotkey(keys.goUpCellRetainSelection, event, details)) {
         row -= 1;
         freeMove = true;
-      } else if (isHotkey(keys2.goRightCellRetainSelection, event, details)) {
+      } else if (isHotkey(keys.goRightCellRetainSelection, event, details)) {
         col += 1;
         freeMove = true;
-      } else if (isHotkey(keys2.goLeftCellRetainSelection, event, details)) {
+      } else if (isHotkey(keys.goLeftCellRetainSelection, event, details)) {
         col -= 1;
         freeMove = true;
-      } else if (isHotkey(keys2.goToLastRow, event, details)) {
+      } else if (isHotkey(keys.goToLastRow, event, details)) {
         row = rows - 1;
-      } else if (isHotkey(keys2.goToFirstRow, event, details)) {
+      } else if (isHotkey(keys.goToFirstRow, event, details)) {
         row = Number.MIN_SAFE_INTEGER;
-      } else if (isHotkey(keys2.goToLastColumn, event, details)) {
+      } else if (isHotkey(keys.goToLastColumn, event, details)) {
         col = Number.MAX_SAFE_INTEGER;
-      } else if (isHotkey(keys2.goToFirstColumn, event, details)) {
+      } else if (isHotkey(keys.goToFirstColumn, event, details)) {
         col = Number.MIN_SAFE_INTEGER;
       } else if (rangeSelect === "rect" || rangeSelect === "multi-rect") {
-        if (isHotkey(keys2.selectGrowDown, event, details)) {
+        if (isHotkey(keys.selectGrowDown, event, details)) {
           adjustSelection([0, 1]);
-        } else if (isHotkey(keys2.selectGrowUp, event, details)) {
+        } else if (isHotkey(keys.selectGrowUp, event, details)) {
           adjustSelection([0, -1]);
-        } else if (isHotkey(keys2.selectGrowRight, event, details)) {
+        } else if (isHotkey(keys.selectGrowRight, event, details)) {
           adjustSelection([1, 0]);
-        } else if (isHotkey(keys2.selectGrowLeft, event, details)) {
+        } else if (isHotkey(keys.selectGrowLeft, event, details)) {
           adjustSelection([-1, 0]);
-        } else if (isHotkey(keys2.selectToLastRow, event, details)) {
+        } else if (isHotkey(keys.selectToLastRow, event, details)) {
           adjustSelection([0, 2]);
-        } else if (isHotkey(keys2.selectToFirstRow, event, details)) {
+        } else if (isHotkey(keys.selectToFirstRow, event, details)) {
           adjustSelection([0, -2]);
-        } else if (isHotkey(keys2.selectToLastColumn, event, details)) {
+        } else if (isHotkey(keys.selectToLastColumn, event, details)) {
           adjustSelection([2, 0]);
-        } else if (isHotkey(keys2.selectToFirstColumn, event, details)) {
+        } else if (isHotkey(keys.selectToFirstColumn, event, details)) {
           adjustSelection([-2, 0]);
         }
       }
       cancelOnlyOnMove = details.didMatch;
     } else {
-      if (isHotkey(keys2.closeOverlay, event, details)) {
+      if (isHotkey(keys.closeOverlay, event, details)) {
         setOverlay(void 0);
       }
-      if (isHotkey(keys2.acceptOverlayDown, event, details)) {
+      if (isHotkey(keys.acceptOverlayDown, event, details)) {
         setOverlay(void 0);
         row++;
       }
-      if (isHotkey(keys2.acceptOverlayUp, event, details)) {
+      if (isHotkey(keys.acceptOverlayUp, event, details)) {
         setOverlay(void 0);
         row--;
       }
-      if (isHotkey(keys2.acceptOverlayLeft, event, details)) {
+      if (isHotkey(keys.acceptOverlayLeft, event, details)) {
         setOverlay(void 0);
         col--;
       }
-      if (isHotkey(keys2.acceptOverlayRight, event, details)) {
+      if (isHotkey(keys.acceptOverlayRight, event, details)) {
         setOverlay(void 0);
         col++;
       }
@@ -10196,7 +15326,7 @@ function useKeyboardHandlers(args) {
     const [col, row] = gridSelection.current.cell;
     const vr = visibleRegionRef.current;
     const isIMEInput = event.keyCode === 229;
-    const isCharacterInput = editOnType && !event.metaKey && !event.ctrlKey && event.key.length === 1 && /[!-~\xA1-\xAC\xAE-\u0377\u037A-\u037F\u0384-\u038A\u038C\u038E-\u03A1\u03A3-\u052F\u0531-\u0556\u0559-\u058A\u058D-\u058F\u0591-\u05C7\u05D0-\u05EA\u05EF-\u05F4\u0606-\u061B\u061D-\u06DC\u06DE-\u070D\u0710-\u074A\u074D-\u07B1\u07C0-\u07FA\u07FD-\u082D\u0830-\u083E\u0840-\u085B\u085E\u0860-\u086A\u0870-\u088E\u0897-\u08E1\u08E3-\u0983\u0985-\u098C\u098F\u0990\u0993-\u09A8\u09AA-\u09B0\u09B2\u09B6-\u09B9\u09BC-\u09C4\u09C7\u09C8\u09CB-\u09CE\u09D7\u09DC\u09DD\u09DF-\u09E3\u09E6-\u09FE\u0A01-\u0A03\u0A05-\u0A0A\u0A0F\u0A10\u0A13-\u0A28\u0A2A-\u0A30\u0A32\u0A33\u0A35\u0A36\u0A38\u0A39\u0A3C\u0A3E-\u0A42\u0A47\u0A48\u0A4B-\u0A4D\u0A51\u0A59-\u0A5C\u0A5E\u0A66-\u0A76\u0A81-\u0A83\u0A85-\u0A8D\u0A8F-\u0A91\u0A93-\u0AA8\u0AAA-\u0AB0\u0AB2\u0AB3\u0AB5-\u0AB9\u0ABC-\u0AC5\u0AC7-\u0AC9\u0ACB-\u0ACD\u0AD0\u0AE0-\u0AE3\u0AE6-\u0AF1\u0AF9-\u0AFF\u0B01-\u0B03\u0B05-\u0B0C\u0B0F\u0B10\u0B13-\u0B28\u0B2A-\u0B30\u0B32\u0B33\u0B35-\u0B39\u0B3C-\u0B44\u0B47\u0B48\u0B4B-\u0B4D\u0B55-\u0B57\u0B5C\u0B5D\u0B5F-\u0B63\u0B66-\u0B77\u0B82\u0B83\u0B85-\u0B8A\u0B8E-\u0B90\u0B92-\u0B95\u0B99\u0B9A\u0B9C\u0B9E\u0B9F\u0BA3\u0BA4\u0BA8-\u0BAA\u0BAE-\u0BB9\u0BBE-\u0BC2\u0BC6-\u0BC8\u0BCA-\u0BCD\u0BD0\u0BD7\u0BE6-\u0BFA\u0C00-\u0C0C\u0C0E-\u0C10\u0C12-\u0C28\u0C2A-\u0C39\u0C3C-\u0C44\u0C46-\u0C48\u0C4A-\u0C4D\u0C55\u0C56\u0C58-\u0C5A\u0C5D\u0C60-\u0C63\u0C66-\u0C6F\u0C77-\u0C8C\u0C8E-\u0C90\u0C92-\u0CA8\u0CAA-\u0CB3\u0CB5-\u0CB9\u0CBC-\u0CC4\u0CC6-\u0CC8\u0CCA-\u0CCD\u0CD5\u0CD6\u0CDD\u0CDE\u0CE0-\u0CE3\u0CE6-\u0CEF\u0CF1-\u0CF3\u0D00-\u0D0C\u0D0E-\u0D10\u0D12-\u0D44\u0D46-\u0D48\u0D4A-\u0D4F\u0D54-\u0D63\u0D66-\u0D7F\u0D81-\u0D83\u0D85-\u0D96\u0D9A-\u0DB1\u0DB3-\u0DBB\u0DBD\u0DC0-\u0DC6\u0DCA\u0DCF-\u0DD4\u0DD6\u0DD8-\u0DDF\u0DE6-\u0DEF\u0DF2-\u0DF4\u0E01-\u0E3A\u0E3F-\u0E5B\u0E81\u0E82\u0E84\u0E86-\u0E8A\u0E8C-\u0EA3\u0EA5\u0EA7-\u0EBD\u0EC0-\u0EC4\u0EC6\u0EC8-\u0ECE\u0ED0-\u0ED9\u0EDC-\u0EDF\u0F00-\u0F47\u0F49-\u0F6C\u0F71-\u0F97\u0F99-\u0FBC\u0FBE-\u0FCC\u0FCE-\u0FDA\u1000-\u10C5\u10C7\u10CD\u10D0-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u135D-\u137C\u1380-\u1399\u13A0-\u13F5\u13F8-\u13FD\u1400-\u167F\u1681-\u169C\u16A0-\u16F8\u1700-\u1715\u171F-\u1736\u1740-\u1753\u1760-\u176C\u176E-\u1770\u1772\u1773\u1780-\u17DD\u17E0-\u17E9\u17F0-\u17F9\u1800-\u180D\u180F-\u1819\u1820-\u1878\u1880-\u18AA\u18B0-\u18F5\u1900-\u191E\u1920-\u192B\u1930-\u193B\u1940\u1944-\u196D\u1970-\u1974\u1980-\u19AB\u19B0-\u19C9\u19D0-\u19DA\u19DE-\u1A1B\u1A1E-\u1A5E\u1A60-\u1A7C\u1A7F-\u1A89\u1A90-\u1A99\u1AA0-\u1AAD\u1AB0-\u1ACE\u1B00-\u1B4C\u1B4E-\u1BF3\u1BFC-\u1C37\u1C3B-\u1C49\u1C4D-\u1C8A\u1C90-\u1CBA\u1CBD-\u1CC7\u1CD0-\u1CFA\u1D00-\u1F15\u1F18-\u1F1D\u1F20-\u1F45\u1F48-\u1F4D\u1F50-\u1F57\u1F59\u1F5B\u1F5D\u1F5F-\u1F7D\u1F80-\u1FB4\u1FB6-\u1FC4\u1FC6-\u1FD3\u1FD6-\u1FDB\u1FDD-\u1FEF\u1FF2-\u1FF4\u1FF6-\u1FFE\u2010-\u2027\u2030-\u205E\u2070\u2071\u2074-\u208E\u2090-\u209C\u20A0-\u20C0\u20D0-\u20F0\u2100-\u218B\u2190-\u2429\u2440-\u244A\u2460-\u2B73\u2B76-\u2B95\u2B97-\u2CF3\u2CF9-\u2D25\u2D27\u2D2D\u2D30-\u2D67\u2D6F\u2D70\u2D7F-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\u2DE0-\u2E5D\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFF\u3001-\u303F\u3041-\u3096\u3099-\u30FF\u3105-\u312F\u3131-\u318E\u3190-\u31E5\u31EF-\u321E\u3220-\uA48C\uA490-\uA4C6\uA4D0-\uA62B\uA640-\uA6F7\uA700-\uA7CD\uA7D0\uA7D1\uA7D3\uA7D5-\uA7DC\uA7F2-\uA82C\uA830-\uA839\uA840-\uA877\uA880-\uA8C5\uA8CE-\uA8D9\uA8E0-\uA953\uA95F-\uA97C\uA980-\uA9CD\uA9CF-\uA9D9\uA9DE-\uA9FE\uAA00-\uAA36\uAA40-\uAA4D\uAA50-\uAA59\uAA5C-\uAAC2\uAADB-\uAAF6\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E\uAB30-\uAB6B\uAB70-\uABED\uABF0-\uABF9\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFA6D\uFA70-\uFAD9\uFB00-\uFB06\uFB13-\uFB17\uFB1D-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFBC2\uFBD3-\uFD8F\uFD92-\uFDC7\uFDCF\uFDF0-\uFE19\uFE20-\uFE52\uFE54-\uFE66\uFE68-\uFE6B\uFE70-\uFE74\uFE76-\uFEFC\uFF01-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC\uFFE0-\uFFE6\uFFE8-\uFFEE\uFFFC\uFFFD\u{10000}-\u{1000B}\u{1000D}-\u{10026}\u{10028}-\u{1003A}\u{1003C}\u{1003D}\u{1003F}-\u{1004D}\u{10050}-\u{1005D}\u{10080}-\u{100FA}\u{10100}-\u{10102}\u{10107}-\u{10133}\u{10137}-\u{1018E}\u{10190}-\u{1019C}\u{101A0}\u{101D0}-\u{101FD}\u{10280}-\u{1029C}\u{102A0}-\u{102D0}\u{102E0}-\u{102FB}\u{10300}-\u{10323}\u{1032D}-\u{1034A}\u{10350}-\u{1037A}\u{10380}-\u{1039D}\u{1039F}-\u{103C3}\u{103C8}-\u{103D5}\u{10400}-\u{1049D}\u{104A0}-\u{104A9}\u{104B0}-\u{104D3}\u{104D8}-\u{104FB}\u{10500}-\u{10527}\u{10530}-\u{10563}\u{1056F}-\u{1057A}\u{1057C}-\u{1058A}\u{1058C}-\u{10592}\u{10594}\u{10595}\u{10597}-\u{105A1}\u{105A3}-\u{105B1}\u{105B3}-\u{105B9}\u{105BB}\u{105BC}\u{105C0}-\u{105F3}\u{10600}-\u{10736}\u{10740}-\u{10755}\u{10760}-\u{10767}\u{10780}-\u{10785}\u{10787}-\u{107B0}\u{107B2}-\u{107BA}\u{10800}-\u{10805}\u{10808}\u{1080A}-\u{10835}\u{10837}\u{10838}\u{1083C}\u{1083F}-\u{10855}\u{10857}-\u{1089E}\u{108A7}-\u{108AF}\u{108E0}-\u{108F2}\u{108F4}\u{108F5}\u{108FB}-\u{1091B}\u{1091F}-\u{10939}\u{1093F}\u{10980}-\u{109B7}\u{109BC}-\u{109CF}\u{109D2}-\u{10A03}\u{10A05}\u{10A06}\u{10A0C}-\u{10A13}\u{10A15}-\u{10A17}\u{10A19}-\u{10A35}\u{10A38}-\u{10A3A}\u{10A3F}-\u{10A48}\u{10A50}-\u{10A58}\u{10A60}-\u{10A9F}\u{10AC0}-\u{10AE6}\u{10AEB}-\u{10AF6}\u{10B00}-\u{10B35}\u{10B39}-\u{10B55}\u{10B58}-\u{10B72}\u{10B78}-\u{10B91}\u{10B99}-\u{10B9C}\u{10BA9}-\u{10BAF}\u{10C00}-\u{10C48}\u{10C80}-\u{10CB2}\u{10CC0}-\u{10CF2}\u{10CFA}-\u{10D27}\u{10D30}-\u{10D39}\u{10D40}-\u{10D65}\u{10D69}-\u{10D85}\u{10D8E}\u{10D8F}\u{10E60}-\u{10E7E}\u{10E80}-\u{10EA9}\u{10EAB}-\u{10EAD}\u{10EB0}\u{10EB1}\u{10EC2}-\u{10EC4}\u{10EFC}-\u{10F27}\u{10F30}-\u{10F59}\u{10F70}-\u{10F89}\u{10FB0}-\u{10FCB}\u{10FE0}-\u{10FF6}\u{11000}-\u{1104D}\u{11052}-\u{11075}\u{1107F}-\u{110BC}\u{110BE}-\u{110C2}\u{110D0}-\u{110E8}\u{110F0}-\u{110F9}\u{11100}-\u{11134}\u{11136}-\u{11147}\u{11150}-\u{11176}\u{11180}-\u{111DF}\u{111E1}-\u{111F4}\u{11200}-\u{11211}\u{11213}-\u{11241}\u{11280}-\u{11286}\u{11288}\u{1128A}-\u{1128D}\u{1128F}-\u{1129D}\u{1129F}-\u{112A9}\u{112B0}-\u{112EA}\u{112F0}-\u{112F9}\u{11300}-\u{11303}\u{11305}-\u{1130C}\u{1130F}\u{11310}\u{11313}-\u{11328}\u{1132A}-\u{11330}\u{11332}\u{11333}\u{11335}-\u{11339}\u{1133B}-\u{11344}\u{11347}\u{11348}\u{1134B}-\u{1134D}\u{11350}\u{11357}\u{1135D}-\u{11363}\u{11366}-\u{1136C}\u{11370}-\u{11374}\u{11380}-\u{11389}\u{1138B}\u{1138E}\u{11390}-\u{113B5}\u{113B7}-\u{113C0}\u{113C2}\u{113C5}\u{113C7}-\u{113CA}\u{113CC}-\u{113D5}\u{113D7}\u{113D8}\u{113E1}\u{113E2}\u{11400}-\u{1145B}\u{1145D}-\u{11461}\u{11480}-\u{114C7}\u{114D0}-\u{114D9}\u{11580}-\u{115B5}\u{115B8}-\u{115DD}\u{11600}-\u{11644}\u{11650}-\u{11659}\u{11660}-\u{1166C}\u{11680}-\u{116B9}\u{116C0}-\u{116C9}\u{116D0}-\u{116E3}\u{11700}-\u{1171A}\u{1171D}-\u{1172B}\u{11730}-\u{11746}\u{11800}-\u{1183B}\u{118A0}-\u{118F2}\u{118FF}-\u{11906}\u{11909}\u{1190C}-\u{11913}\u{11915}\u{11916}\u{11918}-\u{11935}\u{11937}\u{11938}\u{1193B}-\u{11946}\u{11950}-\u{11959}\u{119A0}-\u{119A7}\u{119AA}-\u{119D7}\u{119DA}-\u{119E4}\u{11A00}-\u{11A47}\u{11A50}-\u{11AA2}\u{11AB0}-\u{11AF8}\u{11B00}-\u{11B09}\u{11BC0}-\u{11BE1}\u{11BF0}-\u{11BF9}\u{11C00}-\u{11C08}\u{11C0A}-\u{11C36}\u{11C38}-\u{11C45}\u{11C50}-\u{11C6C}\u{11C70}-\u{11C8F}\u{11C92}-\u{11CA7}\u{11CA9}-\u{11CB6}\u{11D00}-\u{11D06}\u{11D08}\u{11D09}\u{11D0B}-\u{11D36}\u{11D3A}\u{11D3C}\u{11D3D}\u{11D3F}-\u{11D47}\u{11D50}-\u{11D59}\u{11D60}-\u{11D65}\u{11D67}\u{11D68}\u{11D6A}-\u{11D8E}\u{11D90}\u{11D91}\u{11D93}-\u{11D98}\u{11DA0}-\u{11DA9}\u{11EE0}-\u{11EF8}\u{11F00}-\u{11F10}\u{11F12}-\u{11F3A}\u{11F3E}-\u{11F5A}\u{11FB0}\u{11FC0}-\u{11FF1}\u{11FFF}-\u{12399}\u{12400}-\u{1246E}\u{12470}-\u{12474}\u{12480}-\u{12543}\u{12F90}-\u{12FF2}\u{13000}-\u{1342F}\u{13440}-\u{13455}\u{13460}-\u{143FA}\u{14400}-\u{14646}\u{16100}-\u{16139}\u{16800}-\u{16A38}\u{16A40}-\u{16A5E}\u{16A60}-\u{16A69}\u{16A6E}-\u{16ABE}\u{16AC0}-\u{16AC9}\u{16AD0}-\u{16AED}\u{16AF0}-\u{16AF5}\u{16B00}-\u{16B45}\u{16B50}-\u{16B59}\u{16B5B}-\u{16B61}\u{16B63}-\u{16B77}\u{16B7D}-\u{16B8F}\u{16D40}-\u{16D79}\u{16E40}-\u{16E9A}\u{16F00}-\u{16F4A}\u{16F4F}-\u{16F87}\u{16F8F}-\u{16F9F}\u{16FE0}-\u{16FE4}\u{16FF0}\u{16FF1}\u{17000}-\u{187F7}\u{18800}-\u{18CD5}\u{18CFF}-\u{18D08}\u{1AFF0}-\u{1AFF3}\u{1AFF5}-\u{1AFFB}\u{1AFFD}\u{1AFFE}\u{1B000}-\u{1B122}\u{1B132}\u{1B150}-\u{1B152}\u{1B155}\u{1B164}-\u{1B167}\u{1B170}-\u{1B2FB}\u{1BC00}-\u{1BC6A}\u{1BC70}-\u{1BC7C}\u{1BC80}-\u{1BC88}\u{1BC90}-\u{1BC99}\u{1BC9C}-\u{1BC9F}\u{1CC00}-\u{1CCF9}\u{1CD00}-\u{1CEB3}\u{1CF00}-\u{1CF2D}\u{1CF30}-\u{1CF46}\u{1CF50}-\u{1CFC3}\u{1D000}-\u{1D0F5}\u{1D100}-\u{1D126}\u{1D129}-\u{1D172}\u{1D17B}-\u{1D1EA}\u{1D200}-\u{1D245}\u{1D2C0}-\u{1D2D3}\u{1D2E0}-\u{1D2F3}\u{1D300}-\u{1D356}\u{1D360}-\u{1D378}\u{1D400}-\u{1D454}\u{1D456}-\u{1D49C}\u{1D49E}\u{1D49F}\u{1D4A2}\u{1D4A5}\u{1D4A6}\u{1D4A9}-\u{1D4AC}\u{1D4AE}-\u{1D4B9}\u{1D4BB}\u{1D4BD}-\u{1D4C3}\u{1D4C5}-\u{1D505}\u{1D507}-\u{1D50A}\u{1D50D}-\u{1D514}\u{1D516}-\u{1D51C}\u{1D51E}-\u{1D539}\u{1D53B}-\u{1D53E}\u{1D540}-\u{1D544}\u{1D546}\u{1D54A}-\u{1D550}\u{1D552}-\u{1D6A5}\u{1D6A8}-\u{1D7CB}\u{1D7CE}-\u{1DA8B}\u{1DA9B}-\u{1DA9F}\u{1DAA1}-\u{1DAAF}\u{1DF00}-\u{1DF1E}\u{1DF25}-\u{1DF2A}\u{1E000}-\u{1E006}\u{1E008}-\u{1E018}\u{1E01B}-\u{1E021}\u{1E023}\u{1E024}\u{1E026}-\u{1E02A}\u{1E030}-\u{1E06D}\u{1E08F}\u{1E100}-\u{1E12C}\u{1E130}-\u{1E13D}\u{1E140}-\u{1E149}\u{1E14E}\u{1E14F}\u{1E290}-\u{1E2AE}\u{1E2C0}-\u{1E2F9}\u{1E2FF}\u{1E4D0}-\u{1E4F9}\u{1E5D0}-\u{1E5FA}\u{1E5FF}\u{1E7E0}-\u{1E7E6}\u{1E7E8}-\u{1E7EB}\u{1E7ED}\u{1E7EE}\u{1E7F0}-\u{1E7FE}\u{1E800}-\u{1E8C4}\u{1E8C7}-\u{1E8D6}\u{1E900}-\u{1E94B}\u{1E950}-\u{1E959}\u{1E95E}\u{1E95F}\u{1EC71}-\u{1ECB4}\u{1ED01}-\u{1ED3D}\u{1EE00}-\u{1EE03}\u{1EE05}-\u{1EE1F}\u{1EE21}\u{1EE22}\u{1EE24}\u{1EE27}\u{1EE29}-\u{1EE32}\u{1EE34}-\u{1EE37}\u{1EE39}\u{1EE3B}\u{1EE42}\u{1EE47}\u{1EE49}\u{1EE4B}\u{1EE4D}-\u{1EE4F}\u{1EE51}\u{1EE52}\u{1EE54}\u{1EE57}\u{1EE59}\u{1EE5B}\u{1EE5D}\u{1EE5F}\u{1EE61}\u{1EE62}\u{1EE64}\u{1EE67}-\u{1EE6A}\u{1EE6C}-\u{1EE72}\u{1EE74}-\u{1EE77}\u{1EE79}-\u{1EE7C}\u{1EE7E}\u{1EE80}-\u{1EE89}\u{1EE8B}-\u{1EE9B}\u{1EEA1}-\u{1EEA3}\u{1EEA5}-\u{1EEA9}\u{1EEAB}-\u{1EEBB}\u{1EEF0}\u{1EEF1}\u{1F000}-\u{1F02B}\u{1F030}-\u{1F093}\u{1F0A0}-\u{1F0AE}\u{1F0B1}-\u{1F0BF}\u{1F0C1}-\u{1F0CF}\u{1F0D1}-\u{1F0F5}\u{1F100}-\u{1F1AD}\u{1F1E6}-\u{1F202}\u{1F210}-\u{1F23B}\u{1F240}-\u{1F248}\u{1F250}\u{1F251}\u{1F260}-\u{1F265}\u{1F300}-\u{1F6D7}\u{1F6DC}-\u{1F6EC}\u{1F6F0}-\u{1F6FC}\u{1F700}-\u{1F776}\u{1F77B}-\u{1F7D9}\u{1F7E0}-\u{1F7EB}\u{1F7F0}\u{1F800}-\u{1F80B}\u{1F810}-\u{1F847}\u{1F850}-\u{1F859}\u{1F860}-\u{1F887}\u{1F890}-\u{1F8AD}\u{1F8B0}-\u{1F8BB}\u{1F8C0}\u{1F8C1}\u{1F900}-\u{1FA53}\u{1FA60}-\u{1FA6D}\u{1FA70}-\u{1FA7C}\u{1FA80}-\u{1FA89}\u{1FA8F}-\u{1FAC6}\u{1FACE}-\u{1FADC}\u{1FADF}-\u{1FAE9}\u{1FAF0}-\u{1FAF8}\u{1FB00}-\u{1FB92}\u{1FB94}-\u{1FBF9}\u{20000}-\u{2A6DF}\u{2A700}-\u{2B739}\u{2B740}-\u{2B81D}\u{2B820}-\u{2CEA1}\u{2CEB0}-\u{2EBE0}\u{2EBF0}-\u{2EE5D}\u{2F800}-\u{2FA1D}\u{30000}-\u{3134A}\u{31350}-\u{323AF}\u{E0100}-\u{E01EF}]/u.test(event.key);
+    const isCharacterInput = editOnType && !event.metaKey && !event.ctrlKey && event.key.length === 1 && /[!-~\xA1-\xAC\xAE-\u0377\u037A-\u037F\u0384-\u038A\u038C\u038E-\u03A1\u03A3-\u052F\u0531-\u0556\u0559-\u058A\u058D-\u058F\u0591-\u05C7\u05D0-\u05EA\u05EF-\u05F4\u0606-\u061B\u061D-\u06DC\u06DE-\u070D\u0710-\u074A\u074D-\u07B1\u07C0-\u07FA\u07FD-\u082D\u0830-\u083E\u0840-\u085B\u085E\u0860-\u086A\u0870-\u088F\u0897-\u08E1\u08E3-\u0983\u0985-\u098C\u098F\u0990\u0993-\u09A8\u09AA-\u09B0\u09B2\u09B6-\u09B9\u09BC-\u09C4\u09C7\u09C8\u09CB-\u09CE\u09D7\u09DC\u09DD\u09DF-\u09E3\u09E6-\u09FE\u0A01-\u0A03\u0A05-\u0A0A\u0A0F\u0A10\u0A13-\u0A28\u0A2A-\u0A30\u0A32\u0A33\u0A35\u0A36\u0A38\u0A39\u0A3C\u0A3E-\u0A42\u0A47\u0A48\u0A4B-\u0A4D\u0A51\u0A59-\u0A5C\u0A5E\u0A66-\u0A76\u0A81-\u0A83\u0A85-\u0A8D\u0A8F-\u0A91\u0A93-\u0AA8\u0AAA-\u0AB0\u0AB2\u0AB3\u0AB5-\u0AB9\u0ABC-\u0AC5\u0AC7-\u0AC9\u0ACB-\u0ACD\u0AD0\u0AE0-\u0AE3\u0AE6-\u0AF1\u0AF9-\u0AFF\u0B01-\u0B03\u0B05-\u0B0C\u0B0F\u0B10\u0B13-\u0B28\u0B2A-\u0B30\u0B32\u0B33\u0B35-\u0B39\u0B3C-\u0B44\u0B47\u0B48\u0B4B-\u0B4D\u0B55-\u0B57\u0B5C\u0B5D\u0B5F-\u0B63\u0B66-\u0B77\u0B82\u0B83\u0B85-\u0B8A\u0B8E-\u0B90\u0B92-\u0B95\u0B99\u0B9A\u0B9C\u0B9E\u0B9F\u0BA3\u0BA4\u0BA8-\u0BAA\u0BAE-\u0BB9\u0BBE-\u0BC2\u0BC6-\u0BC8\u0BCA-\u0BCD\u0BD0\u0BD7\u0BE6-\u0BFA\u0C00-\u0C0C\u0C0E-\u0C10\u0C12-\u0C28\u0C2A-\u0C39\u0C3C-\u0C44\u0C46-\u0C48\u0C4A-\u0C4D\u0C55\u0C56\u0C58-\u0C5A\u0C5C\u0C5D\u0C60-\u0C63\u0C66-\u0C6F\u0C77-\u0C8C\u0C8E-\u0C90\u0C92-\u0CA8\u0CAA-\u0CB3\u0CB5-\u0CB9\u0CBC-\u0CC4\u0CC6-\u0CC8\u0CCA-\u0CCD\u0CD5\u0CD6\u0CDC-\u0CDE\u0CE0-\u0CE3\u0CE6-\u0CEF\u0CF1-\u0CF3\u0D00-\u0D0C\u0D0E-\u0D10\u0D12-\u0D44\u0D46-\u0D48\u0D4A-\u0D4F\u0D54-\u0D63\u0D66-\u0D7F\u0D81-\u0D83\u0D85-\u0D96\u0D9A-\u0DB1\u0DB3-\u0DBB\u0DBD\u0DC0-\u0DC6\u0DCA\u0DCF-\u0DD4\u0DD6\u0DD8-\u0DDF\u0DE6-\u0DEF\u0DF2-\u0DF4\u0E01-\u0E3A\u0E3F-\u0E5B\u0E81\u0E82\u0E84\u0E86-\u0E8A\u0E8C-\u0EA3\u0EA5\u0EA7-\u0EBD\u0EC0-\u0EC4\u0EC6\u0EC8-\u0ECE\u0ED0-\u0ED9\u0EDC-\u0EDF\u0F00-\u0F47\u0F49-\u0F6C\u0F71-\u0F97\u0F99-\u0FBC\u0FBE-\u0FCC\u0FCE-\u0FDA\u1000-\u10C5\u10C7\u10CD\u10D0-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u135D-\u137C\u1380-\u1399\u13A0-\u13F5\u13F8-\u13FD\u1400-\u167F\u1681-\u169C\u16A0-\u16F8\u1700-\u1715\u171F-\u1736\u1740-\u1753\u1760-\u176C\u176E-\u1770\u1772\u1773\u1780-\u17DD\u17E0-\u17E9\u17F0-\u17F9\u1800-\u180D\u180F-\u1819\u1820-\u1878\u1880-\u18AA\u18B0-\u18F5\u1900-\u191E\u1920-\u192B\u1930-\u193B\u1940\u1944-\u196D\u1970-\u1974\u1980-\u19AB\u19B0-\u19C9\u19D0-\u19DA\u19DE-\u1A1B\u1A1E-\u1A5E\u1A60-\u1A7C\u1A7F-\u1A89\u1A90-\u1A99\u1AA0-\u1AAD\u1AB0-\u1ADD\u1AE0-\u1AEB\u1B00-\u1B4C\u1B4E-\u1BF3\u1BFC-\u1C37\u1C3B-\u1C49\u1C4D-\u1C8A\u1C90-\u1CBA\u1CBD-\u1CC7\u1CD0-\u1CFA\u1D00-\u1F15\u1F18-\u1F1D\u1F20-\u1F45\u1F48-\u1F4D\u1F50-\u1F57\u1F59\u1F5B\u1F5D\u1F5F-\u1F7D\u1F80-\u1FB4\u1FB6-\u1FC4\u1FC6-\u1FD3\u1FD6-\u1FDB\u1FDD-\u1FEF\u1FF2-\u1FF4\u1FF6-\u1FFE\u2010-\u2027\u2030-\u205E\u2070\u2071\u2074-\u208E\u2090-\u209C\u20A0-\u20C1\u20D0-\u20F0\u2100-\u218B\u2190-\u2429\u2440-\u244A\u2460-\u2B73\u2B76-\u2CF3\u2CF9-\u2D25\u2D27\u2D2D\u2D30-\u2D67\u2D6F\u2D70\u2D7F-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\u2DE0-\u2E5D\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFF\u3001-\u303F\u3041-\u3096\u3099-\u30FF\u3105-\u312F\u3131-\u318E\u3190-\u31E5\u31EF-\u321E\u3220-\uA48C\uA490-\uA4C6\uA4D0-\uA62B\uA640-\uA6F7\uA700-\uA7DC\uA7F1-\uA82C\uA830-\uA839\uA840-\uA877\uA880-\uA8C5\uA8CE-\uA8D9\uA8E0-\uA953\uA95F-\uA97C\uA980-\uA9CD\uA9CF-\uA9D9\uA9DE-\uA9FE\uAA00-\uAA36\uAA40-\uAA4D\uAA50-\uAA59\uAA5C-\uAAC2\uAADB-\uAAF6\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E\uAB30-\uAB6B\uAB70-\uABED\uABF0-\uABF9\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFA6D\uFA70-\uFAD9\uFB00-\uFB06\uFB13-\uFB17\uFB1D-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFDCF\uFDF0-\uFE19\uFE20-\uFE52\uFE54-\uFE66\uFE68-\uFE6B\uFE70-\uFE74\uFE76-\uFEFC\uFF01-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC\uFFE0-\uFFE6\uFFE8-\uFFEE\uFFFC\uFFFD\u{10000}-\u{1000B}\u{1000D}-\u{10026}\u{10028}-\u{1003A}\u{1003C}\u{1003D}\u{1003F}-\u{1004D}\u{10050}-\u{1005D}\u{10080}-\u{100FA}\u{10100}-\u{10102}\u{10107}-\u{10133}\u{10137}-\u{1018E}\u{10190}-\u{1019C}\u{101A0}\u{101D0}-\u{101FD}\u{10280}-\u{1029C}\u{102A0}-\u{102D0}\u{102E0}-\u{102FB}\u{10300}-\u{10323}\u{1032D}-\u{1034A}\u{10350}-\u{1037A}\u{10380}-\u{1039D}\u{1039F}-\u{103C3}\u{103C8}-\u{103D5}\u{10400}-\u{1049D}\u{104A0}-\u{104A9}\u{104B0}-\u{104D3}\u{104D8}-\u{104FB}\u{10500}-\u{10527}\u{10530}-\u{10563}\u{1056F}-\u{1057A}\u{1057C}-\u{1058A}\u{1058C}-\u{10592}\u{10594}\u{10595}\u{10597}-\u{105A1}\u{105A3}-\u{105B1}\u{105B3}-\u{105B9}\u{105BB}\u{105BC}\u{105C0}-\u{105F3}\u{10600}-\u{10736}\u{10740}-\u{10755}\u{10760}-\u{10767}\u{10780}-\u{10785}\u{10787}-\u{107B0}\u{107B2}-\u{107BA}\u{10800}-\u{10805}\u{10808}\u{1080A}-\u{10835}\u{10837}\u{10838}\u{1083C}\u{1083F}-\u{10855}\u{10857}-\u{1089E}\u{108A7}-\u{108AF}\u{108E0}-\u{108F2}\u{108F4}\u{108F5}\u{108FB}-\u{1091B}\u{1091F}-\u{10939}\u{1093F}-\u{10959}\u{10980}-\u{109B7}\u{109BC}-\u{109CF}\u{109D2}-\u{10A03}\u{10A05}\u{10A06}\u{10A0C}-\u{10A13}\u{10A15}-\u{10A17}\u{10A19}-\u{10A35}\u{10A38}-\u{10A3A}\u{10A3F}-\u{10A48}\u{10A50}-\u{10A58}\u{10A60}-\u{10A9F}\u{10AC0}-\u{10AE6}\u{10AEB}-\u{10AF6}\u{10B00}-\u{10B35}\u{10B39}-\u{10B55}\u{10B58}-\u{10B72}\u{10B78}-\u{10B91}\u{10B99}-\u{10B9C}\u{10BA9}-\u{10BAF}\u{10C00}-\u{10C48}\u{10C80}-\u{10CB2}\u{10CC0}-\u{10CF2}\u{10CFA}-\u{10D27}\u{10D30}-\u{10D39}\u{10D40}-\u{10D65}\u{10D69}-\u{10D85}\u{10D8E}\u{10D8F}\u{10E60}-\u{10E7E}\u{10E80}-\u{10EA9}\u{10EAB}-\u{10EAD}\u{10EB0}\u{10EB1}\u{10EC2}-\u{10EC7}\u{10ED0}-\u{10ED8}\u{10EFA}-\u{10F27}\u{10F30}-\u{10F59}\u{10F70}-\u{10F89}\u{10FB0}-\u{10FCB}\u{10FE0}-\u{10FF6}\u{11000}-\u{1104D}\u{11052}-\u{11075}\u{1107F}-\u{110BC}\u{110BE}-\u{110C2}\u{110D0}-\u{110E8}\u{110F0}-\u{110F9}\u{11100}-\u{11134}\u{11136}-\u{11147}\u{11150}-\u{11176}\u{11180}-\u{111DF}\u{111E1}-\u{111F4}\u{11200}-\u{11211}\u{11213}-\u{11241}\u{11280}-\u{11286}\u{11288}\u{1128A}-\u{1128D}\u{1128F}-\u{1129D}\u{1129F}-\u{112A9}\u{112B0}-\u{112EA}\u{112F0}-\u{112F9}\u{11300}-\u{11303}\u{11305}-\u{1130C}\u{1130F}\u{11310}\u{11313}-\u{11328}\u{1132A}-\u{11330}\u{11332}\u{11333}\u{11335}-\u{11339}\u{1133B}-\u{11344}\u{11347}\u{11348}\u{1134B}-\u{1134D}\u{11350}\u{11357}\u{1135D}-\u{11363}\u{11366}-\u{1136C}\u{11370}-\u{11374}\u{11380}-\u{11389}\u{1138B}\u{1138E}\u{11390}-\u{113B5}\u{113B7}-\u{113C0}\u{113C2}\u{113C5}\u{113C7}-\u{113CA}\u{113CC}-\u{113D5}\u{113D7}\u{113D8}\u{113E1}\u{113E2}\u{11400}-\u{1145B}\u{1145D}-\u{11461}\u{11480}-\u{114C7}\u{114D0}-\u{114D9}\u{11580}-\u{115B5}\u{115B8}-\u{115DD}\u{11600}-\u{11644}\u{11650}-\u{11659}\u{11660}-\u{1166C}\u{11680}-\u{116B9}\u{116C0}-\u{116C9}\u{116D0}-\u{116E3}\u{11700}-\u{1171A}\u{1171D}-\u{1172B}\u{11730}-\u{11746}\u{11800}-\u{1183B}\u{118A0}-\u{118F2}\u{118FF}-\u{11906}\u{11909}\u{1190C}-\u{11913}\u{11915}\u{11916}\u{11918}-\u{11935}\u{11937}\u{11938}\u{1193B}-\u{11946}\u{11950}-\u{11959}\u{119A0}-\u{119A7}\u{119AA}-\u{119D7}\u{119DA}-\u{119E4}\u{11A00}-\u{11A47}\u{11A50}-\u{11AA2}\u{11AB0}-\u{11AF8}\u{11B00}-\u{11B09}\u{11B60}-\u{11B67}\u{11BC0}-\u{11BE1}\u{11BF0}-\u{11BF9}\u{11C00}-\u{11C08}\u{11C0A}-\u{11C36}\u{11C38}-\u{11C45}\u{11C50}-\u{11C6C}\u{11C70}-\u{11C8F}\u{11C92}-\u{11CA7}\u{11CA9}-\u{11CB6}\u{11D00}-\u{11D06}\u{11D08}\u{11D09}\u{11D0B}-\u{11D36}\u{11D3A}\u{11D3C}\u{11D3D}\u{11D3F}-\u{11D47}\u{11D50}-\u{11D59}\u{11D60}-\u{11D65}\u{11D67}\u{11D68}\u{11D6A}-\u{11D8E}\u{11D90}\u{11D91}\u{11D93}-\u{11D98}\u{11DA0}-\u{11DA9}\u{11DB0}-\u{11DDB}\u{11DE0}-\u{11DE9}\u{11EE0}-\u{11EF8}\u{11F00}-\u{11F10}\u{11F12}-\u{11F3A}\u{11F3E}-\u{11F5A}\u{11FB0}\u{11FC0}-\u{11FF1}\u{11FFF}-\u{12399}\u{12400}-\u{1246E}\u{12470}-\u{12474}\u{12480}-\u{12543}\u{12F90}-\u{12FF2}\u{13000}-\u{1342F}\u{13440}-\u{13455}\u{13460}-\u{143FA}\u{14400}-\u{14646}\u{16100}-\u{16139}\u{16800}-\u{16A38}\u{16A40}-\u{16A5E}\u{16A60}-\u{16A69}\u{16A6E}-\u{16ABE}\u{16AC0}-\u{16AC9}\u{16AD0}-\u{16AED}\u{16AF0}-\u{16AF5}\u{16B00}-\u{16B45}\u{16B50}-\u{16B59}\u{16B5B}-\u{16B61}\u{16B63}-\u{16B77}\u{16B7D}-\u{16B8F}\u{16D40}-\u{16D79}\u{16E40}-\u{16E9A}\u{16EA0}-\u{16EB8}\u{16EBB}-\u{16ED3}\u{16F00}-\u{16F4A}\u{16F4F}-\u{16F87}\u{16F8F}-\u{16F9F}\u{16FE0}-\u{16FE4}\u{16FF0}-\u{16FF6}\u{17000}-\u{18CD5}\u{18CFF}-\u{18D1E}\u{18D80}-\u{18DF2}\u{1AFF0}-\u{1AFF3}\u{1AFF5}-\u{1AFFB}\u{1AFFD}\u{1AFFE}\u{1B000}-\u{1B122}\u{1B132}\u{1B150}-\u{1B152}\u{1B155}\u{1B164}-\u{1B167}\u{1B170}-\u{1B2FB}\u{1BC00}-\u{1BC6A}\u{1BC70}-\u{1BC7C}\u{1BC80}-\u{1BC88}\u{1BC90}-\u{1BC99}\u{1BC9C}-\u{1BC9F}\u{1CC00}-\u{1CCFC}\u{1CD00}-\u{1CEB3}\u{1CEBA}-\u{1CED0}\u{1CEE0}-\u{1CEF0}\u{1CF00}-\u{1CF2D}\u{1CF30}-\u{1CF46}\u{1CF50}-\u{1CFC3}\u{1D000}-\u{1D0F5}\u{1D100}-\u{1D126}\u{1D129}-\u{1D172}\u{1D17B}-\u{1D1EA}\u{1D200}-\u{1D245}\u{1D2C0}-\u{1D2D3}\u{1D2E0}-\u{1D2F3}\u{1D300}-\u{1D356}\u{1D360}-\u{1D378}\u{1D400}-\u{1D454}\u{1D456}-\u{1D49C}\u{1D49E}\u{1D49F}\u{1D4A2}\u{1D4A5}\u{1D4A6}\u{1D4A9}-\u{1D4AC}\u{1D4AE}-\u{1D4B9}\u{1D4BB}\u{1D4BD}-\u{1D4C3}\u{1D4C5}-\u{1D505}\u{1D507}-\u{1D50A}\u{1D50D}-\u{1D514}\u{1D516}-\u{1D51C}\u{1D51E}-\u{1D539}\u{1D53B}-\u{1D53E}\u{1D540}-\u{1D544}\u{1D546}\u{1D54A}-\u{1D550}\u{1D552}-\u{1D6A5}\u{1D6A8}-\u{1D7CB}\u{1D7CE}-\u{1DA8B}\u{1DA9B}-\u{1DA9F}\u{1DAA1}-\u{1DAAF}\u{1DF00}-\u{1DF1E}\u{1DF25}-\u{1DF2A}\u{1E000}-\u{1E006}\u{1E008}-\u{1E018}\u{1E01B}-\u{1E021}\u{1E023}\u{1E024}\u{1E026}-\u{1E02A}\u{1E030}-\u{1E06D}\u{1E08F}\u{1E100}-\u{1E12C}\u{1E130}-\u{1E13D}\u{1E140}-\u{1E149}\u{1E14E}\u{1E14F}\u{1E290}-\u{1E2AE}\u{1E2C0}-\u{1E2F9}\u{1E2FF}\u{1E4D0}-\u{1E4F9}\u{1E5D0}-\u{1E5FA}\u{1E5FF}\u{1E6C0}-\u{1E6DE}\u{1E6E0}-\u{1E6F5}\u{1E6FE}\u{1E6FF}\u{1E7E0}-\u{1E7E6}\u{1E7E8}-\u{1E7EB}\u{1E7ED}\u{1E7EE}\u{1E7F0}-\u{1E7FE}\u{1E800}-\u{1E8C4}\u{1E8C7}-\u{1E8D6}\u{1E900}-\u{1E94B}\u{1E950}-\u{1E959}\u{1E95E}\u{1E95F}\u{1EC71}-\u{1ECB4}\u{1ED01}-\u{1ED3D}\u{1EE00}-\u{1EE03}\u{1EE05}-\u{1EE1F}\u{1EE21}\u{1EE22}\u{1EE24}\u{1EE27}\u{1EE29}-\u{1EE32}\u{1EE34}-\u{1EE37}\u{1EE39}\u{1EE3B}\u{1EE42}\u{1EE47}\u{1EE49}\u{1EE4B}\u{1EE4D}-\u{1EE4F}\u{1EE51}\u{1EE52}\u{1EE54}\u{1EE57}\u{1EE59}\u{1EE5B}\u{1EE5D}\u{1EE5F}\u{1EE61}\u{1EE62}\u{1EE64}\u{1EE67}-\u{1EE6A}\u{1EE6C}-\u{1EE72}\u{1EE74}-\u{1EE77}\u{1EE79}-\u{1EE7C}\u{1EE7E}\u{1EE80}-\u{1EE89}\u{1EE8B}-\u{1EE9B}\u{1EEA1}-\u{1EEA3}\u{1EEA5}-\u{1EEA9}\u{1EEAB}-\u{1EEBB}\u{1EEF0}\u{1EEF1}\u{1F000}-\u{1F02B}\u{1F030}-\u{1F093}\u{1F0A0}-\u{1F0AE}\u{1F0B1}-\u{1F0BF}\u{1F0C1}-\u{1F0CF}\u{1F0D1}-\u{1F0F5}\u{1F100}-\u{1F1AD}\u{1F1E6}-\u{1F202}\u{1F210}-\u{1F23B}\u{1F240}-\u{1F248}\u{1F250}\u{1F251}\u{1F260}-\u{1F265}\u{1F300}-\u{1F6D8}\u{1F6DC}-\u{1F6EC}\u{1F6F0}-\u{1F6FC}\u{1F700}-\u{1F7D9}\u{1F7E0}-\u{1F7EB}\u{1F7F0}\u{1F800}-\u{1F80B}\u{1F810}-\u{1F847}\u{1F850}-\u{1F859}\u{1F860}-\u{1F887}\u{1F890}-\u{1F8AD}\u{1F8B0}-\u{1F8BB}\u{1F8C0}\u{1F8C1}\u{1F8D0}-\u{1F8D8}\u{1F900}-\u{1FA57}\u{1FA60}-\u{1FA6D}\u{1FA70}-\u{1FA7C}\u{1FA80}-\u{1FA8A}\u{1FA8E}-\u{1FAC6}\u{1FAC8}\u{1FACD}-\u{1FADC}\u{1FADF}-\u{1FAEA}\u{1FAEF}-\u{1FAF8}\u{1FB00}-\u{1FB92}\u{1FB94}-\u{1FBFA}\u{20000}-\u{2A6DF}\u{2A700}-\u{2B81D}\u{2B820}-\u{2CEAD}\u{2CEB0}-\u{2EBE0}\u{2EBF0}-\u{2EE5D}\u{2F800}-\u{2FA1D}\u{30000}-\u{3134A}\u{31350}-\u{33479}\u{E0100}-\u{E01EF}]/u.test(event.key);
     if ((isIMEInput || isCharacterInput) && event.bounds !== void 0 && isReadWriteCell(getCellContent([col - rowMarkerOffset, Math.max(0, Math.min(row, rows - 1))]))) {
       if ((!showTrailingBlankRow || row !== rows) && (vr.y > row || row > vr.y + vr.height || vr.x > col || col > vr.x + vr.width)) {
         return;
@@ -10226,9 +15356,9 @@ function useKeyboardHandlers(args) {
   };
 }
 function useSelectionBehavior(gridSelection, setGridSelection, rangeBehavior, columnBehavior, rowBehavior, rangeSelect, rangeSelectionColumnSpanning) {
-  const $ = compilerRuntimeExports.c(24);
+  const $2 = compilerRuntimeExports.c(24);
   let t0;
-  if ($[0] !== columnBehavior || $[1] !== gridSelection || $[2] !== rangeBehavior || $[3] !== rangeSelect || $[4] !== rangeSelectionColumnSpanning || $[5] !== rowBehavior || $[6] !== setGridSelection) {
+  if ($2[0] !== columnBehavior || $2[1] !== gridSelection || $2[2] !== rangeBehavior || $2[3] !== rangeSelect || $2[4] !== rangeSelectionColumnSpanning || $2[5] !== rowBehavior || $2[6] !== setGridSelection) {
     t0 = (value, expand, append, trigger) => {
       var _gridSelection$curren, _gridSelection$curren2;
       if ((rangeSelect === "cell" || rangeSelect === "multi-cell") && value !== void 0) {
@@ -10275,20 +15405,20 @@ function useSelectionBehavior(gridSelection, setGridSelection, rangeBehavior, co
       }
       setGridSelection(newVal, expand);
     };
-    $[0] = columnBehavior;
-    $[1] = gridSelection;
-    $[2] = rangeBehavior;
-    $[3] = rangeSelect;
-    $[4] = rangeSelectionColumnSpanning;
-    $[5] = rowBehavior;
-    $[6] = setGridSelection;
-    $[7] = t0;
+    $2[0] = columnBehavior;
+    $2[1] = gridSelection;
+    $2[2] = rangeBehavior;
+    $2[3] = rangeSelect;
+    $2[4] = rangeSelectionColumnSpanning;
+    $2[5] = rowBehavior;
+    $2[6] = setGridSelection;
+    $2[7] = t0;
   } else {
-    t0 = $[7];
+    t0 = $2[7];
   }
   const setCurrent = t0;
   let t1;
-  if ($[8] !== columnBehavior || $[9] !== gridSelection || $[10] !== rangeBehavior || $[11] !== rowBehavior || $[12] !== setGridSelection) {
+  if ($2[8] !== columnBehavior || $2[9] !== gridSelection || $2[10] !== rangeBehavior || $2[11] !== rowBehavior || $2[12] !== setGridSelection) {
     t1 = (newRows, append_0, allowMixed) => {
       newRows = newRows !== null && newRows !== void 0 ? newRows : gridSelection.rows;
       if (append_0 !== void 0) {
@@ -10313,18 +15443,18 @@ function useSelectionBehavior(gridSelection, setGridSelection, rangeBehavior, co
       }
       setGridSelection(newVal_0, false);
     };
-    $[8] = columnBehavior;
-    $[9] = gridSelection;
-    $[10] = rangeBehavior;
-    $[11] = rowBehavior;
-    $[12] = setGridSelection;
-    $[13] = t1;
+    $2[8] = columnBehavior;
+    $2[9] = gridSelection;
+    $2[10] = rangeBehavior;
+    $2[11] = rowBehavior;
+    $2[12] = setGridSelection;
+    $2[13] = t1;
   } else {
-    t1 = $[13];
+    t1 = $2[13];
   }
   const setSelectedRows = t1;
   let t2;
-  if ($[14] !== columnBehavior || $[15] !== gridSelection || $[16] !== rangeBehavior || $[17] !== rowBehavior || $[18] !== setGridSelection) {
+  if ($2[14] !== columnBehavior || $2[15] !== gridSelection || $2[16] !== rangeBehavior || $2[17] !== rowBehavior || $2[18] !== setGridSelection) {
     t2 = (newCols, append_1, allowMixed_0) => {
       newCols = newCols !== null && newCols !== void 0 ? newCols : gridSelection.columns;
       if (append_1 !== void 0) {
@@ -10349,25 +15479,25 @@ function useSelectionBehavior(gridSelection, setGridSelection, rangeBehavior, co
       }
       setGridSelection(newVal_1, false);
     };
-    $[14] = columnBehavior;
-    $[15] = gridSelection;
-    $[16] = rangeBehavior;
-    $[17] = rowBehavior;
-    $[18] = setGridSelection;
-    $[19] = t2;
+    $2[14] = columnBehavior;
+    $2[15] = gridSelection;
+    $2[16] = rangeBehavior;
+    $2[17] = rowBehavior;
+    $2[18] = setGridSelection;
+    $2[19] = t2;
   } else {
-    t2 = $[19];
+    t2 = $2[19];
   }
   const setSelectedColumns = t2;
   let t3;
-  if ($[20] !== setCurrent || $[21] !== setSelectedColumns || $[22] !== setSelectedRows) {
+  if ($2[20] !== setCurrent || $2[21] !== setSelectedColumns || $2[22] !== setSelectedRows) {
     t3 = [setCurrent, setSelectedRows, setSelectedColumns];
-    $[20] = setCurrent;
-    $[21] = setSelectedColumns;
-    $[22] = setSelectedRows;
-    $[23] = t3;
+    $2[20] = setCurrent;
+    $2[21] = setSelectedColumns;
+    $2[22] = setSelectedRows;
+    $2[23] = t3;
   } else {
-    t3 = $[23];
+    t3 = $2[23];
   }
   return t3;
 }
@@ -10376,16 +15506,16 @@ function useCellsForSelection(getCellsForSelectionIn, getCellContent, rowMarkerO
     var _getCellsForSelection;
     if (getCellsForSelectionIn === true) {
       const result = [];
-      for (let y = rect.y; y < rect.y + rect.height; y++) {
+      for (let y2 = rect.y; y2 < rect.y + rect.height; y2++) {
         const row = [];
-        for (let x = rect.x; x < rect.x + rect.width; x++) {
-          if (x < 0 || y >= rows) {
+        for (let x2 = rect.x; x2 < rect.x + rect.width; x2++) {
+          if (x2 < 0 || y2 >= rows) {
             row.push({
               kind: GridCellKind.Loading,
               allowOverlay: false
             });
           } else {
-            row.push(getCellContent([x, y]));
+            row.push(getCellContent([x2, y2]));
           }
         }
         result.push(row);
@@ -10421,9 +15551,9 @@ function useCellsForSelection(getCellsForSelectionIn, getCellContent, rowMarkerO
   const getCellsForSelection = getCellsForSelectionIn !== void 0 ? getCellsForSelectionMangled : void 0;
   return [getCellsForSelection, getCellsForSelectionDirect];
 }
-function toCss(x) {
-  if (typeof x === "string") return x;
-  return `${x}px`;
+function toCss(x2) {
+  if (typeof x2 === "string") return x2;
+  return `${x2}px`;
 }
 const _exp$1 = () => (p2) => p2.innerWidth;
 const _exp2 = () => (p2) => p2.innerHeight;
@@ -10437,80 +15567,80 @@ const Wrapper = /* @__PURE__ */ styled_default("div")({
   }
 });
 const DataEditorContainer = (p2) => {
-  const $ = compilerRuntimeExports.c(14);
+  const $2 = compilerRuntimeExports.c(14);
   let children;
   let inHeight;
   let inWidth;
   let rest;
-  if ($[0] !== p2) {
+  if ($2[0] !== p2) {
     ({
       inWidth,
       inHeight,
       children,
       ...rest
     } = p2);
-    $[0] = p2;
-    $[1] = children;
-    $[2] = inHeight;
-    $[3] = inWidth;
-    $[4] = rest;
+    $2[0] = p2;
+    $2[1] = children;
+    $2[2] = inHeight;
+    $2[3] = inWidth;
+    $2[4] = rest;
   } else {
-    children = $[1];
-    inHeight = $[2];
-    inWidth = $[3];
-    rest = $[4];
+    children = $2[1];
+    inHeight = $2[2];
+    inWidth = $2[3];
+    rest = $2[4];
   }
   let t0;
-  if ($[5] !== inHeight) {
+  if ($2[5] !== inHeight) {
     t0 = toCss(inHeight);
-    $[5] = inHeight;
-    $[6] = t0;
+    $2[5] = inHeight;
+    $2[6] = t0;
   } else {
-    t0 = $[6];
+    t0 = $2[6];
   }
   let t1;
-  if ($[7] !== inWidth) {
+  if ($2[7] !== inWidth) {
     t1 = toCss(inWidth);
-    $[7] = inWidth;
-    $[8] = t1;
+    $2[7] = inWidth;
+    $2[8] = t1;
   } else {
-    t1 = $[8];
+    t1 = $2[8];
   }
   let t2;
-  if ($[9] !== children || $[10] !== rest || $[11] !== t0 || $[12] !== t1) {
+  if ($2[9] !== children || $2[10] !== rest || $2[11] !== t0 || $2[12] !== t1) {
     t2 = /* @__PURE__ */ jsx(Wrapper, {
       innerHeight: t0,
       innerWidth: t1,
       ...rest,
       children
     });
-    $[9] = children;
-    $[10] = rest;
-    $[11] = t0;
-    $[12] = t1;
-    $[13] = t2;
+    $2[9] = children;
+    $2[10] = rest;
+    $2[11] = t0;
+    $2[12] = t1;
+    $2[13] = t2;
   } else {
-    t2 = $[13];
+    t2 = $2[13];
   }
   return t2;
 };
 const maxPxPerMs = 2;
 const msToFullSpeed = 1300;
 function useAutoscroll(scrollDirection, scrollRef, onScroll) {
-  const $ = compilerRuntimeExports.c(8);
+  const $2 = compilerRuntimeExports.c(8);
   const speedScalar = React__default.useRef(0);
   let t0;
-  if ($[0] !== scrollDirection) {
+  if ($2[0] !== scrollDirection) {
     t0 = scrollDirection !== null && scrollDirection !== void 0 ? scrollDirection : [0, 0];
-    $[0] = scrollDirection;
-    $[1] = t0;
+    $2[0] = scrollDirection;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   const [xDir, yDir] = t0;
   let t1;
   let t2;
-  if ($[2] !== onScroll || $[3] !== scrollRef || $[4] !== xDir || $[5] !== yDir) {
+  if ($2[2] !== onScroll || $2[3] !== scrollRef || $2[4] !== xDir || $2[5] !== yDir) {
     t1 = () => {
       if (xDir === 0 && yDir === 0) {
         speedScalar.current = 0;
@@ -10541,20 +15671,20 @@ function useAutoscroll(scrollDirection, scrollRef, onScroll) {
       };
     };
     t2 = [scrollRef, xDir, yDir, onScroll];
-    $[2] = onScroll;
-    $[3] = scrollRef;
-    $[4] = xDir;
-    $[5] = yDir;
-    $[6] = t1;
-    $[7] = t2;
+    $2[2] = onScroll;
+    $2[3] = scrollRef;
+    $2[4] = xDir;
+    $2[5] = yDir;
+    $2[6] = t1;
+    $2[7] = t2;
   } else {
-    t1 = $[6];
-    t2 = $[7];
+    t1 = $2[6];
+    t2 = $2[7];
   }
   React__default.useEffect(t1, t2);
 }
 function useClipboard(args) {
-  const $ = compilerRuntimeExports.c(38);
+  const $2 = compilerRuntimeExports.c(38);
   const {
     state,
     keybindings,
@@ -10582,7 +15712,7 @@ function useClipboard(args) {
     getCellRenderer
   } = state;
   let t0;
-  if ($[0] !== canvasRef || $[1] !== coercePasteValue || $[2] !== getCellRenderer || $[3] !== getMangledCellContent || $[4] !== gridRef || $[5] !== gridSelection || $[6] !== keybindings.paste || $[7] !== mangledCols || $[8] !== mangledOnCellsEdited || $[9] !== mangledRows || $[10] !== onPaste || $[11] !== rowMarkerOffset || $[12] !== rows || $[13] !== scrollRef) {
+  if ($2[0] !== canvasRef || $2[1] !== coercePasteValue || $2[2] !== getCellRenderer || $2[3] !== getMangledCellContent || $2[4] !== gridRef || $2[5] !== gridSelection || $2[6] !== keybindings.paste || $2[7] !== mangledCols || $2[8] !== mangledOnCellsEdited || $2[9] !== mangledRows || $2[10] !== onPaste || $2[11] !== rowMarkerOffset || $2[12] !== rows || $2[13] !== scrollRef) {
     t0 = async (e) => {
       var _scrollRef$current, _canvasRef$current;
       if (!keybindings.paste) {
@@ -10736,28 +15866,28 @@ function useClipboard(args) {
         (_gridRef$current = gridRef.current) === null || _gridRef$current === void 0 || _gridRef$current.damage(editList.map(_temp5));
       }
     };
-    $[0] = canvasRef;
-    $[1] = coercePasteValue;
-    $[2] = getCellRenderer;
-    $[3] = getMangledCellContent;
-    $[4] = gridRef;
-    $[5] = gridSelection;
-    $[6] = keybindings.paste;
-    $[7] = mangledCols;
-    $[8] = mangledOnCellsEdited;
-    $[9] = mangledRows;
-    $[10] = onPaste;
-    $[11] = rowMarkerOffset;
-    $[12] = rows;
-    $[13] = scrollRef;
-    $[14] = t0;
+    $2[0] = canvasRef;
+    $2[1] = coercePasteValue;
+    $2[2] = getCellRenderer;
+    $2[3] = getMangledCellContent;
+    $2[4] = gridRef;
+    $2[5] = gridSelection;
+    $2[6] = keybindings.paste;
+    $2[7] = mangledCols;
+    $2[8] = mangledOnCellsEdited;
+    $2[9] = mangledRows;
+    $2[10] = onPaste;
+    $2[11] = rowMarkerOffset;
+    $2[12] = rows;
+    $2[13] = scrollRef;
+    $2[14] = t0;
   } else {
-    t0 = $[14];
+    t0 = $2[14];
   }
   const onPasteInternal = t0;
   useEventListener("paste", onPasteInternal, safeWindow, false, true);
   let t1;
-  if ($[15] !== abortControllerRef || $[16] !== canvasRef || $[17] !== columnsIn || $[18] !== copyHeaders || $[19] !== getCellsForSelection || $[20] !== gridSelection || $[21] !== keybindings.copy || $[22] !== rowMarkerOffset || $[23] !== rows || $[24] !== scrollRef) {
+  if ($2[15] !== abortControllerRef || $2[16] !== canvasRef || $2[17] !== columnsIn || $2[18] !== copyHeaders || $2[19] !== getCellsForSelection || $2[20] !== gridSelection || $2[21] !== keybindings.copy || $2[22] !== rowMarkerOffset || $2[23] !== rows || $2[24] !== scrollRef) {
     t1 = async (e_0, ignoreFocus) => {
       var _scrollRef$current2, _canvasRef$current2;
       if (!keybindings.copy) {
@@ -10785,7 +15915,7 @@ function useClipboard(args) {
           if (typeof thunk !== "object") {
             thunk = await thunk();
           }
-          copyToClipboardWithHeaders(thunk, range$1(gridSelection.current.range.x - rowMarkerOffset, gridSelection.current.range.x + gridSelection.current.range.width - rowMarkerOffset));
+          copyToClipboardWithHeaders(thunk, range(gridSelection.current.range.x - rowMarkerOffset, gridSelection.current.range.x + gridSelection.current.range.width - rowMarkerOffset));
         } else {
           if (selectedRows_0 !== void 0 && selectedRows_0.length > 0) {
             const toCopy = [...selectedRows_0];
@@ -10803,9 +15933,9 @@ function useClipboard(args) {
             });
             if (cells_0.some(_temp7)) {
               const settled = await Promise.all(cells_0);
-              copyToClipboardWithHeaders(settled, range$1(columnsIn.length));
+              copyToClipboardWithHeaders(settled, range(columnsIn.length));
             } else {
-              copyToClipboardWithHeaders(cells_0, range$1(columnsIn.length));
+              copyToClipboardWithHeaders(cells_0, range(columnsIn.length));
             }
           } else {
             if (selectedColumns_0.length > 0) {
@@ -10835,24 +15965,24 @@ function useClipboard(args) {
         }
       }
     };
-    $[15] = abortControllerRef;
-    $[16] = canvasRef;
-    $[17] = columnsIn;
-    $[18] = copyHeaders;
-    $[19] = getCellsForSelection;
-    $[20] = gridSelection;
-    $[21] = keybindings.copy;
-    $[22] = rowMarkerOffset;
-    $[23] = rows;
-    $[24] = scrollRef;
-    $[25] = t1;
+    $2[15] = abortControllerRef;
+    $2[16] = canvasRef;
+    $2[17] = columnsIn;
+    $2[18] = copyHeaders;
+    $2[19] = getCellsForSelection;
+    $2[20] = gridSelection;
+    $2[21] = keybindings.copy;
+    $2[22] = rowMarkerOffset;
+    $2[23] = rows;
+    $2[24] = scrollRef;
+    $2[25] = t1;
   } else {
-    t1 = $[25];
+    t1 = $2[25];
   }
   const onCopy = t1;
   useEventListener("copy", onCopy, safeWindow, false, false);
   let t2;
-  if ($[26] !== canvasRef || $[27] !== deleteRange || $[28] !== gridSelection || $[29] !== keybindings.cut || $[30] !== onCopy || $[31] !== onDelete || $[32] !== scrollRef) {
+  if ($2[26] !== canvasRef || $2[27] !== deleteRange || $2[28] !== gridSelection || $2[29] !== keybindings.cut || $2[30] !== onCopy || $2[31] !== onDelete || $2[32] !== scrollRef) {
     t2 = async (e_1) => {
       var _scrollRef$current3, _canvasRef$current3;
       if (!keybindings.cut) {
@@ -10884,40 +16014,40 @@ function useClipboard(args) {
         deleteRange(effectiveSelection.current.range);
       }
     };
-    $[26] = canvasRef;
-    $[27] = deleteRange;
-    $[28] = gridSelection;
-    $[29] = keybindings.cut;
-    $[30] = onCopy;
-    $[31] = onDelete;
-    $[32] = scrollRef;
-    $[33] = t2;
+    $2[26] = canvasRef;
+    $2[27] = deleteRange;
+    $2[28] = gridSelection;
+    $2[29] = keybindings.cut;
+    $2[30] = onCopy;
+    $2[31] = onDelete;
+    $2[32] = scrollRef;
+    $2[33] = t2;
   } else {
-    t2 = $[33];
+    t2 = $2[33];
   }
   const onCut = t2;
   useEventListener("cut", onCut, safeWindow, false, false);
   let t3;
-  if ($[34] !== onCopy || $[35] !== onCut || $[36] !== onPasteInternal) {
+  if ($2[34] !== onCopy || $2[35] !== onCut || $2[36] !== onPasteInternal) {
     t3 = {
       onCopy,
       onCut,
       onPasteInternal
     };
-    $[34] = onCopy;
-    $[35] = onCut;
-    $[36] = onPasteInternal;
-    $[37] = t3;
+    $2[34] = onCopy;
+    $2[35] = onCut;
+    $2[36] = onPasteInternal;
+    $2[37] = t3;
   } else {
-    t3 = $[37];
+    t3 = $2[37];
   }
   return t3;
 }
 function _temp8(pv, cv) {
   return pv.map((row_0, index_1) => [...row_0, ...cv[index_1]]);
 }
-function _temp7(x) {
-  return x instanceof Promise;
+function _temp7(x2) {
+  return x2 instanceof Promise;
 }
 function _temp6(v2) {
   return v2[0];
@@ -11073,32 +16203,32 @@ function realizeKeybinds(keybinds) {
   };
 }
 function useKeybindingsWithDefaults(keybindingsIn) {
-  const $ = compilerRuntimeExports.c(9);
-  const keys2 = useDeepMemo(keybindingsIn);
+  const $2 = compilerRuntimeExports.c(9);
+  const keys = useDeepMemo(keybindingsIn);
   let t0;
   bb0: {
     var _ref, _keys$goToNextPage, _ref2, _keys$goToPreviousPag, _ref3, _keys$goToFirstCell, _ref4, _keys$goToLastCell, _ref5, _keys$selectToFirstCe, _ref6, _keys$selectToLastCel;
-    if (keys2 === void 0) {
+    if (keys === void 0) {
       let t12;
-      if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
+      if ($2[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
         t12 = realizeKeybinds(keybindingDefaults);
-        $[0] = t12;
+        $2[0] = t12;
       } else {
-        t12 = $[0];
+        t12 = $2[0];
       }
       t0 = t12;
       break bb0;
     }
-    const t1 = (_ref = (_keys$goToNextPage = keys2 === null || keys2 === void 0 ? void 0 : keys2.goToNextPage) !== null && _keys$goToNextPage !== void 0 ? _keys$goToNextPage : keys2 === null || keys2 === void 0 ? void 0 : keys2.pageDown) !== null && _ref !== void 0 ? _ref : keybindingDefaults.goToNextPage;
-    const t2 = (_ref2 = (_keys$goToPreviousPag = keys2 === null || keys2 === void 0 ? void 0 : keys2.goToPreviousPage) !== null && _keys$goToPreviousPag !== void 0 ? _keys$goToPreviousPag : keys2 === null || keys2 === void 0 ? void 0 : keys2.pageUp) !== null && _ref2 !== void 0 ? _ref2 : keybindingDefaults.goToPreviousPage;
-    const t3 = (_ref3 = (_keys$goToFirstCell = keys2 === null || keys2 === void 0 ? void 0 : keys2.goToFirstCell) !== null && _keys$goToFirstCell !== void 0 ? _keys$goToFirstCell : keys2 === null || keys2 === void 0 ? void 0 : keys2.first) !== null && _ref3 !== void 0 ? _ref3 : keybindingDefaults.goToFirstCell;
-    const t4 = (_ref4 = (_keys$goToLastCell = keys2 === null || keys2 === void 0 ? void 0 : keys2.goToLastCell) !== null && _keys$goToLastCell !== void 0 ? _keys$goToLastCell : keys2 === null || keys2 === void 0 ? void 0 : keys2.last) !== null && _ref4 !== void 0 ? _ref4 : keybindingDefaults.goToLastCell;
-    const t5 = (_ref5 = (_keys$selectToFirstCe = keys2 === null || keys2 === void 0 ? void 0 : keys2.selectToFirstCell) !== null && _keys$selectToFirstCe !== void 0 ? _keys$selectToFirstCe : keys2 === null || keys2 === void 0 ? void 0 : keys2.first) !== null && _ref5 !== void 0 ? _ref5 : keybindingDefaults.selectToFirstCell;
-    const t6 = (_ref6 = (_keys$selectToLastCel = keys2 === null || keys2 === void 0 ? void 0 : keys2.selectToLastCell) !== null && _keys$selectToLastCel !== void 0 ? _keys$selectToLastCel : keys2 === null || keys2 === void 0 ? void 0 : keys2.last) !== null && _ref6 !== void 0 ? _ref6 : keybindingDefaults.selectToLastCell;
+    const t1 = (_ref = (_keys$goToNextPage = keys === null || keys === void 0 ? void 0 : keys.goToNextPage) !== null && _keys$goToNextPage !== void 0 ? _keys$goToNextPage : keys === null || keys === void 0 ? void 0 : keys.pageDown) !== null && _ref !== void 0 ? _ref : keybindingDefaults.goToNextPage;
+    const t2 = (_ref2 = (_keys$goToPreviousPag = keys === null || keys === void 0 ? void 0 : keys.goToPreviousPage) !== null && _keys$goToPreviousPag !== void 0 ? _keys$goToPreviousPag : keys === null || keys === void 0 ? void 0 : keys.pageUp) !== null && _ref2 !== void 0 ? _ref2 : keybindingDefaults.goToPreviousPage;
+    const t3 = (_ref3 = (_keys$goToFirstCell = keys === null || keys === void 0 ? void 0 : keys.goToFirstCell) !== null && _keys$goToFirstCell !== void 0 ? _keys$goToFirstCell : keys === null || keys === void 0 ? void 0 : keys.first) !== null && _ref3 !== void 0 ? _ref3 : keybindingDefaults.goToFirstCell;
+    const t4 = (_ref4 = (_keys$goToLastCell = keys === null || keys === void 0 ? void 0 : keys.goToLastCell) !== null && _keys$goToLastCell !== void 0 ? _keys$goToLastCell : keys === null || keys === void 0 ? void 0 : keys.last) !== null && _ref4 !== void 0 ? _ref4 : keybindingDefaults.goToLastCell;
+    const t5 = (_ref5 = (_keys$selectToFirstCe = keys === null || keys === void 0 ? void 0 : keys.selectToFirstCell) !== null && _keys$selectToFirstCe !== void 0 ? _keys$selectToFirstCe : keys === null || keys === void 0 ? void 0 : keys.first) !== null && _ref5 !== void 0 ? _ref5 : keybindingDefaults.selectToFirstCell;
+    const t6 = (_ref6 = (_keys$selectToLastCel = keys === null || keys === void 0 ? void 0 : keys.selectToLastCell) !== null && _keys$selectToLastCel !== void 0 ? _keys$selectToLastCel : keys === null || keys === void 0 ? void 0 : keys.last) !== null && _ref6 !== void 0 ? _ref6 : keybindingDefaults.selectToLastCell;
     let t7;
-    if ($[1] !== keys2 || $[2] !== t1 || $[3] !== t2 || $[4] !== t3 || $[5] !== t4 || $[6] !== t5 || $[7] !== t6) {
+    if ($2[1] !== keys || $2[2] !== t1 || $2[3] !== t2 || $2[4] !== t3 || $2[5] !== t4 || $2[6] !== t5 || $2[7] !== t6) {
       const withBackCompatApplied = {
-        ...keys2,
+        ...keys,
         goToNextPage: t1,
         goToPreviousPage: t2,
         goToFirstCell: t3,
@@ -11110,16 +16240,16 @@ function useKeybindingsWithDefaults(keybindingsIn) {
         ...keybindingDefaults,
         ...withBackCompatApplied
       });
-      $[1] = keys2;
-      $[2] = t1;
-      $[3] = t2;
-      $[4] = t3;
-      $[5] = t4;
-      $[6] = t5;
-      $[7] = t6;
-      $[8] = t7;
+      $2[1] = keys;
+      $2[2] = t1;
+      $2[3] = t2;
+      $2[4] = t3;
+      $2[5] = t4;
+      $2[6] = t5;
+      $2[7] = t6;
+      $2[8] = t7;
     } else {
-      t7 = $[8];
+      t7 = $2[8];
     }
     t0 = t7;
   }
@@ -11142,7 +16272,7 @@ function expandRowGroups(groups) {
       path
     };
     if (group.subGroups !== void 0) {
-      expandedGroup.subGroups = group.subGroups.map((x, ind) => processGroup(x, depth + 1, [...path, ind])).sort((a, b2) => a.headerIndex - b2.headerIndex);
+      expandedGroup.subGroups = group.subGroups.map((x2, ind) => processGroup(x2, depth + 1, [...path, ind])).sort((a, b2) => a.headerIndex - b2.headerIndex);
     }
     return expandedGroup;
   }
@@ -11188,11 +16318,11 @@ function flattenRowGroups(rowGrouping, rows) {
     g.rowIndex = rowIndex;
     rowIndex += g.isCollapsed ? 1 : g.rows + 1;
   }
-  return flattened.filter((x) => x.skip === false).map((x) => {
+  return flattened.filter((x2) => x2.skip === false).map((x2) => {
     const {
       skip,
       ...rest
-    } = x;
+    } = x2;
     return rest;
   });
 }
@@ -11294,19 +16424,19 @@ function useRowGroupingInner(options, rows, rowHeightIn, getRowThemeOverrideIn) 
   };
 }
 function useRowGrouping(options, rows) {
-  const $ = compilerRuntimeExports.c(7);
+  const $2 = compilerRuntimeExports.c(7);
   let t0;
-  if ($[0] !== options || $[1] !== rows) {
+  if ($2[0] !== options || $2[1] !== rows) {
     t0 = options === void 0 ? void 0 : flattenRowGroups(options, rows);
-    $[0] = options;
-    $[1] = rows;
-    $[2] = t0;
+    $2[0] = options;
+    $2[1] = rows;
+    $2[2] = t0;
   } else {
-    t0 = $[2];
+    t0 = $2[2];
   }
   const flattenedRowGroups = t0;
   let t1;
-  if ($[3] !== flattenedRowGroups) {
+  if ($2[3] !== flattenedRowGroups) {
     t1 = (itemOrRow) => {
       if (typeof itemOrRow === "number") {
         return mapRowIndexToPath(itemOrRow, flattenedRowGroups);
@@ -11317,23 +16447,23 @@ function useRowGrouping(options, rows) {
         originalIndex: [itemOrRow[0], r.originalIndex]
       };
     };
-    $[3] = flattenedRowGroups;
-    $[4] = t1;
+    $2[3] = flattenedRowGroups;
+    $2[4] = t1;
   } else {
-    t1 = $[4];
+    t1 = $2[4];
   }
   const t2 = t1;
   let t3;
-  if ($[5] !== t2) {
+  if ($2[5] !== t2) {
     t3 = {
       getRowGroupingForPath,
       updateRowGroupingByPath,
       mapper: t2
     };
-    $[5] = t2;
-    $[6] = t3;
+    $2[5] = t2;
+    $2[6] = t3;
   } else {
-    t3 = $[6];
+    t3 = $2[6];
   }
   return t3;
 }
@@ -11435,7 +16565,7 @@ const GhostInputBox = /* @__PURE__ */ styled_default("textarea")({
   propsAsIs: false
 });
 const GhostInputImpl = (props, ref) => {
-  const $ = compilerRuntimeExports.c(23);
+  const $2 = compilerRuntimeExports.c(23);
   const {
     onInput,
     onCompositionStart,
@@ -11450,18 +16580,18 @@ const GhostInputImpl = (props, ref) => {
   const textareaRef = React.useRef(null);
   const isComposingRef = React.useRef(false);
   let t1;
-  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t1 = {
       width: 0,
       height: 0
     };
-    $[0] = t1;
+    $2[0] = t1;
   } else {
-    t1 = $[0];
+    t1 = $2[0];
   }
   const minDimensionsRef = React.useRef(t1);
   let t2;
-  if ($[1] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[1] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t2 = () => {
       const el = textareaRef.current;
       if (!el || el.style.opacity === "0") {
@@ -11476,13 +16606,13 @@ const GhostInputImpl = (props, ref) => {
       el.style.width = `${newWidth}px`;
       el.style.height = `${newHeight}px`;
     };
-    $[1] = t2;
+    $2[1] = t2;
   } else {
-    t2 = $[1];
+    t2 = $2[1];
   }
   const autoResize = t2;
   let t3;
-  if ($[2] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[2] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t3 = () => ({
       focus: () => {
         var _textareaRef$current;
@@ -11511,15 +16641,15 @@ const GhostInputImpl = (props, ref) => {
           textareaRef.current.setSelectionRange(len, len);
         }
       },
-      setPosition: (x, y, width, height) => {
+      setPosition: (x2, y2, width, height) => {
         const el_0 = textareaRef.current;
         if (el_0) {
           minDimensionsRef.current = {
             width,
             height
           };
-          el_0.style.left = `${x}px`;
-          el_0.style.top = `${y}px`;
+          el_0.style.left = `${x2}px`;
+          el_0.style.top = `${y2}px`;
           el_0.style.width = `${width}px`;
           el_0.style.height = `${height}px`;
         }
@@ -11543,86 +16673,86 @@ const GhostInputImpl = (props, ref) => {
         }
       }
     });
-    $[2] = t3;
+    $2[2] = t3;
   } else {
-    t3 = $[2];
+    t3 = $2[2];
   }
   React.useImperativeHandle(ref, t3);
   let t4;
-  if ($[3] !== onInput) {
+  if ($2[3] !== onInput) {
     t4 = (e) => {
       const target = e.currentTarget;
       onInput(target.value, isComposingRef.current);
       autoResize();
     };
-    $[3] = onInput;
-    $[4] = t4;
+    $2[3] = onInput;
+    $2[4] = t4;
   } else {
-    t4 = $[4];
+    t4 = $2[4];
   }
   const handleInput = t4;
   let t5;
-  if ($[5] !== onCompositionStart) {
+  if ($2[5] !== onCompositionStart) {
     t5 = () => {
       isComposingRef.current = true;
       onCompositionStart();
     };
-    $[5] = onCompositionStart;
-    $[6] = t5;
+    $2[5] = onCompositionStart;
+    $2[6] = t5;
   } else {
-    t5 = $[6];
+    t5 = $2[6];
   }
   const handleCompositionStart = t5;
   let t6;
-  if ($[7] !== onCompositionEnd) {
+  if ($2[7] !== onCompositionEnd) {
     t6 = (e_0) => {
       isComposingRef.current = false;
       onCompositionEnd(e_0.currentTarget.value);
     };
-    $[7] = onCompositionEnd;
-    $[8] = t6;
+    $2[7] = onCompositionEnd;
+    $2[8] = t6;
   } else {
-    t6 = $[8];
+    t6 = $2[8];
   }
   const handleCompositionEnd = t6;
   let t7;
-  if ($[9] !== onKeyDown) {
+  if ($2[9] !== onKeyDown) {
     t7 = (e_1) => {
       onKeyDown(e_1);
     };
-    $[9] = onKeyDown;
-    $[10] = t7;
+    $2[9] = onKeyDown;
+    $2[10] = t7;
   } else {
-    t7 = $[10];
+    t7 = $2[10];
   }
   const handleKeyDown = t7;
   let t8;
-  if ($[11] !== onKeyUp) {
+  if ($2[11] !== onKeyUp) {
     t8 = (e_2) => {
       onKeyUp === null || onKeyUp === void 0 || onKeyUp(e_2);
     };
-    $[11] = onKeyUp;
-    $[12] = t8;
+    $2[11] = onKeyUp;
+    $2[12] = t8;
   } else {
-    t8 = $[12];
+    t8 = $2[12];
   }
   const handleKeyUp = t8;
   const t9 = disabled ? -1 : 0;
   let t10;
-  if ($[13] !== disabled || $[14] !== handleCompositionEnd || $[15] !== handleCompositionStart || $[16] !== handleInput || $[17] !== handleKeyDown || $[18] !== handleKeyUp || $[19] !== onBlur || $[20] !== onFocus || $[21] !== t9) {
+  if ($2[13] !== disabled || $2[14] !== handleCompositionEnd || $2[15] !== handleCompositionStart || $2[16] !== handleInput || $2[17] !== handleKeyDown || $2[18] !== handleKeyUp || $2[19] !== onBlur || $2[20] !== onFocus || $2[21] !== t9) {
     t10 = /* @__PURE__ */ jsx(GhostInputBox, { ref: textareaRef, defaultValue: "", tabIndex: t9, disabled, onInput: handleInput, onCompositionStart: handleCompositionStart, onCompositionEnd: handleCompositionEnd, onKeyDown: handleKeyDown, onKeyUp: handleKeyUp, onFocus, onBlur, "aria-label": "Grid input", wrap: "off", rows: 1, autoComplete: "off", autoCorrect: "off", autoCapitalize: "off", spellCheck: false });
-    $[13] = disabled;
-    $[14] = handleCompositionEnd;
-    $[15] = handleCompositionStart;
-    $[16] = handleInput;
-    $[17] = handleKeyDown;
-    $[18] = handleKeyUp;
-    $[19] = onBlur;
-    $[20] = onFocus;
-    $[21] = t9;
-    $[22] = t10;
+    $2[13] = disabled;
+    $2[14] = handleCompositionEnd;
+    $2[15] = handleCompositionStart;
+    $2[16] = handleInput;
+    $2[17] = handleKeyDown;
+    $2[18] = handleKeyUp;
+    $2[19] = onBlur;
+    $2[20] = onFocus;
+    $2[21] = t9;
+    $2[22] = t10;
   } else {
-    t10 = $[22];
+    t10 = $2[22];
   }
   return t10;
 };
@@ -12007,11 +17137,11 @@ function useMouseHandlers(args) {
     if (typeof cells_0 !== "object") cells_0 = await cells_0();
     const pattern = cells_0;
     const editItemList = [];
-    for (let x = 0; x < currentRange.width; x++) {
-      for (let y = 0; y < currentRange.height; y++) {
-        const cell = [currentRange.x + x, currentRange.y + y];
+    for (let x2 = 0; x2 < currentRange.width; x2++) {
+      for (let y2 = 0; y2 < currentRange.height; y2++) {
+        const cell = [currentRange.x + x2, currentRange.y + y2];
         if (itemIsInRect(cell, patternRange)) continue;
-        const patternCell = pattern[y % patternRange.height][x % patternRange.width];
+        const patternCell = pattern[y2 % patternRange.height][x2 % patternRange.width];
         if (isInnerOnlyCell(patternCell) || !isReadWriteCell(patternCell)) continue;
         editItemList.push({
           location: cell,
@@ -12267,9 +17397,9 @@ function useMouseHandlers(args) {
 const DataGridOverlayEditor = React.lazy(async () => await Promise.resolve().then(() => dataGridOverlayEditor));
 let idCounter = 0;
 function getSpanStops(cells) {
-  return uniq$1(flatten$1(flatten$1(cells).filter((c) => c.span !== void 0).map((c) => {
+  return uniq(flatten(flatten(cells).filter((c) => c.span !== void 0).map((c) => {
     var _c$span$, _c$span, _c$span$2, _c$span2;
-    return range$1(((_c$span$ = (_c$span = c.span) === null || _c$span === void 0 ? void 0 : _c$span[0]) !== null && _c$span$ !== void 0 ? _c$span$ : 0) + 1, ((_c$span$2 = (_c$span2 = c.span) === null || _c$span2 === void 0 ? void 0 : _c$span2[1]) !== null && _c$span$2 !== void 0 ? _c$span$2 : 0) + 1);
+    return range(((_c$span$ = (_c$span = c.span) === null || _c$span === void 0 ? void 0 : _c$span[0]) !== null && _c$span$ !== void 0 ? _c$span$ : 0) + 1, ((_c$span$2 = (_c$span2 = c.span) === null || _c$span2 === void 0 ? void 0 : _c$span2[1]) !== null && _c$span$2 !== void 0 ? _c$span$2 : 0) + 1);
   })));
 }
 function shiftSelection(input, offset) {
@@ -12528,29 +17658,29 @@ const DataEditorImpl = (p2, forwardedRef) => {
       setGridSelectionInner(newVal);
     }
   }, [getCellsForSelection, onGridSelectionChange, rowMarkerOffset, setGridSelectionInner, spanRangeBehavior]);
-  const onColumnResize = whenDefined(onColumnResizeIn, (_2, w2, ind, wg) => {
+  const onColumnResize = whenDefined(onColumnResizeIn, ((_2, w2, ind, wg) => {
     onColumnResizeIn === null || onColumnResizeIn === void 0 || onColumnResizeIn(columnsIn[ind - rowMarkerOffset], w2, ind - rowMarkerOffset, wg);
-  });
-  const onColumnResizeEnd = whenDefined(onColumnResizeEndIn, (_2, w2, ind, wg) => {
+  }));
+  const onColumnResizeEnd = whenDefined(onColumnResizeEndIn, ((_2, w2, ind, wg) => {
     onColumnResizeEndIn === null || onColumnResizeEndIn === void 0 || onColumnResizeEndIn(columnsIn[ind - rowMarkerOffset], w2, ind - rowMarkerOffset, wg);
-  });
-  const onColumnResizeStart = whenDefined(onColumnResizeStartIn, (_2, w2, ind, wg) => {
+  }));
+  const onColumnResizeStart = whenDefined(onColumnResizeStartIn, ((_2, w2, ind, wg) => {
     onColumnResizeStartIn === null || onColumnResizeStartIn === void 0 || onColumnResizeStartIn(columnsIn[ind - rowMarkerOffset], w2, ind - rowMarkerOffset, wg);
-  });
-  const drawHeader2 = whenDefined(drawHeaderIn, (args, draw) => {
+  }));
+  const drawHeader2 = whenDefined(drawHeaderIn, ((args, draw) => {
     var _drawHeaderIn;
     return (_drawHeaderIn = drawHeaderIn === null || drawHeaderIn === void 0 ? void 0 : drawHeaderIn({
       ...args,
       columnIndex: args.columnIndex - rowMarkerOffset
     }, draw)) !== null && _drawHeaderIn !== void 0 ? _drawHeaderIn : false;
-  });
-  const drawCell2 = whenDefined(drawCellIn, (args, draw) => {
+  }));
+  const drawCell2 = whenDefined(drawCellIn, ((args, draw) => {
     var _drawCellIn;
     return (_drawCellIn = drawCellIn === null || drawCellIn === void 0 ? void 0 : drawCellIn({
       ...args,
       col: args.col - rowMarkerOffset
     }, draw)) !== null && _drawCellIn !== void 0 ? _drawCellIn : false;
-  });
+  }));
   const onDelete = (sel) => {
     if (onDeleteIn !== void 0) {
       const result = onDeleteIn(shiftSelection(sel, -rowMarkerOffset));
@@ -12576,7 +17706,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
     if (cell.kind !== GridCellKind.Custom) {
       return rendererMap[cell.kind];
     }
-    return additionalRenderers === null || additionalRenderers === void 0 ? void 0 : additionalRenderers.find((x) => x.isMatch(cell));
+    return additionalRenderers === null || additionalRenderers === void 0 ? void 0 : additionalRenderers.find((x2) => x2.isMatch(cell));
   };
   let {
     sizedColumns: columns,
@@ -12684,9 +17814,9 @@ const DataEditorImpl = (p2, forwardedRef) => {
   };
   const mangledRows = showTrailingBlankRow ? rows + 1 : rows;
   const mangledOnCellsEdited = (items) => {
-    const mangledItems = rowMarkerOffset === 0 ? items : items.map((x) => ({
-      ...x,
-      location: [x.location[0] - rowMarkerOffset, x.location[1]]
+    const mangledItems = rowMarkerOffset === 0 ? items : items.map((x2) => ({
+      ...x2,
+      location: [x2.location[0] - rowMarkerOffset, x2.location[1]]
     }));
     const r = onCellsEdited === null || onCellsEdited === void 0 ? void 0 : onCellsEdited(mangledItems);
     if (r !== true) {
@@ -13676,7 +18806,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
         }
         col = Math.max(col, rowMarkerOffset);
         const clampLimits = getSelectionRowLimits(selectedRow);
-        row = clampLimits === void 0 ? row : clamp$2(row, clampLimits[0], clampLimits[1]);
+        row = clampLimits === void 0 ? row : clamp$1(row, clampLimits[0], clampLimits[1]);
         const deltaX = col - selectedCol;
         const deltaY = row - selectedRow;
         const newRange = {
@@ -13713,8 +18843,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
     } else if (yDir === 1) {
       row = Math.min(rows - 1, visible.y + visible.height);
     }
-    col = clamp$2(col, 0, mangledCols.length - 1);
-    row = clamp$2(row, 0, rows - 1);
+    col = clamp$1(col, 0, mangledCols.length - 1);
+    row = clamp$1(row, 0, rows - 1);
     onItemHoveredImpl({
       ...args,
       location: [col, row]
@@ -13724,7 +18854,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
   const adjustSelection = (direction2) => {
     var _getSelectionRowLimit;
     if (gridSelection.current === void 0) return;
-    const [x, y] = direction2;
+    const [x2, y2] = direction2;
     const [col, row] = gridSelection.current.cell;
     const old = gridSelection.current.range;
     let left = old.x;
@@ -13733,8 +18863,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
     let bottom = old.y + old.height;
     const [minRow, maxRowRaw] = (_getSelectionRowLimit = getSelectionRowLimits(row)) !== null && _getSelectionRowLimit !== void 0 ? _getSelectionRowLimit : [0, rows - 1];
     const maxRow = maxRowRaw + 1;
-    if (y !== 0) {
-      switch (y) {
+    if (y2 !== 0) {
+      switch (y2) {
         case 2: {
           bottom = maxRow;
           top = row;
@@ -13772,12 +18902,12 @@ const DataEditorImpl = (p2, forwardedRef) => {
         }
       }
     }
-    if (x !== 0) {
-      if (x === 2) {
+    if (x2 !== 0) {
+      if (x2 === 2) {
         right = mangledCols.length;
         left = col;
         scrollTo(right - 1 - rowMarkerOffset, 0, "horizontal");
-      } else if (x === -2) {
+      } else if (x2 === -2) {
         left = rowMarkerOffset;
         right = col + 1;
         scrollTo(left - rowMarkerOffset, 0, "horizontal");
@@ -13794,11 +18924,11 @@ const DataEditorImpl = (p2, forwardedRef) => {
             disallowed = getSpanStops(cells);
           }
         }
-        if (x === 1) {
+        if (x2 === 1) {
           let done = false;
           if (left < col) {
             if (disallowed.length > 0) {
-              const target = range$1(left + 1, col + 1).find((n) => !disallowed.includes(n - rowMarkerOffset));
+              const target = range(left + 1, col + 1).find((n) => !disallowed.includes(n - rowMarkerOffset));
               if (target !== void 0) {
                 left = target;
                 done = true;
@@ -13813,11 +18943,11 @@ const DataEditorImpl = (p2, forwardedRef) => {
             right = Math.min(mangledCols.length, right + 1);
             scrollTo(right - 1 - rowMarkerOffset, 0, "horizontal");
           }
-        } else if (x === -1) {
+        } else if (x2 === -1) {
           let done = false;
           if (right > col + 1) {
             if (disallowed.length > 0) {
-              const target = range$1(right - 1, col, -1).find((n) => !disallowed.includes(n - rowMarkerOffset));
+              const target = range(right - 1, col, -1).find((n) => !disallowed.includes(n - rowMarkerOffset));
               if (target !== void 0) {
                 right = target;
                 done = true;
@@ -13851,8 +18981,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
   scrollToActiveCellRef.current = scrollToActiveCell;
   const updateSelectedCell = (col, row, fromEditingTrailingRow, freeMove) => {
     const rowMax = mangledRows - (fromEditingTrailingRow ? 0 : 1);
-    col = clamp$2(col, rowMarkerOffset, columns.length - 1 + rowMarkerOffset);
-    row = clamp$2(row, 0, rowMax);
+    col = clamp$1(col, rowMarkerOffset, columns.length - 1 + rowMarkerOffset);
+    row = clamp$1(row, 0, rowMax);
     const curCol = currentCell === null || currentCell === void 0 ? void 0 : currentCell[0];
     const curRow = currentCell === null || currentCell === void 0 ? void 0 : currentCell[1];
     if (col === curCol && row === curRow) return false;
@@ -14009,8 +19139,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
         void appendColumn(row, false);
       }
       if (updateSelected) {
-        const newCol = clamp$2(gridSelection.current.cell[0] + movX, rowMarkerOffset, mangledCols.length - 1);
-        const newRow = clamp$2(gridSelection.current.cell[1] + movY, 0, mangledRows - 1);
+        const newCol = clamp$1(gridSelection.current.cell[0] + movX, rowMarkerOffset, mangledCols.length - 1);
+        const newRow = clamp$1(gridSelection.current.cell[1] + movY, 0, mangledRows - 1);
         updateSelectedCell(newCol, newRow, isEditingLastRow, false);
         window.requestAnimationFrame(() => {
           var _ghostInputRef$curren11;
@@ -14025,9 +19155,9 @@ const DataEditorImpl = (p2, forwardedRef) => {
     var _gridRef$current4;
     focus();
     const editList = [];
-    for (let x = r.x; x < r.x + r.width; x++) {
-      for (let y = r.y; y < r.y + r.height; y++) {
-        const cellValue = getCellContent([x - rowMarkerOffset, y]);
+    for (let x2 = r.x; x2 < r.x + r.width; x2++) {
+      for (let y2 = r.y; y2 < r.y + r.height; y2++) {
+        const cellValue = getCellContent([x2 - rowMarkerOffset, y2]);
         if (!cellValue.allowOverlay && cellValue.kind !== GridCellKind.Boolean) continue;
         let newVal = void 0;
         if (cellValue.kind === GridCellKind.Custom) {
@@ -14035,7 +19165,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
           const toDelete = getCellRenderer(cellValue);
           const editor = toDelete === null || toDelete === void 0 || (_toDelete$provideEdit = toDelete.provideEditor) === null || _toDelete$provideEdit === void 0 ? void 0 : _toDelete$provideEdit.call(toDelete, {
             ...cellValue,
-            location: [x - rowMarkerOffset, y]
+            location: [x2 - rowMarkerOffset, y2]
           });
           if ((toDelete === null || toDelete === void 0 ? void 0 : toDelete.onDelete) !== void 0) {
             newVal = toDelete.onDelete(cellValue);
@@ -14050,15 +19180,15 @@ const DataEditorImpl = (p2, forwardedRef) => {
         }
         if (newVal !== void 0 && !isInnerOnlyCell(newVal) && isEditableGridCell(newVal)) {
           editList.push({
-            location: [x, y],
+            location: [x2, y2],
             value: newVal
           });
         }
       }
     }
     mangledOnCellsEdited(editList);
-    (_gridRef$current4 = gridRef.current) === null || _gridRef$current4 === void 0 || _gridRef$current4.damage(editList.map((x) => ({
-      cell: x.location
+    (_gridRef$current4 = gridRef.current) === null || _gridRef$current4 === void 0 || _gridRef$current4.damage(editList.map((x2) => ({
+      cell: x2.location
     })));
   };
   const overlayOpen = overlay !== void 0;
@@ -14096,7 +19226,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
     scrollToRef
   });
   const [isFocused, setIsFocused] = React.useState(false);
-  const setIsFocusedDebounced = React.useRef(debounce$2((val) => {
+  const setIsFocusedDebounced = React.useRef(debounce((val) => {
     setIsFocused(val);
   }, 5));
   const {
@@ -14204,8 +19334,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
     updateCells: (damageList) => {
       var _gridRef$current5;
       if (rowMarkerOffset !== 0) {
-        damageList = damageList.map((x) => ({
-          cell: [x.cell[0] + rowMarkerOffset, x.cell[1]]
+        damageList = damageList.map((x2) => ({
+          cell: [x2.cell[0] + rowMarkerOffset, x2.cell[1]]
         }));
       }
       return (_gridRef$current5 = gridRef.current) === null || _gridRef$current5 === void 0 ? void 0 : _gridRef$current5.damage(damageList);
@@ -14364,7 +19494,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
       h = totalHeaderHeight + rowsCountWithTrailingRow * avg;
     }
     h += scrollbarWidth;
-    const w2 = mangledCols.reduce((acc, x) => x.width + acc, 0) + scrollbarWidth;
+    const w2 = mangledCols.reduce((acc, x2) => x2.width + acc, 0) + scrollbarWidth;
     return [`${Math.min(1e5, w2)}px`, `${Math.min(1e5, h)}px`];
   })();
   const cssStyle = makeCSSStyle(mergedTheme);
@@ -14469,8 +19599,8 @@ function drawBoolean(args, data, canEdit, maxSize, hoverEffectIntensity) {
     }
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width: w2,
     height: h
   } = rect;
@@ -14488,7 +19618,7 @@ function drawBoolean(args, data, canEdit, maxSize, hoverEffectIntensity) {
       ctx.globalAlpha = alpha;
     }
   }
-  drawCheckbox(ctx, theme, data, x, y, w2, h, highlighted, hoverX, hoverY, maxSize, contentAlign);
+  drawCheckbox(ctx, theme, data, x2, y2, w2, h, highlighted, hoverX, hoverY, maxSize, contentAlign);
   if (shouldRestoreAlpha) {
     ctx.globalAlpha = 1;
   }
@@ -14499,7 +19629,7 @@ const BubblesOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
   propsAsIs: false
 });
 const BubblesOverlayEditor = (p2) => {
-  const $ = compilerRuntimeExports.c(7);
+  const $2 = compilerRuntimeExports.c(7);
   const {
     bubbles
   } = p2;
@@ -14507,33 +19637,33 @@ const BubblesOverlayEditor = (p2) => {
     isGhostMode
   } = React.useContext(GhostModeContext);
   let t0;
-  if ($[0] !== bubbles) {
+  if ($2[0] !== bubbles) {
     t0 = bubbles.map(_temp$2);
-    $[0] = bubbles;
-    $[1] = t0;
+    $2[0] = bubbles;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   const t1 = !isGhostMode;
   let t2;
-  if ($[2] !== t1) {
+  if ($2[2] !== t1) {
     t2 = /* @__PURE__ */ jsx("textarea", { className: "gdg-input", autoFocus: t1 });
-    $[2] = t1;
-    $[3] = t2;
+    $2[2] = t1;
+    $2[3] = t2;
   } else {
-    t2 = $[3];
+    t2 = $2[3];
   }
   let t3;
-  if ($[4] !== t0 || $[5] !== t2) {
+  if ($2[4] !== t0 || $2[5] !== t2) {
     t3 = /* @__PURE__ */ jsxs(BubblesOverlayEditorStyle, { children: [
       t0,
       t2
     ] });
-    $[4] = t0;
-    $[5] = t2;
-    $[6] = t3;
+    $2[4] = t0;
+    $2[5] = t2;
+    $2[6] = t3;
   } else {
-    t3 = $[6];
+    t3 = $2[6];
   }
   return t3;
 };
@@ -14568,15 +19698,15 @@ function drawBubbles(args, data) {
     highlighted
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width: w2,
     height: h
   } = rect;
-  let renderX = x + theme.cellHorizontalPadding;
+  let renderX = x2 + theme.cellHorizontalPadding;
   const renderBoxes = [];
   for (const s of data) {
-    if (renderX > x + w2) break;
+    if (renderX > x2 + w2) break;
     const textWidth = measureTextCached(s, ctx, theme.baseFontFull).width;
     renderBoxes.push({
       x: renderX,
@@ -14587,14 +19717,14 @@ function drawBubbles(args, data) {
   ctx.beginPath();
   for (const rectInfo of renderBoxes) {
     var _theme$roundingRadius;
-    roundedRect(ctx, rectInfo.x, y + (h - theme.bubbleHeight) / 2, rectInfo.width + theme.bubblePadding * 2, theme.bubbleHeight, (_theme$roundingRadius = theme.roundingRadius) !== null && _theme$roundingRadius !== void 0 ? _theme$roundingRadius : theme.bubbleHeight / 2);
+    roundedRect(ctx, rectInfo.x, y2 + (h - theme.bubbleHeight) / 2, rectInfo.width + theme.bubblePadding * 2, theme.bubbleHeight, (_theme$roundingRadius = theme.roundingRadius) !== null && _theme$roundingRadius !== void 0 ? _theme$roundingRadius : theme.bubbleHeight / 2);
   }
   ctx.fillStyle = highlighted ? theme.bgBubbleSelected : theme.bgBubble;
   ctx.fill();
   for (const [i, rectInfo] of renderBoxes.entries()) {
     ctx.beginPath();
     ctx.fillStyle = theme.textBubble;
-    ctx.fillText(data[i], rectInfo.x + theme.bubblePadding, y + h / 2 + getMiddleCenterBias(ctx, theme));
+    ctx.fillText(data[i], rectInfo.x + theme.bubblePadding, y2 + h / 2 + getMiddleCenterBias(ctx, theme));
   }
 }
 const DrilldownOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
@@ -14603,27 +19733,27 @@ const DrilldownOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
   propsAsIs: false
 });
 const DrilldownOverlayEditor = (p2) => {
-  const $ = compilerRuntimeExports.c(4);
+  const $2 = compilerRuntimeExports.c(4);
   const {
     drilldowns
   } = p2;
   let t0;
-  if ($[0] !== drilldowns) {
+  if ($2[0] !== drilldowns) {
     t0 = drilldowns.map(_temp$1);
-    $[0] = drilldowns;
-    $[1] = t0;
+    $2[0] = drilldowns;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   let t1;
-  if ($[2] !== t0) {
+  if ($2[2] !== t0) {
     t1 = /* @__PURE__ */ jsx(DrilldownOverlayEditorStyle, {
       children: t0
     });
-    $[2] = t0;
-    $[3] = t1;
+    $2[2] = t0;
+    $2[3] = t1;
   } else {
-    t1 = $[3];
+    t1 = $2[3];
   }
   return t1;
 };
@@ -14722,22 +19852,22 @@ function drawDrilldownCell(args, data) {
     row
   } = args;
   const {
-    x,
+    x: x2,
     width: w2
   } = rect;
   const font = theme.baseFontFull;
   const emHeight = getEmHeight(ctx, font);
   const h = Math.min(rect.height, Math.max(16, Math.ceil(emHeight * theme.lineHeight) * 2));
-  const y = Math.floor(rect.y + (rect.height - h) / 2);
+  const y2 = Math.floor(rect.y + (rect.height - h) / 2);
   const bubbleHeight = h - 10;
   const bubblePad = theme.bubblePadding;
   const bubbleMargin = theme.bubbleMargin;
-  let renderX = x + theme.cellHorizontalPadding;
+  let renderX = x2 + theme.cellHorizontalPadding;
   const rounding = (_theme$roundingRadius = theme.roundingRadius) !== null && _theme$roundingRadius !== void 0 ? _theme$roundingRadius : 6;
   const tileMap = getAndCacheDrilldownBorder(theme.bgCell, theme.drilldownBorder, h, rounding);
   const renderBoxes = [];
   for (const el of data) {
-    if (renderX > x + w2) break;
+    if (renderX > x2 + w2) break;
     const textMetrics = measureTextCached(el.text, ctx, font);
     const textWidth = textMetrics.width;
     let imgWidth = 0;
@@ -14771,9 +19901,9 @@ function drawDrilldownCell(args, data) {
       const rw = Math.floor(rectInfo.width);
       const outerMiddleWidth = rw - (outerSideWidth - outerPadding) * 2;
       ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(el, 0, 0, sideWidth, height, rx - outerPadding, y, outerSideWidth, h);
-      if (outerMiddleWidth > 0) ctx.drawImage(el, sideWidth, 0, middleWidth, height, rx + (outerSideWidth - outerPadding), y, outerMiddleWidth, h);
-      ctx.drawImage(el, width - sideWidth, 0, sideWidth, height, rx + rw - (outerSideWidth - outerPadding), y, outerSideWidth, h);
+      ctx.drawImage(el, 0, 0, sideWidth, height, rx - outerPadding, y2, outerSideWidth, h);
+      if (outerMiddleWidth > 0) ctx.drawImage(el, sideWidth, 0, middleWidth, height, rx + (outerSideWidth - outerPadding), y2, outerMiddleWidth, h);
+      ctx.drawImage(el, width - sideWidth, 0, sideWidth, height, rx + rw - (outerSideWidth - outerPadding), y2, outerSideWidth, h);
       ctx.imageSmoothingEnabled = true;
     }
   }
@@ -14798,17 +19928,17 @@ function drawDrilldownCell(args, data) {
           srcHeight = srcWidth;
         }
         ctx.beginPath();
-        roundedRect(ctx, drawX, y + h / 2 - imgSize / 2, imgSize, imgSize, (_theme$roundingRadius2 = theme.roundingRadius) !== null && _theme$roundingRadius2 !== void 0 ? _theme$roundingRadius2 : 3);
+        roundedRect(ctx, drawX, y2 + h / 2 - imgSize / 2, imgSize, imgSize, (_theme$roundingRadius2 = theme.roundingRadius) !== null && _theme$roundingRadius2 !== void 0 ? _theme$roundingRadius2 : 3);
         ctx.save();
         ctx.clip();
-        ctx.drawImage(img, srcX, srcY, srcWidth, srcHeight, drawX, y + h / 2 - imgSize / 2, imgSize, imgSize);
+        ctx.drawImage(img, srcX, srcY, srcWidth, srcHeight, drawX, y2 + h / 2 - imgSize / 2, imgSize, imgSize);
         ctx.restore();
         drawX += imgSize + 4;
       }
     }
     ctx.beginPath();
     ctx.fillStyle = theme.textBubble;
-    ctx.fillText(d2.text, drawX, y + h / 2 + getMiddleCenterBias(ctx, theme));
+    ctx.fillText(d2.text, drawX, y2 + h / 2 + getMiddleCenterBias(ctx, theme));
   }
 }
 const imageCellRenderer = {
@@ -14850,7 +19980,7 @@ const imageCellRenderer = {
       } catch {
         return void 0;
       }
-    }).filter((x) => x !== void 0);
+    }).filter((x2) => x2 !== void 0);
     if (uris.length === cell.data.length && uris.every((u, i) => u === cell.data[i])) return void 0;
     return {
       ...cell,
@@ -14869,8 +19999,8 @@ function drawImage(args, data, rounding, contentAlign) {
     imageLoader
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     height: h,
     width: w2
   } = rect;
@@ -14889,27 +20019,27 @@ function drawImage(args, data, rounding, contentAlign) {
   }
   if (totalWidth === 0) return;
   totalWidth -= itemMargin;
-  let drawX = x + theme.cellHorizontalPadding;
-  if (contentAlign === "right") drawX = Math.floor(x + w2 - theme.cellHorizontalPadding - totalWidth);
-  else if (contentAlign === "center") drawX = Math.floor(x + w2 / 2 - totalWidth / 2);
+  let drawX = x2 + theme.cellHorizontalPadding;
+  if (contentAlign === "right") drawX = Math.floor(x2 + w2 - theme.cellHorizontalPadding - totalWidth);
+  else if (contentAlign === "center") drawX = Math.floor(x2 + w2 / 2 - totalWidth / 2);
   for (const img of images) {
     if (img === void 0) continue;
     const imgWidth = img.width * (imgHeight / img.height);
     if (rounding > 0) {
       ctx.beginPath();
-      roundedRect(ctx, drawX, y + theme.cellVerticalPadding, imgWidth, imgHeight, rounding);
+      roundedRect(ctx, drawX, y2 + theme.cellVerticalPadding, imgWidth, imgHeight, rounding);
       ctx.save();
       ctx.clip();
     }
-    ctx.drawImage(img, drawX, y + theme.cellVerticalPadding, imgWidth, imgHeight);
+    ctx.drawImage(img, drawX, y2 + theme.cellVerticalPadding, imgWidth, imgHeight);
     if (rounding > 0) {
       ctx.restore();
     }
     drawX += imgWidth + itemMargin;
   }
 }
-function getRandomNumber(x, y) {
-  let seed = x * 49632 + y * 325176;
+function getRandomNumber(x2, y2) {
+  let seed = x2 * 49632 + y2 * 325176;
   seed ^= seed << 13;
   seed ^= seed >> 17;
   seed ^= seed << 5;
@@ -14960,7 +20090,7 @@ const MarkdownOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
   }
 });
 const MarkdownOverlayEditor = (p2) => {
-  const $ = compilerRuntimeExports.c(30);
+  const $2 = compilerRuntimeExports.c(30);
   const {
     value,
     onChange,
@@ -14977,13 +20107,13 @@ const MarkdownOverlayEditor = (p2) => {
   const readonly = value.readonly === true;
   const [editMode, setEditMode] = React.useState(markdown === "" || forceEditMode);
   let t0;
-  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t0 = () => {
       setEditMode(_temp);
     };
-    $[0] = t0;
+    $2[0] = t0;
   } else {
-    t0 = $[0];
+    t0 = $2[0];
   }
   const onEditClick = t0;
   const addLeftPad = markdown ? "gdg-ml-6" : "";
@@ -14991,101 +20121,101 @@ const MarkdownOverlayEditor = (p2) => {
     const t12 = targetRect.width - 20;
     const t22 = !isGhostMode;
     let t32;
-    if ($[1] !== markdown || $[2] !== onChange || $[3] !== t22 || $[4] !== validatedSelection) {
+    if ($2[1] !== markdown || $2[2] !== onChange || $2[3] !== t22 || $2[4] !== validatedSelection) {
       t32 = /* @__PURE__ */ jsx(GrowingEntry, { autoFocus: t22, highlight: false, validatedSelection, value: markdown, onKeyDown: _temp2, onChange });
-      $[1] = markdown;
-      $[2] = onChange;
-      $[3] = t22;
-      $[4] = validatedSelection;
-      $[5] = t32;
+      $2[1] = markdown;
+      $2[2] = onChange;
+      $2[3] = t22;
+      $2[4] = validatedSelection;
+      $2[5] = t32;
     } else {
-      t32 = $[5];
+      t32 = $2[5];
     }
     const t42 = `gdg-edit-icon gdg-checkmark-hover ${addLeftPad}`;
     let t52;
-    if ($[6] !== onFinish || $[7] !== value) {
+    if ($2[6] !== onFinish || $2[7] !== value) {
       t52 = () => onFinish(value);
-      $[6] = onFinish;
-      $[7] = value;
-      $[8] = t52;
+      $2[6] = onFinish;
+      $2[7] = value;
+      $2[8] = t52;
     } else {
-      t52 = $[8];
+      t52 = $2[8];
     }
     let t6;
-    if ($[9] === Symbol.for("react.memo_cache_sentinel")) {
+    if ($2[9] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
       t6 = /* @__PURE__ */ jsx(Checkmark, {});
-      $[9] = t6;
+      $2[9] = t6;
     } else {
-      t6 = $[9];
+      t6 = $2[9];
     }
     let t7;
-    if ($[10] !== t42 || $[11] !== t52) {
+    if ($2[10] !== t42 || $2[11] !== t52) {
       t7 = /* @__PURE__ */ jsx("div", { className: t42, onClick: t52, children: t6 });
-      $[10] = t42;
-      $[11] = t52;
-      $[12] = t7;
+      $2[10] = t42;
+      $2[11] = t52;
+      $2[12] = t7;
     } else {
-      t7 = $[12];
+      t7 = $2[12];
     }
     let t8;
-    if ($[13] !== t12 || $[14] !== t32 || $[15] !== t7) {
+    if ($2[13] !== t12 || $2[14] !== t32 || $2[15] !== t7) {
       t8 = /* @__PURE__ */ jsxs(MarkdownOverlayEditorStyle, { targetWidth: t12, children: [
         t32,
         t7
       ] });
-      $[13] = t12;
-      $[14] = t32;
-      $[15] = t7;
-      $[16] = t8;
+      $2[13] = t12;
+      $2[14] = t32;
+      $2[15] = t7;
+      $2[16] = t8;
     } else {
-      t8 = $[16];
+      t8 = $2[16];
     }
     return t8;
   }
   let t1;
-  if ($[17] !== createNode || $[18] !== markdown) {
+  if ($2[17] !== createNode || $2[18] !== markdown) {
     t1 = /* @__PURE__ */ jsx(MarkdownDiv, { contents: markdown, createNode });
-    $[17] = createNode;
-    $[18] = markdown;
-    $[19] = t1;
+    $2[17] = createNode;
+    $2[18] = markdown;
+    $2[19] = t1;
   } else {
-    t1 = $[19];
+    t1 = $2[19];
   }
   let t2;
-  if ($[20] !== addLeftPad || $[21] !== readonly) {
+  if ($2[20] !== addLeftPad || $2[21] !== readonly) {
     t2 = !readonly && /* @__PURE__ */ jsxs(Fragment, { children: [
       /* @__PURE__ */ jsx("div", { className: "spacer" }),
       /* @__PURE__ */ jsx("div", { className: `gdg-edit-icon gdg-edit-hover ${addLeftPad}`, onClick: onEditClick, children: /* @__PURE__ */ jsx(EditPencil, {}) })
     ] });
-    $[20] = addLeftPad;
-    $[21] = readonly;
-    $[22] = t2;
+    $2[20] = addLeftPad;
+    $2[21] = readonly;
+    $2[22] = t2;
   } else {
-    t2 = $[22];
+    t2 = $2[22];
   }
   const t3 = !isGhostMode;
   let t4;
-  if ($[23] !== t3) {
+  if ($2[23] !== t3) {
     t4 = /* @__PURE__ */ jsx("textarea", { className: "gdg-md-edit-textarea gdg-input", autoFocus: t3 });
-    $[23] = t3;
-    $[24] = t4;
+    $2[23] = t3;
+    $2[24] = t4;
   } else {
-    t4 = $[24];
+    t4 = $2[24];
   }
   let t5;
-  if ($[25] !== t1 || $[26] !== t2 || $[27] !== t4 || $[28] !== targetRect.width) {
+  if ($2[25] !== t1 || $2[26] !== t2 || $2[27] !== t4 || $2[28] !== targetRect.width) {
     t5 = /* @__PURE__ */ jsxs(MarkdownOverlayEditorStyle, { targetWidth: targetRect.width, children: [
       t1,
       t2,
       t4
     ] });
-    $[25] = t1;
-    $[26] = t2;
-    $[27] = t4;
-    $[28] = targetRect.width;
-    $[29] = t5;
+    $2[25] = t1;
+    $2[26] = t2;
+    $2[27] = t4;
+    $2[28] = targetRect.width;
+    $2[29] = t5;
   } else {
-    t5 = $[29];
+    t5 = $2[29];
   }
   return t5;
 };
@@ -15147,8 +20277,8 @@ const markerCellRenderer = {
     const {
       bounds,
       cell,
-      posX: x,
-      posY: y
+      posX: x2,
+      posY: y2
     } = e;
     if (cell.disabled === true) return;
     const {
@@ -15157,7 +20287,7 @@ const markerCellRenderer = {
     } = bounds;
     const centerX = cell.drawHandle ? 7 + (width - 7) / 2 : width / 2;
     const centerY = height / 2;
-    if (Math.abs(x - centerX) <= 10 && Math.abs(y - centerY) <= 10) {
+    if (Math.abs(x2 - centerX) <= 10 && Math.abs(y2 - centerY) <= 10) {
       return {
         ...cell,
         checked: !cell.checked
@@ -15196,31 +20326,31 @@ function drawMarkerRowCell(args, index, checked, markerKind, drawHandle, style, 
       theme: theme2
     } = args;
     const {
-      x: x2,
-      y: y2,
+      x: x22,
+      y: y22,
       width: width2,
       height: height2
     } = rect2;
     const mKind = markerKind === "checkbox" ? "checkbox-visible" : markerKind;
     if (mKind !== "number") {
       ctx2.globalAlpha = checked ? 1 : 0.4;
-      drawCheckbox(ctx2, theme2, checked, drawHandle ? x2 + 7 : x2, y2, drawHandle ? width2 - 7 : width2, height2, false, -20, -20, theme2.checkboxMaxSize, "center", style, true);
+      drawCheckbox(ctx2, theme2, checked, drawHandle ? x22 + 7 : x22, y22, drawHandle ? width2 - 7 : width2, height2, false, -20, -20, theme2.checkboxMaxSize, "center", style, true);
       ctx2.globalAlpha = 1;
     }
     if (mKind === "number" || mKind === "both" && !checked) {
       const text = index.toString();
       const fontStyle = theme2.markerFontFull;
-      const start = x2 + width2 / 2;
+      const start = x22 + width2 / 2;
       ctx2.fillStyle = "#cccccc";
       ctx2.font = fontStyle;
-      ctx2.fillText(text, start, y2 + height2 / 2 + getMiddleCenterBias(ctx2, fontStyle));
+      ctx2.fillText(text, start, y22 + height2 / 2 + getMiddleCenterBias(ctx2, fontStyle));
     }
     if (drawHandle) {
       ctx2.globalAlpha = 0.4;
       ctx2.beginPath();
       for (const xOffset of [3, 6]) {
         for (const yOffset of [-5, -1, 3]) {
-          ctx2.rect(x2 + xOffset, y2 + height2 / 2 + yOffset, 2, 2);
+          ctx2.rect(x22 + xOffset, y22 + height2 / 2 + yOffset, 2, 2);
         }
       }
       ctx2.fillStyle = "#cccccc";
@@ -15237,8 +20367,8 @@ function drawMarkerRowCell(args, index, checked, markerKind, drawHandle, style, 
     theme
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width,
     height
   } = rect;
@@ -15246,13 +20376,13 @@ function drawMarkerRowCell(args, index, checked, markerKind, drawHandle, style, 
   if (markerKind !== "number" && checkedboxAlpha > 0) {
     ctx.globalAlpha = checkedboxAlpha;
     const offsetAmount = 7 * (checked ? hoverAmount : 1);
-    drawCheckbox(ctx, theme, checked, drawHandle ? x + offsetAmount : x, y, drawHandle ? width - offsetAmount : width, height, true, void 0, void 0, theme.checkboxMaxSize, "center", style, disabled);
+    drawCheckbox(ctx, theme, checked, drawHandle ? x2 + offsetAmount : x2, y2, drawHandle ? width - offsetAmount : width, height, true, void 0, void 0, theme.checkboxMaxSize, "center", style, disabled);
     if (drawHandle) {
       ctx.globalAlpha = hoverAmount;
       ctx.beginPath();
       for (const xOffset of [3, 6]) {
         for (const yOffset of [-5, -1, 3]) {
-          ctx.rect(x + xOffset, y + height / 2 + yOffset, 2, 2);
+          ctx.rect(x2 + xOffset, y2 + height / 2 + yOffset, 2, 2);
         }
       }
       ctx.fillStyle = theme.textLight;
@@ -15264,13 +20394,13 @@ function drawMarkerRowCell(args, index, checked, markerKind, drawHandle, style, 
   if (markerKind === "number" || markerKind === "both" && !checked) {
     const text = index.toString();
     const fontStyle = theme.markerFontFull;
-    const start = x + width / 2;
+    const start = x2 + width / 2;
     if (markerKind === "both" && hoverAmount !== 0) {
       ctx.globalAlpha = 1 - hoverAmount;
     }
     ctx.fillStyle = theme.textLight;
     ctx.font = fontStyle;
-    ctx.fillText(text, start, y + height / 2 + getMiddleCenterBias(ctx, fontStyle));
+    ctx.fillText(text, start, y2 + height / 2 + getMiddleCenterBias(ctx, fontStyle));
     if (hoverAmount !== 0) {
       ctx.globalAlpha = 1;
     }
@@ -15294,14 +20424,14 @@ function drawNewRowCell(args, data, icon) {
     spriteManager
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width: w2,
     height: h
   } = rect;
   ctx.beginPath();
   ctx.globalAlpha = hoverAmount;
-  ctx.rect(x + 1, y + 1, w2, h - 2);
+  ctx.rect(x2 + 1, y2 + 1, w2, h - 2);
   ctx.fillStyle = theme.bgHeaderHovered;
   ctx.fill();
   ctx.globalAlpha = 1;
@@ -15311,8 +20441,8 @@ function drawNewRowCell(args, data, icon) {
   if (icon !== void 0) {
     const padding = 8;
     const size = h - padding;
-    const px = x + padding / 2;
-    const py = y + padding / 2;
+    const px = x2 + padding / 2;
+    const py = y2 + padding / 2;
     spriteManager.drawSprite(icon, "normal", ctx, px, py, size, theme, alwaysShowIcon ? 1 : hoverAmount);
     textX = size;
   } else {
@@ -15322,10 +20452,10 @@ function drawNewRowCell(args, data, icon) {
     const xTranslate = alwaysShowIcon ? 0 : (1 - hoverAmount) * finalLineSize * 0.5;
     const padPlus = theme.cellHorizontalPadding + 4;
     if (lineSize > 0) {
-      ctx.moveTo(x + padPlus + xTranslate, y + h / 2);
-      ctx.lineTo(x + padPlus + xTranslate + lineSize, y + h / 2);
-      ctx.moveTo(x + padPlus + xTranslate + lineSize * 0.5, y + h / 2 - lineSize * 0.5);
-      ctx.lineTo(x + padPlus + xTranslate + lineSize * 0.5, y + h / 2 + lineSize * 0.5);
+      ctx.moveTo(x2 + padPlus + xTranslate, y2 + h / 2);
+      ctx.lineTo(x2 + padPlus + xTranslate + lineSize, y2 + h / 2);
+      ctx.moveTo(x2 + padPlus + xTranslate + lineSize * 0.5, y2 + h / 2 - lineSize * 0.5);
+      ctx.lineTo(x2 + padPlus + xTranslate + lineSize * 0.5, y2 + h / 2 + lineSize * 0.5);
       ctx.lineWidth = 2;
       ctx.strokeStyle = theme.bgIconHeader;
       ctx.lineCap = "round";
@@ -15333,7 +20463,7 @@ function drawNewRowCell(args, data, icon) {
     }
   }
   ctx.fillStyle = theme.textMedium;
-  ctx.fillText(data, textX + x + theme.cellHorizontalPadding + 0.5, y + h / 2 + getMiddleCenterBias(ctx, theme));
+  ctx.fillText(data, textX + x2 + theme.cellHorizontalPadding + 0.5, y2 + h / 2 + getMiddleCenterBias(ctx, theme));
   ctx.beginPath();
 }
 function drawEditHoverIndicator(ctx, theme, effectTheme, displayData, rect, hoverAmount, overrideCursor) {
@@ -15361,13 +20491,13 @@ function getHoverEffectRect(ctx, cellRect, displayData, theme, fullSize) {
       height: cellRect.height - padY - 1
     };
   }
-  const m = measureTextCached(displayData, ctx, theme.baseFontFull, "alphabetic");
+  const m2 = measureTextCached(displayData, ctx, theme.baseFontFull, "alphabetic");
   const maxH = cellRect.height - padY;
-  const h = Math.min(maxH, m.actualBoundingBoxAscent * 2.5);
+  const h = Math.min(maxH, m2.actualBoundingBoxAscent * 2.5);
   return {
     x: cellRect.x + padX / 2,
     y: cellRect.y + (cellRect.height - h) / 2 + 1,
-    width: m.width + padX * 3,
+    width: m2.width + padX * 3,
     height: h - 1
   };
 }
@@ -15414,11 +20544,11 @@ const numberCellRenderer = {
       value,
       validatedSelection
     } = p2;
-    return /* @__PURE__ */ jsx(React.Suspense, { fallback: null, children: /* @__PURE__ */ jsx(NumberOverlayEditor$1, { highlight: isHighlighted, disabled: value.readonly === true, value: value.data, fixedDecimals: value.fixedDecimals, allowNegative: value.allowNegative, thousandSeparator: value.thousandSeparator, decimalSeparator: value.decimalSeparator, validatedSelection, onChange: (x) => {
+    return /* @__PURE__ */ jsx(React.Suspense, { fallback: null, children: /* @__PURE__ */ jsx(NumberOverlayEditor$1, { highlight: isHighlighted, disabled: value.readonly === true, value: value.data, fixedDecimals: value.fixedDecimals, allowNegative: value.allowNegative, thousandSeparator: value.thousandSeparator, decimalSeparator: value.decimalSeparator, validatedSelection, onChange: (x2) => {
       var _x$floatValue;
       return onChange({
         ...value,
-        data: Number.isNaN((_x$floatValue = x.floatValue) !== null && _x$floatValue !== void 0 ? _x$floatValue : 0) ? 0 : x.floatValue
+        data: Number.isNaN((_x$floatValue = x2.floatValue) !== null && _x$floatValue !== void 0 ? _x$floatValue : 0) ? 0 : x2.floatValue
       });
     }, onKeyDown: (e) => {
       if (e.key === "Enter" && !e.shiftKey) {
@@ -15460,23 +20590,23 @@ function drawProtectedCell(args) {
     rect
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     height: h
   } = rect;
   ctx.beginPath();
   const radius = 2.5;
-  let xStart = x + theme.cellHorizontalPadding + radius;
-  const center = y + h / 2;
+  let xStart = x2 + theme.cellHorizontalPadding + radius;
+  const center = y2 + h / 2;
   const p2 = Math.cos(degreesToRadians(30)) * radius;
-  const q = Math.sin(degreesToRadians(30)) * radius;
+  const q2 = Math.sin(degreesToRadians(30)) * radius;
   for (let i = 0; i < 12; i++) {
     ctx.moveTo(xStart, center - radius);
     ctx.lineTo(xStart, center + radius);
-    ctx.moveTo(xStart + p2, center - q);
-    ctx.lineTo(xStart - p2, center + q);
-    ctx.moveTo(xStart - p2, center - q);
-    ctx.lineTo(xStart + p2, center + q);
+    ctx.moveTo(xStart + p2, center - q2);
+    ctx.lineTo(xStart - p2, center + q2);
+    ctx.moveTo(xStart - p2, center - q2);
+    ctx.lineTo(xStart + p2, center + q2);
     xStart += 8;
   }
   ctx.lineWidth = 1.1;
@@ -15509,9 +20639,9 @@ const rowIDCellRenderer = {
     ctx.fillStyle = theme.textDark;
     ctx.font = theme.baseFontStyle;
     ctx.textAlign = "left";
-    const x = rect.x + theme.cellHorizontalPadding;
+    const x2 = rect.x + theme.cellHorizontalPadding;
     const centerY = rect.y + rect.height / 2;
-    ctx.fillText(rowId, x, centerY + getMiddleCenterBias(ctx, theme));
+    ctx.fillText(rowId, x2, centerY + getMiddleCenterBias(ctx, theme));
   },
   onClick: () => void 0,
   onPaste: () => void 0
@@ -15558,14 +20688,14 @@ function drawRowIdMarkerCell(args, rowId) {
     theme
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     height
   } = rect;
   ctx.fillStyle = theme.textDark;
   ctx.font = "12px sans-serif";
-  const textX = x + 8;
-  const centerY = y + height / 2;
+  const textX = x2 + 8;
+  const centerY = y2 + height / 2;
   ctx.fillText(rowId, textX, centerY + getMiddleCenterBias(ctx, ctx.font));
 }
 const rowStatusCellRenderer = {
@@ -15609,8 +20739,8 @@ function drawRowStatusCell(args, status) {
     rect
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width,
     height
   } = rect;
@@ -15621,8 +20751,8 @@ function drawRowStatusCell(args, status) {
   };
   ctx.fillStyle = colors[status];
   ctx.font = "bold 14px sans-serif";
-  const centerX = x + width / 2;
-  const centerY = y + height / 2;
+  const centerX = x2 + width / 2;
+  const centerY = y2 + height / 2;
   ctx.fillText(status, centerX, centerY + getMiddleCenterBias(ctx, ctx.font));
 }
 const textCellRenderer = {
@@ -15701,7 +20831,7 @@ const UriOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
   propsAsIs: false
 });
 const UriOverlayEditor = (p2) => {
-  const $ = compilerRuntimeExports.c(17);
+  const $2 = compilerRuntimeExports.c(17);
   const {
     uri,
     onChange,
@@ -15715,85 +20845,85 @@ const UriOverlayEditor = (p2) => {
   } = React.useContext(GhostModeContext);
   const [editMode, setEditMode] = React.useState(!readonly && (uri === "" || forceEditMode));
   let t0;
-  if ($[0] === Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t0 = () => {
       setEditMode(true);
     };
-    $[0] = t0;
+    $2[0] = t0;
   } else {
-    t0 = $[0];
+    t0 = $2[0];
   }
   const onEditClick = t0;
   if (editMode) {
     const t12 = !isGhostMode;
     let t22;
-    if ($[1] !== onChange || $[2] !== t12 || $[3] !== uri || $[4] !== validatedSelection) {
+    if ($2[1] !== onChange || $2[2] !== t12 || $2[3] !== uri || $2[4] !== validatedSelection) {
       t22 = /* @__PURE__ */ jsx(GrowingEntry, { validatedSelection, highlight: true, autoFocus: t12, value: uri, onChange });
-      $[1] = onChange;
-      $[2] = t12;
-      $[3] = uri;
-      $[4] = validatedSelection;
-      $[5] = t22;
+      $2[1] = onChange;
+      $2[2] = t12;
+      $2[3] = uri;
+      $2[4] = validatedSelection;
+      $2[5] = t22;
     } else {
-      t22 = $[5];
+      t22 = $2[5];
     }
     return t22;
   }
   let t1;
-  if ($[6] !== preview || $[7] !== uri) {
+  if ($2[6] !== preview || $2[7] !== uri) {
     t1 = /* @__PURE__ */ jsx("a", { className: "gdg-link-area", href: uri, target: "_blank", rel: "noopener noreferrer", children: preview });
-    $[6] = preview;
-    $[7] = uri;
-    $[8] = t1;
+    $2[6] = preview;
+    $2[7] = uri;
+    $2[8] = t1;
   } else {
-    t1 = $[8];
+    t1 = $2[8];
   }
   let t2;
-  if ($[9] !== readonly) {
+  if ($2[9] !== readonly) {
     t2 = !readonly && /* @__PURE__ */ jsx("div", { className: "gdg-edit-icon", onClick: onEditClick, children: /* @__PURE__ */ jsx(EditPencil, {}) });
-    $[9] = readonly;
-    $[10] = t2;
+    $2[9] = readonly;
+    $2[10] = t2;
   } else {
-    t2 = $[10];
+    t2 = $2[10];
   }
   const t3 = !isGhostMode;
   let t4;
-  if ($[11] !== t3) {
+  if ($2[11] !== t3) {
     t4 = /* @__PURE__ */ jsx("textarea", { className: "gdg-input", autoFocus: t3 });
-    $[11] = t3;
-    $[12] = t4;
+    $2[11] = t3;
+    $2[12] = t4;
   } else {
-    t4 = $[12];
+    t4 = $2[12];
   }
   let t5;
-  if ($[13] !== t1 || $[14] !== t2 || $[15] !== t4) {
+  if ($2[13] !== t1 || $2[14] !== t2 || $2[15] !== t4) {
     t5 = /* @__PURE__ */ jsxs(UriOverlayEditorStyle, { children: [
       t1,
       t2,
       t4
     ] });
-    $[13] = t1;
-    $[14] = t2;
-    $[15] = t4;
-    $[16] = t5;
+    $2[13] = t1;
+    $2[14] = t2;
+    $2[15] = t4;
+    $2[16] = t5;
   } else {
-    t5 = $[16];
+    t5 = $2[16];
   }
   return t5;
 };
 function getTextRect(metrics, rect, theme, contentAlign) {
-  let x = theme.cellHorizontalPadding;
-  const y = rect.height / 2 - metrics.actualBoundingBoxAscent / 2;
+  let x2 = theme.cellHorizontalPadding;
+  const y2 = rect.height / 2 - metrics.actualBoundingBoxAscent / 2;
   const width = metrics.width;
   const height = metrics.actualBoundingBoxAscent;
   if (contentAlign === "right") {
-    x = rect.width - width - theme.cellHorizontalPadding;
+    x2 = rect.width - width - theme.cellHorizontalPadding;
   } else if (contentAlign === "center") {
-    x = rect.width / 2 - width / 2;
+    x2 = rect.width / 2 - width / 2;
   }
   return {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width,
     height
   };
@@ -15809,9 +20939,9 @@ function isOverLinkText(e) {
   } = e;
   const txt = (_cell$displayData = cell.displayData) !== null && _cell$displayData !== void 0 ? _cell$displayData : cell.data;
   if (cell.hoverEffect !== true || cell.onClickUri === void 0) return false;
-  const m = getMeasuredTextCache(txt, theme.baseFontFull);
-  if (m === void 0) return false;
-  const textRect = getTextRect(m, bounds, theme, cell.contentAlign);
+  const m2 = getMeasuredTextCache(txt, theme.baseFontFull);
+  if (m2 === void 0) return false;
+  const textRect = getTextRect(m2, bounds, theme, cell.contentAlign);
   return pointInRect({
     x: textRect.x - 4,
     y: textRect.y - 4,
@@ -15843,22 +20973,22 @@ const uriCellRenderer = {
     const txt = (_cell$displayData2 = cell.displayData) !== null && _cell$displayData2 !== void 0 ? _cell$displayData2 : cell.data;
     const isLinky = cell.hoverEffect === true;
     if (overrideCursor !== void 0 && isLinky && hoverX !== void 0 && hoverY !== void 0) {
-      const m = measureTextCached(txt, ctx, theme.baseFontFull);
-      const textRect = getTextRect(m, rect, theme, cell.contentAlign);
+      const m2 = measureTextCached(txt, ctx, theme.baseFontFull);
+      const textRect = getTextRect(m2, rect, theme, cell.contentAlign);
       const {
-        x,
-        y,
+        x: x2,
+        y: y2,
         width: w2,
         height: h
       } = textRect;
-      if (hoverX >= x - 4 && hoverX <= x - 4 + w2 + 8 && hoverY >= y - 4 && hoverY <= y - 4 + h + 8) {
+      if (hoverX >= x2 - 4 && hoverX <= x2 - 4 + w2 + 8 && hoverY >= y2 - 4 && hoverY <= y2 - 4 + h + 8) {
         const middleCenterBias = getMiddleCenterBias(ctx, theme.baseFontFull);
         overrideCursor("pointer");
         const underlineOffset = 5;
-        const drawY = y - middleCenterBias;
+        const drawY = y2 - middleCenterBias;
         ctx.beginPath();
-        ctx.moveTo(rect.x + x, Math.floor(rect.y + drawY + h + underlineOffset) + 0.5);
-        ctx.lineTo(rect.x + x + w2, Math.floor(rect.y + drawY + h + underlineOffset) + 0.5);
+        ctx.moveTo(rect.x + x2, Math.floor(rect.y + drawY + h + underlineOffset) + 0.5);
+        ctx.lineTo(rect.x + x2 + w2, Math.floor(rect.y + drawY + h + underlineOffset) + 0.5);
         ctx.strokeStyle = theme.linkColor;
         ctx.stroke();
         ctx.save();
@@ -15944,25 +21074,33 @@ const uriCellRenderer = {
   }
 };
 const AllCellRenderers = [markerCellRenderer, newRowCellRenderer, rowStatusCellRenderer, rowIdMarkerCellRenderer, booleanCellRenderer, bubbleCellRenderer, drilldownCellRenderer, imageCellRenderer, loadingCellRenderer, markdownCellRenderer, numberCellRenderer, protectedCellRenderer, rowIDCellRenderer, textCellRenderer, uriCellRenderer];
-var debounce = debounce_1, isObject = isObject_1;
-var FUNC_ERROR_TEXT = "Expected a function";
-function throttle(func, wait, options) {
-  var leading = true, trailing = true;
-  if (typeof func != "function") {
-    throw new TypeError(FUNC_ERROR_TEXT);
+var throttle_1;
+var hasRequiredThrottle;
+function requireThrottle() {
+  if (hasRequiredThrottle) return throttle_1;
+  hasRequiredThrottle = 1;
+  var debounce2 = requireDebounce(), isObject = requireIsObject();
+  var FUNC_ERROR_TEXT = "Expected a function";
+  function throttle2(func, wait, options) {
+    var leading = true, trailing = true;
+    if (typeof func != "function") {
+      throw new TypeError(FUNC_ERROR_TEXT);
+    }
+    if (isObject(options)) {
+      leading = "leading" in options ? !!options.leading : leading;
+      trailing = "trailing" in options ? !!options.trailing : trailing;
+    }
+    return debounce2(func, wait, {
+      "leading": leading,
+      "maxWait": wait,
+      "trailing": trailing
+    });
   }
-  if (isObject(options)) {
-    leading = "leading" in options ? !!options.leading : leading;
-    trailing = "trailing" in options ? !!options.trailing : trailing;
-  }
-  return debounce(func, wait, {
-    "leading": leading,
-    "maxWait": wait,
-    "trailing": trailing
-  });
+  throttle_1 = throttle2;
+  return throttle_1;
 }
-var throttle_1 = throttle;
-const throttle$1 = /* @__PURE__ */ getDefaultExportFromCjs(throttle_1);
+var throttleExports = requireThrottle();
+const throttle = /* @__PURE__ */ getDefaultExportFromCjs(throttleExports);
 const imgPool = [];
 class ImageWindowLoaderImpl extends WindowingTrackerBase {
   constructor() {
@@ -15970,17 +21108,17 @@ class ImageWindowLoaderImpl extends WindowingTrackerBase {
     this.imageLoaded = () => void 0;
     this.loadedLocations = [];
     this.cache = {};
-    this.sendLoaded = throttle$1(() => {
+    this.sendLoaded = throttle(() => {
       this.imageLoaded(new CellSet(this.loadedLocations));
       this.loadedLocations = [];
     }, 20);
     this.clearOutOfWindow = () => {
-      const keys2 = Object.keys(this.cache);
-      for (const key of keys2) {
+      const keys = Object.keys(this.cache);
+      for (const key of keys) {
         const obj = this.cache[key];
         let keep = false;
-        for (let j = 0; j < obj.cells.length; j++) {
-          const packed = obj.cells[j];
+        for (let j2 = 0; j2 < obj.cells.length; j2++) {
+          const packed = obj.cells[j2];
           if (this.isInWindow(packed)) {
             keep = true;
             break;
@@ -16055,41 +21193,41 @@ class ImageWindowLoaderImpl extends WindowingTrackerBase {
 }
 const DataEditorAllImpl = (p2, ref) => {
   var _p$renderers;
-  const $ = compilerRuntimeExports.c(10);
+  const $2 = compilerRuntimeExports.c(10);
   let t0;
-  if ($[0] !== p2.headerIcons) {
+  if ($2[0] !== p2.headerIcons) {
     t0 = {
       ...sprites,
       ...p2.headerIcons
     };
-    $[0] = p2.headerIcons;
-    $[1] = t0;
+    $2[0] = p2.headerIcons;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   const allSprites = t0;
   const renderers = (_p$renderers = p2.renderers) !== null && _p$renderers !== void 0 ? _p$renderers : AllCellRenderers;
   let t1;
-  if ($[2] !== p2.imageWindowLoader) {
+  if ($2[2] !== p2.imageWindowLoader) {
     var _p$imageWindowLoader;
     t1 = (_p$imageWindowLoader = p2.imageWindowLoader) !== null && _p$imageWindowLoader !== void 0 ? _p$imageWindowLoader : new ImageWindowLoaderImpl();
-    $[2] = p2.imageWindowLoader;
-    $[3] = t1;
+    $2[2] = p2.imageWindowLoader;
+    $2[3] = t1;
   } else {
-    t1 = $[3];
+    t1 = $2[3];
   }
   const imageWindowLoader = t1;
   let t2;
-  if ($[4] !== allSprites || $[5] !== imageWindowLoader || $[6] !== p2 || $[7] !== ref || $[8] !== renderers) {
+  if ($2[4] !== allSprites || $2[5] !== imageWindowLoader || $2[6] !== p2 || $2[7] !== ref || $2[8] !== renderers) {
     t2 = /* @__PURE__ */ jsx(DataEditor, { ...p2, renderers, headerIcons: allSprites, ref, imageWindowLoader });
-    $[4] = allSprites;
-    $[5] = imageWindowLoader;
-    $[6] = p2;
-    $[7] = ref;
-    $[8] = renderers;
-    $[9] = t2;
+    $2[4] = allSprites;
+    $2[5] = imageWindowLoader;
+    $2[6] = p2;
+    $2[7] = ref;
+    $2[8] = renderers;
+    $2[9] = t2;
   } else {
-    t2 = $[9];
+    t2 = $2[9];
   }
   return t2;
 };
@@ -16289,18 +21427,18 @@ function setCaretPosition(el, caretPos) {
   }
 }
 var findChangeRange = memoizeOnce(function(prevValue, newValue) {
-  var i = 0, j = 0;
+  var i = 0, j2 = 0;
   var prevLength = prevValue.length;
   var newLength = newValue.length;
   while (prevValue[i] === newValue[i] && i < prevLength) {
     i++;
   }
-  while (prevValue[prevLength - 1 - j] === newValue[newLength - 1 - j] && newLength - j > i && prevLength - j > i) {
-    j++;
+  while (prevValue[prevLength - 1 - j2] === newValue[newLength - 1 - j2] && newLength - j2 > i && prevLength - j2 > i) {
+    j2++;
   }
   return {
-    from: { start: i, end: prevLength - j },
-    to: { start: i, end: newLength - j }
+    from: { start: i, end: prevLength - j2 },
+    to: { start: i, end: newLength - j2 }
   };
 });
 var findChangedRangeFromCaretPositions = function(lastCaretPositions, currentCaretPosition) {
@@ -16356,17 +21494,17 @@ function getCaretPosition(newFormattedValue, lastFormattedValue, curValue, curCa
   var indexMap = new Array(curValLn);
   for (var i = 0; i < curValLn; i++) {
     indexMap[i] = -1;
-    for (var j = 0, jLn = formattedValueLn; j < jLn; j++) {
+    for (var j2 = 0, jLn = formattedValueLn; j2 < jLn; j2++) {
       var isCharSame = isCharacterSame({
         currentValue: curValue,
         lastValue: lastFormattedValue,
         formattedValue: newFormattedValue,
         currentValueIndex: i,
-        formattedValueIndex: j
+        formattedValueIndex: j2
       });
-      if (isCharSame && addedIndexMap[j] !== true) {
-        indexMap[i] = j;
-        addedIndexMap[j] = true;
+      if (isCharSame && addedIndexMap[j2] !== true) {
+        indexMap[i] = j2;
+        addedIndexMap[j2] = true;
         break;
       }
     }
@@ -17116,7 +22254,7 @@ function getThousandSeprator() {
   return getDecimalSeparator() === "." ? "," : ".";
 }
 const NumberOverlayEditor = (p2) => {
-  const $ = compilerRuntimeExports.c(25);
+  const $2 = compilerRuntimeExports.c(25);
   const {
     value,
     onChange,
@@ -17129,13 +22267,13 @@ const NumberOverlayEditor = (p2) => {
     thousandSeparator,
     decimalSeparator
   } = p2;
-  const inputRef = React.useRef();
+  const inputRef = React.useRef(null);
   const {
     isGhostMode
   } = React.useContext(GhostModeContext);
   let t0;
   let t1;
-  if ($[0] !== validatedSelection) {
+  if ($2[0] !== validatedSelection) {
     t0 = () => {
       if (validatedSelection !== void 0) {
         var _inputRef$current;
@@ -17144,77 +22282,77 @@ const NumberOverlayEditor = (p2) => {
       }
     };
     t1 = [validatedSelection];
-    $[0] = validatedSelection;
-    $[1] = t0;
-    $[2] = t1;
+    $2[0] = validatedSelection;
+    $2[1] = t0;
+    $2[2] = t1;
   } else {
-    t0 = $[1];
-    t1 = $[2];
+    t0 = $2[1];
+    t1 = $2[2];
   }
   React.useLayoutEffect(t0, t1);
   let t2;
-  if ($[3] !== isGhostMode) {
+  if ($2[3] !== isGhostMode) {
     t2 = isGhostMode ? {
       visibility: "hidden"
     } : void 0;
-    $[3] = isGhostMode;
-    $[4] = t2;
+    $2[3] = isGhostMode;
+    $2[4] = t2;
   } else {
-    t2 = $[4];
+    t2 = $2[4];
   }
   const ghostStyle = t2;
   const t3 = !isGhostMode;
   let t4;
-  if ($[5] !== highlight) {
+  if ($2[5] !== highlight) {
     t4 = (e) => e.target.setSelectionRange(highlight ? 0 : e.target.value.length, e.target.value.length);
-    $[5] = highlight;
-    $[6] = t4;
+    $2[5] = highlight;
+    $2[6] = t4;
   } else {
-    t4 = $[6];
+    t4 = $2[6];
   }
   const t5 = disabled === true;
   let t6;
-  if ($[7] !== thousandSeparator) {
+  if ($2[7] !== thousandSeparator) {
     t6 = thousandSeparator !== null && thousandSeparator !== void 0 ? thousandSeparator : getThousandSeprator();
-    $[7] = thousandSeparator;
-    $[8] = t6;
+    $2[7] = thousandSeparator;
+    $2[8] = t6;
   } else {
-    t6 = $[8];
+    t6 = $2[8];
   }
   let t7;
-  if ($[9] !== decimalSeparator) {
+  if ($2[9] !== decimalSeparator) {
     t7 = decimalSeparator !== null && decimalSeparator !== void 0 ? decimalSeparator : getDecimalSeparator();
-    $[9] = decimalSeparator;
-    $[10] = t7;
+    $2[9] = decimalSeparator;
+    $2[10] = t7;
   } else {
-    t7 = $[10];
+    t7 = $2[10];
   }
   const t8 = Object.is(value, 0) ? "-" : value !== null && value !== void 0 ? value : "";
   let t9;
-  if ($[11] !== allowNegative || $[12] !== fixedDecimals || $[13] !== onChange || $[14] !== onKeyDown || $[15] !== t3 || $[16] !== t4 || $[17] !== t5 || $[18] !== t6 || $[19] !== t7 || $[20] !== t8) {
+  if ($2[11] !== allowNegative || $2[12] !== fixedDecimals || $2[13] !== onChange || $2[14] !== onKeyDown || $2[15] !== t3 || $2[16] !== t4 || $2[17] !== t5 || $2[18] !== t6 || $2[19] !== t7 || $2[20] !== t8) {
     t9 = /* @__PURE__ */ jsx(NumericFormat, { autoFocus: t3, getInputRef: inputRef, className: "gdg-input", onFocus: t4, onKeyDown, disabled: t5, decimalScale: fixedDecimals, allowNegative, thousandSeparator: t6, decimalSeparator: t7, value: t8, onValueChange: onChange });
-    $[11] = allowNegative;
-    $[12] = fixedDecimals;
-    $[13] = onChange;
-    $[14] = onKeyDown;
-    $[15] = t3;
-    $[16] = t4;
-    $[17] = t5;
-    $[18] = t6;
-    $[19] = t7;
-    $[20] = t8;
-    $[21] = t9;
+    $2[11] = allowNegative;
+    $2[12] = fixedDecimals;
+    $2[13] = onChange;
+    $2[14] = onKeyDown;
+    $2[15] = t3;
+    $2[16] = t4;
+    $2[17] = t5;
+    $2[18] = t6;
+    $2[19] = t7;
+    $2[20] = t8;
+    $2[21] = t9;
   } else {
-    t9 = $[21];
+    t9 = $2[21];
   }
   let t10;
-  if ($[22] !== ghostStyle || $[23] !== t9) {
+  if ($2[22] !== ghostStyle || $2[23] !== t9) {
     t10 = /* @__PURE__ */ jsx(NumberOverlayEditorStyle, { style: ghostStyle, children: t9 });
-    $[22] = ghostStyle;
-    $[23] = t9;
-    $[24] = t10;
+    $2[22] = ghostStyle;
+    $2[23] = t9;
+    $2[24] = t10;
   } else {
-    t10 = $[24];
+    t10 = $2[24];
   }
   return t10;
 };
