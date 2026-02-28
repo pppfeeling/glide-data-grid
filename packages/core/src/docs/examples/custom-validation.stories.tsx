@@ -41,7 +41,7 @@ export default {
     ],
 };
 
-export const CustomValidation: React.VFC = () => {
+export const CustomValidation: React.FC = () => {
     const { cols, getCellContent, setCellValue } = useMockDataGenerator(60, false);
     const [errors, setErrors] = React.useState<Map<string, string>>(new Map());
 

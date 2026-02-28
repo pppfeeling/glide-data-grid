@@ -42,7 +42,7 @@ const data: SalesData[] = [
     { region: "Asia", country: "India", city: "Mumbai", product: "Mouse", category: "Accessories", sales: 80, quantity: 100, profit: 24 },
 ];
 
-export const MultiLevelHeader: React.VFC = () => {
+export const MultiLevelHeader: React.FC = () => {
     const getContent = React.useCallback((cell: Item): GridCell => {
         const [col, row] = cell;
         const dataRow = data[row];
