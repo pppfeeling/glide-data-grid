@@ -57,7 +57,10 @@ export function useInitialScrollOffset(
     const onDidScrollRef = React.useRef(onDidScroll);
     onDidScrollRef.current = onDidScroll;
 
+    const scrollElRef = React.useRef<HTMLDivElement | null>(null);
+
     const scrollRef = useCallbackRef<HTMLDivElement | null>(null, newVal => {
+        scrollElRef.current = newVal;
         if (newVal !== null && scrollOffsetY !== undefined) {
             newVal.scrollTop = scrollOffsetY;
         } else if (newVal !== null && scrollOffsetX !== undefined) {
@@ -67,27 +70,31 @@ export function useInitialScrollOffset(
 
     const vScrollReady = (visibleRegion.height ?? 1) > 1;
     React.useLayoutEffect(() => {
-        if (scrollOffsetY !== undefined && scrollRef.current !== null && vScrollReady) {
-            if (scrollRef.current.scrollTop === scrollOffsetY) return;
-            scrollRef.current.scrollTop = scrollOffsetY;
-            if (scrollRef.current.scrollTop !== scrollOffsetY) {
+        if (scrollOffsetY !== undefined && vScrollReady) {
+            const el = scrollElRef.current;
+            if (el === null) return;
+            if (el.scrollTop === scrollOffsetY) return;
+            el.scrollTop = scrollOffsetY;
+            if (el.scrollTop !== scrollOffsetY) {
                 empty();
             }
             onDidScrollRef.current();
         }
-    }, [scrollOffsetY, vScrollReady, empty, scrollRef]);
+    }, [scrollOffsetY, vScrollReady, empty]);
 
     const hScrollReady = (visibleRegion.width ?? 1) > 1;
     React.useLayoutEffect(() => {
-        if (scrollOffsetX !== undefined && scrollRef.current !== null && hScrollReady) {
-            if (scrollRef.current.scrollLeft === scrollOffsetX) return;
-            scrollRef.current.scrollLeft = scrollOffsetX;
-            if (scrollRef.current.scrollLeft !== scrollOffsetX) {
+        if (scrollOffsetX !== undefined && hScrollReady) {
+            const el = scrollElRef.current;
+            if (el === null) return;
+            if (el.scrollLeft === scrollOffsetX) return;
+            el.scrollLeft = scrollOffsetX;
+            if (el.scrollLeft !== scrollOffsetX) {
                 empty();
             }
             onDidScrollRef.current();
         }
-    }, [scrollOffsetX, hScrollReady, empty, scrollRef]);
+    }, [scrollOffsetX, hScrollReady, empty]);
 
     return {
         visibleRegion,

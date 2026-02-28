@@ -20,5 +20,8 @@
         "@babel/preset-typescript",
         "@wyw-in-js/babel-preset"
     ],
-    "plugins": ["@babel/plugin-proposal-class-properties"]
+    "plugins": [
+        ["babel-plugin-react-compiler", { "target": "19" }],
+        "@babel/plugin-proposal-class-properties"
+    ]
 }

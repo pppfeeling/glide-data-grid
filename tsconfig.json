@@ -14,5 +14,10 @@
         "noUnusedParameters": false,
         "target": "ES2022", // es2022
         "types": ["vitest", "node"]
-    }
+    },
+    "files": [],
+    "references": [
+        { "path": "./packages/core" },
+        { "path": "./packages/core/tsconfig.node.json" }
+    ]
 }

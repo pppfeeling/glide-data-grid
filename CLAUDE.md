@@ -15,7 +15,7 @@ Glide Data Grid is a canvas-based React data grid component that supports millio
 
 ```bash
 # 루트 디렉토리에서 Storybook 실행
-npm run start
+pnpm start
 ```
 
 packages/core/src/docs/ - 문서화된 예제
@@ -29,9 +29,7 @@ Storybook 실행 (npm run start)
 
 ### build Commands
 ```bash
-# Core package
-cd packages/core
-npm run build        # Build the core package
+pnpm build        # Build the core package
 ```
 
 

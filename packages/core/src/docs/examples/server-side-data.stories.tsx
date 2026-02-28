@@ -40,7 +40,7 @@ function useAsyncData<TRowType>(
     onEdited: RowEditedCallback<TRowType>,
     gridRef: React.MutableRefObject<DataEditorRef | null>
 ): Pick<DataEditorProps, "getCellContent" | "onVisibleRegionChanged" | "onCellEdited" | "getCellsForSelection"> {
-    pageSize = Math.max(pageSize, 1);
+    const normalizedPageSize = Math.max(pageSize, 1);
     const loadingRef = React.useRef(CompactSelection.empty());
     const dataRef = React.useRef<TRowType[]>([]);
 
@@ -73,8 +73,8 @@ function useAsyncData<TRowType>(
     const loadPage = React.useCallback(
         async (page: number) => {
             loadingRef.current = loadingRef.current.add(page);
-            const startIndex = page * pageSize;
-            const d = await getRowData([startIndex, (page + 1) * pageSize]);
+            const startIndex = page * normalizedPageSize;
+            const d = await getRowData([startIndex, (page + 1) * normalizedPageSize]);
 
             const vr = visiblePagesRef.current;
 
@@ -90,14 +90,14 @@ function useAsyncData<TRowType>(
             }
             gridRef.current?.updateCells(damageList);
         },
-        [getRowData, gridRef, pageSize]
+        [getRowData, gridRef, normalizedPageSize]
     );
 
     const getCellsForSelection = React.useCallback(
         (r: Rectangle): (() => Promise<CellArray>) => {
             return async () => {
-                const firstPage = Math.max(0, Math.floor(r.y / pageSize));
-                const lastPage = Math.floor((r.y + r.height) / pageSize);
+                const firstPage = Math.max(0, Math.floor(r.y / normalizedPageSize));
+                const lastPage = Math.floor((r.y + r.height) / normalizedPageSize);
 
                 for (const pageChunk of chunk(
                     range(firstPage, lastPage + 1).filter(i => !loadingRef.current.hasIndex(i)),
@@ -119,18 +119,18 @@ function useAsyncData<TRowType>(
                 return result;
             };
         },
-        [getCellContent, loadPage, maxConcurrency, pageSize]
+        [getCellContent, loadPage, maxConcurrency, normalizedPageSize]
     );
 
     React.useEffect(() => {
         const r = visiblePages;
-        const firstPage = Math.max(0, Math.floor((r.y - pageSize / 2) / pageSize));
-        const lastPage = Math.floor((r.y + r.height + pageSize / 2) / pageSize);
+        const firstPage = Math.max(0, Math.floor((r.y - normalizedPageSize / 2) / normalizedPageSize));
+        const lastPage = Math.floor((r.y + r.height + normalizedPageSize / 2) / normalizedPageSize);
         for (const page of range(firstPage, lastPage + 1)) {
             if (loadingRef.current.hasIndex(page)) continue;
             void loadPage(page);
         }
-    }, [loadPage, pageSize, visiblePages]);
+    }, [loadPage, normalizedPageSize, visiblePages]);
 
     const onCellEdited = React.useCallback(
         (cell: Item, newVal: EditableGridCell) => {

@@ -1,8 +1,10 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
+        "composite": true,
         "moduleResolution": "bundler",
-        "module": "ESNext"
+        "module": "ESNext",
+        "verbatimModuleSyntax": false
     },
     "include": ["vite.config.ts", "vitest.setup.ts"]
 }

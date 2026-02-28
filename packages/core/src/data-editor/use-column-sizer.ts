@@ -96,21 +96,21 @@ export function useColumnSizer(
     getCellsForSelectionRef.current = getCellsForSelection;
     themeRef.current = theme;
 
-    const [canvas, ctx] = (() => {
-        if (typeof window === "undefined") return [null, null];
+    const ctxRef = React.useRef<CanvasRenderingContext2D | null>(null);
+
+    React.useLayoutEffect(() => {
+        if (typeof window === "undefined") return;
         const offscreen = document.createElement("canvas");
         offscreen.style["display"] = "none";
         offscreen.style["opacity"] = "0";
         offscreen.style["position"] = "fixed";
-        return [offscreen, offscreen.getContext("2d", { alpha: false })];
-    })();
-
-    React.useLayoutEffect(() => {
-        if (canvas) document.documentElement.append(canvas);
+        document.documentElement.append(offscreen);
+        ctxRef.current = offscreen.getContext("2d", { alpha: false });
         return () => {
-            canvas?.remove();
+            offscreen.remove();
+            ctxRef.current = null;
         };
-    }, [canvas]);
+    }, []);
 
     const memoMap = React.useRef<Record<string, number>>({});
 
@@ -169,6 +169,7 @@ export function useColumnSizer(
             return columns;
         }
 
+        const ctx = ctxRef.current;
         if (ctx === null) {
             return columns.map(c => {
                 if (isSizedGridColumn(c)) return c;

@@ -51,7 +51,11 @@
       "Bash(pnpm --version:*)",
       "Bash(pnpm install:*)",
       "Bash(pnpm approve-builds:*)",
-      "Bash(pnpm --filter @glideapps/glide-data-grid run build)"
+      "Bash(pnpm --filter @glideapps/glide-data-grid run build)",
+      "Bash(git checkout:*)",
+      "Bash(git apply:*)",
+      "Bash(curl:*)",
+      "Bash(npx storybook build:*)"
     ],
     "deny": [],
     "ask": []

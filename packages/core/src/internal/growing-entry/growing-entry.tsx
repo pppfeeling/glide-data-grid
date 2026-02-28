@@ -14,6 +14,9 @@ interface Props
 }
 
 let globalInputID = 0;
+function nextInputId() {
+    return (globalInputID = (globalInputID + 1) % 10_000_000);
+}
 
 /** @category Renderers */
 export const GrowingEntry: React.FunctionComponent<Props> = (props: Props) => {
@@ -29,7 +32,14 @@ export const GrowingEntry: React.FunctionComponent<Props> = (props: Props) => {
     assert(onChange !== undefined, "GrowingEntry must be a controlled input area");
 
     // 10 million id's aught to be enough for anybody
-    const [inputID] = React.useState(() => "input-box-" + (globalInputID = (globalInputID + 1) % 10_000_000));
+    const [inputID] = React.useState(() => "input-box-" + nextInputId());
+
+    const useTextRef = React.useRef(useText);
+    const highlightRef = React.useRef(highlight);
+    React.useEffect(() => {
+        useTextRef.current = useText;
+        highlightRef.current = highlight;
+    });
 
     React.useEffect(() => {
         // Skip autofocus when in Ghost Mode (IME input is handled by GhostInput)
@@ -39,10 +49,9 @@ export const GrowingEntry: React.FunctionComponent<Props> = (props: Props) => {
         if (ta === null) return;
 
         if (ta.disabled) return;
-        const length = useText.toString().length;
+        const length = useTextRef.current.toString().length;
         ta.focus();
-        ta.setSelectionRange(highlight ? 0 : length, length);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        ta.setSelectionRange(highlightRef.current ? 0 : length, length);
     }, [isGhostMode]);
 
     React.useLayoutEffect(() => {

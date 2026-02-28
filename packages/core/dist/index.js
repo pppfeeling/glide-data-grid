@@ -4534,27 +4534,55 @@ function requireDebounce() {
 }
 var debounceExports = requireDebounce();
 const debounce = /* @__PURE__ */ getDefaultExportFromCjs(debounceExports);
-function useEventListener(eventName, handler, element, passive) {
-  let capture = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : false;
+function useEventListener(eventName, handler, element, passive, t0) {
+  const $2 = compilerRuntimeExports.c(8);
+  const capture = t0 === void 0 ? false : t0;
   const savedHandler = React.useRef(void 0);
-  savedHandler.current = handler;
-  React.useEffect(() => {
-    if (element === null || element.addEventListener === void 0) return;
-    const el = element;
-    const eventListener = (event) => {
-      var _savedHandler$current;
-      (_savedHandler$current = savedHandler.current) === null || _savedHandler$current === void 0 || _savedHandler$current.call(el, event);
+  let t1;
+  if ($2[0] !== handler) {
+    t1 = () => {
+      savedHandler.current = handler;
     };
-    el.addEventListener(eventName, eventListener, {
-      passive,
-      capture
-    });
-    return () => {
-      el.removeEventListener(eventName, eventListener, {
+    $2[0] = handler;
+    $2[1] = t1;
+  } else {
+    t1 = $2[1];
+  }
+  React.useEffect(t1);
+  let t2;
+  let t3;
+  if ($2[2] !== capture || $2[3] !== element || $2[4] !== eventName || $2[5] !== passive) {
+    t2 = () => {
+      if (element === null || element.addEventListener === void 0) {
+        return;
+      }
+      const el = element;
+      const eventListener = (event) => {
+        var _savedHandler$current;
+        (_savedHandler$current = savedHandler.current) === null || _savedHandler$current === void 0 || _savedHandler$current.call(el, event);
+      };
+      el.addEventListener(eventName, eventListener, {
+        passive,
         capture
       });
+      return () => {
+        el.removeEventListener(eventName, eventListener, {
+          capture
+        });
+      };
     };
-  }, [eventName, element, passive, capture]);
+    t3 = [eventName, element, passive, capture];
+    $2[2] = capture;
+    $2[3] = element;
+    $2[4] = eventName;
+    $2[5] = passive;
+    $2[6] = t2;
+    $2[7] = t3;
+  } else {
+    t2 = $2[6];
+    t3 = $2[7];
+  }
+  React.useEffect(t2, t3);
 }
 function whenDefined(obj, result) {
   return obj === void 0 ? void 0 : result;
@@ -4613,21 +4641,63 @@ const Checkmark = (props) => {
   return t0;
 };
 function useDebouncedMemo(factory, deps, time) {
+  const $2 = compilerRuntimeExports.c(8);
   const [state, setState] = React.useState(factory);
-  const mountedRef = React.useRef(true);
-  React.useEffect(() => () => {
-    mountedRef.current = false;
-  }, []);
-  const debouncedSetState = React.useRef(debounce((x2) => {
-    if (mountedRef.current) {
-      setState(x2);
-    }
-  }, time));
-  React.useLayoutEffect(() => {
-    if (mountedRef.current) {
-      debouncedSetState.current(() => factory());
-    }
-  }, deps);
+  const factoryRef = React.useRef(factory);
+  let t0;
+  if ($2[0] !== factory) {
+    t0 = () => {
+      factoryRef.current = factory;
+    };
+    $2[0] = factory;
+    $2[1] = t0;
+  } else {
+    t0 = $2[1];
+  }
+  React.useEffect(t0);
+  let t1;
+  if ($2[2] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t1 = (fn) => {
+      setState(() => fn());
+    };
+    $2[2] = t1;
+  } else {
+    t1 = $2[2];
+  }
+  let t2;
+  if ($2[3] !== time) {
+    t2 = debounce(t1, time);
+    $2[3] = time;
+    $2[4] = t2;
+  } else {
+    t2 = $2[4];
+  }
+  const debouncedSetState = React.useRef(t2);
+  let t3;
+  if ($2[5] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t3 = () => {
+      debouncedSetState.current(() => factoryRef.current());
+    };
+    $2[5] = t3;
+  } else {
+    t3 = $2[5];
+  }
+  React.useLayoutEffect(t3, deps);
+  let t4;
+  let t5;
+  if ($2[6] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t4 = () => () => {
+      var _cancel, _ref;
+      (_cancel = (_ref = debouncedSetState.current).cancel) === null || _cancel === void 0 || _cancel.call(_ref);
+    };
+    t5 = [];
+    $2[6] = t4;
+    $2[7] = t5;
+  } else {
+    t4 = $2[6];
+    t5 = $2[7];
+  }
+  React.useEffect(t4, t5);
   return state;
 }
 const rtlRange = "֑-߿יִ-﷽ﹰ-ﻼ";
@@ -4664,35 +4734,67 @@ function getScrollBarWidth() {
   scrollbarWidthCache = w1 - w2;
   return scrollbarWidthCache;
 }
-const empty = /* @__PURE__ */ Symbol();
 function useStateWithReactiveInput(inputState) {
-  const inputStateRef = React.useRef([empty, inputState]);
-  if (inputStateRef.current[1] !== inputState) {
-    inputStateRef.current[0] = inputState;
-  }
-  inputStateRef.current[1] = inputState;
+  const $2 = compilerRuntimeExports.c(6);
+  const [prevInput, setPrevInput] = React.useState(inputState);
   const [state, setState] = React.useState(inputState);
-  const [, forceRender] = React.useState();
-  const setStateOuter = React.useCallback((nv) => {
-    const s = inputStateRef.current[0];
-    if (s !== empty) {
-      nv = typeof nv === "function" ? nv(s) : nv;
-      if (nv === s) return;
-    }
-    if (s !== empty) forceRender({});
-    setState((pv) => {
-      if (typeof nv === "function") {
-        return nv(s === empty ? pv : s);
-      }
-      return nv;
-    });
-    inputStateRef.current[0] = empty;
-  }, []);
-  const onEmpty = React.useCallback(() => {
-    inputStateRef.current[0] = empty;
-    forceRender({});
-  }, []);
-  return [inputStateRef.current[0] === empty ? state : inputStateRef.current[0], setStateOuter, onEmpty];
+  const [overridden, setOverridden] = React.useState(false);
+  if (prevInput !== inputState) {
+    setPrevInput(inputState);
+    setState(inputState);
+    setOverridden(false);
+  }
+  const inputStateRef = React.useRef(inputState);
+  let t0;
+  if ($2[0] !== inputState) {
+    t0 = () => {
+      inputStateRef.current = inputState;
+    };
+    $2[0] = inputState;
+    $2[1] = t0;
+  } else {
+    t0 = $2[1];
+  }
+  React.useEffect(t0);
+  let t1;
+  if ($2[2] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t1 = (nv) => {
+      setState((pv) => {
+        const resolved = typeof nv === "function" ? nv(pv) : nv;
+        if (resolved === inputStateRef.current) {
+          setOverridden(false);
+          return inputStateRef.current;
+        }
+        setOverridden(true);
+        return resolved;
+      });
+    };
+    $2[2] = t1;
+  } else {
+    t1 = $2[2];
+  }
+  const setStateOuter = t1;
+  let t2;
+  if ($2[3] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t2 = () => {
+      setOverridden(false);
+      setState(inputStateRef.current);
+    };
+    $2[3] = t2;
+  } else {
+    t2 = $2[3];
+  }
+  const onEmpty = t2;
+  const t3 = overridden ? state : inputState;
+  let t4;
+  if ($2[4] !== t3) {
+    t4 = [t3, setStateOuter, onEmpty];
+    $2[4] = t3;
+    $2[5] = t4;
+  } else {
+    t4 = $2[5];
+  }
+  return t4;
 }
 function makeAccessibilityStringForArray(arr) {
   if (arr.length === 0) {
@@ -4708,11 +4810,21 @@ function makeAccessibilityStringForArray(arr) {
   return arr.slice(0, index).join(", ");
 }
 function useDeepMemo(value) {
-  const ref = React.useRef(value);
-  if (!deepEqual(value, ref.current)) {
-    ref.current = value;
+  const $2 = compilerRuntimeExports.c(3);
+  const [memoized, setMemoized] = React.useState(value);
+  if (!deepEqual(value, memoized)) {
+    setMemoized(value);
   }
-  return ref.current;
+  let t0;
+  if ($2[0] !== memoized || $2[1] !== value) {
+    t0 = deepEqual(value, memoized) ? memoized : value;
+    $2[0] = memoized;
+    $2[1] = value;
+    $2[2] = t0;
+  } else {
+    t0 = $2[2];
+  }
+  return t0;
 }
 const ImageOverlayEditor = (p2) => {
   const $2 = compilerRuntimeExports.c(30);
@@ -4735,7 +4847,7 @@ const ImageOverlayEditor = (p2) => {
   if ($2[0] !== renderImage || $2[1] !== urls) {
     t7 = /* @__PURE__ */ Symbol.for("react.early_return_sentinel");
     bb0: {
-      const filtered = urls.filter(_temp$4);
+      const filtered = urls.filter(_temp$5);
       if (filtered.length === 0) {
         t7 = null;
         break bb0;
@@ -4829,7 +4941,7 @@ const ImageOverlayEditor = (p2) => {
   }
   return t10;
 };
-function _temp$4(u) {
+function _temp$5(u) {
   return u !== "";
 }
 function L() {
@@ -6526,17 +6638,53 @@ const dataGridOverlayEditor = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Obje
   default: DataGridOverlayEditor$1
 }, Symbol.toStringTag, { value: "Module" }));
 let globalInputID = 0;
+function nextInputId() {
+  return globalInputID = (globalInputID + 1) % 1e7;
+}
 const GrowingEntry = (props) => {
-  const {
-    placeholder,
-    value,
-    onKeyDown,
-    highlight,
-    altNewline,
-    validatedSelection,
-    autoFocus: _autoFocus,
-    ...rest
-  } = props;
+  const $2 = compilerRuntimeExports.c(36);
+  let altNewline;
+  let highlight;
+  let onKeyDown;
+  let placeholder;
+  let rest;
+  let validatedSelection;
+  let value;
+  if ($2[0] !== props) {
+    const {
+      placeholder: t02,
+      value: t12,
+      onKeyDown: t22,
+      highlight: t32,
+      altNewline: t42,
+      validatedSelection: t52,
+      autoFocus: _autoFocus,
+      ...t62
+    } = props;
+    placeholder = t02;
+    value = t12;
+    onKeyDown = t22;
+    highlight = t32;
+    altNewline = t42;
+    validatedSelection = t52;
+    rest = t62;
+    $2[0] = props;
+    $2[1] = altNewline;
+    $2[2] = highlight;
+    $2[3] = onKeyDown;
+    $2[4] = placeholder;
+    $2[5] = rest;
+    $2[6] = validatedSelection;
+    $2[7] = value;
+  } else {
+    altNewline = $2[1];
+    highlight = $2[2];
+    onKeyDown = $2[3];
+    placeholder = $2[4];
+    rest = $2[5];
+    validatedSelection = $2[6];
+    value = $2[7];
+  }
   const {
     onChange,
     className
@@ -6548,37 +6696,137 @@ const GrowingEntry = (props) => {
   } = React.useContext(GhostModeContext);
   const useText = isGhostMode && ghostValue ? ghostValue : value !== null && value !== void 0 ? value : "";
   assert(onChange !== void 0, "GrowingEntry must be a controlled input area");
-  const [inputID] = React.useState(() => "input-box-" + (globalInputID = (globalInputID + 1) % 1e7));
-  React.useEffect(() => {
-    if (isGhostMode) return;
-    const ta = inputRef.current;
-    if (ta === null) return;
-    if (ta.disabled) return;
-    const length = useText.toString().length;
-    ta.focus();
-    ta.setSelectionRange(highlight ? 0 : length, length);
-  }, [isGhostMode]);
-  React.useLayoutEffect(() => {
-    if (validatedSelection !== void 0) {
-      var _inputRef$current;
-      const range2 = typeof validatedSelection === "number" ? [validatedSelection, null] : validatedSelection;
-      (_inputRef$current = inputRef.current) === null || _inputRef$current === void 0 || _inputRef$current.setSelectionRange(range2[0], range2[1]);
-    }
-  }, [validatedSelection]);
-  const onKeyDownInner = React.useCallback((e) => {
-    if (e.key === "Enter" && e.shiftKey && altNewline === true) {
-      return;
-    }
-    onKeyDown === null || onKeyDown === void 0 || onKeyDown(e);
-  }, [altNewline, onKeyDown]);
-  const inputStyle = isGhostMode ? {
-    visibility: "hidden"
-  } : void 0;
-  return /* @__PURE__ */ jsxs(GrowingEntryStyle, { className: "gdg-growing-entry", children: [
-    /* @__PURE__ */ jsx(ShadowBox, { className, children: useText + "\n" }),
-    /* @__PURE__ */ jsx(InputBox, { ...rest, className: (className !== null && className !== void 0 ? className : "") + " gdg-input", id: inputID, ref: inputRef, onKeyDown: onKeyDownInner, value: useText, placeholder, dir: "auto", style: inputStyle })
-  ] });
+  const [inputID] = React.useState(_temp$4);
+  const useTextRef = React.useRef(useText);
+  const highlightRef = React.useRef(highlight);
+  let t0;
+  if ($2[8] !== highlight || $2[9] !== useText) {
+    t0 = () => {
+      useTextRef.current = useText;
+      highlightRef.current = highlight;
+    };
+    $2[8] = highlight;
+    $2[9] = useText;
+    $2[10] = t0;
+  } else {
+    t0 = $2[10];
+  }
+  React.useEffect(t0);
+  let t1;
+  let t2;
+  if ($2[11] !== isGhostMode) {
+    t1 = () => {
+      if (isGhostMode) {
+        return;
+      }
+      const ta = inputRef.current;
+      if (ta === null) {
+        return;
+      }
+      if (ta.disabled) {
+        return;
+      }
+      const length = useTextRef.current.toString().length;
+      ta.focus();
+      ta.setSelectionRange(highlightRef.current ? 0 : length, length);
+    };
+    t2 = [isGhostMode];
+    $2[11] = isGhostMode;
+    $2[12] = t1;
+    $2[13] = t2;
+  } else {
+    t1 = $2[12];
+    t2 = $2[13];
+  }
+  React.useEffect(t1, t2);
+  let t3;
+  let t4;
+  if ($2[14] !== validatedSelection) {
+    t3 = () => {
+      if (validatedSelection !== void 0) {
+        var _inputRef$current;
+        const range2 = typeof validatedSelection === "number" ? [validatedSelection, null] : validatedSelection;
+        (_inputRef$current = inputRef.current) === null || _inputRef$current === void 0 || _inputRef$current.setSelectionRange(range2[0], range2[1]);
+      }
+    };
+    t4 = [validatedSelection];
+    $2[14] = validatedSelection;
+    $2[15] = t3;
+    $2[16] = t4;
+  } else {
+    t3 = $2[15];
+    t4 = $2[16];
+  }
+  React.useLayoutEffect(t3, t4);
+  let t5;
+  if ($2[17] !== altNewline || $2[18] !== onKeyDown) {
+    t5 = (e) => {
+      var _onKeyDown;
+      if (e.key === "Enter" && e.shiftKey && altNewline === true) {
+        return;
+      }
+      (_onKeyDown = onKeyDown) === null || _onKeyDown === void 0 || _onKeyDown(e);
+    };
+    $2[17] = altNewline;
+    $2[18] = onKeyDown;
+    $2[19] = t5;
+  } else {
+    t5 = $2[19];
+  }
+  const onKeyDownInner = t5;
+  let t6;
+  if ($2[20] !== isGhostMode) {
+    t6 = isGhostMode ? {
+      visibility: "hidden"
+    } : void 0;
+    $2[20] = isGhostMode;
+    $2[21] = t6;
+  } else {
+    t6 = $2[21];
+  }
+  const inputStyle = t6;
+  const t7 = useText + "\n";
+  let t8;
+  if ($2[22] !== className || $2[23] !== t7) {
+    t8 = /* @__PURE__ */ jsx(ShadowBox, { className, children: t7 });
+    $2[22] = className;
+    $2[23] = t7;
+    $2[24] = t8;
+  } else {
+    t8 = $2[24];
+  }
+  const t9 = (className !== null && className !== void 0 ? className : "") + " gdg-input";
+  let t10;
+  if ($2[25] !== inputID || $2[26] !== inputStyle || $2[27] !== onKeyDownInner || $2[28] !== placeholder || $2[29] !== rest || $2[30] !== t9 || $2[31] !== useText) {
+    t10 = /* @__PURE__ */ jsx(InputBox, { ...rest, className: t9, id: inputID, ref: inputRef, onKeyDown: onKeyDownInner, value: useText, placeholder, dir: "auto", style: inputStyle });
+    $2[25] = inputID;
+    $2[26] = inputStyle;
+    $2[27] = onKeyDownInner;
+    $2[28] = placeholder;
+    $2[29] = rest;
+    $2[30] = t9;
+    $2[31] = useText;
+    $2[32] = t10;
+  } else {
+    t10 = $2[32];
+  }
+  let t11;
+  if ($2[33] !== t10 || $2[34] !== t8) {
+    t11 = /* @__PURE__ */ jsxs(GrowingEntryStyle, { className: "gdg-growing-entry", children: [
+      t8,
+      t10
+    ] });
+    $2[33] = t10;
+    $2[34] = t8;
+    $2[35] = t11;
+  } else {
+    t11 = $2[35];
+  }
+  return t11;
 };
+function _temp$4() {
+  return "input-box-" + nextInputId();
+}
 var d = /* @__PURE__ */ new Map(), b = /* @__PURE__ */ new Map(), z = /* @__PURE__ */ new Map();
 function v() {
   d.clear(), z.clear(), b.clear();
@@ -7463,22 +7711,22 @@ function useColumnSizer(columns, rows, getCellsForSelection, clientWidth, minCol
   rowsRef.current = rows;
   getCellsForSelectionRef.current = getCellsForSelection;
   themeRef.current = theme;
-  const [canvas, ctx] = (() => {
-    if (typeof window === "undefined") return [null, null];
+  const ctxRef = React.useRef(null);
+  React.useLayoutEffect(() => {
+    if (typeof window === "undefined") return;
     const offscreen = document.createElement("canvas");
     offscreen.style["display"] = "none";
     offscreen.style["opacity"] = "0";
     offscreen.style["position"] = "fixed";
-    return [offscreen, offscreen.getContext("2d", {
+    document.documentElement.append(offscreen);
+    ctxRef.current = offscreen.getContext("2d", {
       alpha: false
-    })];
-  })();
-  React.useLayoutEffect(() => {
-    if (canvas) document.documentElement.append(canvas);
+    });
     return () => {
-      canvas === null || canvas === void 0 || canvas.remove();
+      offscreen.remove();
+      ctxRef.current = null;
     };
-  }, [canvas]);
+  }, []);
   const memoMap = React.useRef({});
   const lastColumns = React.useRef(void 0);
   const [selectedData, setSelectionData] = React.useState();
@@ -7528,6 +7776,7 @@ function useColumnSizer(columns, rows, getCellsForSelection, clientWidth, minCol
     if (columns.every(isSizedGridColumn)) {
       return columns;
     }
+    const ctx = ctxRef.current;
     if (ctx === null) {
       return columns.map((c) => {
         if (isSizedGridColumn(c)) return c;
@@ -13481,36 +13730,67 @@ const DataGridDnd = (p2) => {
   return t11;
 };
 function useResizeDetector(initialSize) {
+  const $2 = compilerRuntimeExports.c(7);
   const ref = useRef(null);
-  const [size, setSize] = useState({
-    width: initialSize === null || initialSize === void 0 ? void 0 : initialSize[0],
-    height: initialSize === null || initialSize === void 0 ? void 0 : initialSize[1]
-  });
-  useLayoutEffect(() => {
-    const resizeCallback = (entries) => {
-      for (const entry of entries) {
-        const {
-          width,
-          height
-        } = entry && entry.contentRect || {};
-        setSize((cv) => cv.width === width && cv.height === height ? cv : {
-          width,
-          height
-        });
+  const t0 = initialSize === null || initialSize === void 0 ? void 0 : initialSize[0];
+  const t1 = initialSize === null || initialSize === void 0 ? void 0 : initialSize[1];
+  let t2;
+  if ($2[0] !== t0 || $2[1] !== t1) {
+    t2 = {
+      width: t0,
+      height: t1
+    };
+    $2[0] = t0;
+    $2[1] = t1;
+    $2[2] = t2;
+  } else {
+    t2 = $2[2];
+  }
+  const [size, setSize] = useState(t2);
+  let t3;
+  let t4;
+  if ($2[3] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t3 = () => {
+      const resizeCallback = (entries) => {
+        for (const entry of entries) {
+          const {
+            width,
+            height
+          } = entry && entry.contentRect || {};
+          setSize((cv) => cv.width === width && cv.height === height ? cv : {
+            width,
+            height
+          });
+        }
+      };
+      const resizeObserver = new window.ResizeObserver(resizeCallback);
+      if (ref.current) {
+        resizeObserver.observe(ref.current, void 0);
       }
+      return () => {
+        resizeObserver.disconnect();
+      };
     };
-    const resizeObserver = new window.ResizeObserver(resizeCallback);
-    if (ref.current) {
-      resizeObserver.observe(ref.current, void 0);
-    }
-    return () => {
-      resizeObserver.disconnect();
+    t4 = [];
+    $2[3] = t3;
+    $2[4] = t4;
+  } else {
+    t3 = $2[3];
+    t4 = $2[4];
+  }
+  useLayoutEffect(t3, t4);
+  let t5;
+  if ($2[5] !== size) {
+    t5 = {
+      ref,
+      ...size
     };
-  }, [ref.current]);
-  return {
-    ref,
-    ...size
-  };
+    $2[5] = size;
+    $2[6] = t5;
+  } else {
+    t5 = $2[6];
+  }
+  return t5;
 }
 const useKineticScroll = (isEnabled, callback, targetScroller) => {
   const rafId = useRef(null);
@@ -16521,10 +16801,12 @@ function useInitialScrollOffset(scrollOffsetX, scrollOffsetY, rowHeight, visible
     height: (_visibleRegionRef$cur2 = visibleRegionRef.current.height) !== null && _visibleRegionRef$cur2 !== void 0 ? _visibleRegionRef$cur2 : 1,
     ty: visibleRegionTy
   };
-  const [visibleRegion, setVisibleRegion, empty2] = useStateWithReactiveInput(visibleRegionInput);
+  const [visibleRegion, setVisibleRegion, empty] = useStateWithReactiveInput(visibleRegionInput);
   const onDidScrollRef = React.useRef(onDidScroll);
   onDidScrollRef.current = onDidScroll;
+  const scrollElRef = React.useRef(null);
   const scrollRef = useCallbackRef(null, (newVal) => {
+    scrollElRef.current = newVal;
     if (newVal !== null && scrollOffsetY !== void 0) {
       newVal.scrollTop = scrollOffsetY;
     } else if (newVal !== null && scrollOffsetX !== void 0) {
@@ -16533,26 +16815,30 @@ function useInitialScrollOffset(scrollOffsetX, scrollOffsetY, rowHeight, visible
   });
   const vScrollReady = ((_visibleRegion$height = visibleRegion.height) !== null && _visibleRegion$height !== void 0 ? _visibleRegion$height : 1) > 1;
   React.useLayoutEffect(() => {
-    if (scrollOffsetY !== void 0 && scrollRef.current !== null && vScrollReady) {
-      if (scrollRef.current.scrollTop === scrollOffsetY) return;
-      scrollRef.current.scrollTop = scrollOffsetY;
-      if (scrollRef.current.scrollTop !== scrollOffsetY) {
-        empty2();
+    if (scrollOffsetY !== void 0 && vScrollReady) {
+      const el = scrollElRef.current;
+      if (el === null) return;
+      if (el.scrollTop === scrollOffsetY) return;
+      el.scrollTop = scrollOffsetY;
+      if (el.scrollTop !== scrollOffsetY) {
+        empty();
       }
       onDidScrollRef.current();
     }
-  }, [scrollOffsetY, vScrollReady, empty2, scrollRef]);
+  }, [scrollOffsetY, vScrollReady, empty]);
   const hScrollReady = ((_visibleRegion$width = visibleRegion.width) !== null && _visibleRegion$width !== void 0 ? _visibleRegion$width : 1) > 1;
   React.useLayoutEffect(() => {
-    if (scrollOffsetX !== void 0 && scrollRef.current !== null && hScrollReady) {
-      if (scrollRef.current.scrollLeft === scrollOffsetX) return;
-      scrollRef.current.scrollLeft = scrollOffsetX;
-      if (scrollRef.current.scrollLeft !== scrollOffsetX) {
-        empty2();
+    if (scrollOffsetX !== void 0 && hScrollReady) {
+      const el_0 = scrollElRef.current;
+      if (el_0 === null) return;
+      if (el_0.scrollLeft === scrollOffsetX) return;
+      el_0.scrollLeft = scrollOffsetX;
+      if (el_0.scrollLeft !== scrollOffsetX) {
+        empty();
       }
       onDidScrollRef.current();
     }
-  }, [scrollOffsetX, hScrollReady, empty2, scrollRef]);
+  }, [scrollOffsetX, hScrollReady, empty]);
   return {
     visibleRegion,
     setVisibleRegion,

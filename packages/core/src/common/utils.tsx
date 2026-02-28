@@ -16,7 +16,9 @@ export function useEventListener<K extends keyof HTMLElementEventMap>(
     // This allows our effect below to always get latest handler ...
     // ... without us needing to pass it in effect deps array ...
     // ... and potentially cause effect to re-run every render.
-    savedHandler.current = handler;
+    React.useEffect(() => {
+        savedHandler.current = handler;
+    });
     React.useEffect(
         () => {
             // Make sure element supports addEventListener
@@ -134,28 +136,26 @@ export const Checkmark: React.FunctionComponent<Partial<SpriteProps>> = (props: 
 export function useDebouncedMemo<T>(factory: () => T, deps: React.DependencyList | undefined, time: number): T {
     const [state, setState] = React.useState(factory);
 
-    const mountedRef = React.useRef(true);
-    React.useEffect(
-        () => () => {
-            mountedRef.current = false;
-        },
-        []
-    );
+    const factoryRef = React.useRef(factory);
+    React.useEffect(() => {
+        factoryRef.current = factory;
+    });
 
-    const debouncedSetState = React.useRef<typeof setState>(
-        debounce(x => {
-            if (mountedRef.current) {
-                setState(x);
-            }
+    const debouncedSetState = React.useRef(
+        debounce((fn: () => T) => {
+            setState(() => fn());
         }, time)
     );
 
     React.useLayoutEffect(() => {
-        if (mountedRef.current) {
-            debouncedSetState.current(() => factory());
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        debouncedSetState.current(() => factoryRef.current());
     }, deps);
+
+    React.useEffect(() => {
+        return () => {
+            (debouncedSetState.current as any).cancel?.();
+        };
+    }, []);
 
     return state;
 }
@@ -215,45 +215,43 @@ export function getScrollBarWidth(): number {
 // I can't tell. It's like poes law but for code.
 //
 // I'm sorry.
-const empty = Symbol();
 export function useStateWithReactiveInput<T>(inputState: T): [T, React.Dispatch<React.SetStateAction<T>>, () => void] {
-    // When [0] is not empty we will return it, [1] is always the last value we saw
-    const inputStateRef = React.useRef<[T | typeof empty, T]>([empty, inputState]);
-    if (inputStateRef.current[1] !== inputState) {
-        // it changed, we must use thee!
-        inputStateRef.current[0] = inputState;
-    }
-    inputStateRef.current[1] = inputState;
-
+    // Track the previous inputState to detect changes
+    const [prevInput, setPrevInput] = React.useState(inputState);
     const [state, setState] = React.useState(inputState);
-    // crimes against humanity here
-    const [, forceRender] = React.useState<{} | undefined>();
+    const [overridden, setOverridden] = React.useState(false);
+
+    // When inputState changes, sync internal state
+    if (prevInput !== inputState) {
+        setPrevInput(inputState);
+        setState(inputState);
+        setOverridden(false);
+    }
+
+    const inputStateRef = React.useRef(inputState);
+    React.useEffect(() => {
+        inputStateRef.current = inputState;
+    });
+
     const setStateOuter = React.useCallback<typeof setState>(nv => {
-        // this takes care of the case where the inputState was set, then setState gets called again but back to what
-        // the state was before the inputState changed. Since the useState effect wont trigger a render in this case
-        // we need to be very naughty and force it to see the change. Technically this may not be needed some chunk of
-        // the time (in fact most of it) but checking for it is likely to be more expensive than just over-doing it
-        const s = inputStateRef.current[0];
-        if (s !== empty) {
-            nv = typeof nv === "function" ? (nv as (pv: T) => T)(s) : nv;
-            if (nv === s) return; // they are setting it to what the inputState is anyway so we can just do nothing
-        }
-        if (s !== empty) forceRender({});
         setState(pv => {
-            if (typeof nv === "function") {
-                return (nv as (pv: T) => T)(s === empty ? pv : s);
+            const resolved = typeof nv === "function" ? (nv as (pv: T) => T)(pv) : nv;
+            // If setting back to what inputState already is, no need to override
+            if (resolved === inputStateRef.current) {
+                setOverridden(false);
+                return inputStateRef.current;
             }
-            return nv;
+            setOverridden(true);
+            return resolved;
         });
-        inputStateRef.current[0] = empty;
     }, []);
 
     const onEmpty = React.useCallback(() => {
-        inputStateRef.current[0] = empty;
-        forceRender({});
+        setOverridden(false);
+        setState(inputStateRef.current);
     }, []);
 
-    return [inputStateRef.current[0] === empty ? state : inputStateRef.current[0], setStateOuter, onEmpty];
+    return [overridden ? state : inputState, setStateOuter, onEmpty];
 }
 
 export function makeAccessibilityStringForArray(arr: readonly string[]): string {
@@ -274,11 +272,11 @@ export function makeAccessibilityStringForArray(arr: readonly string[]): string 
 }
 
 export function useDeepMemo<T>(value: T): T {
-    const ref = React.useRef<T>(value);
+    const [memoized, setMemoized] = React.useState(value);
 
-    if (!deepEqual(value, ref.current)) {
-        ref.current = value;
+    if (!deepEqual(value, memoized)) {
+        setMemoized(value);
     }
 
-    return ref.current;
+    return deepEqual(value, memoized) ? memoized : value;
 }
