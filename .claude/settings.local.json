@@ -56,7 +56,10 @@
       "Bash(git apply:*)",
       "Bash(curl:*)",
       "Bash(npx storybook build:*)",
-      "Bash(xargs sed:*)"
+      "Bash(xargs sed:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(git stash:*)",
+      "Bash(pnpm build:*)"
     ],
     "deny": [],
     "ask": []
