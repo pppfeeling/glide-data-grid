@@ -107,353 +107,306 @@ export function useGridPointerEvents(args: GridPointerEventsArgs): void {
         damageInternal,
     } = args;
 
-    const groupHeaderActionForEvent = React.useCallback(
-        (group: string, bounds: Rectangle, localEventX: number, localEventY: number) => {
-            if (getGroupDetails === undefined) return undefined;
-            const groupDesc = getGroupDetails(group);
-            if (groupDesc.actions !== undefined) {
-                const boxes = getActionBoundsForGroup(bounds, groupDesc.actions);
-                for (const [i, box] of boxes.entries()) {
-                    if (pointInRect(box, localEventX + bounds.x, localEventY + box.y)) {
-                        return groupDesc.actions[i];
-                    }
+    const groupHeaderActionForEvent = (group: string, bounds: Rectangle, localEventX: number, localEventY: number) => {
+        if (getGroupDetails === undefined) return undefined;
+        const groupDesc = getGroupDetails(group);
+        if (groupDesc.actions !== undefined) {
+            const boxes = getActionBoundsForGroup(bounds, groupDesc.actions);
+            for (const [i, box] of boxes.entries()) {
+                if (pointInRect(box, localEventX + bounds.x, localEventY + box.y)) {
+                    return groupDesc.actions[i];
                 }
             }
-            return undefined;
-        },
-        [getGroupDetails]
-    );
+        }
+        return undefined;
+    };
 
-    const isOverHeaderElement = React.useCallback(
-        (
-            canvas: HTMLCanvasElement,
-            col: number,
-            clientX: number,
-            clientY: number
-        ):
-            | {
-                  area: "menu" | "indicator";
-                  bounds: Rectangle;
-              }
-            | undefined => {
-            const header = mappedColumns[col];
+    const isOverHeaderElement = (
+        canvas: HTMLCanvasElement,
+        col: number,
+        clientX: number,
+        clientY: number
+    ):
+        | {
+              area: "menu" | "indicator";
+              bounds: Rectangle;
+          }
+        | undefined => {
+        const header = mappedColumns[col];
 
-            if (!isDragging && !isResizing && !(hoveredOnEdge ?? false)) {
-                const headerBounds = getBoundsForItem(canvas, col, -1);
-                assert(headerBounds !== undefined);
-                const headerLayout = computeHeaderLayout(
-                    undefined,
-                    header,
-                    headerBounds.x,
-                    headerBounds.y,
-                    headerBounds.width,
-                    headerBounds.height,
-                    theme,
-                    direction(header.title) === "rtl"
-                );
-                if (
-                    header.hasMenu === true &&
-                    headerLayout.menuBounds !== undefined &&
-                    pointInRect(headerLayout.menuBounds, clientX, clientY)
-                ) {
-                    return {
-                        area: "menu",
-                        bounds: headerLayout.menuBounds,
-                    };
-                } else if (
-                    header.indicatorIcon !== undefined &&
-                    headerLayout.indicatorIconBounds !== undefined &&
-                    pointInRect(headerLayout.indicatorIconBounds, clientX, clientY)
-                ) {
-                    return {
-                        area: "indicator",
-                        bounds: headerLayout.indicatorIconBounds,
-                    };
-                }
+        if (!isDragging && !isResizing && !(hoveredOnEdge ?? false)) {
+            const headerBounds = getBoundsForItem(canvas, col, -1);
+            assert(headerBounds !== undefined);
+            const headerLayout = computeHeaderLayout(
+                undefined,
+                header,
+                headerBounds.x,
+                headerBounds.y,
+                headerBounds.width,
+                headerBounds.height,
+                theme,
+                direction(header.title) === "rtl"
+            );
+            if (
+                header.hasMenu === true &&
+                headerLayout.menuBounds !== undefined &&
+                pointInRect(headerLayout.menuBounds, clientX, clientY)
+            ) {
+                return {
+                    area: "menu",
+                    bounds: headerLayout.menuBounds,
+                };
+            } else if (
+                header.indicatorIcon !== undefined &&
+                headerLayout.indicatorIconBounds !== undefined &&
+                pointInRect(headerLayout.indicatorIconBounds, clientX, clientY)
+            ) {
+                return {
+                    area: "indicator",
+                    bounds: headerLayout.indicatorIconBounds,
+                };
             }
-            return undefined;
-        },
-        [mappedColumns, getBoundsForItem, hoveredOnEdge, isDragging, isResizing, theme]
-    );
+        }
+        return undefined;
+    };
 
     const downTime = React.useRef(0);
     const downPosition = React.useRef<Item | undefined>(undefined);
     const mouseDown = React.useRef(false);
 
-    const onPointerDown = React.useCallback(
-        (ev: PointerEvent) => {
-            const canvas = canvasRef.current;
-            const eventTarget = eventTargetRef?.current;
-            if (canvas === null || (ev.target !== canvas && ev.target !== eventTarget)) return;
-            mouseDown.current = true;
+    const onPointerDown = (ev: PointerEvent) => {
+        const canvas = canvasRef.current;
+        const eventTarget = eventTargetRef?.current;
+        if (canvas === null || (ev.target !== canvas && ev.target !== eventTarget)) return;
+        mouseDown.current = true;
 
-            const clientX = ev.clientX;
-            const clientY = ev.clientY;
+        const clientX = ev.clientX;
+        const clientY = ev.clientY;
 
-            if (ev.target === eventTarget && eventTarget !== null) {
-                const bounds = eventTarget.getBoundingClientRect();
-                if (clientX > bounds.right || clientY > bounds.bottom) return;
-            }
+        if (ev.target === eventTarget && eventTarget !== null) {
+            const bounds = eventTarget.getBoundingClientRect();
+            if (clientX > bounds.right || clientY > bounds.bottom) return;
+        }
 
-            const mouseArgs = getMouseArgsForPosition(canvas, clientX, clientY, ev);
-            downPosition.current = mouseArgs.location;
+        const mouseArgs = getMouseArgsForPosition(canvas, clientX, clientY, ev);
+        downPosition.current = mouseArgs.location;
 
-            if (mouseArgs.isTouch) {
-                downTime.current = Date.now();
-            }
-            if (lastWasTouchRef.current !== mouseArgs.isTouch) {
-                setLastWasTouch(mouseArgs.isTouch);
-            }
+        if (mouseArgs.isTouch) {
+            downTime.current = Date.now();
+        }
+        if (lastWasTouchRef.current !== mouseArgs.isTouch) {
+            setLastWasTouch(mouseArgs.isTouch);
+        }
 
-            if (
-                mouseArgs.kind === headerKind &&
-                isOverHeaderElement(canvas, mouseArgs.location[0], clientX, clientY) !== undefined
-            ) {
+        if (
+            mouseArgs.kind === headerKind &&
+            isOverHeaderElement(canvas, mouseArgs.location[0], clientX, clientY) !== undefined
+        ) {
+            return;
+        } else if (mouseArgs.kind === groupHeaderKind) {
+            const action = groupHeaderActionForEvent(mouseArgs.group, mouseArgs.bounds, mouseArgs.localEventX, mouseArgs.localEventY);
+            if (action !== undefined) {
                 return;
-            } else if (mouseArgs.kind === groupHeaderKind) {
-                const action = groupHeaderActionForEvent(mouseArgs.group, mouseArgs.bounds, mouseArgs.localEventX, mouseArgs.localEventY);
-                if (action !== undefined) {
-                    return;
-                }
             }
+        }
 
-            onMouseDown?.(mouseArgs);
-            if (
-                !mouseArgs.isTouch &&
-                isDraggable !== true &&
-                isDraggable !== mouseArgs.kind &&
-                mouseArgs.button < 3 &&
-                mouseArgs.button !== 1
-            ) {
-                ev.preventDefault();
-            }
-        },
-        [
-            canvasRef,
-            eventTargetRef,
-            isDraggable,
-            getMouseArgsForPosition,
-            groupHeaderActionForEvent,
-            isOverHeaderElement,
-            onMouseDown,
-            lastWasTouchRef,
-            setLastWasTouch,
-        ]
-    );
+        onMouseDown?.(mouseArgs);
+        if (
+            !mouseArgs.isTouch &&
+            isDraggable !== true &&
+            isDraggable !== mouseArgs.kind &&
+            mouseArgs.button < 3 &&
+            mouseArgs.button !== 1
+        ) {
+            ev.preventDefault();
+        }
+    };
     useEventListener("pointerdown", onPointerDown, windowEventTarget, false);
 
     const lastUpTime = React.useRef(0);
 
-    const onPointerUp = React.useCallback(
-        (ev: PointerEvent) => {
-            const lastUpTimeValue = lastUpTime.current;
-            lastUpTime.current = Date.now();
-            const canvas = canvasRef.current;
-            mouseDown.current = false;
-            if (onMouseUp === undefined || canvas === null) return;
-            const eventTarget = eventTargetRef?.current;
+    const onPointerUp = (ev: PointerEvent) => {
+        const lastUpTimeValue = lastUpTime.current;
+        lastUpTime.current = Date.now();
+        const canvas = canvasRef.current;
+        mouseDown.current = false;
+        if (onMouseUp === undefined || canvas === null) return;
+        const eventTarget = eventTargetRef?.current;
 
-            const isOutside = ev.target !== canvas && ev.target !== eventTarget;
-            const clientX = ev.clientX;
-            const clientY = ev.clientY;
-            const canCancel = ev.pointerType === "mouse" ? ev.button < 3 : true;
+        const isOutside = ev.target !== canvas && ev.target !== eventTarget;
+        const clientX = ev.clientX;
+        const clientY = ev.clientY;
+        const canCancel = ev.pointerType === "mouse" ? ev.button < 3 : true;
 
-            let mouseArgs = getMouseArgsForPosition(canvas, clientX, clientY, ev);
+        let mouseArgs = getMouseArgsForPosition(canvas, clientX, clientY, ev);
 
-            if (mouseArgs.isTouch && downTime.current !== 0 && Date.now() - downTime.current > 500) {
-                mouseArgs = {
-                    ...mouseArgs,
-                    isLongTouch: true,
-                };
+        if (mouseArgs.isTouch && downTime.current !== 0 && Date.now() - downTime.current > 500) {
+            mouseArgs = {
+                ...mouseArgs,
+                isLongTouch: true,
+            };
+        }
+
+        if (lastUpTimeValue !== 0 && Date.now() - lastUpTimeValue < (mouseArgs.isTouch ? 1000 : 500)) {
+            mouseArgs = {
+                ...mouseArgs,
+                isDoubleClick: true,
+            };
+        }
+
+        if (lastWasTouchRef.current !== mouseArgs.isTouch) {
+            setLastWasTouch(mouseArgs.isTouch);
+        }
+
+        if (!isOutside && ev.cancelable && canCancel) {
+            ev.preventDefault();
+        }
+
+        const [col] = mouseArgs.location;
+        const headerBounds = isOverHeaderElement(canvas, col, clientX, clientY);
+        if (mouseArgs.kind === headerKind && headerBounds !== undefined) {
+            if (mouseArgs.button !== 0 || downPosition.current?.[0] !== col || downPosition.current?.[1] !== -1) {
+                onMouseUp(mouseArgs, true);
             }
-
-            if (lastUpTimeValue !== 0 && Date.now() - lastUpTimeValue < (mouseArgs.isTouch ? 1000 : 500)) {
-                mouseArgs = {
-                    ...mouseArgs,
-                    isDoubleClick: true,
-                };
-            }
-
-            if (lastWasTouchRef.current !== mouseArgs.isTouch) {
-                setLastWasTouch(mouseArgs.isTouch);
-            }
-
-            if (!isOutside && ev.cancelable && canCancel) {
-                ev.preventDefault();
-            }
-
-            const [col] = mouseArgs.location;
-            const headerBounds = isOverHeaderElement(canvas, col, clientX, clientY);
-            if (mouseArgs.kind === headerKind && headerBounds !== undefined) {
-                if (mouseArgs.button !== 0 || downPosition.current?.[0] !== col || downPosition.current?.[1] !== -1) {
-                    onMouseUp(mouseArgs, true);
+            return;
+        } else if (mouseArgs.kind === groupHeaderKind) {
+            const action = groupHeaderActionForEvent(mouseArgs.group, mouseArgs.bounds, mouseArgs.localEventX, mouseArgs.localEventY);
+            if (action !== undefined) {
+                if (mouseArgs.button === 0) {
+                    action.onClick(mouseArgs);
                 }
                 return;
-            } else if (mouseArgs.kind === groupHeaderKind) {
-                const action = groupHeaderActionForEvent(mouseArgs.group, mouseArgs.bounds, mouseArgs.localEventX, mouseArgs.localEventY);
-                if (action !== undefined) {
-                    if (mouseArgs.button === 0) {
-                        action.onClick(mouseArgs);
-                    }
-                    return;
-                }
             }
+        }
 
-            onMouseUp(mouseArgs, isOutside);
-        },
-        [canvasRef, onMouseUp, eventTargetRef, getMouseArgsForPosition, isOverHeaderElement, groupHeaderActionForEvent, lastWasTouchRef, setLastWasTouch]
-    );
+        onMouseUp(mouseArgs, isOutside);
+    };
     useEventListener("pointerup", onPointerUp, windowEventTarget, false);
 
-    const onClickImpl = React.useCallback(
-        (ev: MouseEvent | TouchEvent) => {
-            const canvas = canvasRef.current;
-            if (canvas === null) return;
-            const eventTarget = eventTargetRef?.current;
+    const onClickImpl = (ev: MouseEvent | TouchEvent) => {
+        const canvas = canvasRef.current;
+        if (canvas === null) return;
+        const eventTarget = eventTargetRef?.current;
 
-            const isOutside = ev.target !== canvas && ev.target !== eventTarget;
+        const isOutside = ev.target !== canvas && ev.target !== eventTarget;
 
-            let clientX: number;
-            let clientY: number;
-            let canCancel = true;
-            if (ev instanceof MouseEvent) {
-                clientX = ev.clientX;
-                clientY = ev.clientY;
-                canCancel = ev.button < 3;
-            } else {
-                clientX = ev.changedTouches[0].clientX;
-                clientY = ev.changedTouches[0].clientY;
-            }
+        let clientX: number;
+        let clientY: number;
+        let canCancel = true;
+        if (ev instanceof MouseEvent) {
+            clientX = ev.clientX;
+            clientY = ev.clientY;
+            canCancel = ev.button < 3;
+        } else {
+            clientX = ev.changedTouches[0].clientX;
+            clientY = ev.changedTouches[0].clientY;
+        }
 
-            const mouseArgs = getMouseArgsForPosition(canvas, clientX, clientY, ev);
+        const mouseArgs = getMouseArgsForPosition(canvas, clientX, clientY, ev);
 
-            if (lastWasTouchRef.current !== mouseArgs.isTouch) {
-                setLastWasTouch(mouseArgs.isTouch);
-            }
+        if (lastWasTouchRef.current !== mouseArgs.isTouch) {
+            setLastWasTouch(mouseArgs.isTouch);
+        }
 
-            if (!isOutside && ev.cancelable && canCancel) {
-                ev.preventDefault();
-            }
+        if (!isOutside && ev.cancelable && canCancel) {
+            ev.preventDefault();
+        }
 
-            const [col] = mouseArgs.location;
-            if (mouseArgs.kind === headerKind) {
-                const headerBounds = isOverHeaderElement(canvas, col, clientX, clientY);
-                if (
-                    headerBounds !== undefined &&
-                    mouseArgs.button === 0 &&
-                    downPosition.current?.[0] === col &&
-                    downPosition.current?.[1] === -1
-                ) {
-                    if (headerBounds.area === "menu") {
-                        onHeaderMenuClick?.(col, headerBounds.bounds);
-                    } else if (headerBounds.area === "indicator") {
-                        onHeaderIndicatorClick?.(col, headerBounds.bounds);
-                    }
+        const [col] = mouseArgs.location;
+        if (mouseArgs.kind === headerKind) {
+            const headerBounds = isOverHeaderElement(canvas, col, clientX, clientY);
+            if (
+                headerBounds !== undefined &&
+                mouseArgs.button === 0 &&
+                downPosition.current?.[0] === col &&
+                downPosition.current?.[1] === -1
+            ) {
+                if (headerBounds.area === "menu") {
+                    onHeaderMenuClick?.(col, headerBounds.bounds);
+                } else if (headerBounds.area === "indicator") {
+                    onHeaderIndicatorClick?.(col, headerBounds.bounds);
                 }
             }
-        },
-        [canvasRef, eventTargetRef, getMouseArgsForPosition, isOverHeaderElement, onHeaderMenuClick, onHeaderIndicatorClick, lastWasTouchRef, setLastWasTouch]
-    );
+        }
+    };
     useEventListener("click", onClickImpl, windowEventTarget, false);
 
-    const onContextMenuImpl = React.useCallback(
-        (ev: MouseEvent) => {
-            const canvas = canvasRef.current;
-            const eventTarget = eventTargetRef?.current;
-            if (canvas === null || (ev.target !== canvas && ev.target !== eventTarget) || onContextMenu === undefined)
-                return;
-            const mouseArgs = getMouseArgsForPosition(canvas, ev.clientX, ev.clientY, ev);
-            onContextMenu(mouseArgs, () => {
-                if (ev.cancelable) ev.preventDefault();
-            });
-        },
-        [canvasRef, eventTargetRef, getMouseArgsForPosition, onContextMenu]
-    );
-    useEventListener("contextmenu", onContextMenuImpl, eventTargetRef?.current ?? null, false);
+    const onContextMenuImpl = (ev: MouseEvent) => {
+        const canvas = canvasRef.current;
+        const eventTarget = eventTargetRef?.current;
+        if (canvas === null || (ev.target !== canvas && ev.target !== eventTarget) || onContextMenu === undefined)
+            return;
+        const mouseArgs = getMouseArgsForPosition(canvas, ev.clientX, ev.clientY, ev);
+        onContextMenu(mouseArgs, () => {
+            if (ev.cancelable) ev.preventDefault();
+        });
+    };
+    useEventListener("contextmenu", onContextMenuImpl, eventTargetRef ?? null, false);
 
     const hoveredRef = React.useRef<GridMouseEventArgs | undefined>(undefined);
-    const onPointerMove = React.useCallback(
-        (ev: MouseEvent) => {
-            const canvas = canvasRef.current;
-            if (canvas === null) return;
+    const onPointerMove = (ev: MouseEvent) => {
+        const canvas = canvasRef.current;
+        if (canvas === null) return;
 
-            const eventTarget = eventTargetRef?.current;
-            const isIndirect = ev.target !== canvas && ev.target !== eventTarget;
+        const eventTarget = eventTargetRef?.current;
+        const isIndirect = ev.target !== canvas && ev.target !== eventTarget;
 
-            const mouseArgs = getMouseArgsForPosition(canvas, ev.clientX, ev.clientY, ev);
-            if (mouseArgs.kind !== "out-of-bounds" && isIndirect && !mouseDown.current && !mouseArgs.isTouch) {
-                return;
-            }
+        const mouseArgs = getMouseArgsForPosition(canvas, ev.clientX, ev.clientY, ev);
+        if (mouseArgs.kind !== "out-of-bounds" && isIndirect && !mouseDown.current && !mouseArgs.isTouch) {
+            return;
+        }
 
-            const maybeSetHoveredInfo = (newVal: typeof hoverInfoRef.current, needPosition: boolean) => {
-                setHoveredItemInfo(cv => {
-                    if (cv === newVal) return cv;
-                    if (
-                        cv?.[0][0] === newVal?.[0][0] &&
-                        cv?.[0][1] === newVal?.[0][1] &&
-                        ((cv?.[1][0] === newVal?.[1][0] && cv?.[1][1] === newVal?.[1][1]) || !needPosition)
-                    ) {
+        const maybeSetHoveredInfo = (newVal: typeof hoverInfoRef.current, needPosition: boolean) => {
+            setHoveredItemInfo(cv => {
+                if (cv === newVal) return cv;
+                if (cv !== undefined && newVal !== undefined) {
+                    const sameCol = cv[0][0] === newVal[0][0];
+                    const sameRow = cv[0][1] === newVal[0][1];
+                    const samePos = cv[1][0] === newVal[1][0] && cv[1][1] === newVal[1][1];
+                    if (sameCol && sameRow && (samePos || !needPosition)) {
                         return cv;
                     }
-                    return newVal;
-                });
-            };
-
-            if (!mouseEventArgsAreEqual(mouseArgs, hoveredRef.current)) {
-                setDrawCursorOverride(undefined);
-                onItemHovered?.(mouseArgs);
-                maybeSetHoveredInfo(
-                    mouseArgs.kind === outOfBoundsKind ? undefined : [mouseArgs.location, [mouseArgs.localEventX, mouseArgs.localEventY]],
-                    true
-                );
-                hoveredRef.current = mouseArgs;
-            } else if (mouseArgs.kind === "cell" || mouseArgs.kind === headerKind || mouseArgs.kind === groupHeaderKind) {
-                let needsDamageCell = false;
-                let needsHoverPosition = true;
-
-                if (mouseArgs.kind === "cell") {
-                    const toCheck = getCellContent(mouseArgs.location);
-                    const rendererNeeds = getCellRenderer(toCheck)?.needsHoverPosition;
-                    needsHoverPosition = rendererNeeds ?? toCheck.kind === GridCellKind.Custom;
-                    needsDamageCell = needsHoverPosition;
-                } else {
-                    needsDamageCell = true;
                 }
+                return newVal;
+            });
+        };
 
-                const newInfo: typeof hoverInfoRef.current = [mouseArgs.location, [mouseArgs.localEventX, mouseArgs.localEventY]];
-                maybeSetHoveredInfo(newInfo, needsHoverPosition);
-                hoverInfoRef.current = newInfo;
-                if (needsDamageCell) {
-                    damageInternal(new CellSet([mouseArgs.location]));
-                }
+        if (!mouseEventArgsAreEqual(mouseArgs, hoveredRef.current)) {
+            setDrawCursorOverride(undefined);
+            onItemHovered?.(mouseArgs);
+            maybeSetHoveredInfo(
+                mouseArgs.kind === outOfBoundsKind ? undefined : [mouseArgs.location, [mouseArgs.localEventX, mouseArgs.localEventY]],
+                true
+            );
+            hoveredRef.current = mouseArgs;
+        } else if (mouseArgs.kind === "cell" || mouseArgs.kind === headerKind || mouseArgs.kind === groupHeaderKind) {
+            let needsDamageCell = false;
+            let needsHoverPosition = true;
+
+            if (mouseArgs.kind === "cell") {
+                const toCheck = getCellContent(mouseArgs.location);
+                const rendererNeeds = getCellRenderer(toCheck)?.needsHoverPosition;
+                needsHoverPosition = rendererNeeds ?? toCheck.kind === GridCellKind.Custom;
+                needsDamageCell = needsHoverPosition;
+            } else {
+                needsDamageCell = true;
             }
 
-            const notRowMarkerCol = mouseArgs.location[0] >= (firstColAccessible ? 0 : 1);
-            setHoveredOnEdge(mouseArgs.kind === headerKind && mouseArgs.isEdge && notRowMarkerCol && allowResize === true);
+            const newInfo: typeof hoverInfoRef.current = [mouseArgs.location, [mouseArgs.localEventX, mouseArgs.localEventY]];
+            maybeSetHoveredInfo(newInfo, needsHoverPosition);
+            hoverInfoRef.current = newInfo;
+            if (needsDamageCell) {
+                damageInternal(new CellSet([mouseArgs.location]));
+            }
+        }
 
-            setOverFill(mouseArgs.kind === "cell" && mouseArgs.isFillHandle);
+        const notRowMarkerCol = mouseArgs.location[0] >= (firstColAccessible ? 0 : 1);
+        setHoveredOnEdge(mouseArgs.kind === headerKind && mouseArgs.isEdge && notRowMarkerCol && allowResize === true);
 
-            onMouseMoveRaw?.(ev);
-            onMouseMove(mouseArgs);
-        },
-        [
-            canvasRef,
-            eventTargetRef,
-            getMouseArgsForPosition,
-            firstColAccessible,
-            allowResize,
-            onMouseMoveRaw,
-            onMouseMove,
-            onItemHovered,
-            getCellContent,
-            getCellRenderer,
-            damageInternal,
-            setHoveredItemInfo,
-            setHoveredOnEdge,
-            setOverFill,
-            setDrawCursorOverride,
-            hoverInfoRef,
-        ]
-    );
+        setOverFill(mouseArgs.kind === "cell" && mouseArgs.isFillHandle);
+
+        onMouseMoveRaw?.(ev);
+        onMouseMove(mouseArgs);
+    };
     useEventListener("pointermove", onPointerMove, windowEventTarget, true);
 }

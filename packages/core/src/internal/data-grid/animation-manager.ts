@@ -16,6 +16,10 @@ function easeOutCubic(x: number) {
 export class AnimationManager {
     constructor(private callback: StepCallback) {}
 
+    public setCallback = (cb: StepCallback): void => {
+        this.callback = cb;
+    };
+
     private currentHoveredItem: StateItem | undefined = undefined;
     private leavingItems: StateItem[] = [];
 

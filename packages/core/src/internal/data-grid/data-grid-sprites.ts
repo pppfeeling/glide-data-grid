@@ -51,6 +51,18 @@ export class SpriteManager {
         this.headerIcons = headerIcons ?? {};
     }
 
+    public updateIcons(headerIcons: SpriteMap | undefined): void {
+        const newIcons = headerIcons ?? {};
+        if (this.headerIcons !== newIcons) {
+            this.headerIcons = newIcons;
+            this.spriteMap.clear();
+        }
+    }
+
+    public setOnSettled(cb: () => void): void {
+        this.onSettled = cb;
+    }
+
     public drawSprite(
         sprite: HeaderIcon | string,
         variant: SpriteVariant,

@@ -12,7 +12,7 @@ import { CompactSelection, GridCellKind } from "./data-grid-types.js";
 import { CellSet } from "./cell-set.js";
 import { drawGrid } from "./render/data-grid-render.js";
 import type { BlitData } from "./render/data-grid-render.blit.js";
-import { AnimationManager, type StepCallback } from "./animation-manager.js";
+import { AnimationManager } from "./animation-manager.js";
 import { RenderStateProvider } from "../../common/render-state-provider.js";
 import { browserIsFirefox, browserIsSafari } from "../../common/browser-detect.js";
 import { type EnqueueCallback, useAnimationQueue } from "./use-animation-queue.js";
@@ -24,6 +24,18 @@ import type { SpriteManager } from "./data-grid-sprites.js";
 import type { MappedGridColumn } from "./render/data-grid-lib.js";
 
 type DamageUpdateList = readonly { cell: Item }[];
+
+function createBufferCanvases(): [CanvasRenderingContext2D | null, CanvasRenderingContext2D | null] {
+    const a = document.createElement("canvas");
+    const b = document.createElement("canvas");
+    a.style["display"] = "none";
+    a.style["opacity"] = "0";
+    a.style["position"] = "fixed";
+    b.style["display"] = "none";
+    b.style["opacity"] = "0";
+    b.style["position"] = "fixed";
+    return [a.getContext("2d", { alpha: false }), b.getContext("2d", { alpha: false })];
+}
 
 export interface CanvasRendererArgs {
     // Canvas refs
@@ -81,7 +93,7 @@ export interface CanvasRendererArgs {
     // Hover state
     readonly hoveredItemInfo: [Item, readonly [number, number]] | undefined;
     readonly hoverInfoRef: React.MutableRefObject<[Item, readonly [number, number]] | undefined>;
-    readonly hoverValues: React.MutableRefObject<readonly { item: Item; hoverAmount: number }[]>;
+    readonly hoverValuesRef: React.MutableRefObject<readonly { item: Item; hoverAmount: number }[]>;
     readonly lastWasTouch: boolean;
 
     // Experimental
@@ -154,7 +166,7 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
         getCellRenderer,
         hoveredItemInfo,
         hoverInfoRef,
-        hoverValues,
+        hoverValuesRef,
         lastWasTouch,
         experimental,
     } = args;
@@ -185,17 +197,8 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
         // do nothing
     });
 
-    const [bufferACtx, bufferBCtx] = React.useMemo(() => {
-        const a = document.createElement("canvas");
-        const b = document.createElement("canvas");
-        a.style["display"] = "none";
-        a.style["opacity"] = "0";
-        a.style["position"] = "fixed";
-        b.style["display"] = "none";
-        b.style["opacity"] = "0";
-        b.style["position"] = "fixed";
-        return [a.getContext("2d", { alpha: false }), b.getContext("2d", { alpha: false })];
-    }, []);
+    // Lazy-init with useState to avoid ref.current access during render
+    const [[bufferACtx, bufferBCtx]] = React.useState(createBufferCanvases);
 
     React.useLayoutEffect(() => {
         if (bufferACtx === null || bufferBCtx === null) return;
@@ -207,7 +210,7 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
         };
     }, [bufferACtx, bufferBCtx]);
 
-    const renderStateProvider = React.useMemo(() => new RenderStateProvider(), []);
+    const [renderStateProvider] = React.useState(() => new RenderStateProvider());
 
     const maxDPR = enableFirefoxRescaling && scrolling ? 1 : enableSafariRescaling && scrolling ? 2 : 5;
     const minimumCellWidth = experimental?.disableMinimumCellWidth === true ? 1 : 10;
@@ -216,7 +219,7 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
     const canvasCtx = React.useRef<CanvasRenderingContext2D | null>(null);
     const overlayCtx = React.useRef<CanvasRenderingContext2D | null>(null);
 
-    const draw = React.useCallback(() => {
+    const draw = () => {
         const canvas = canvasRef.current;
         const overlay = overlayRef.current;
         if (canvas === null || overlay === null) return;
@@ -288,7 +291,7 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
             imageLoader,
             lastBlitData,
             damage: damageRegion.current,
-            hoverValues: hoverValues.current,
+            hoverValues: hoverValuesRef.current,
             hoverInfo: hoverInfoRef.current,
             spriteManager,
             scrolling,
@@ -312,65 +315,13 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
         if (!didOverride && (current.damage === undefined || current.damage.has(hoverInfoRef?.current?.[0]))) {
             setDrawCursorOverride(undefined);
         }
-    }, [
-        canvasRef,
-        overlayRef,
-        bufferACtx,
-        bufferBCtx,
-        width,
-        height,
-        cellXOffset,
-        cellYOffset,
-        translateX,
-        translateY,
-        mappedColumns,
-        enableGroups,
-        freezeColumns,
-        dragAndDropState,
-        theme,
-        headerHeight,
-        groupHeaderHeight,
-        groupLevels,
-        groupHeaderHeights,
-        disabledRows,
-        rowHeight,
-        verticalBorder,
-        isResizing,
-        hasAppendRow,
-        resizeCol,
-        isFocused,
-        selection,
-        fillHandle,
-        freezeTrailingRows,
-        rows,
-        drawFocusRing,
-        maxDPR,
-        getCellContent,
-        getGroupDetails,
-        getRowThemeOverride,
-        drawCellCallback,
-        drawHeaderCallback,
-        prelightCells,
-        highlightRegions,
-        imageLoader,
-        spriteManager,
-        scrolling,
-        experimental?.hyperWrapping,
-        experimental?.renderStrategy,
-        lastWasTouch,
-        renderStateProvider,
-        getCellRenderer,
-        minimumCellWidth,
-        resizeIndicator,
-        hoverInfoRef,
-        hoverValues,
-    ]);
+    };
 
     const lastDrawRef = React.useRef(draw);
     React.useLayoutEffect(() => {
         draw();
         lastDrawRef.current = draw;
-    }, [draw]);
+    });
 
     React.useLayoutEffect(() => {
         const fn = async () => {
@@ -382,41 +333,44 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
         void fn();
     }, []);
 
-    const damageInternal = React.useCallback((locations: CellSet) => {
+    const damageInternal = (locations: CellSet) => {
         damageRegion.current = locations;
         lastDrawRef.current();
         damageRegion.current = undefined;
-    }, []);
+    };
 
     const enqueue = useAnimationQueue(damageInternal);
-    enqueueRef.current = enqueue;
 
-    const damage = React.useCallback(
-        (cells: DamageUpdateList) => {
-            damageInternal(new CellSet(cells.map(x => x.cell)));
-        },
-        [damageInternal]
-    );
+    React.useLayoutEffect(() => {
+        enqueueRef.current = enqueue;
+    });
 
-    imageLoader.setCallback(damageInternal);
+    const damage = (cells: DamageUpdateList) => {
+        damageInternal(new CellSet(cells.map(x => x.cell)));
+    };
+
+    React.useLayoutEffect(() => {
+        imageLoader.setCallback(damageInternal);
+    });
 
     // Animation manager for hover effects
-    const onAnimationFrame = React.useCallback<StepCallback>(values => {
-        damageRegion.current = new CellSet(values.map(x => x.item));
-        hoverValues.current = values;
-        lastDrawRef.current();
-        damageRegion.current = undefined;
-    }, [hoverValues]);
+    const [animManager] = React.useState(() => new AnimationManager(values => {
+        // initial callback - will be replaced in useLayoutEffect
+    }));
 
-    const animManagerValue = React.useMemo(() => new AnimationManager(onAnimationFrame), [onAnimationFrame]);
-    const animationManager = React.useRef(animManagerValue);
-    animationManager.current = animManagerValue;
+    React.useLayoutEffect(() => {
+        animManager.setCallback(values => {
+            damageRegion.current = new CellSet(values.map(x => x.item));
+            hoverValuesRef.current = values;
+            lastDrawRef.current();
+            damageRegion.current = undefined;
+        });
+    });
 
     const [hoveredItem] = hoveredItemInfo ?? [];
     React.useLayoutEffect(() => {
-        const am = animationManager.current;
         if (hoveredItem === undefined || hoveredItem[1] < 0) {
-            am.setHovered(hoveredItem);
+            animManager.setHovered(hoveredItem);
             return;
         }
         const cell = getCellContent(hoveredItem as [number, number], true);
@@ -424,8 +378,8 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
         const cellNeedsHover =
             (r === undefined && cell.kind === GridCellKind.Custom) ||
             (r?.needsHover !== undefined && (typeof r.needsHover === "boolean" ? r.needsHover : r.needsHover(cell)));
-        am.setHovered(cellNeedsHover ? hoveredItem : undefined);
-    }, [getCellContent, getCellRenderer, hoveredItem]);
+        animManager.setHovered(cellNeedsHover ? hoveredItem : undefined);
+    }, [getCellContent, getCellRenderer, hoveredItem, animManager]);
 
     return {
         scrolling,

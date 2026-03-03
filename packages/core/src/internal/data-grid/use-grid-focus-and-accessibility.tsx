@@ -110,26 +110,21 @@ export function useGridFocusAndAccessibility(args: GridFocusAndAccessibilityArgs
         forwardedRef,
     } = args;
 
-    const selectionRef = React.useRef(selection);
-    selectionRef.current = selection;
     const focusRef = React.useRef<HTMLElement | null>(null);
 
-    const focusElement = React.useCallback(
-        (el: HTMLElement | null) => {
-            if (canvasRef.current === null || !canvasRef.current.contains(document.activeElement)) return;
-            if (el === null && selectionRef.current.current !== undefined) {
-                canvasPropRef?.current?.focus({
-                    preventScroll: true,
-                });
-            } else if (el !== null) {
-                el.focus({
-                    preventScroll: true,
-                });
-            }
-            focusRef.current = el;
-        },
-        [canvasRef, canvasPropRef]
-    );
+    const focusElement = (el: HTMLElement | null) => {
+        if (canvasRef.current === null || !canvasRef.current.contains(document.activeElement)) return;
+        if (el === null && selection.current !== undefined) {
+            canvasPropRef?.current?.focus({
+                preventScroll: true,
+            });
+        } else if (el !== null) {
+            el.focus({
+                preventScroll: true,
+            });
+        }
+        focusRef.current = el;
+    };
 
     React.useImperativeHandle(
         forwardedRef,

@@ -2025,6 +2025,8 @@ declare class SpriteManager {
     private headerIcons;
     private inFlight;
     constructor(headerIcons: SpriteMap | undefined, onSettled: () => void);
+    updateIcons(headerIcons: SpriteMap | undefined): void;
+    setOnSettled(cb: () => void): void;
     drawSprite(sprite: HeaderIcon | string, variant: SpriteVariant, ctx: CanvasRenderingContext2D, x: number, y: number, size: number, theme: Theme, alpha?: number): void;
 }
 

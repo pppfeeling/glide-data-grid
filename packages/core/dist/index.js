@@ -4534,6 +4534,13 @@ function requireDebounce() {
 }
 var debounceExports = requireDebounce();
 const debounce = /* @__PURE__ */ getDefaultExportFromCjs(debounceExports);
+function resolveEventTarget(target) {
+  if (target === void 0 || target === null) return null;
+  if ("current" in target && !("addEventListener" in target)) {
+    return target.current;
+  }
+  return target;
+}
 function useEventListener(eventName, handler, element, passive, t0) {
   const $2 = compilerRuntimeExports.c(8);
   const capture = t0 === void 0 ? false : t0;
@@ -4553,10 +4560,11 @@ function useEventListener(eventName, handler, element, passive, t0) {
   let t3;
   if ($2[2] !== capture || $2[3] !== element || $2[4] !== eventName || $2[5] !== passive) {
     t2 = () => {
-      if (element === null || element.addEventListener === void 0) {
+      const resolved = resolveEventTarget(element);
+      if (resolved === null || resolved.addEventListener === void 0) {
         return;
       }
-      const el = element;
+      const el = resolved;
       const eventListener = (event) => {
         var _savedHandler$current;
         (_savedHandler$current = savedHandler.current) === null || _savedHandler$current === void 0 || _savedHandler$current.call(el, event);
@@ -4805,7 +4813,7 @@ const ImageOverlayEditor = (p2) => {
   if ($2[0] !== renderImage || $2[1] !== urls) {
     t7 = /* @__PURE__ */ Symbol.for("react.early_return_sentinel");
     bb0: {
-      const filtered = urls.filter(_temp$6);
+      const filtered = urls.filter(_temp$a);
       if (filtered.length === 0) {
         t7 = null;
         break bb0;
@@ -4899,7 +4907,7 @@ const ImageOverlayEditor = (p2) => {
   }
   return t10;
 };
-function _temp$6(u) {
+function _temp$a(u) {
   return u !== "";
 }
 function L() {
@@ -6654,7 +6662,7 @@ const GrowingEntry = (props) => {
   } = React.useContext(GhostModeContext);
   const useText = isGhostMode && ghostValue ? ghostValue : value !== null && value !== void 0 ? value : "";
   assert(onChange !== void 0, "GrowingEntry must be a controlled input area");
-  const [inputID] = React.useState(_temp$5);
+  const [inputID] = React.useState(_temp$9);
   const useTextRef = React.useRef(useText);
   const highlightRef = React.useRef(highlight);
   let t0;
@@ -6782,7 +6790,7 @@ const GrowingEntry = (props) => {
   }
   return t11;
 };
-function _temp$5() {
+function _temp$9() {
   return "input-box-" + nextInputId();
 }
 var d = /* @__PURE__ */ new Map(), b = /* @__PURE__ */ new Map(), z = /* @__PURE__ */ new Map();
@@ -8601,6 +8609,16 @@ class SpriteManager {
     this.inFlight = 0;
     this.headerIcons = headerIcons !== null && headerIcons !== void 0 ? headerIcons : {};
   }
+  updateIcons(headerIcons) {
+    const newIcons = headerIcons !== null && headerIcons !== void 0 ? headerIcons : {};
+    if (this.headerIcons !== newIcons) {
+      this.headerIcons = newIcons;
+      this.spriteMap.clear();
+    }
+  }
+  setOnSettled(cb) {
+    this.onSettled = cb;
+  }
   drawSprite(sprite, variant, ctx, x2, y2, size, theme) {
     let alpha = arguments.length > 7 && arguments[7] !== void 0 ? arguments[7] : 1;
     const [bgColor, fgColor] = getColors(variant, theme);
@@ -9742,7 +9760,7 @@ function useGridGeometry(args) {
   const getMouseArgsForPosition = t2;
   let t3;
   if ($2[40] !== enableGroups || $2[41] !== groupHeaderHeights) {
-    t3 = enableGroups ? groupHeaderHeights.reduce(_temp$4, 0) : 0;
+    t3 = enableGroups ? groupHeaderHeights.reduce(_temp$8, 0) : 0;
     $2[40] = enableGroups;
     $2[41] = groupHeaderHeights;
     $2[42] = t3;
@@ -9772,7 +9790,7 @@ function useGridGeometry(args) {
   }
   return t4;
 }
-function _temp$4(a, b_0) {
+function _temp$8(a, b_0) {
   return a + b_0;
 }
 function drawCheckbox(ctx, theme, checked, x2, y2, width, height, highlighted) {
@@ -12371,6 +12389,9 @@ function easeOutCubic(x2) {
 class AnimationManager {
   constructor(callback) {
     this.callback = callback;
+    this.setCallback = (cb) => {
+      this.callback = cb;
+    };
     this.currentHoveredItem = void 0;
     this.leavingItems = [];
     this.lastAnimationTime = void 0;
@@ -12472,7 +12493,7 @@ function useAnimationQueue(draw) {
   const seq = React.useRef(0);
   const drawRef = React.useRef(draw);
   drawRef.current = draw;
-  const loop = React.useCallback(() => {
+  const loop = () => {
     const requeue = () => window.requestAnimationFrame(fn);
     const fn = () => {
       const toDraw = queue.current.map(unpackNumberToColRow);
@@ -12485,16 +12506,33 @@ function useAnimationQueue(draw) {
       }
     };
     window.requestAnimationFrame(seq.current > 600 ? requeue : fn);
-  }, []);
-  return React.useCallback((item) => {
+  };
+  const enqueue = (item) => {
     if (queue.current.length === 0) loop();
     const packed = packColRowToNumber(item[0], item[1]);
     if (queue.current.includes(packed)) return;
     queue.current.push(packed);
-  }, [loop]);
+  };
+  return enqueue;
+}
+function createBufferCanvases() {
+  const a = document.createElement("canvas");
+  const b2 = document.createElement("canvas");
+  a.style["display"] = "none";
+  a.style["opacity"] = "0";
+  a.style["position"] = "fixed";
+  b2.style["display"] = "none";
+  b2.style["opacity"] = "0";
+  b2.style["position"] = "fixed";
+  return [a.getContext("2d", {
+    alpha: false
+  }), b2.getContext("2d", {
+    alpha: false
+  })];
 }
 function useCanvasRenderer(args) {
   var _experimental$enableF, _experimental$enableS;
+  const $2 = compilerRuntimeExports.c(91);
   const {
     canvasRef,
     overlayRef,
@@ -12538,7 +12576,7 @@ function useCanvasRenderer(args) {
     getCellRenderer,
     hoveredItemInfo,
     hoverInfoRef,
-    hoverValues,
+    hoverValuesRef,
     lastWasTouch,
     experimental
   } = args;
@@ -12549,207 +12587,407 @@ function useCanvasRenderer(args) {
   const enableFirefoxRescaling = ((_experimental$enableF = experimental === null || experimental === void 0 ? void 0 : experimental.enableFirefoxRescaling) !== null && _experimental$enableF !== void 0 ? _experimental$enableF : false) && browserIsFirefox.value;
   const enableSafariRescaling = ((_experimental$enableS = experimental === null || experimental === void 0 ? void 0 : experimental.enableSafariRescaling) !== null && _experimental$enableS !== void 0 ? _experimental$enableS : false) && browserIsSafari.value;
   const scrollingStopRef = React.useRef(-1);
-  React.useLayoutEffect(() => {
-    if (window.devicePixelRatio === 1 || !enableFirefoxRescaling && !enableSafariRescaling) return;
-    if (scrollingStopRef.current !== -1) {
-      setScrolling(true);
-    }
-    window.clearTimeout(scrollingStopRef.current);
-    scrollingStopRef.current = window.setTimeout(() => {
-      setScrolling(false);
-      scrollingStopRef.current = -1;
-    }, 200);
-  }, [cellYOffset, cellXOffset, translateX, translateY, enableFirefoxRescaling, enableSafariRescaling]);
-  const enqueueRef = React.useRef(() => {
-  });
-  const [bufferACtx, bufferBCtx] = React.useMemo(() => {
-    const a = document.createElement("canvas");
-    const b2 = document.createElement("canvas");
-    a.style["display"] = "none";
-    a.style["opacity"] = "0";
-    a.style["position"] = "fixed";
-    b2.style["display"] = "none";
-    b2.style["opacity"] = "0";
-    b2.style["position"] = "fixed";
-    return [a.getContext("2d", {
-      alpha: false
-    }), b2.getContext("2d", {
-      alpha: false
-    })];
-  }, []);
-  React.useLayoutEffect(() => {
-    if (bufferACtx === null || bufferBCtx === null) return;
-    document.documentElement.append(bufferACtx.canvas);
-    document.documentElement.append(bufferBCtx.canvas);
-    return () => {
-      bufferACtx.canvas.remove();
-      bufferBCtx.canvas.remove();
+  let t0;
+  if ($2[0] !== enableFirefoxRescaling || $2[1] !== enableSafariRescaling) {
+    t0 = () => {
+      if (window.devicePixelRatio === 1 || !enableFirefoxRescaling && !enableSafariRescaling) {
+        return;
+      }
+      if (scrollingStopRef.current !== -1) {
+        setScrolling(true);
+      }
+      window.clearTimeout(scrollingStopRef.current);
+      scrollingStopRef.current = window.setTimeout(() => {
+        setScrolling(false);
+        scrollingStopRef.current = -1;
+      }, 200);
     };
-  }, [bufferACtx, bufferBCtx]);
-  const renderStateProvider = React.useMemo(() => new RenderStateProvider(), []);
+    $2[0] = enableFirefoxRescaling;
+    $2[1] = enableSafariRescaling;
+    $2[2] = t0;
+  } else {
+    t0 = $2[2];
+  }
+  let t1;
+  if ($2[3] !== cellXOffset || $2[4] !== cellYOffset || $2[5] !== enableFirefoxRescaling || $2[6] !== enableSafariRescaling || $2[7] !== translateX || $2[8] !== translateY) {
+    t1 = [cellYOffset, cellXOffset, translateX, translateY, enableFirefoxRescaling, enableSafariRescaling];
+    $2[3] = cellXOffset;
+    $2[4] = cellYOffset;
+    $2[5] = enableFirefoxRescaling;
+    $2[6] = enableSafariRescaling;
+    $2[7] = translateX;
+    $2[8] = translateY;
+    $2[9] = t1;
+  } else {
+    t1 = $2[9];
+  }
+  React.useLayoutEffect(t0, t1);
+  const enqueueRef = React.useRef(_temp$7);
+  const [t2] = React.useState(createBufferCanvases);
+  const [bufferACtx, bufferBCtx] = t2;
+  let t3;
+  let t4;
+  if ($2[10] !== bufferACtx || $2[11] !== bufferBCtx) {
+    t3 = () => {
+      if (bufferACtx === null || bufferBCtx === null) {
+        return;
+      }
+      document.documentElement.append(bufferACtx.canvas);
+      document.documentElement.append(bufferBCtx.canvas);
+      return () => {
+        bufferACtx.canvas.remove();
+        bufferBCtx.canvas.remove();
+      };
+    };
+    t4 = [bufferACtx, bufferBCtx];
+    $2[10] = bufferACtx;
+    $2[11] = bufferBCtx;
+    $2[12] = t3;
+    $2[13] = t4;
+  } else {
+    t3 = $2[12];
+    t4 = $2[13];
+  }
+  React.useLayoutEffect(t3, t4);
+  const [renderStateProvider] = React.useState(_temp2$4);
   const maxDPR = enableFirefoxRescaling && scrolling ? 1 : enableSafariRescaling && scrolling ? 2 : 5;
   const minimumCellWidth = (experimental === null || experimental === void 0 ? void 0 : experimental.disableMinimumCellWidth) === true ? 1 : 10;
   const lastArgsRef = React.useRef(void 0);
   const canvasCtx = React.useRef(null);
   const overlayCtx = React.useRef(null);
-  const draw = React.useCallback(() => {
-    var _experimental$hyperWr, _experimental$renderS, _hoverInfoRef$current;
-    const canvas = canvasRef.current;
-    const overlay = overlayRef.current;
-    if (canvas === null || overlay === null) return;
-    if (canvasCtx.current === null) {
-      canvasCtx.current = canvas.getContext("2d", {
-        alpha: false
-      });
-      canvas.width = 0;
-      canvas.height = 0;
-    }
-    if (overlayCtx.current === null) {
-      overlayCtx.current = overlay.getContext("2d", {
-        alpha: false
-      });
-      overlay.width = 0;
-      overlay.height = 0;
-    }
-    if (canvasCtx.current === null || overlayCtx.current === null || bufferACtx === null || bufferBCtx === null) {
-      return;
-    }
-    let didOverride = false;
-    const overrideCursor = (cursor) => {
-      didOverride = true;
-      setDrawCursorOverride(cursor);
+  let t5;
+  if ($2[14] !== bufferACtx || $2[15] !== bufferBCtx || $2[16] !== canvasRef || $2[17] !== cellXOffset || $2[18] !== cellYOffset || $2[19] !== disabledRows || $2[20] !== dragAndDropState || $2[21] !== drawCellCallback || $2[22] !== drawFocusRing || $2[23] !== drawHeaderCallback || $2[24] !== enableGroups || $2[25] !== (experimental === null || experimental === void 0 ? void 0 : experimental.hyperWrapping) || $2[26] !== (experimental === null || experimental === void 0 ? void 0 : experimental.renderStrategy) || $2[27] !== fillHandle || $2[28] !== freezeColumns || $2[29] !== freezeTrailingRows || $2[30] !== getCellContent || $2[31] !== getCellRenderer || $2[32] !== getGroupDetails || $2[33] !== getRowThemeOverride || $2[34] !== groupHeaderHeight || $2[35] !== groupHeaderHeights || $2[36] !== groupLevels || $2[37] !== hasAppendRow || $2[38] !== headerHeight || $2[39] !== height || $2[40] !== highlightRegions || $2[41] !== hoverInfoRef || $2[42] !== hoverValuesRef || $2[43] !== imageLoader || $2[44] !== isFocused || $2[45] !== isResizing || $2[46] !== lastWasTouch || $2[47] !== mappedColumns || $2[48] !== maxDPR || $2[49] !== minimumCellWidth || $2[50] !== overlayRef || $2[51] !== prelightCells || $2[52] !== renderStateProvider || $2[53] !== resizeCol || $2[54] !== resizeIndicator || $2[55] !== rowHeight || $2[56] !== rows || $2[57] !== scrolling || $2[58] !== selection || $2[59] !== spriteManager || $2[60] !== theme || $2[61] !== translateX || $2[62] !== translateY || $2[63] !== verticalBorder || $2[64] !== width) {
+    t5 = () => {
+      var _experimental$hyperWr, _experimental$renderS, _hoverInfoRef$current;
+      const canvas = canvasRef.current;
+      const overlay = overlayRef.current;
+      if (canvas === null || overlay === null) {
+        return;
+      }
+      if (canvasCtx.current === null) {
+        canvasCtx.current = canvas.getContext("2d", {
+          alpha: false
+        });
+        canvas.width = 0;
+        canvas.height = 0;
+      }
+      if (overlayCtx.current === null) {
+        overlayCtx.current = overlay.getContext("2d", {
+          alpha: false
+        });
+        overlay.width = 0;
+        overlay.height = 0;
+      }
+      if (canvasCtx.current === null || overlayCtx.current === null || bufferACtx === null || bufferBCtx === null) {
+        return;
+      }
+      let didOverride = false;
+      const overrideCursor = (cursor) => {
+        didOverride = true;
+        setDrawCursorOverride(cursor);
+      };
+      const last = lastArgsRef.current;
+      const current = {
+        headerCanvasCtx: overlayCtx.current,
+        canvasCtx: canvasCtx.current,
+        bufferACtx,
+        bufferBCtx,
+        width,
+        height,
+        cellXOffset,
+        cellYOffset,
+        translateX: Math.round(translateX),
+        translateY: Math.round(translateY),
+        mappedColumns,
+        enableGroups,
+        freezeColumns,
+        dragAndDropState,
+        theme,
+        headerHeight,
+        groupHeaderHeight,
+        groupLevels,
+        groupHeaderHeights,
+        disabledRows: disabledRows !== null && disabledRows !== void 0 ? disabledRows : CompactSelection.empty(),
+        rowHeight,
+        verticalBorder,
+        isResizing,
+        resizeCol,
+        isFocused,
+        selection,
+        fillHandle,
+        drawCellCallback,
+        hasAppendRow,
+        overrideCursor,
+        maxScaleFactor: maxDPR,
+        freezeTrailingRows,
+        rows,
+        drawFocus: drawFocusRing,
+        getCellContent,
+        getGroupDetails: getGroupDetails !== null && getGroupDetails !== void 0 ? getGroupDetails : _temp3$3,
+        getRowThemeOverride,
+        drawHeaderCallback,
+        prelightCells,
+        highlightRegions,
+        imageLoader,
+        lastBlitData,
+        damage: damageRegion.current,
+        hoverValues: hoverValuesRef.current,
+        hoverInfo: hoverInfoRef.current,
+        spriteManager,
+        scrolling,
+        hyperWrapping: (_experimental$hyperWr = experimental === null || experimental === void 0 ? void 0 : experimental.hyperWrapping) !== null && _experimental$hyperWr !== void 0 ? _experimental$hyperWr : false,
+        touchMode: lastWasTouch,
+        enqueue: enqueueRef.current,
+        renderStateProvider,
+        renderStrategy: (_experimental$renderS = experimental === null || experimental === void 0 ? void 0 : experimental.renderStrategy) !== null && _experimental$renderS !== void 0 ? _experimental$renderS : browserIsSafari.value ? "double-buffer" : "single-buffer",
+        getCellRenderer,
+        minimumCellWidth,
+        resizeIndicator
+      };
+      if (current.damage === void 0) {
+        lastArgsRef.current = current;
+        drawGrid(current, last);
+      } else {
+        drawGrid(current, void 0);
+      }
+      if (!didOverride && (current.damage === void 0 || current.damage.has(hoverInfoRef === null || hoverInfoRef === void 0 || (_hoverInfoRef$current = hoverInfoRef.current) === null || _hoverInfoRef$current === void 0 ? void 0 : _hoverInfoRef$current[0]))) {
+        setDrawCursorOverride(void 0);
+      }
     };
-    const last = lastArgsRef.current;
-    const current = {
-      headerCanvasCtx: overlayCtx.current,
-      canvasCtx: canvasCtx.current,
-      bufferACtx,
-      bufferBCtx,
-      width,
-      height,
-      cellXOffset,
-      cellYOffset,
-      translateX: Math.round(translateX),
-      translateY: Math.round(translateY),
-      mappedColumns,
-      enableGroups,
-      freezeColumns,
-      dragAndDropState,
-      theme,
-      headerHeight,
-      groupHeaderHeight,
-      groupLevels,
-      groupHeaderHeights,
-      disabledRows: disabledRows !== null && disabledRows !== void 0 ? disabledRows : CompactSelection.empty(),
-      rowHeight,
-      verticalBorder,
-      isResizing,
-      resizeCol,
-      isFocused,
-      selection,
-      fillHandle,
-      drawCellCallback,
-      hasAppendRow,
-      overrideCursor,
-      maxScaleFactor: maxDPR,
-      freezeTrailingRows,
-      rows,
-      drawFocus: drawFocusRing,
-      getCellContent,
-      getGroupDetails: getGroupDetails !== null && getGroupDetails !== void 0 ? getGroupDetails : (name) => ({
-        name
-      }),
-      getRowThemeOverride,
-      drawHeaderCallback,
-      prelightCells,
-      highlightRegions,
-      imageLoader,
-      lastBlitData,
-      damage: damageRegion.current,
-      hoverValues: hoverValues.current,
-      hoverInfo: hoverInfoRef.current,
-      spriteManager,
-      scrolling,
-      hyperWrapping: (_experimental$hyperWr = experimental === null || experimental === void 0 ? void 0 : experimental.hyperWrapping) !== null && _experimental$hyperWr !== void 0 ? _experimental$hyperWr : false,
-      touchMode: lastWasTouch,
-      enqueue: enqueueRef.current,
-      renderStateProvider,
-      renderStrategy: (_experimental$renderS = experimental === null || experimental === void 0 ? void 0 : experimental.renderStrategy) !== null && _experimental$renderS !== void 0 ? _experimental$renderS : browserIsSafari.value ? "double-buffer" : "single-buffer",
-      getCellRenderer,
-      minimumCellWidth,
-      resizeIndicator
-    };
-    if (current.damage === void 0) {
-      lastArgsRef.current = current;
-      drawGrid(current, last);
-    } else {
-      drawGrid(current, void 0);
-    }
-    if (!didOverride && (current.damage === void 0 || current.damage.has(hoverInfoRef === null || hoverInfoRef === void 0 || (_hoverInfoRef$current = hoverInfoRef.current) === null || _hoverInfoRef$current === void 0 ? void 0 : _hoverInfoRef$current[0]))) {
-      setDrawCursorOverride(void 0);
-    }
-  }, [canvasRef, overlayRef, bufferACtx, bufferBCtx, width, height, cellXOffset, cellYOffset, translateX, translateY, mappedColumns, enableGroups, freezeColumns, dragAndDropState, theme, headerHeight, groupHeaderHeight, groupLevels, groupHeaderHeights, disabledRows, rowHeight, verticalBorder, isResizing, hasAppendRow, resizeCol, isFocused, selection, fillHandle, freezeTrailingRows, rows, drawFocusRing, maxDPR, getCellContent, getGroupDetails, getRowThemeOverride, drawCellCallback, drawHeaderCallback, prelightCells, highlightRegions, imageLoader, spriteManager, scrolling, experimental === null || experimental === void 0 ? void 0 : experimental.hyperWrapping, experimental === null || experimental === void 0 ? void 0 : experimental.renderStrategy, lastWasTouch, renderStateProvider, getCellRenderer, minimumCellWidth, resizeIndicator, hoverInfoRef, hoverValues]);
+    $2[14] = bufferACtx;
+    $2[15] = bufferBCtx;
+    $2[16] = canvasRef;
+    $2[17] = cellXOffset;
+    $2[18] = cellYOffset;
+    $2[19] = disabledRows;
+    $2[20] = dragAndDropState;
+    $2[21] = drawCellCallback;
+    $2[22] = drawFocusRing;
+    $2[23] = drawHeaderCallback;
+    $2[24] = enableGroups;
+    $2[25] = experimental === null || experimental === void 0 ? void 0 : experimental.hyperWrapping;
+    $2[26] = experimental === null || experimental === void 0 ? void 0 : experimental.renderStrategy;
+    $2[27] = fillHandle;
+    $2[28] = freezeColumns;
+    $2[29] = freezeTrailingRows;
+    $2[30] = getCellContent;
+    $2[31] = getCellRenderer;
+    $2[32] = getGroupDetails;
+    $2[33] = getRowThemeOverride;
+    $2[34] = groupHeaderHeight;
+    $2[35] = groupHeaderHeights;
+    $2[36] = groupLevels;
+    $2[37] = hasAppendRow;
+    $2[38] = headerHeight;
+    $2[39] = height;
+    $2[40] = highlightRegions;
+    $2[41] = hoverInfoRef;
+    $2[42] = hoverValuesRef;
+    $2[43] = imageLoader;
+    $2[44] = isFocused;
+    $2[45] = isResizing;
+    $2[46] = lastWasTouch;
+    $2[47] = mappedColumns;
+    $2[48] = maxDPR;
+    $2[49] = minimumCellWidth;
+    $2[50] = overlayRef;
+    $2[51] = prelightCells;
+    $2[52] = renderStateProvider;
+    $2[53] = resizeCol;
+    $2[54] = resizeIndicator;
+    $2[55] = rowHeight;
+    $2[56] = rows;
+    $2[57] = scrolling;
+    $2[58] = selection;
+    $2[59] = spriteManager;
+    $2[60] = theme;
+    $2[61] = translateX;
+    $2[62] = translateY;
+    $2[63] = verticalBorder;
+    $2[64] = width;
+    $2[65] = t5;
+  } else {
+    t5 = $2[65];
+  }
+  const draw = t5;
   const lastDrawRef = React.useRef(draw);
-  React.useLayoutEffect(() => {
-    draw();
-    lastDrawRef.current = draw;
-  }, [draw]);
-  React.useLayoutEffect(() => {
-    const fn = async () => {
-      var _document;
-      if (((_document = document) === null || _document === void 0 || (_document = _document.fonts) === null || _document === void 0 ? void 0 : _document.ready) === void 0) return;
-      await document.fonts.ready;
-      lastArgsRef.current = void 0;
-      lastDrawRef.current();
+  let t6;
+  if ($2[66] !== draw) {
+    t6 = () => {
+      draw();
+      lastDrawRef.current = draw;
     };
-    void fn();
-  }, []);
-  const damageInternal = React.useCallback((locations) => {
-    damageRegion.current = locations;
-    lastDrawRef.current();
-    damageRegion.current = void 0;
-  }, []);
+    $2[66] = draw;
+    $2[67] = t6;
+  } else {
+    t6 = $2[67];
+  }
+  React.useLayoutEffect(t6);
+  let t7;
+  let t8;
+  if ($2[68] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t7 = () => {
+      const fn = async () => {
+        var _document;
+        if (((_document = document) === null || _document === void 0 || (_document = _document.fonts) === null || _document === void 0 ? void 0 : _document.ready) === void 0) {
+          return;
+        }
+        await document.fonts.ready;
+        lastArgsRef.current = void 0;
+        lastDrawRef.current();
+      };
+      fn();
+    };
+    t8 = [];
+    $2[68] = t7;
+    $2[69] = t8;
+  } else {
+    t7 = $2[68];
+    t8 = $2[69];
+  }
+  React.useLayoutEffect(t7, t8);
+  let t9;
+  if ($2[70] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t9 = (locations) => {
+      damageRegion.current = locations;
+      lastDrawRef.current();
+      damageRegion.current = void 0;
+    };
+    $2[70] = t9;
+  } else {
+    t9 = $2[70];
+  }
+  const damageInternal = t9;
   const enqueue = useAnimationQueue(damageInternal);
-  enqueueRef.current = enqueue;
-  const damage = React.useCallback((cells) => {
-    damageInternal(new CellSet(cells.map((x2) => x2.cell)));
-  }, [damageInternal]);
-  imageLoader.setCallback(damageInternal);
-  const onAnimationFrame = React.useCallback((values) => {
-    damageRegion.current = new CellSet(values.map((x_0) => x_0.item));
-    hoverValues.current = values;
-    lastDrawRef.current();
-    damageRegion.current = void 0;
-  }, [hoverValues]);
-  const animManagerValue = React.useMemo(() => new AnimationManager(onAnimationFrame), [onAnimationFrame]);
-  const animationManager = React.useRef(animManagerValue);
-  animationManager.current = animManagerValue;
-  const [hoveredItem] = hoveredItemInfo !== null && hoveredItemInfo !== void 0 ? hoveredItemInfo : [];
-  React.useLayoutEffect(() => {
-    const am = animationManager.current;
-    if (hoveredItem === void 0 || hoveredItem[1] < 0) {
-      am.setHovered(hoveredItem);
-      return;
-    }
-    const cell = getCellContent(hoveredItem, true);
-    const r = getCellRenderer(cell);
-    const cellNeedsHover = r === void 0 && cell.kind === GridCellKind.Custom || (r === null || r === void 0 ? void 0 : r.needsHover) !== void 0 && (typeof r.needsHover === "boolean" ? r.needsHover : r.needsHover(cell));
-    am.setHovered(cellNeedsHover ? hoveredItem : void 0);
-  }, [getCellContent, getCellRenderer, hoveredItem]);
+  let t10;
+  if ($2[71] !== enqueue) {
+    t10 = () => {
+      enqueueRef.current = enqueue;
+    };
+    $2[71] = enqueue;
+    $2[72] = t10;
+  } else {
+    t10 = $2[72];
+  }
+  React.useLayoutEffect(t10);
+  let t11;
+  if ($2[73] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t11 = (cells) => {
+      damageInternal(new CellSet(cells.map(_temp4$3)));
+    };
+    $2[73] = t11;
+  } else {
+    t11 = $2[73];
+  }
+  const damage = t11;
+  let t12;
+  if ($2[74] !== imageLoader) {
+    t12 = () => {
+      imageLoader.setCallback(damageInternal);
+    };
+    $2[74] = imageLoader;
+    $2[75] = t12;
+  } else {
+    t12 = $2[75];
+  }
+  React.useLayoutEffect(t12);
+  const [animManager] = React.useState(_temp6$1);
+  let t13;
+  if ($2[76] !== animManager || $2[77] !== hoverValuesRef) {
+    t13 = () => {
+      animManager.setCallback((values_0) => {
+        damageRegion.current = new CellSet(values_0.map(_temp7$1));
+        hoverValuesRef.current = values_0;
+        lastDrawRef.current();
+        damageRegion.current = void 0;
+      });
+    };
+    $2[76] = animManager;
+    $2[77] = hoverValuesRef;
+    $2[78] = t13;
+  } else {
+    t13 = $2[78];
+  }
+  React.useLayoutEffect(t13);
+  let t14;
+  if ($2[79] !== hoveredItemInfo) {
+    t14 = hoveredItemInfo !== null && hoveredItemInfo !== void 0 ? hoveredItemInfo : [];
+    $2[79] = hoveredItemInfo;
+    $2[80] = t14;
+  } else {
+    t14 = $2[80];
+  }
+  const [hoveredItem] = t14;
+  let t15;
+  let t16;
+  if ($2[81] !== animManager || $2[82] !== getCellContent || $2[83] !== getCellRenderer || $2[84] !== hoveredItem) {
+    t15 = () => {
+      if (hoveredItem === void 0 || hoveredItem[1] < 0) {
+        animManager.setHovered(hoveredItem);
+        return;
+      }
+      const cell = getCellContent(hoveredItem, true);
+      const r = getCellRenderer(cell);
+      const cellNeedsHover = r === void 0 && cell.kind === GridCellKind.Custom || (r === null || r === void 0 ? void 0 : r.needsHover) !== void 0 && (typeof r.needsHover === "boolean" ? r.needsHover : r.needsHover(cell));
+      animManager.setHovered(cellNeedsHover ? hoveredItem : void 0);
+    };
+    t16 = [getCellContent, getCellRenderer, hoveredItem, animManager];
+    $2[81] = animManager;
+    $2[82] = getCellContent;
+    $2[83] = getCellRenderer;
+    $2[84] = hoveredItem;
+    $2[85] = t15;
+    $2[86] = t16;
+  } else {
+    t15 = $2[85];
+    t16 = $2[86];
+  }
+  React.useLayoutEffect(t15, t16);
+  let t17;
+  if ($2[87] !== drawCursorOverride || $2[88] !== renderStateProvider || $2[89] !== scrolling) {
+    t17 = {
+      scrolling,
+      damageInternal,
+      damage,
+      enqueueRef,
+      drawCursorOverride,
+      setDrawCursorOverride,
+      renderStateProvider,
+      lastDrawRef,
+      lastArgsRef
+    };
+    $2[87] = drawCursorOverride;
+    $2[88] = renderStateProvider;
+    $2[89] = scrolling;
+    $2[90] = t17;
+  } else {
+    t17 = $2[90];
+  }
+  return t17;
+}
+function _temp7$1(x_0) {
+  return x_0.item;
+}
+function _temp6$1() {
+  return new AnimationManager(_temp5$1);
+}
+function _temp5$1(values) {
+}
+function _temp4$3(x2) {
+  return x2.cell;
+}
+function _temp3$3(name) {
   return {
-    scrolling,
-    damageInternal,
-    damage,
-    enqueueRef,
-    drawCursorOverride,
-    setDrawCursorOverride,
-    renderStateProvider,
-    lastDrawRef,
-    lastArgsRef
+    name
   };
 }
+function _temp2$4() {
+  return new RenderStateProvider();
+}
+function _temp$7() {
+}
 function useGridPointerEvents(args) {
-  var _eventTargetRef$curre;
+  const $2 = compilerRuntimeExports.c(59);
   const {
     canvasRef,
     windowEventTarget,
@@ -12784,226 +13022,358 @@ function useGridPointerEvents(args) {
     getGroupDetails,
     damageInternal
   } = args;
-  const groupHeaderActionForEvent = React.useCallback((group, bounds, localEventX, localEventY) => {
-    if (getGroupDetails === void 0) return void 0;
-    const groupDesc = getGroupDetails(group);
-    if (groupDesc.actions !== void 0) {
-      const boxes = getActionBoundsForGroup(bounds, groupDesc.actions);
-      for (const [i, box] of boxes.entries()) {
-        if (pointInRect(box, localEventX + bounds.x, localEventY + box.y)) {
-          return groupDesc.actions[i];
+  let t0;
+  if ($2[0] !== getGroupDetails) {
+    t0 = (group, bounds, localEventX, localEventY) => {
+      if (getGroupDetails === void 0) {
+        return;
+      }
+      const groupDesc = getGroupDetails(group);
+      if (groupDesc.actions !== void 0) {
+        const boxes = getActionBoundsForGroup(bounds, groupDesc.actions);
+        for (const [i, box] of boxes.entries()) {
+          if (pointInRect(box, localEventX + bounds.x, localEventY + box.y)) {
+            return groupDesc.actions[i];
+          }
         }
       }
-    }
-    return void 0;
-  }, [getGroupDetails]);
-  const isOverHeaderElement = React.useCallback((canvas, col, clientX, clientY) => {
-    const header = mappedColumns[col];
-    if (!isDragging && !isResizing && !(hoveredOnEdge !== null && hoveredOnEdge !== void 0 ? hoveredOnEdge : false)) {
-      const headerBounds = getBoundsForItem(canvas, col, -1);
-      assert(headerBounds !== void 0);
-      const headerLayout = computeHeaderLayout(void 0, header, headerBounds.x, headerBounds.y, headerBounds.width, headerBounds.height, theme, direction(header.title) === "rtl");
-      if (header.hasMenu === true && headerLayout.menuBounds !== void 0 && pointInRect(headerLayout.menuBounds, clientX, clientY)) {
-        return {
-          area: "menu",
-          bounds: headerLayout.menuBounds
-        };
-      } else if (header.indicatorIcon !== void 0 && headerLayout.indicatorIconBounds !== void 0 && pointInRect(headerLayout.indicatorIconBounds, clientX, clientY)) {
-        return {
-          area: "indicator",
-          bounds: headerLayout.indicatorIconBounds
-        };
+    };
+    $2[0] = getGroupDetails;
+    $2[1] = t0;
+  } else {
+    t0 = $2[1];
+  }
+  const groupHeaderActionForEvent = t0;
+  let t1;
+  if ($2[2] !== getBoundsForItem || $2[3] !== hoveredOnEdge || $2[4] !== isDragging || $2[5] !== isResizing || $2[6] !== mappedColumns || $2[7] !== theme) {
+    t1 = (canvas, col, clientX, clientY) => {
+      const header = mappedColumns[col];
+      if (!isDragging && !isResizing && !(hoveredOnEdge !== null && hoveredOnEdge !== void 0 ? hoveredOnEdge : false)) {
+        const headerBounds = getBoundsForItem(canvas, col, -1);
+        assert(headerBounds !== void 0);
+        const headerLayout = computeHeaderLayout(void 0, header, headerBounds.x, headerBounds.y, headerBounds.width, headerBounds.height, theme, direction(header.title) === "rtl");
+        if (header.hasMenu === true && headerLayout.menuBounds !== void 0 && pointInRect(headerLayout.menuBounds, clientX, clientY)) {
+          return {
+            area: "menu",
+            bounds: headerLayout.menuBounds
+          };
+        } else {
+          if (header.indicatorIcon !== void 0 && headerLayout.indicatorIconBounds !== void 0 && pointInRect(headerLayout.indicatorIconBounds, clientX, clientY)) {
+            return {
+              area: "indicator",
+              bounds: headerLayout.indicatorIconBounds
+            };
+          }
+        }
       }
-    }
-    return void 0;
-  }, [mappedColumns, getBoundsForItem, hoveredOnEdge, isDragging, isResizing, theme]);
+    };
+    $2[2] = getBoundsForItem;
+    $2[3] = hoveredOnEdge;
+    $2[4] = isDragging;
+    $2[5] = isResizing;
+    $2[6] = mappedColumns;
+    $2[7] = theme;
+    $2[8] = t1;
+  } else {
+    t1 = $2[8];
+  }
+  const isOverHeaderElement = t1;
   const downTime = React.useRef(0);
   const downPosition = React.useRef(void 0);
   const mouseDown = React.useRef(false);
-  const onPointerDown = React.useCallback((ev) => {
-    const canvas_0 = canvasRef.current;
-    const eventTarget = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current;
-    if (canvas_0 === null || ev.target !== canvas_0 && ev.target !== eventTarget) return;
-    mouseDown.current = true;
-    const clientX_0 = ev.clientX;
-    const clientY_0 = ev.clientY;
-    if (ev.target === eventTarget && eventTarget !== null) {
-      const bounds_0 = eventTarget.getBoundingClientRect();
-      if (clientX_0 > bounds_0.right || clientY_0 > bounds_0.bottom) return;
-    }
-    const mouseArgs = getMouseArgsForPosition(canvas_0, clientX_0, clientY_0, ev);
-    downPosition.current = mouseArgs.location;
-    if (mouseArgs.isTouch) {
-      downTime.current = Date.now();
-    }
-    if (lastWasTouchRef.current !== mouseArgs.isTouch) {
-      setLastWasTouch(mouseArgs.isTouch);
-    }
-    if (mouseArgs.kind === headerKind && isOverHeaderElement(canvas_0, mouseArgs.location[0], clientX_0, clientY_0) !== void 0) {
-      return;
-    } else if (mouseArgs.kind === groupHeaderKind) {
-      const action = groupHeaderActionForEvent(mouseArgs.group, mouseArgs.bounds, mouseArgs.localEventX, mouseArgs.localEventY);
-      if (action !== void 0) {
+  let t2;
+  if ($2[9] !== canvasRef || $2[10] !== eventTargetRef || $2[11] !== getMouseArgsForPosition || $2[12] !== groupHeaderActionForEvent || $2[13] !== isDraggable || $2[14] !== isOverHeaderElement || $2[15] !== lastWasTouchRef || $2[16] !== onMouseDown || $2[17] !== setLastWasTouch) {
+    t2 = (ev) => {
+      const canvas_0 = canvasRef.current;
+      const eventTarget = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current;
+      if (canvas_0 === null || ev.target !== canvas_0 && ev.target !== eventTarget) {
         return;
       }
-    }
-    onMouseDown === null || onMouseDown === void 0 || onMouseDown(mouseArgs);
-    if (!mouseArgs.isTouch && isDraggable !== true && isDraggable !== mouseArgs.kind && mouseArgs.button < 3 && mouseArgs.button !== 1) {
-      ev.preventDefault();
-    }
-  }, [canvasRef, eventTargetRef, isDraggable, getMouseArgsForPosition, groupHeaderActionForEvent, isOverHeaderElement, onMouseDown, lastWasTouchRef, setLastWasTouch]);
+      mouseDown.current = true;
+      const clientX_0 = ev.clientX;
+      const clientY_0 = ev.clientY;
+      if (ev.target === eventTarget && eventTarget !== null) {
+        const bounds_0 = eventTarget.getBoundingClientRect();
+        if (clientX_0 > bounds_0.right || clientY_0 > bounds_0.bottom) {
+          return;
+        }
+      }
+      const mouseArgs = getMouseArgsForPosition(canvas_0, clientX_0, clientY_0, ev);
+      downPosition.current = mouseArgs.location;
+      if (mouseArgs.isTouch) {
+        downTime.current = Date.now();
+      }
+      if (lastWasTouchRef.current !== mouseArgs.isTouch) {
+        setLastWasTouch(mouseArgs.isTouch);
+      }
+      if (mouseArgs.kind === headerKind && isOverHeaderElement(canvas_0, mouseArgs.location[0], clientX_0, clientY_0) !== void 0) {
+        return;
+      } else {
+        if (mouseArgs.kind === groupHeaderKind) {
+          const action = groupHeaderActionForEvent(mouseArgs.group, mouseArgs.bounds, mouseArgs.localEventX, mouseArgs.localEventY);
+          if (action !== void 0) {
+            return;
+          }
+        }
+      }
+      onMouseDown === null || onMouseDown === void 0 || onMouseDown(mouseArgs);
+      if (!mouseArgs.isTouch && isDraggable !== true && isDraggable !== mouseArgs.kind && mouseArgs.button < 3 && mouseArgs.button !== 1) {
+        ev.preventDefault();
+      }
+    };
+    $2[9] = canvasRef;
+    $2[10] = eventTargetRef;
+    $2[11] = getMouseArgsForPosition;
+    $2[12] = groupHeaderActionForEvent;
+    $2[13] = isDraggable;
+    $2[14] = isOverHeaderElement;
+    $2[15] = lastWasTouchRef;
+    $2[16] = onMouseDown;
+    $2[17] = setLastWasTouch;
+    $2[18] = t2;
+  } else {
+    t2 = $2[18];
+  }
+  const onPointerDown = t2;
   useEventListener("pointerdown", onPointerDown, windowEventTarget, false);
   const lastUpTime = React.useRef(0);
-  const onPointerUp = React.useCallback((ev_0) => {
-    const lastUpTimeValue = lastUpTime.current;
-    lastUpTime.current = Date.now();
-    const canvas_1 = canvasRef.current;
-    mouseDown.current = false;
-    if (onMouseUp === void 0 || canvas_1 === null) return;
-    const eventTarget_0 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current;
-    const isOutside = ev_0.target !== canvas_1 && ev_0.target !== eventTarget_0;
-    const clientX_1 = ev_0.clientX;
-    const clientY_1 = ev_0.clientY;
-    const canCancel = ev_0.pointerType === "mouse" ? ev_0.button < 3 : true;
-    let mouseArgs_0 = getMouseArgsForPosition(canvas_1, clientX_1, clientY_1, ev_0);
-    if (mouseArgs_0.isTouch && downTime.current !== 0 && Date.now() - downTime.current > 500) {
-      mouseArgs_0 = {
-        ...mouseArgs_0,
-        isLongTouch: true
-      };
-    }
-    if (lastUpTimeValue !== 0 && Date.now() - lastUpTimeValue < (mouseArgs_0.isTouch ? 1e3 : 500)) {
-      mouseArgs_0 = {
-        ...mouseArgs_0,
-        isDoubleClick: true
-      };
-    }
-    if (lastWasTouchRef.current !== mouseArgs_0.isTouch) {
-      setLastWasTouch(mouseArgs_0.isTouch);
-    }
-    if (!isOutside && ev_0.cancelable && canCancel) {
-      ev_0.preventDefault();
-    }
-    const [col_0] = mouseArgs_0.location;
-    const headerBounds_0 = isOverHeaderElement(canvas_1, col_0, clientX_1, clientY_1);
-    if (mouseArgs_0.kind === headerKind && headerBounds_0 !== void 0) {
-      var _downPosition$current, _downPosition$current2;
-      if (mouseArgs_0.button !== 0 || ((_downPosition$current = downPosition.current) === null || _downPosition$current === void 0 ? void 0 : _downPosition$current[0]) !== col_0 || ((_downPosition$current2 = downPosition.current) === null || _downPosition$current2 === void 0 ? void 0 : _downPosition$current2[1]) !== -1) {
-        onMouseUp(mouseArgs_0, true);
-      }
-      return;
-    } else if (mouseArgs_0.kind === groupHeaderKind) {
-      const action_0 = groupHeaderActionForEvent(mouseArgs_0.group, mouseArgs_0.bounds, mouseArgs_0.localEventX, mouseArgs_0.localEventY);
-      if (action_0 !== void 0) {
-        if (mouseArgs_0.button === 0) {
-          action_0.onClick(mouseArgs_0);
-        }
+  let t3;
+  if ($2[19] !== canvasRef || $2[20] !== eventTargetRef || $2[21] !== getMouseArgsForPosition || $2[22] !== groupHeaderActionForEvent || $2[23] !== isOverHeaderElement || $2[24] !== lastWasTouchRef || $2[25] !== onMouseUp || $2[26] !== setLastWasTouch) {
+    t3 = (ev_0) => {
+      const lastUpTimeValue = lastUpTime.current;
+      lastUpTime.current = Date.now();
+      const canvas_1 = canvasRef.current;
+      mouseDown.current = false;
+      if (onMouseUp === void 0 || canvas_1 === null) {
         return;
       }
-    }
-    onMouseUp(mouseArgs_0, isOutside);
-  }, [canvasRef, onMouseUp, eventTargetRef, getMouseArgsForPosition, isOverHeaderElement, groupHeaderActionForEvent, lastWasTouchRef, setLastWasTouch]);
-  useEventListener("pointerup", onPointerUp, windowEventTarget, false);
-  const onClickImpl = React.useCallback((ev_1) => {
-    const canvas_2 = canvasRef.current;
-    if (canvas_2 === null) return;
-    const eventTarget_1 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current;
-    const isOutside_0 = ev_1.target !== canvas_2 && ev_1.target !== eventTarget_1;
-    let clientX_2;
-    let clientY_2;
-    let canCancel_0 = true;
-    if (ev_1 instanceof MouseEvent) {
-      clientX_2 = ev_1.clientX;
-      clientY_2 = ev_1.clientY;
-      canCancel_0 = ev_1.button < 3;
-    } else {
-      clientX_2 = ev_1.changedTouches[0].clientX;
-      clientY_2 = ev_1.changedTouches[0].clientY;
-    }
-    const mouseArgs_1 = getMouseArgsForPosition(canvas_2, clientX_2, clientY_2, ev_1);
-    if (lastWasTouchRef.current !== mouseArgs_1.isTouch) {
-      setLastWasTouch(mouseArgs_1.isTouch);
-    }
-    if (!isOutside_0 && ev_1.cancelable && canCancel_0) {
-      ev_1.preventDefault();
-    }
-    const [col_1] = mouseArgs_1.location;
-    if (mouseArgs_1.kind === headerKind) {
-      var _downPosition$current3, _downPosition$current4;
-      const headerBounds_1 = isOverHeaderElement(canvas_2, col_1, clientX_2, clientY_2);
-      if (headerBounds_1 !== void 0 && mouseArgs_1.button === 0 && ((_downPosition$current3 = downPosition.current) === null || _downPosition$current3 === void 0 ? void 0 : _downPosition$current3[0]) === col_1 && ((_downPosition$current4 = downPosition.current) === null || _downPosition$current4 === void 0 ? void 0 : _downPosition$current4[1]) === -1) {
-        if (headerBounds_1.area === "menu") {
-          onHeaderMenuClick === null || onHeaderMenuClick === void 0 || onHeaderMenuClick(col_1, headerBounds_1.bounds);
-        } else if (headerBounds_1.area === "indicator") {
-          onHeaderIndicatorClick === null || onHeaderIndicatorClick === void 0 || onHeaderIndicatorClick(col_1, headerBounds_1.bounds);
+      const eventTarget_0 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current;
+      const isOutside = ev_0.target !== canvas_1 && ev_0.target !== eventTarget_0;
+      const clientX_1 = ev_0.clientX;
+      const clientY_1 = ev_0.clientY;
+      const canCancel = ev_0.pointerType === "mouse" ? ev_0.button < 3 : true;
+      let mouseArgs_0 = getMouseArgsForPosition(canvas_1, clientX_1, clientY_1, ev_0);
+      if (mouseArgs_0.isTouch && downTime.current !== 0 && Date.now() - downTime.current > 500) {
+        mouseArgs_0 = {
+          ...mouseArgs_0,
+          isLongTouch: true
+        };
+      }
+      if (lastUpTimeValue !== 0 && Date.now() - lastUpTimeValue < (mouseArgs_0.isTouch ? 1e3 : 500)) {
+        mouseArgs_0 = {
+          ...mouseArgs_0,
+          isDoubleClick: true
+        };
+      }
+      if (lastWasTouchRef.current !== mouseArgs_0.isTouch) {
+        setLastWasTouch(mouseArgs_0.isTouch);
+      }
+      if (!isOutside && ev_0.cancelable && canCancel) {
+        ev_0.preventDefault();
+      }
+      const [col_0] = mouseArgs_0.location;
+      const headerBounds_0 = isOverHeaderElement(canvas_1, col_0, clientX_1, clientY_1);
+      if (mouseArgs_0.kind === headerKind && headerBounds_0 !== void 0) {
+        var _downPosition$current, _downPosition$current2;
+        if (mouseArgs_0.button !== 0 || ((_downPosition$current = downPosition.current) === null || _downPosition$current === void 0 ? void 0 : _downPosition$current[0]) !== col_0 || ((_downPosition$current2 = downPosition.current) === null || _downPosition$current2 === void 0 ? void 0 : _downPosition$current2[1]) !== -1) {
+          onMouseUp(mouseArgs_0, true);
+        }
+        return;
+      } else {
+        if (mouseArgs_0.kind === groupHeaderKind) {
+          const action_0 = groupHeaderActionForEvent(mouseArgs_0.group, mouseArgs_0.bounds, mouseArgs_0.localEventX, mouseArgs_0.localEventY);
+          if (action_0 !== void 0) {
+            if (mouseArgs_0.button === 0) {
+              action_0.onClick(mouseArgs_0);
+            }
+            return;
+          }
         }
       }
-    }
-  }, [canvasRef, eventTargetRef, getMouseArgsForPosition, isOverHeaderElement, onHeaderMenuClick, onHeaderIndicatorClick, lastWasTouchRef, setLastWasTouch]);
-  useEventListener("click", onClickImpl, windowEventTarget, false);
-  const onContextMenuImpl = React.useCallback((ev_2) => {
-    const canvas_3 = canvasRef.current;
-    const eventTarget_2 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current;
-    if (canvas_3 === null || ev_2.target !== canvas_3 && ev_2.target !== eventTarget_2 || onContextMenu === void 0) return;
-    const mouseArgs_2 = getMouseArgsForPosition(canvas_3, ev_2.clientX, ev_2.clientY, ev_2);
-    onContextMenu(mouseArgs_2, () => {
-      if (ev_2.cancelable) ev_2.preventDefault();
-    });
-  }, [canvasRef, eventTargetRef, getMouseArgsForPosition, onContextMenu]);
-  useEventListener("contextmenu", onContextMenuImpl, (_eventTargetRef$curre = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current) !== null && _eventTargetRef$curre !== void 0 ? _eventTargetRef$curre : null, false);
-  const hoveredRef = React.useRef(void 0);
-  const onPointerMove = React.useCallback((ev_3) => {
-    const canvas_4 = canvasRef.current;
-    if (canvas_4 === null) return;
-    const eventTarget_3 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current;
-    const isIndirect = ev_3.target !== canvas_4 && ev_3.target !== eventTarget_3;
-    const mouseArgs_3 = getMouseArgsForPosition(canvas_4, ev_3.clientX, ev_3.clientY, ev_3);
-    if (mouseArgs_3.kind !== "out-of-bounds" && isIndirect && !mouseDown.current && !mouseArgs_3.isTouch) {
-      return;
-    }
-    const maybeSetHoveredInfo = (newVal, needPosition) => {
-      setHoveredItemInfo((cv) => {
-        if (cv === newVal) return cv;
-        if ((cv === null || cv === void 0 ? void 0 : cv[0][0]) === (newVal === null || newVal === void 0 ? void 0 : newVal[0][0]) && (cv === null || cv === void 0 ? void 0 : cv[0][1]) === (newVal === null || newVal === void 0 ? void 0 : newVal[0][1]) && ((cv === null || cv === void 0 ? void 0 : cv[1][0]) === (newVal === null || newVal === void 0 ? void 0 : newVal[1][0]) && (cv === null || cv === void 0 ? void 0 : cv[1][1]) === (newVal === null || newVal === void 0 ? void 0 : newVal[1][1]) || !needPosition)) {
-          return cv;
+      onMouseUp(mouseArgs_0, isOutside);
+    };
+    $2[19] = canvasRef;
+    $2[20] = eventTargetRef;
+    $2[21] = getMouseArgsForPosition;
+    $2[22] = groupHeaderActionForEvent;
+    $2[23] = isOverHeaderElement;
+    $2[24] = lastWasTouchRef;
+    $2[25] = onMouseUp;
+    $2[26] = setLastWasTouch;
+    $2[27] = t3;
+  } else {
+    t3 = $2[27];
+  }
+  const onPointerUp = t3;
+  useEventListener("pointerup", onPointerUp, windowEventTarget, false);
+  let t4;
+  if ($2[28] !== canvasRef || $2[29] !== eventTargetRef || $2[30] !== getMouseArgsForPosition || $2[31] !== isOverHeaderElement || $2[32] !== lastWasTouchRef || $2[33] !== onHeaderIndicatorClick || $2[34] !== onHeaderMenuClick || $2[35] !== setLastWasTouch) {
+    t4 = (ev_1) => {
+      const canvas_2 = canvasRef.current;
+      if (canvas_2 === null) {
+        return;
+      }
+      const eventTarget_1 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current;
+      const isOutside_0 = ev_1.target !== canvas_2 && ev_1.target !== eventTarget_1;
+      let clientX_2;
+      let clientY_2;
+      let canCancel_0 = true;
+      if (ev_1 instanceof MouseEvent) {
+        clientX_2 = ev_1.clientX;
+        clientY_2 = ev_1.clientY;
+        canCancel_0 = ev_1.button < 3;
+      } else {
+        clientX_2 = ev_1.changedTouches[0].clientX;
+        clientY_2 = ev_1.changedTouches[0].clientY;
+      }
+      const mouseArgs_1 = getMouseArgsForPosition(canvas_2, clientX_2, clientY_2, ev_1);
+      if (lastWasTouchRef.current !== mouseArgs_1.isTouch) {
+        setLastWasTouch(mouseArgs_1.isTouch);
+      }
+      if (!isOutside_0 && ev_1.cancelable && canCancel_0) {
+        ev_1.preventDefault();
+      }
+      const [col_1] = mouseArgs_1.location;
+      if (mouseArgs_1.kind === headerKind) {
+        var _downPosition$current3, _downPosition$current4;
+        const headerBounds_1 = isOverHeaderElement(canvas_2, col_1, clientX_2, clientY_2);
+        if (headerBounds_1 !== void 0 && mouseArgs_1.button === 0 && ((_downPosition$current3 = downPosition.current) === null || _downPosition$current3 === void 0 ? void 0 : _downPosition$current3[0]) === col_1 && ((_downPosition$current4 = downPosition.current) === null || _downPosition$current4 === void 0 ? void 0 : _downPosition$current4[1]) === -1) {
+          if (headerBounds_1.area === "menu") {
+            onHeaderMenuClick === null || onHeaderMenuClick === void 0 || onHeaderMenuClick(col_1, headerBounds_1.bounds);
+          } else {
+            if (headerBounds_1.area === "indicator") {
+              onHeaderIndicatorClick === null || onHeaderIndicatorClick === void 0 || onHeaderIndicatorClick(col_1, headerBounds_1.bounds);
+            }
+          }
         }
-        return newVal;
+      }
+    };
+    $2[28] = canvasRef;
+    $2[29] = eventTargetRef;
+    $2[30] = getMouseArgsForPosition;
+    $2[31] = isOverHeaderElement;
+    $2[32] = lastWasTouchRef;
+    $2[33] = onHeaderIndicatorClick;
+    $2[34] = onHeaderMenuClick;
+    $2[35] = setLastWasTouch;
+    $2[36] = t4;
+  } else {
+    t4 = $2[36];
+  }
+  const onClickImpl = t4;
+  useEventListener("click", onClickImpl, windowEventTarget, false);
+  let t5;
+  if ($2[37] !== canvasRef || $2[38] !== eventTargetRef || $2[39] !== getMouseArgsForPosition || $2[40] !== onContextMenu) {
+    t5 = (ev_2) => {
+      const canvas_3 = canvasRef.current;
+      const eventTarget_2 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current;
+      if (canvas_3 === null || ev_2.target !== canvas_3 && ev_2.target !== eventTarget_2 || onContextMenu === void 0) {
+        return;
+      }
+      const mouseArgs_2 = getMouseArgsForPosition(canvas_3, ev_2.clientX, ev_2.clientY, ev_2);
+      onContextMenu(mouseArgs_2, () => {
+        if (ev_2.cancelable) {
+          ev_2.preventDefault();
+        }
       });
     };
-    if (!mouseEventArgsAreEqual(mouseArgs_3, hoveredRef.current)) {
-      setDrawCursorOverride(void 0);
-      onItemHovered === null || onItemHovered === void 0 || onItemHovered(mouseArgs_3);
-      maybeSetHoveredInfo(mouseArgs_3.kind === outOfBoundsKind ? void 0 : [mouseArgs_3.location, [mouseArgs_3.localEventX, mouseArgs_3.localEventY]], true);
-      hoveredRef.current = mouseArgs_3;
-    } else if (mouseArgs_3.kind === "cell" || mouseArgs_3.kind === headerKind || mouseArgs_3.kind === groupHeaderKind) {
-      let needsDamageCell = false;
-      let needsHoverPosition = true;
-      if (mouseArgs_3.kind === "cell") {
-        var _getCellRenderer;
-        const toCheck = getCellContent(mouseArgs_3.location);
-        const rendererNeeds = (_getCellRenderer = getCellRenderer(toCheck)) === null || _getCellRenderer === void 0 ? void 0 : _getCellRenderer.needsHoverPosition;
-        needsHoverPosition = rendererNeeds !== null && rendererNeeds !== void 0 ? rendererNeeds : toCheck.kind === GridCellKind.Custom;
-        needsDamageCell = needsHoverPosition;
+    $2[37] = canvasRef;
+    $2[38] = eventTargetRef;
+    $2[39] = getMouseArgsForPosition;
+    $2[40] = onContextMenu;
+    $2[41] = t5;
+  } else {
+    t5 = $2[41];
+  }
+  const onContextMenuImpl = t5;
+  useEventListener("contextmenu", onContextMenuImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false);
+  const hoveredRef = React.useRef(void 0);
+  let t6;
+  if ($2[42] !== allowResize || $2[43] !== canvasRef || $2[44] !== damageInternal || $2[45] !== eventTargetRef || $2[46] !== firstColAccessible || $2[47] !== getCellContent || $2[48] !== getCellRenderer || $2[49] !== getMouseArgsForPosition || $2[50] !== hoverInfoRef || $2[51] !== onItemHovered || $2[52] !== onMouseMove || $2[53] !== onMouseMoveRaw || $2[54] !== setDrawCursorOverride || $2[55] !== setHoveredItemInfo || $2[56] !== setHoveredOnEdge || $2[57] !== setOverFill) {
+    t6 = (ev_3) => {
+      const canvas_4 = canvasRef.current;
+      if (canvas_4 === null) {
+        return;
+      }
+      const eventTarget_3 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current;
+      const isIndirect = ev_3.target !== canvas_4 && ev_3.target !== eventTarget_3;
+      const mouseArgs_3 = getMouseArgsForPosition(canvas_4, ev_3.clientX, ev_3.clientY, ev_3);
+      if (mouseArgs_3.kind !== "out-of-bounds" && isIndirect && !mouseDown.current && !mouseArgs_3.isTouch) {
+        return;
+      }
+      const maybeSetHoveredInfo = (newVal, needPosition) => {
+        setHoveredItemInfo((cv) => {
+          if (cv === newVal) {
+            return cv;
+          }
+          if (cv !== void 0 && newVal !== void 0) {
+            const sameCol = cv[0][0] === newVal[0][0];
+            const sameRow = cv[0][1] === newVal[0][1];
+            const samePos = cv[1][0] === newVal[1][0] && cv[1][1] === newVal[1][1];
+            if (sameCol && sameRow && (samePos || !needPosition)) {
+              return cv;
+            }
+          }
+          return newVal;
+        });
+      };
+      if (!mouseEventArgsAreEqual(mouseArgs_3, hoveredRef.current)) {
+        setDrawCursorOverride(void 0);
+        onItemHovered === null || onItemHovered === void 0 || onItemHovered(mouseArgs_3);
+        maybeSetHoveredInfo(mouseArgs_3.kind === outOfBoundsKind ? void 0 : [mouseArgs_3.location, [mouseArgs_3.localEventX, mouseArgs_3.localEventY]], true);
+        hoveredRef.current = mouseArgs_3;
       } else {
-        needsDamageCell = true;
+        if (mouseArgs_3.kind === "cell" || mouseArgs_3.kind === headerKind || mouseArgs_3.kind === groupHeaderKind) {
+          let needsDamageCell;
+          let needsHoverPosition = true;
+          if (mouseArgs_3.kind === "cell") {
+            var _getCellRenderer;
+            const toCheck = getCellContent(mouseArgs_3.location);
+            const rendererNeeds = (_getCellRenderer = getCellRenderer(toCheck)) === null || _getCellRenderer === void 0 ? void 0 : _getCellRenderer.needsHoverPosition;
+            needsHoverPosition = rendererNeeds !== null && rendererNeeds !== void 0 ? rendererNeeds : toCheck.kind === GridCellKind.Custom;
+            needsDamageCell = needsHoverPosition;
+          } else {
+            needsDamageCell = true;
+          }
+          const newInfo = [mouseArgs_3.location, [mouseArgs_3.localEventX, mouseArgs_3.localEventY]];
+          maybeSetHoveredInfo(newInfo, needsHoverPosition);
+          hoverInfoRef.current = newInfo;
+          if (needsDamageCell) {
+            damageInternal(new CellSet([mouseArgs_3.location]));
+          }
+        }
       }
-      const newInfo = [mouseArgs_3.location, [mouseArgs_3.localEventX, mouseArgs_3.localEventY]];
-      maybeSetHoveredInfo(newInfo, needsHoverPosition);
-      hoverInfoRef.current = newInfo;
-      if (needsDamageCell) {
-        damageInternal(new CellSet([mouseArgs_3.location]));
-      }
-    }
-    const notRowMarkerCol = mouseArgs_3.location[0] >= (firstColAccessible ? 0 : 1);
-    setHoveredOnEdge(mouseArgs_3.kind === headerKind && mouseArgs_3.isEdge && notRowMarkerCol && allowResize === true);
-    setOverFill(mouseArgs_3.kind === "cell" && mouseArgs_3.isFillHandle);
-    onMouseMoveRaw === null || onMouseMoveRaw === void 0 || onMouseMoveRaw(ev_3);
-    onMouseMove(mouseArgs_3);
-  }, [canvasRef, eventTargetRef, getMouseArgsForPosition, firstColAccessible, allowResize, onMouseMoveRaw, onMouseMove, onItemHovered, getCellContent, getCellRenderer, damageInternal, setHoveredItemInfo, setHoveredOnEdge, setOverFill, setDrawCursorOverride, hoverInfoRef]);
+      const notRowMarkerCol = mouseArgs_3.location[0] >= (firstColAccessible ? 0 : 1);
+      setHoveredOnEdge(mouseArgs_3.kind === headerKind && mouseArgs_3.isEdge && notRowMarkerCol && allowResize === true);
+      setOverFill(mouseArgs_3.kind === "cell" && mouseArgs_3.isFillHandle);
+      onMouseMoveRaw === null || onMouseMoveRaw === void 0 || onMouseMoveRaw(ev_3);
+      onMouseMove(mouseArgs_3);
+    };
+    $2[42] = allowResize;
+    $2[43] = canvasRef;
+    $2[44] = damageInternal;
+    $2[45] = eventTargetRef;
+    $2[46] = firstColAccessible;
+    $2[47] = getCellContent;
+    $2[48] = getCellRenderer;
+    $2[49] = getMouseArgsForPosition;
+    $2[50] = hoverInfoRef;
+    $2[51] = onItemHovered;
+    $2[52] = onMouseMove;
+    $2[53] = onMouseMoveRaw;
+    $2[54] = setDrawCursorOverride;
+    $2[55] = setHoveredItemInfo;
+    $2[56] = setHoveredOnEdge;
+    $2[57] = setOverFill;
+    $2[58] = t6;
+  } else {
+    t6 = $2[58];
+  }
+  const onPointerMove = t6;
   useEventListener("pointermove", onPointerMove, windowEventTarget, true);
 }
 function useGridDragAndDrop(args) {
-  var _eventTargetRef$curre, _eventTargetRef$curre2, _eventTargetRef$curre3, _eventTargetRef$curre4, _eventTargetRef$curre5;
+  const $2 = compilerRuntimeExports.c(30);
   const {
     canvasRef,
     eventTargetRef,
@@ -13026,127 +13396,189 @@ function useGridDragAndDrop(args) {
     onDrop,
     onDragLeave
   } = args;
-  const onDragStartImpl = React.useCallback((event) => {
-    const canvas = canvasRef.current;
-    if (canvas === null || isDraggable === false || isResizing) {
-      event.preventDefault();
-      return;
-    }
-    let dragMime;
-    let dragData;
-    const mouseArgs = getMouseArgsForPosition(canvas, event.clientX, event.clientY);
-    if (isDraggable !== true && mouseArgs.kind !== isDraggable) {
-      event.preventDefault();
-      return;
-    }
-    const setData = (mime, payload) => {
-      dragMime = mime;
-      dragData = payload;
-    };
-    let dragImage;
-    let dragImageX;
-    let dragImageY;
-    const setDragImage = (image, x2, y2) => {
-      dragImage = image;
-      dragImageX = x2;
-      dragImageY = y2;
-    };
-    let prevented = false;
-    onDragStart === null || onDragStart === void 0 || onDragStart({
-      ...mouseArgs,
-      setData,
-      setDragImage,
-      preventDefault: () => prevented = true,
-      defaultPrevented: () => prevented
-    });
-    if (!prevented && dragMime !== void 0 && dragData !== void 0 && event.dataTransfer !== null) {
-      event.dataTransfer.setData(dragMime, dragData);
-      event.dataTransfer.effectAllowed = "copyLink";
-      if (dragImage !== void 0 && dragImageX !== void 0 && dragImageY !== void 0) {
-        event.dataTransfer.setDragImage(dragImage, dragImageX, dragImageY);
-      } else {
-        const [col, row] = mouseArgs.location;
-        if (row !== void 0) {
-          var _window$devicePixelRa;
-          const offscreen = document.createElement("canvas");
-          const boundsForDragTarget = getBoundsForItem(canvas, col, row);
-          assert(boundsForDragTarget !== void 0);
-          const dpr = Math.ceil((_window$devicePixelRa = window.devicePixelRatio) !== null && _window$devicePixelRa !== void 0 ? _window$devicePixelRa : 1);
-          offscreen.width = boundsForDragTarget.width * dpr;
-          offscreen.height = boundsForDragTarget.height * dpr;
-          const ctx = offscreen.getContext("2d");
-          if (ctx !== null) {
-            ctx.scale(dpr, dpr);
-            ctx.textBaseline = "middle";
-            if (row === -1) {
-              ctx.font = theme.headerFontFull;
-              ctx.fillStyle = theme.bgHeader;
-              ctx.fillRect(0, 0, offscreen.width, offscreen.height);
-              drawHeader(ctx, 0, 0, boundsForDragTarget.width, boundsForDragTarget.height, mappedColumns[col], false, theme, false, void 0, void 0, false, 0, spriteManager, drawHeaderCallback, false);
-            } else {
-              ctx.font = theme.baseFontFull;
-              ctx.fillStyle = theme.bgCell;
-              ctx.fillRect(0, 0, offscreen.width, offscreen.height);
-              drawCell(ctx, getCellContent([col, row]), 0, row, false, false, 0, 0, boundsForDragTarget.width, boundsForDragTarget.height, false, theme, theme.bgCell, imageLoader, spriteManager, 1, void 0, false, 0, void 0, void 0, void 0, renderStateProvider, getCellRenderer, () => void 0, 0);
-            }
-          }
-          offscreen.style.left = "-100%";
-          offscreen.style.position = "absolute";
-          offscreen.style.width = `${boundsForDragTarget.width}px`;
-          offscreen.style.height = `${boundsForDragTarget.height}px`;
-          document.body.append(offscreen);
-          event.dataTransfer.setDragImage(offscreen, boundsForDragTarget.width / 2, boundsForDragTarget.height / 2);
-          window.setTimeout(() => {
-            offscreen.remove();
-          }, 0);
-        }
+  let t0;
+  if ($2[0] !== canvasRef || $2[1] !== drawHeaderCallback || $2[2] !== getBoundsForItem || $2[3] !== getCellContent || $2[4] !== getCellRenderer || $2[5] !== getMouseArgsForPosition || $2[6] !== imageLoader || $2[7] !== isDraggable || $2[8] !== isResizing || $2[9] !== mappedColumns || $2[10] !== onDragStart || $2[11] !== renderStateProvider || $2[12] !== spriteManager || $2[13] !== theme) {
+    t0 = (event) => {
+      const canvas = canvasRef.current;
+      if (canvas === null || isDraggable === false || isResizing) {
+        event.preventDefault();
+        return;
       }
-    } else {
-      event.preventDefault();
-    }
-  }, [canvasRef, isDraggable, isResizing, getMouseArgsForPosition, onDragStart, getBoundsForItem, theme, mappedColumns, spriteManager, drawHeaderCallback, getCellContent, imageLoader, renderStateProvider, getCellRenderer]);
-  useEventListener("dragstart", onDragStartImpl, (_eventTargetRef$curre = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current) !== null && _eventTargetRef$curre !== void 0 ? _eventTargetRef$curre : null, false, false);
+      let dragMime;
+      let dragData;
+      const mouseArgs = getMouseArgsForPosition(canvas, event.clientX, event.clientY);
+      if (isDraggable !== true && mouseArgs.kind !== isDraggable) {
+        event.preventDefault();
+        return;
+      }
+      const setData = (mime, payload) => {
+        dragMime = mime;
+        dragData = payload;
+      };
+      let dragImage;
+      let dragImageX;
+      let dragImageY;
+      const setDragImage = (image, x2, y2) => {
+        dragImage = image;
+        dragImageX = x2;
+        dragImageY = y2;
+      };
+      let prevented = false;
+      onDragStart === null || onDragStart === void 0 || onDragStart({
+        ...mouseArgs,
+        setData,
+        setDragImage,
+        preventDefault: () => prevented = true,
+        defaultPrevented: () => prevented
+      });
+      if (!prevented && dragMime !== void 0 && dragData !== void 0 && event.dataTransfer !== null) {
+        event.dataTransfer.setData(dragMime, dragData);
+        event.dataTransfer.effectAllowed = "copyLink";
+        if (dragImage !== void 0 && dragImageX !== void 0 && dragImageY !== void 0) {
+          event.dataTransfer.setDragImage(dragImage, dragImageX, dragImageY);
+        } else {
+          const [col, row] = mouseArgs.location;
+          if (row !== void 0) {
+            var _window$devicePixelRa;
+            const offscreen = document.createElement("canvas");
+            const boundsForDragTarget = getBoundsForItem(canvas, col, row);
+            assert(boundsForDragTarget !== void 0);
+            const dpr = Math.ceil((_window$devicePixelRa = window.devicePixelRatio) !== null && _window$devicePixelRa !== void 0 ? _window$devicePixelRa : 1);
+            offscreen.width = boundsForDragTarget.width * dpr;
+            offscreen.height = boundsForDragTarget.height * dpr;
+            const ctx = offscreen.getContext("2d");
+            if (ctx !== null) {
+              ctx.scale(dpr, dpr);
+              ctx.textBaseline = "middle";
+              if (row === -1) {
+                ctx.font = theme.headerFontFull;
+                ctx.fillStyle = theme.bgHeader;
+                ctx.fillRect(0, 0, offscreen.width, offscreen.height);
+                drawHeader(ctx, 0, 0, boundsForDragTarget.width, boundsForDragTarget.height, mappedColumns[col], false, theme, false, void 0, void 0, false, 0, spriteManager, drawHeaderCallback, false);
+              } else {
+                ctx.font = theme.baseFontFull;
+                ctx.fillStyle = theme.bgCell;
+                ctx.fillRect(0, 0, offscreen.width, offscreen.height);
+                drawCell(ctx, getCellContent([col, row]), 0, row, false, false, 0, 0, boundsForDragTarget.width, boundsForDragTarget.height, false, theme, theme.bgCell, imageLoader, spriteManager, 1, void 0, false, 0, void 0, void 0, void 0, renderStateProvider, getCellRenderer, _temp$6, 0);
+              }
+            }
+            offscreen.style.left = "-100%";
+            offscreen.style.position = "absolute";
+            offscreen.style.width = `${boundsForDragTarget.width}px`;
+            offscreen.style.height = `${boundsForDragTarget.height}px`;
+            document.body.append(offscreen);
+            event.dataTransfer.setDragImage(offscreen, boundsForDragTarget.width / 2, boundsForDragTarget.height / 2);
+            window.setTimeout(() => {
+              offscreen.remove();
+            }, 0);
+          }
+        }
+      } else {
+        event.preventDefault();
+      }
+    };
+    $2[0] = canvasRef;
+    $2[1] = drawHeaderCallback;
+    $2[2] = getBoundsForItem;
+    $2[3] = getCellContent;
+    $2[4] = getCellRenderer;
+    $2[5] = getMouseArgsForPosition;
+    $2[6] = imageLoader;
+    $2[7] = isDraggable;
+    $2[8] = isResizing;
+    $2[9] = mappedColumns;
+    $2[10] = onDragStart;
+    $2[11] = renderStateProvider;
+    $2[12] = spriteManager;
+    $2[13] = theme;
+    $2[14] = t0;
+  } else {
+    t0 = $2[14];
+  }
+  const onDragStartImpl = t0;
+  useEventListener("dragstart", onDragStartImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false, false);
   const activeDropTarget = React.useRef(void 0);
-  const onDragOverImpl = React.useCallback((event_0) => {
-    var _activeDropTarget$cur;
-    const canvas_0 = canvasRef.current;
-    if (onDrop !== void 0) {
-      event_0.preventDefault();
-    }
-    if (canvas_0 === null || onDragOverCell === void 0) {
-      return;
-    }
-    const mouseArgs_0 = getMouseArgsForPosition(canvas_0, event_0.clientX, event_0.clientY);
-    const [rawCol, row_0] = mouseArgs_0.location;
-    const col_0 = rawCol - (firstColAccessible ? 0 : 1);
-    const [activeCol, activeRow] = (_activeDropTarget$cur = activeDropTarget.current) !== null && _activeDropTarget$cur !== void 0 ? _activeDropTarget$cur : [];
-    if (activeCol !== col_0 || activeRow !== row_0) {
-      activeDropTarget.current = [col_0, row_0];
-      onDragOverCell([col_0, row_0], event_0.dataTransfer);
-    }
-  }, [canvasRef, firstColAccessible, getMouseArgsForPosition, onDragOverCell, onDrop]);
-  useEventListener("dragover", onDragOverImpl, (_eventTargetRef$curre2 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current) !== null && _eventTargetRef$curre2 !== void 0 ? _eventTargetRef$curre2 : null, false, false);
-  const onDragEndImpl = React.useCallback(() => {
-    activeDropTarget.current = void 0;
-    onDragEnd === null || onDragEnd === void 0 || onDragEnd();
-  }, [onDragEnd]);
-  useEventListener("dragend", onDragEndImpl, (_eventTargetRef$curre3 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current) !== null && _eventTargetRef$curre3 !== void 0 ? _eventTargetRef$curre3 : null, false, false);
-  const onDropImpl = React.useCallback((event_1) => {
-    const canvas_1 = canvasRef.current;
-    if (canvas_1 === null || onDrop === void 0) {
-      return;
-    }
-    event_1.preventDefault();
-    const mouseArgs_1 = getMouseArgsForPosition(canvas_1, event_1.clientX, event_1.clientY);
-    const [rawCol_0, row_1] = mouseArgs_1.location;
-    const col_1 = rawCol_0 - (firstColAccessible ? 0 : 1);
-    onDrop([col_1, row_1], event_1.dataTransfer);
-  }, [canvasRef, firstColAccessible, getMouseArgsForPosition, onDrop]);
-  useEventListener("drop", onDropImpl, (_eventTargetRef$curre4 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current) !== null && _eventTargetRef$curre4 !== void 0 ? _eventTargetRef$curre4 : null, false, false);
-  const onDragLeaveImpl = React.useCallback(() => {
-    onDragLeave === null || onDragLeave === void 0 || onDragLeave();
-  }, [onDragLeave]);
-  useEventListener("dragleave", onDragLeaveImpl, (_eventTargetRef$curre5 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current) !== null && _eventTargetRef$curre5 !== void 0 ? _eventTargetRef$curre5 : null, false, false);
+  let t1;
+  if ($2[15] !== canvasRef || $2[16] !== firstColAccessible || $2[17] !== getMouseArgsForPosition || $2[18] !== onDragOverCell || $2[19] !== onDrop) {
+    t1 = (event_0) => {
+      var _activeDropTarget$cur;
+      const canvas_0 = canvasRef.current;
+      if (onDrop !== void 0) {
+        event_0.preventDefault();
+      }
+      if (canvas_0 === null || onDragOverCell === void 0) {
+        return;
+      }
+      const mouseArgs_0 = getMouseArgsForPosition(canvas_0, event_0.clientX, event_0.clientY);
+      const [rawCol, row_0] = mouseArgs_0.location;
+      const col_0 = rawCol - (firstColAccessible ? 0 : 1);
+      const [activeCol, activeRow] = (_activeDropTarget$cur = activeDropTarget.current) !== null && _activeDropTarget$cur !== void 0 ? _activeDropTarget$cur : [];
+      if (activeCol !== col_0 || activeRow !== row_0) {
+        activeDropTarget.current = [col_0, row_0];
+        onDragOverCell([col_0, row_0], event_0.dataTransfer);
+      }
+    };
+    $2[15] = canvasRef;
+    $2[16] = firstColAccessible;
+    $2[17] = getMouseArgsForPosition;
+    $2[18] = onDragOverCell;
+    $2[19] = onDrop;
+    $2[20] = t1;
+  } else {
+    t1 = $2[20];
+  }
+  const onDragOverImpl = t1;
+  useEventListener("dragover", onDragOverImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false, false);
+  let t2;
+  if ($2[21] !== onDragEnd) {
+    t2 = () => {
+      activeDropTarget.current = void 0;
+      onDragEnd === null || onDragEnd === void 0 || onDragEnd();
+    };
+    $2[21] = onDragEnd;
+    $2[22] = t2;
+  } else {
+    t2 = $2[22];
+  }
+  const onDragEndImpl = t2;
+  useEventListener("dragend", onDragEndImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false, false);
+  let t3;
+  if ($2[23] !== canvasRef || $2[24] !== firstColAccessible || $2[25] !== getMouseArgsForPosition || $2[26] !== onDrop) {
+    t3 = (event_1) => {
+      const canvas_1 = canvasRef.current;
+      if (canvas_1 === null || onDrop === void 0) {
+        return;
+      }
+      event_1.preventDefault();
+      const mouseArgs_1 = getMouseArgsForPosition(canvas_1, event_1.clientX, event_1.clientY);
+      const [rawCol_0, row_1] = mouseArgs_1.location;
+      const col_1 = rawCol_0 - (firstColAccessible ? 0 : 1);
+      onDrop([col_1, row_1], event_1.dataTransfer);
+    };
+    $2[23] = canvasRef;
+    $2[24] = firstColAccessible;
+    $2[25] = getMouseArgsForPosition;
+    $2[26] = onDrop;
+    $2[27] = t3;
+  } else {
+    t3 = $2[27];
+  }
+  const onDropImpl = t3;
+  useEventListener("drop", onDropImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false, false);
+  let t4;
+  if ($2[28] !== onDragLeave) {
+    t4 = () => {
+      onDragLeave === null || onDragLeave === void 0 || onDragLeave();
+    };
+    $2[28] = onDragLeave;
+    $2[29] = t4;
+  } else {
+    t4 = $2[29];
+  }
+  const onDragLeaveImpl = t4;
+  useEventListener("dragleave", onDragLeaveImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false, false);
+}
+function _temp$6() {
 }
 const getRowData = (cell, getCellRenderer) => {
   var _r$getAccessibilitySt;
@@ -13155,6 +13587,7 @@ const getRowData = (cell, getCellRenderer) => {
   return (_r$getAccessibilitySt = r === null || r === void 0 ? void 0 : r.getAccessibilityString(cell)) !== null && _r$getAccessibilitySt !== void 0 ? _r$getAccessibilitySt : "";
 };
 function useGridFocusAndAccessibility(args) {
+  const $2 = compilerRuntimeExports.c(33);
   const {
     canvasRef,
     canvasPropRef,
@@ -13178,113 +13611,196 @@ function useGridFocusAndAccessibility(args) {
     disableAccessibilityTree,
     forwardedRef
   } = args;
-  const selectionRef = React.useRef(selection);
-  selectionRef.current = selection;
   const focusRef = React.useRef(null);
-  const focusElement = React.useCallback((el) => {
-    if (canvasRef.current === null || !canvasRef.current.contains(document.activeElement)) return;
-    if (el === null && selectionRef.current.current !== void 0) {
-      var _canvasPropRef$curren;
-      canvasPropRef === null || canvasPropRef === void 0 || (_canvasPropRef$curren = canvasPropRef.current) === null || _canvasPropRef$curren === void 0 || _canvasPropRef$curren.focus({
-        preventScroll: true
-      });
-    } else if (el !== null) {
-      el.focus({
-        preventScroll: true
-      });
-    }
-    focusRef.current = el;
-  }, [canvasRef, canvasPropRef]);
-  React.useImperativeHandle(forwardedRef, () => ({
-    focus: () => {
-      const el_0 = focusRef.current;
-      if (el_0 === null || !document.contains(el_0)) {
-        var _canvasPropRef$curren2;
-        canvasPropRef === null || canvasPropRef === void 0 || (_canvasPropRef$curren2 = canvasPropRef.current) === null || _canvasPropRef$curren2 === void 0 || _canvasPropRef$curren2.focus({
+  let t0;
+  if ($2[0] !== canvasPropRef || $2[1] !== canvasRef || $2[2] !== selection) {
+    t0 = (el) => {
+      if (canvasRef.current === null || !canvasRef.current.contains(document.activeElement)) {
+        return;
+      }
+      if (el === null && selection.current !== void 0) {
+        var _canvasPropRef$curren;
+        canvasPropRef === null || canvasPropRef === void 0 || (_canvasPropRef$curren = canvasPropRef.current) === null || _canvasPropRef$curren === void 0 || _canvasPropRef$curren.focus({
           preventScroll: true
         });
       } else {
-        el_0.focus({
-          preventScroll: true
-        });
-      }
-    },
-    getBounds: (col, row) => {
-      if (canvasPropRef === void 0 || canvasPropRef.current === null) {
-        return void 0;
-      }
-      return getBoundsForItem(canvasPropRef.current, col !== null && col !== void 0 ? col : 0, row !== null && row !== void 0 ? row : -1);
-    },
-    damage,
-    getMouseArgsForPosition: (posX, posY, ev) => {
-      if (canvasPropRef === void 0 || canvasPropRef.current === null) {
-        return void 0;
-      }
-      return getMouseArgsForPosition(canvasPropRef.current, posX, posY, ev);
-    }
-  }), [canvasPropRef, damage, getBoundsForItem, getMouseArgsForPosition]);
-  const lastFocusedSubdomNode = React.useRef(void 0);
-  const accessibilityTree = useDebouncedMemo(() => {
-    var _effectiveCols$, _selection$current$ce, _selection$current, _selection$current2;
-    if (width < 50 || disableAccessibilityTree) return null;
-    let effectiveCols = getEffectiveColumns(mappedColumns, cellXOffset, width, dragAndDropState, translateX);
-    const colOffset = firstColAccessible ? 0 : -1;
-    if (!firstColAccessible && ((_effectiveCols$ = effectiveCols[0]) === null || _effectiveCols$ === void 0 ? void 0 : _effectiveCols$.sourceIndex) === 0) {
-      effectiveCols = effectiveCols.slice(1);
-    }
-    const [fCol, fRow] = (_selection$current$ce = (_selection$current = selection.current) === null || _selection$current === void 0 ? void 0 : _selection$current.cell) !== null && _selection$current$ce !== void 0 ? _selection$current$ce : [];
-    const range$1 = (_selection$current2 = selection.current) === null || _selection$current2 === void 0 ? void 0 : _selection$current2.range;
-    const visibleCols = effectiveCols.map((c) => c.sourceIndex);
-    const visibleRows = range(cellYOffset, Math.min(rows, cellYOffset + accessibilityHeight));
-    if (fCol !== void 0 && fRow !== void 0 && !(visibleCols.includes(fCol) && visibleRows.includes(fRow))) {
-      focusElement(null);
-    }
-    return /* @__PURE__ */ jsxs("table", { role: "grid", "aria-rowcount": rows + 1, "aria-multiselectable": "true", "aria-colcount": mappedColumns.length + colOffset, children: [
-      /* @__PURE__ */ jsx("thead", { role: "rowgroup", children: /* @__PURE__ */ jsx("tr", { role: "row", "aria-rowindex": 1, children: effectiveCols.map((c_0) => /* @__PURE__ */ jsx("th", { role: "columnheader", "aria-selected": selection.columns.hasIndex(c_0.sourceIndex), "aria-colindex": c_0.sourceIndex + 1 + colOffset, tabIndex: -1, onFocus: (e) => {
-        if (e.target === focusRef.current) return;
-        return onCellFocused === null || onCellFocused === void 0 ? void 0 : onCellFocused([c_0.sourceIndex, -1]);
-      }, children: c_0.title }, c_0.sourceIndex)) }) }),
-      /* @__PURE__ */ jsx("tbody", { role: "rowgroup", children: visibleRows.map((row_0) => /* @__PURE__ */ jsx("tr", { role: "row", "aria-selected": selection.rows.hasIndex(row_0), "aria-rowindex": row_0 + 2, children: effectiveCols.map((c_1) => {
-        const col_0 = c_1.sourceIndex;
-        const key = packColRowToNumber(col_0, row_0);
-        const focused = fCol === col_0 && fRow === row_0;
-        const selected = range$1 !== void 0 && col_0 >= range$1.x && col_0 < range$1.x + range$1.width && row_0 >= range$1.y && row_0 < range$1.y + range$1.height;
-        const id = `glide-cell-${col_0}-${row_0}`;
-        const location = [col_0, row_0];
-        const cellContent = getCellContent(location, true);
-        return /* @__PURE__ */ jsx("td", { role: "gridcell", "aria-colindex": col_0 + 1 + colOffset, "aria-selected": selected, "aria-readonly": isInnerOnlyCell(cellContent) || !isReadWriteCell(cellContent), id, "data-testid": id, onClick: () => {
-          const canvas = canvasPropRef === null || canvasPropRef === void 0 ? void 0 : canvasPropRef.current;
-          if (canvas === null || canvas === void 0) return;
-          return onKeyDown === null || onKeyDown === void 0 ? void 0 : onKeyDown({
-            bounds: getBoundsForItem(canvas, col_0, row_0),
-            cancel: () => void 0,
-            preventDefault: () => void 0,
-            stopPropagation: () => void 0,
-            ctrlKey: false,
-            key: "Enter",
-            keyCode: 13,
-            metaKey: false,
-            shiftKey: false,
-            altKey: false,
-            rawEvent: void 0,
-            location
+        if (el !== null) {
+          el.focus({
+            preventScroll: true
           });
-        }, onFocusCapture: (e_0) => {
-          var _lastFocusedSubdomNod, _lastFocusedSubdomNod2;
-          if (e_0.target === focusRef.current || ((_lastFocusedSubdomNod = lastFocusedSubdomNode.current) === null || _lastFocusedSubdomNod === void 0 ? void 0 : _lastFocusedSubdomNod[0]) === col_0 && ((_lastFocusedSubdomNod2 = lastFocusedSubdomNode.current) === null || _lastFocusedSubdomNod2 === void 0 ? void 0 : _lastFocusedSubdomNod2[1]) === row_0) return;
-          lastFocusedSubdomNode.current = location;
-          return onCellFocused === null || onCellFocused === void 0 ? void 0 : onCellFocused(location);
-        }, ref: focused ? focusElement : void 0, tabIndex: -1, children: getRowData(cellContent, getCellRenderer) }, key);
-      }) }, row_0)) })
-    ] }, "access-tree");
-  }, [width, mappedColumns, cellXOffset, dragAndDropState, translateX, rows, cellYOffset, accessibilityHeight, selection, focusElement, getCellContent, canvasPropRef, onKeyDown, getBoundsForItem, onCellFocused, disableAccessibilityTree, firstColAccessible, getCellRenderer], 200);
-  return {
-    focusElement,
-    accessibilityTree
-  };
+        }
+      }
+      focusRef.current = el;
+    };
+    $2[0] = canvasPropRef;
+    $2[1] = canvasRef;
+    $2[2] = selection;
+    $2[3] = t0;
+  } else {
+    t0 = $2[3];
+  }
+  const focusElement = t0;
+  let t1;
+  let t2;
+  if ($2[4] !== canvasPropRef || $2[5] !== damage || $2[6] !== getBoundsForItem || $2[7] !== getMouseArgsForPosition) {
+    t1 = () => ({
+      focus: () => {
+        const el_0 = focusRef.current;
+        if (el_0 === null || !document.contains(el_0)) {
+          var _canvasPropRef$curren2;
+          canvasPropRef === null || canvasPropRef === void 0 || (_canvasPropRef$curren2 = canvasPropRef.current) === null || _canvasPropRef$curren2 === void 0 || _canvasPropRef$curren2.focus({
+            preventScroll: true
+          });
+        } else {
+          el_0.focus({
+            preventScroll: true
+          });
+        }
+      },
+      getBounds: (col, row) => {
+        if (canvasPropRef === void 0 || canvasPropRef.current === null) {
+          return;
+        }
+        return getBoundsForItem(canvasPropRef.current, col !== null && col !== void 0 ? col : 0, row !== null && row !== void 0 ? row : -1);
+      },
+      damage,
+      getMouseArgsForPosition: (posX, posY, ev) => {
+        if (canvasPropRef === void 0 || canvasPropRef.current === null) {
+          return;
+        }
+        return getMouseArgsForPosition(canvasPropRef.current, posX, posY, ev);
+      }
+    });
+    t2 = [canvasPropRef, damage, getBoundsForItem, getMouseArgsForPosition];
+    $2[4] = canvasPropRef;
+    $2[5] = damage;
+    $2[6] = getBoundsForItem;
+    $2[7] = getMouseArgsForPosition;
+    $2[8] = t1;
+    $2[9] = t2;
+  } else {
+    t1 = $2[8];
+    t2 = $2[9];
+  }
+  React.useImperativeHandle(forwardedRef, t1, t2);
+  const lastFocusedSubdomNode = React.useRef(void 0);
+  let t3;
+  let t4;
+  if ($2[10] !== accessibilityHeight || $2[11] !== canvasPropRef || $2[12] !== cellXOffset || $2[13] !== cellYOffset || $2[14] !== disableAccessibilityTree || $2[15] !== dragAndDropState || $2[16] !== firstColAccessible || $2[17] !== focusElement || $2[18] !== getBoundsForItem || $2[19] !== getCellContent || $2[20] !== getCellRenderer || $2[21] !== mappedColumns || $2[22] !== onCellFocused || $2[23] !== onKeyDown || $2[24] !== rows || $2[25] !== selection || $2[26] !== translateX || $2[27] !== width) {
+    t3 = () => {
+      var _effectiveCols$, _selection$current$ce, _selection$current, _selection$current2;
+      if (width < 50 || disableAccessibilityTree) {
+        return null;
+      }
+      let effectiveCols = getEffectiveColumns(mappedColumns, cellXOffset, width, dragAndDropState, translateX);
+      const colOffset = firstColAccessible ? 0 : -1;
+      if (!firstColAccessible && ((_effectiveCols$ = effectiveCols[0]) === null || _effectiveCols$ === void 0 ? void 0 : _effectiveCols$.sourceIndex) === 0) {
+        effectiveCols = effectiveCols.slice(1);
+      }
+      const [fCol, fRow] = (_selection$current$ce = (_selection$current = selection.current) === null || _selection$current === void 0 ? void 0 : _selection$current.cell) !== null && _selection$current$ce !== void 0 ? _selection$current$ce : [];
+      const range$1 = (_selection$current2 = selection.current) === null || _selection$current2 === void 0 ? void 0 : _selection$current2.range;
+      const visibleCols = effectiveCols.map(_temp$5);
+      const visibleRows = range(cellYOffset, Math.min(rows, cellYOffset + accessibilityHeight));
+      if (fCol !== void 0 && fRow !== void 0 && !(visibleCols.includes(fCol) && visibleRows.includes(fRow))) {
+        focusElement(null);
+      }
+      return /* @__PURE__ */ jsxs("table", { role: "grid", "aria-rowcount": rows + 1, "aria-multiselectable": "true", "aria-colcount": mappedColumns.length + colOffset, children: [
+        /* @__PURE__ */ jsx("thead", { role: "rowgroup", children: /* @__PURE__ */ jsx("tr", { role: "row", "aria-rowindex": 1, children: effectiveCols.map((c_0) => /* @__PURE__ */ jsx("th", { role: "columnheader", "aria-selected": selection.columns.hasIndex(c_0.sourceIndex), "aria-colindex": c_0.sourceIndex + 1 + colOffset, tabIndex: -1, onFocus: (e) => {
+          if (e.target === focusRef.current) {
+            return;
+          }
+          return onCellFocused === null || onCellFocused === void 0 ? void 0 : onCellFocused([c_0.sourceIndex, -1]);
+        }, children: c_0.title }, c_0.sourceIndex)) }) }),
+        /* @__PURE__ */ jsx("tbody", { role: "rowgroup", children: visibleRows.map((row_0) => /* @__PURE__ */ jsx("tr", { role: "row", "aria-selected": selection.rows.hasIndex(row_0), "aria-rowindex": row_0 + 2, children: effectiveCols.map((c_1) => {
+          const col_0 = c_1.sourceIndex;
+          const key = packColRowToNumber(col_0, row_0);
+          const focused = fCol === col_0 && fRow === row_0;
+          const selected = range$1 !== void 0 && col_0 >= range$1.x && col_0 < range$1.x + range$1.width && row_0 >= range$1.y && row_0 < range$1.y + range$1.height;
+          const id = `glide-cell-${col_0}-${row_0}`;
+          const location = [col_0, row_0];
+          const cellContent = getCellContent(location, true);
+          return /* @__PURE__ */ jsx("td", { role: "gridcell", "aria-colindex": col_0 + 1 + colOffset, "aria-selected": selected, "aria-readonly": isInnerOnlyCell(cellContent) || !isReadWriteCell(cellContent), id, "data-testid": id, onClick: () => {
+            const canvas = canvasPropRef === null || canvasPropRef === void 0 ? void 0 : canvasPropRef.current;
+            if (canvas === null || canvas === void 0) {
+              return;
+            }
+            return onKeyDown === null || onKeyDown === void 0 ? void 0 : onKeyDown({
+              bounds: getBoundsForItem(canvas, col_0, row_0),
+              cancel: _temp2$3,
+              preventDefault: _temp3$2,
+              stopPropagation: _temp4$2,
+              ctrlKey: false,
+              key: "Enter",
+              keyCode: 13,
+              metaKey: false,
+              shiftKey: false,
+              altKey: false,
+              rawEvent: void 0,
+              location
+            });
+          }, onFocusCapture: (e_0) => {
+            var _lastFocusedSubdomNod, _lastFocusedSubdomNod2;
+            if (e_0.target === focusRef.current || ((_lastFocusedSubdomNod = lastFocusedSubdomNode.current) === null || _lastFocusedSubdomNod === void 0 ? void 0 : _lastFocusedSubdomNod[0]) === col_0 && ((_lastFocusedSubdomNod2 = lastFocusedSubdomNode.current) === null || _lastFocusedSubdomNod2 === void 0 ? void 0 : _lastFocusedSubdomNod2[1]) === row_0) {
+              return;
+            }
+            lastFocusedSubdomNode.current = location;
+            return onCellFocused === null || onCellFocused === void 0 ? void 0 : onCellFocused(location);
+          }, ref: focused ? focusElement : void 0, tabIndex: -1, children: getRowData(cellContent, getCellRenderer) }, key);
+        }) }, row_0)) })
+      ] }, "access-tree");
+    };
+    t4 = [width, mappedColumns, cellXOffset, dragAndDropState, translateX, rows, cellYOffset, accessibilityHeight, selection, focusElement, getCellContent, canvasPropRef, onKeyDown, getBoundsForItem, onCellFocused, disableAccessibilityTree, firstColAccessible, getCellRenderer];
+    $2[10] = accessibilityHeight;
+    $2[11] = canvasPropRef;
+    $2[12] = cellXOffset;
+    $2[13] = cellYOffset;
+    $2[14] = disableAccessibilityTree;
+    $2[15] = dragAndDropState;
+    $2[16] = firstColAccessible;
+    $2[17] = focusElement;
+    $2[18] = getBoundsForItem;
+    $2[19] = getCellContent;
+    $2[20] = getCellRenderer;
+    $2[21] = mappedColumns;
+    $2[22] = onCellFocused;
+    $2[23] = onKeyDown;
+    $2[24] = rows;
+    $2[25] = selection;
+    $2[26] = translateX;
+    $2[27] = width;
+    $2[28] = t3;
+    $2[29] = t4;
+  } else {
+    t3 = $2[28];
+    t4 = $2[29];
+  }
+  const accessibilityTree = useDebouncedMemo(t3, t4, 200);
+  let t5;
+  if ($2[30] !== accessibilityTree || $2[31] !== focusElement) {
+    t5 = {
+      focusElement,
+      accessibilityTree
+    };
+    $2[30] = accessibilityTree;
+    $2[31] = focusElement;
+    $2[32] = t5;
+  } else {
+    t5 = $2[32];
+  }
+  return t5;
+}
+function _temp4$2() {
+}
+function _temp3$2() {
+}
+function _temp2$3() {
+}
+function _temp$5(c) {
+  return c.sourceIndex;
 }
 const DataGrid = (p2, forwardedRef) => {
   var _p$translateX, _p$translateY, _experimental$eventTa;
+  const $2 = compilerRuntimeExports.c(225);
   const {
     width,
     height,
@@ -13293,7 +13809,7 @@ const DataGrid = (p2, forwardedRef) => {
     cellXOffset: cellXOffsetReal,
     cellYOffset,
     headerHeight,
-    fillHandle = false,
+    fillHandle: t0,
     groupHeaderHeight,
     groupLevels,
     groupHeaderHeights,
@@ -13312,8 +13828,8 @@ const DataGrid = (p2, forwardedRef) => {
     freezeColumns,
     onContextMenu,
     freezeTrailingRows,
-    fixedShadowX = true,
-    fixedShadowY = true,
+    fixedShadowX: t1,
+    fixedShadowY: t2,
     drawFocusRing,
     onMouseDown,
     onMouseUp,
@@ -13332,7 +13848,7 @@ const DataGrid = (p2, forwardedRef) => {
     isResizing,
     resizeColumn: resizeCol,
     isDragging,
-    isDraggable = false,
+    isDraggable: t3,
     allowResize,
     disabledRows,
     hasAppendRow,
@@ -13348,65 +13864,259 @@ const DataGrid = (p2, forwardedRef) => {
     onDrop,
     onDragLeave,
     imageWindowLoader,
-    smoothScrollX = false,
-    smoothScrollY = false,
+    smoothScrollX: t4,
+    smoothScrollY: t5,
     experimental,
     getCellRenderer,
-    resizeIndicator = "full"
+    resizeIndicator: t6
   } = p2;
+  const fillHandle = t0 === void 0 ? false : t0;
+  const fixedShadowX = t1 === void 0 ? true : t1;
+  const fixedShadowY = t2 === void 0 ? true : t2;
+  const isDraggable = t3 === void 0 ? false : t3;
+  const smoothScrollX = t4 === void 0 ? false : t4;
+  const smoothScrollY = t5 === void 0 ? false : t5;
+  const resizeIndicator = t6 === void 0 ? "full" : t6;
   const translateX = (_p$translateX = p2.translateX) !== null && _p$translateX !== void 0 ? _p$translateX : 0;
   const translateY = (_p$translateY = p2.translateY) !== null && _p$translateY !== void 0 ? _p$translateY : 0;
   const cellXOffset = Math.max(freezeColumns, Math.min(columns.length - 1, cellXOffsetReal));
   const ref = React.useRef(null);
-  const windowEventTargetRef = React.useRef((_experimental$eventTa = experimental === null || experimental === void 0 ? void 0 : experimental.eventTarget) !== null && _experimental$eventTa !== void 0 ? _experimental$eventTa : window);
-  const windowEventTarget = windowEventTargetRef.current;
+  const [windowEventTarget, setWindowEventTarget] = React.useState((_experimental$eventTa = experimental === null || experimental === void 0 ? void 0 : experimental.eventTarget) !== null && _experimental$eventTa !== void 0 ? _experimental$eventTa : window);
   const imageLoader = imageWindowLoader;
   const [hoveredItemInfo, setHoveredItemInfo] = React.useState();
   const [hoveredOnEdge, setHoveredOnEdge] = React.useState();
   const overlayRef = React.useRef(null);
   const [lastWasTouch, setLastWasTouch] = React.useState(false);
   const lastWasTouchRef = React.useRef(lastWasTouch);
-  lastWasTouchRef.current = lastWasTouch;
-  const hoverValues = React.useRef([]);
+  let t7;
+  let t8;
+  if ($2[0] !== lastWasTouch) {
+    t7 = () => {
+      lastWasTouchRef.current = lastWasTouch;
+    };
+    t8 = [lastWasTouch];
+    $2[0] = lastWasTouch;
+    $2[1] = t7;
+    $2[2] = t8;
+  } else {
+    t7 = $2[1];
+    t8 = $2[2];
+  }
+  React.useLayoutEffect(t7, t8);
+  let t9;
+  if ($2[3] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t9 = [];
+    $2[3] = t9;
+  } else {
+    t9 = $2[3];
+  }
+  const hoverValues = React.useRef(t9);
   const hoverInfoRef = React.useRef(hoveredItemInfo);
-  hoverInfoRef.current = hoveredItemInfo;
-  const totalGroupHeaderHeight = enableGroups ? groupHeaderHeights.reduce((a, b2) => a + b2, 0) : 0;
+  let t10;
+  let t11;
+  if ($2[4] !== hoveredItemInfo) {
+    t10 = () => {
+      hoverInfoRef.current = hoveredItemInfo;
+    };
+    t11 = [hoveredItemInfo];
+    $2[4] = hoveredItemInfo;
+    $2[5] = t10;
+    $2[6] = t11;
+  } else {
+    t10 = $2[5];
+    t11 = $2[6];
+  }
+  React.useLayoutEffect(t10, t11);
+  let t12;
+  if ($2[7] !== enableGroups || $2[8] !== groupHeaderHeights) {
+    t12 = enableGroups ? groupHeaderHeights.reduce(_temp$4, 0) : 0;
+    $2[7] = enableGroups;
+    $2[8] = groupHeaderHeights;
+    $2[9] = t12;
+  } else {
+    t12 = $2[9];
+  }
+  const totalGroupHeaderHeight = t12;
   const totalHeaderHeight = headerHeight + totalGroupHeaderHeight;
+  let t13;
+  if ($2[10] !== cellXOffset || $2[11] !== cellYOffset || $2[12] !== columns || $2[13] !== dragAndDropState || $2[14] !== enableGroups || $2[15] !== fillHandle || $2[16] !== fixedShadowX || $2[17] !== freezeColumns || $2[18] !== freezeTrailingRows || $2[19] !== groupHeaderHeight || $2[20] !== groupHeaderHeights || $2[21] !== groupLevels || $2[22] !== headerHeight || $2[23] !== height || $2[24] !== rowHeight || $2[25] !== rows || $2[26] !== selection || $2[27] !== totalHeaderHeight || $2[28] !== translateX || $2[29] !== translateY || $2[30] !== width) {
+    t13 = {
+      columns,
+      freezeColumns,
+      width,
+      height,
+      groupHeaderHeight,
+      totalHeaderHeight,
+      cellXOffset,
+      cellYOffset,
+      translateX,
+      translateY,
+      rows,
+      freezeTrailingRows,
+      rowHeight,
+      enableGroups,
+      headerHeight,
+      groupLevels,
+      groupHeaderHeights,
+      fillHandle,
+      selection,
+      fixedShadowX,
+      dragAndDropState
+    };
+    $2[10] = cellXOffset;
+    $2[11] = cellYOffset;
+    $2[12] = columns;
+    $2[13] = dragAndDropState;
+    $2[14] = enableGroups;
+    $2[15] = fillHandle;
+    $2[16] = fixedShadowX;
+    $2[17] = freezeColumns;
+    $2[18] = freezeTrailingRows;
+    $2[19] = groupHeaderHeight;
+    $2[20] = groupHeaderHeights;
+    $2[21] = groupLevels;
+    $2[22] = headerHeight;
+    $2[23] = height;
+    $2[24] = rowHeight;
+    $2[25] = rows;
+    $2[26] = selection;
+    $2[27] = totalHeaderHeight;
+    $2[28] = translateX;
+    $2[29] = translateY;
+    $2[30] = width;
+    $2[31] = t13;
+  } else {
+    t13 = $2[31];
+  }
   const {
     mappedColumns,
     stickyX,
     getBoundsForItem,
     getMouseArgsForPosition
-  } = useGridGeometry({
-    columns,
-    freezeColumns,
-    width,
-    height,
-    groupHeaderHeight,
-    totalHeaderHeight,
-    cellXOffset,
-    cellYOffset,
-    translateX,
-    translateY,
-    rows,
-    freezeTrailingRows,
-    rowHeight,
-    enableGroups,
-    headerHeight,
-    groupLevels,
-    groupHeaderHeights,
-    fillHandle,
-    selection,
-    fixedShadowX,
-    dragAndDropState
-  });
-  const lastDrawRefForSprite = React.useRef(() => {
-  });
-  const lastArgsRefForSprite = React.useRef(void 0);
-  const spriteManager = React.useMemo(() => new SpriteManager(headerIcons, () => {
-    lastArgsRefForSprite.current = void 0;
-    lastDrawRefForSprite.current();
-  }), [headerIcons]);
+  } = useGridGeometry(t13);
+  let t14;
+  if ($2[32] !== headerIcons) {
+    t14 = () => new SpriteManager(headerIcons, _temp2$2);
+    $2[32] = headerIcons;
+    $2[33] = t14;
+  } else {
+    t14 = $2[33];
+  }
+  const [spriteManager] = React.useState(t14);
+  let t15;
+  let t16;
+  if ($2[34] !== headerIcons || $2[35] !== spriteManager) {
+    t15 = () => {
+      spriteManager.updateIcons(headerIcons);
+    };
+    t16 = [spriteManager, headerIcons];
+    $2[34] = headerIcons;
+    $2[35] = spriteManager;
+    $2[36] = t15;
+    $2[37] = t16;
+  } else {
+    t15 = $2[36];
+    t16 = $2[37];
+  }
+  React.useLayoutEffect(t15, t16);
+  let t17;
+  if ($2[38] !== cellXOffset || $2[39] !== cellYOffset || $2[40] !== disabledRows || $2[41] !== dragAndDropState || $2[42] !== drawCellCallback || $2[43] !== drawFocusRing || $2[44] !== drawHeaderCallback || $2[45] !== enableGroups || $2[46] !== experimental || $2[47] !== fillHandle || $2[48] !== freezeColumns || $2[49] !== freezeTrailingRows || $2[50] !== getCellContent || $2[51] !== getCellRenderer || $2[52] !== getGroupDetails || $2[53] !== getRowThemeOverride || $2[54] !== groupHeaderHeight || $2[55] !== groupHeaderHeights || $2[56] !== groupLevels || $2[57] !== hasAppendRow || $2[58] !== headerHeight || $2[59] !== height || $2[60] !== highlightRegions || $2[61] !== hoveredItemInfo || $2[62] !== imageLoader || $2[63] !== isFocused || $2[64] !== isResizing || $2[65] !== lastWasTouch || $2[66] !== mappedColumns || $2[67] !== prelightCells || $2[68] !== resizeCol || $2[69] !== resizeIndicator || $2[70] !== rowHeight || $2[71] !== rows || $2[72] !== selection || $2[73] !== smoothScrollX || $2[74] !== smoothScrollY || $2[75] !== spriteManager || $2[76] !== theme || $2[77] !== translateX || $2[78] !== translateY || $2[79] !== verticalBorder || $2[80] !== width) {
+    t17 = {
+      canvasRef: ref,
+      overlayRef,
+      width,
+      height,
+      cellXOffset,
+      cellYOffset,
+      translateX,
+      translateY,
+      mappedColumns,
+      enableGroups,
+      freezeColumns,
+      freezeTrailingRows,
+      rows,
+      headerHeight,
+      groupHeaderHeight,
+      groupLevels,
+      groupHeaderHeights,
+      theme,
+      rowHeight,
+      verticalBorder,
+      isResizing,
+      resizeCol,
+      isFocused,
+      fillHandle,
+      drawFocusRing,
+      drawCellCallback,
+      drawHeaderCallback,
+      resizeIndicator,
+      selection,
+      disabledRows,
+      hasAppendRow,
+      getCellContent,
+      getGroupDetails,
+      getRowThemeOverride,
+      prelightCells,
+      highlightRegions,
+      dragAndDropState,
+      spriteManager,
+      imageLoader,
+      getCellRenderer,
+      hoveredItemInfo,
+      hoverInfoRef,
+      hoverValuesRef: hoverValues,
+      lastWasTouch,
+      experimental,
+      smoothScrollX,
+      smoothScrollY
+    };
+    $2[38] = cellXOffset;
+    $2[39] = cellYOffset;
+    $2[40] = disabledRows;
+    $2[41] = dragAndDropState;
+    $2[42] = drawCellCallback;
+    $2[43] = drawFocusRing;
+    $2[44] = drawHeaderCallback;
+    $2[45] = enableGroups;
+    $2[46] = experimental;
+    $2[47] = fillHandle;
+    $2[48] = freezeColumns;
+    $2[49] = freezeTrailingRows;
+    $2[50] = getCellContent;
+    $2[51] = getCellRenderer;
+    $2[52] = getGroupDetails;
+    $2[53] = getRowThemeOverride;
+    $2[54] = groupHeaderHeight;
+    $2[55] = groupHeaderHeights;
+    $2[56] = groupLevels;
+    $2[57] = hasAppendRow;
+    $2[58] = headerHeight;
+    $2[59] = height;
+    $2[60] = highlightRegions;
+    $2[61] = hoveredItemInfo;
+    $2[62] = imageLoader;
+    $2[63] = isFocused;
+    $2[64] = isResizing;
+    $2[65] = lastWasTouch;
+    $2[66] = mappedColumns;
+    $2[67] = prelightCells;
+    $2[68] = resizeCol;
+    $2[69] = resizeIndicator;
+    $2[70] = rowHeight;
+    $2[71] = rows;
+    $2[72] = selection;
+    $2[73] = smoothScrollX;
+    $2[74] = smoothScrollY;
+    $2[75] = spriteManager;
+    $2[76] = theme;
+    $2[77] = translateX;
+    $2[78] = translateY;
+    $2[79] = verticalBorder;
+    $2[80] = width;
+    $2[81] = t17;
+  } else {
+    t17 = $2[81];
+  }
   const {
     damageInternal,
     damage,
@@ -13415,276 +14125,544 @@ const DataGrid = (p2, forwardedRef) => {
     renderStateProvider,
     lastDrawRef,
     lastArgsRef
-  } = useCanvasRenderer({
-    canvasRef: ref,
-    overlayRef,
-    width,
-    height,
-    cellXOffset,
-    cellYOffset,
-    translateX,
-    translateY,
-    mappedColumns,
-    enableGroups,
-    freezeColumns,
-    freezeTrailingRows,
-    rows,
-    headerHeight,
-    groupHeaderHeight,
-    groupLevels,
-    groupHeaderHeights,
-    theme,
-    rowHeight,
-    verticalBorder,
-    isResizing,
-    resizeCol,
-    isFocused,
-    fillHandle,
-    drawFocusRing,
-    drawCellCallback,
-    drawHeaderCallback,
-    resizeIndicator,
-    selection,
-    disabledRows,
-    hasAppendRow,
-    getCellContent,
-    getGroupDetails,
-    getRowThemeOverride,
-    prelightCells,
-    highlightRegions,
-    dragAndDropState,
-    spriteManager,
-    imageLoader,
-    getCellRenderer,
-    hoveredItemInfo,
-    hoverInfoRef,
-    hoverValues,
-    lastWasTouch,
-    experimental
-  });
-  lastDrawRefForSprite.current = lastDrawRef.current;
-  lastArgsRefForSprite.current = lastArgsRef.current;
-  React.useLayoutEffect(() => {
-    lastDrawRefForSprite.current = lastDrawRef.current;
-  });
+  } = useCanvasRenderer(t17);
+  let t18;
+  if ($2[82] !== lastArgsRef || $2[83] !== lastDrawRef || $2[84] !== spriteManager) {
+    t18 = () => {
+      spriteManager.setOnSettled(() => {
+        lastArgsRef.current = void 0;
+        lastDrawRef.current();
+      });
+    };
+    $2[82] = lastArgsRef;
+    $2[83] = lastDrawRef;
+    $2[84] = spriteManager;
+    $2[85] = t18;
+  } else {
+    t18 = $2[85];
+  }
+  React.useLayoutEffect(t18);
   const [overFill, setOverFill] = React.useState(false);
-  useGridPointerEvents({
-    canvasRef: ref,
-    windowEventTarget,
-    eventTargetRef,
-    getBoundsForItem,
-    getMouseArgsForPosition,
-    mappedColumns,
-    hoveredOnEdge,
-    setHoveredItemInfo,
-    setHoveredOnEdge,
-    setOverFill,
-    lastWasTouchRef,
-    setLastWasTouch,
-    setDrawCursorOverride,
-    hoverInfoRef,
-    onMouseDown,
-    onMouseUp,
-    onMouseMove,
-    onMouseMoveRaw,
-    onItemHovered,
-    onContextMenu,
-    onHeaderMenuClick,
-    onHeaderIndicatorClick,
-    isDraggable,
-    isDragging,
-    isResizing,
-    allowResize,
-    firstColAccessible,
-    theme,
-    getCellContent,
-    getCellRenderer,
-    getGroupDetails,
-    damageInternal
-  });
-  useGridDragAndDrop({
-    canvasRef: ref,
-    eventTargetRef,
-    getBoundsForItem,
-    getMouseArgsForPosition,
-    mappedColumns,
-    isDraggable,
-    isResizing,
-    firstColAccessible,
-    theme,
-    getCellContent,
-    getCellRenderer,
-    spriteManager,
-    renderStateProvider,
-    imageLoader,
-    drawHeaderCallback,
-    onDragStart,
-    onDragEnd,
-    onDragOverCell,
-    onDrop,
-    onDragLeave
-  });
+  let t19;
+  if ($2[86] !== allowResize || $2[87] !== damageInternal || $2[88] !== eventTargetRef || $2[89] !== firstColAccessible || $2[90] !== getBoundsForItem || $2[91] !== getCellContent || $2[92] !== getCellRenderer || $2[93] !== getGroupDetails || $2[94] !== getMouseArgsForPosition || $2[95] !== hoveredOnEdge || $2[96] !== isDraggable || $2[97] !== isDragging || $2[98] !== isResizing || $2[99] !== mappedColumns || $2[100] !== onContextMenu || $2[101] !== onHeaderIndicatorClick || $2[102] !== onHeaderMenuClick || $2[103] !== onItemHovered || $2[104] !== onMouseDown || $2[105] !== onMouseMove || $2[106] !== onMouseMoveRaw || $2[107] !== onMouseUp || $2[108] !== rows || $2[109] !== selection || $2[110] !== setDrawCursorOverride || $2[111] !== theme || $2[112] !== windowEventTarget) {
+    t19 = {
+      canvasRef: ref,
+      windowEventTarget,
+      eventTargetRef,
+      getBoundsForItem,
+      getMouseArgsForPosition,
+      mappedColumns,
+      hoveredOnEdge,
+      setHoveredItemInfo,
+      setHoveredOnEdge,
+      setOverFill,
+      lastWasTouchRef,
+      setLastWasTouch,
+      setDrawCursorOverride,
+      hoverInfoRef,
+      onMouseDown,
+      onMouseUp,
+      onMouseMove,
+      onMouseMoveRaw,
+      onItemHovered,
+      onContextMenu,
+      onHeaderMenuClick,
+      onHeaderIndicatorClick,
+      isDraggable,
+      isDragging,
+      isResizing,
+      allowResize,
+      firstColAccessible,
+      theme,
+      selection,
+      rows,
+      getCellContent,
+      getCellRenderer,
+      getGroupDetails,
+      damageInternal
+    };
+    $2[86] = allowResize;
+    $2[87] = damageInternal;
+    $2[88] = eventTargetRef;
+    $2[89] = firstColAccessible;
+    $2[90] = getBoundsForItem;
+    $2[91] = getCellContent;
+    $2[92] = getCellRenderer;
+    $2[93] = getGroupDetails;
+    $2[94] = getMouseArgsForPosition;
+    $2[95] = hoveredOnEdge;
+    $2[96] = isDraggable;
+    $2[97] = isDragging;
+    $2[98] = isResizing;
+    $2[99] = mappedColumns;
+    $2[100] = onContextMenu;
+    $2[101] = onHeaderIndicatorClick;
+    $2[102] = onHeaderMenuClick;
+    $2[103] = onItemHovered;
+    $2[104] = onMouseDown;
+    $2[105] = onMouseMove;
+    $2[106] = onMouseMoveRaw;
+    $2[107] = onMouseUp;
+    $2[108] = rows;
+    $2[109] = selection;
+    $2[110] = setDrawCursorOverride;
+    $2[111] = theme;
+    $2[112] = windowEventTarget;
+    $2[113] = t19;
+  } else {
+    t19 = $2[113];
+  }
+  useGridPointerEvents(t19);
+  let t20;
+  if ($2[114] !== drawHeaderCallback || $2[115] !== eventTargetRef || $2[116] !== firstColAccessible || $2[117] !== getBoundsForItem || $2[118] !== getCellContent || $2[119] !== getCellRenderer || $2[120] !== getMouseArgsForPosition || $2[121] !== imageLoader || $2[122] !== isDraggable || $2[123] !== isResizing || $2[124] !== mappedColumns || $2[125] !== onDragEnd || $2[126] !== onDragLeave || $2[127] !== onDragOverCell || $2[128] !== onDragStart || $2[129] !== onDrop || $2[130] !== renderStateProvider || $2[131] !== spriteManager || $2[132] !== theme) {
+    t20 = {
+      canvasRef: ref,
+      eventTargetRef,
+      getBoundsForItem,
+      getMouseArgsForPosition,
+      mappedColumns,
+      isDraggable,
+      isResizing,
+      firstColAccessible,
+      theme,
+      getCellContent,
+      getCellRenderer,
+      spriteManager,
+      renderStateProvider,
+      imageLoader,
+      drawHeaderCallback,
+      onDragStart,
+      onDragEnd,
+      onDragOverCell,
+      onDrop,
+      onDragLeave
+    };
+    $2[114] = drawHeaderCallback;
+    $2[115] = eventTargetRef;
+    $2[116] = firstColAccessible;
+    $2[117] = getBoundsForItem;
+    $2[118] = getCellContent;
+    $2[119] = getCellRenderer;
+    $2[120] = getMouseArgsForPosition;
+    $2[121] = imageLoader;
+    $2[122] = isDraggable;
+    $2[123] = isResizing;
+    $2[124] = mappedColumns;
+    $2[125] = onDragEnd;
+    $2[126] = onDragLeave;
+    $2[127] = onDragOverCell;
+    $2[128] = onDragStart;
+    $2[129] = onDrop;
+    $2[130] = renderStateProvider;
+    $2[131] = spriteManager;
+    $2[132] = theme;
+    $2[133] = t20;
+  } else {
+    t20 = $2[133];
+  }
+  useGridDragAndDrop(t20);
+  const t21 = (experimental === null || experimental === void 0 ? void 0 : experimental.disableAccessibilityTree) === true;
+  let t22;
+  if ($2[134] !== accessibilityHeight || $2[135] !== canvasRef || $2[136] !== cellXOffset || $2[137] !== cellYOffset || $2[138] !== damage || $2[139] !== dragAndDropState || $2[140] !== firstColAccessible || $2[141] !== forwardedRef || $2[142] !== getBoundsForItem || $2[143] !== getCellContent || $2[144] !== getCellRenderer || $2[145] !== getMouseArgsForPosition || $2[146] !== height || $2[147] !== mappedColumns || $2[148] !== onCellFocused || $2[149] !== onKeyDown || $2[150] !== rows || $2[151] !== selection || $2[152] !== t21 || $2[153] !== translateX || $2[154] !== width) {
+    t22 = {
+      canvasRef: ref,
+      canvasPropRef: canvasRef,
+      getBoundsForItem,
+      getMouseArgsForPosition,
+      mappedColumns,
+      width,
+      height,
+      cellXOffset,
+      cellYOffset,
+      translateX,
+      rows,
+      accessibilityHeight,
+      firstColAccessible,
+      selection,
+      dragAndDropState,
+      onKeyDown,
+      onCellFocused,
+      getCellContent,
+      getCellRenderer,
+      damage,
+      disableAccessibilityTree: t21,
+      forwardedRef
+    };
+    $2[134] = accessibilityHeight;
+    $2[135] = canvasRef;
+    $2[136] = cellXOffset;
+    $2[137] = cellYOffset;
+    $2[138] = damage;
+    $2[139] = dragAndDropState;
+    $2[140] = firstColAccessible;
+    $2[141] = forwardedRef;
+    $2[142] = getBoundsForItem;
+    $2[143] = getCellContent;
+    $2[144] = getCellRenderer;
+    $2[145] = getMouseArgsForPosition;
+    $2[146] = height;
+    $2[147] = mappedColumns;
+    $2[148] = onCellFocused;
+    $2[149] = onKeyDown;
+    $2[150] = rows;
+    $2[151] = selection;
+    $2[152] = t21;
+    $2[153] = translateX;
+    $2[154] = width;
+    $2[155] = t22;
+  } else {
+    t22 = $2[155];
+  }
   const {
     accessibilityTree
-  } = useGridFocusAndAccessibility({
-    canvasRef: ref,
-    canvasPropRef: canvasRef,
-    getBoundsForItem,
-    getMouseArgsForPosition,
-    mappedColumns,
-    width,
-    cellXOffset,
-    cellYOffset,
-    translateX,
-    rows,
-    accessibilityHeight,
-    firstColAccessible,
-    selection,
-    dragAndDropState,
-    onKeyDown,
-    onCellFocused,
-    getCellContent,
-    getCellRenderer,
-    damage,
-    disableAccessibilityTree: (experimental === null || experimental === void 0 ? void 0 : experimental.disableAccessibilityTree) === true,
-    forwardedRef
-  });
-  const onKeyDownImpl = React.useCallback((event) => {
-    const canvas = ref.current;
-    if (canvas === null) return;
-    let bounds;
-    let location = void 0;
-    if (selection.current !== void 0) {
-      bounds = getBoundsForItem(canvas, selection.current.cell[0], selection.current.cell[1]);
-      location = selection.current.cell;
-    }
-    onKeyDown === null || onKeyDown === void 0 || onKeyDown({
-      bounds,
-      stopPropagation: () => event.stopPropagation(),
-      preventDefault: () => event.preventDefault(),
-      cancel: () => void 0,
-      ctrlKey: event.ctrlKey,
-      metaKey: event.metaKey,
-      shiftKey: event.shiftKey,
-      altKey: event.altKey,
-      key: event.key,
-      keyCode: event.keyCode,
-      rawEvent: event,
-      location
-    });
-  }, [onKeyDown, selection, getBoundsForItem]);
-  const onKeyUpImpl = React.useCallback((event_0) => {
-    const canvas_0 = ref.current;
-    if (canvas_0 === null) return;
-    let bounds_0;
-    let location_0 = void 0;
-    if (selection.current !== void 0) {
-      bounds_0 = getBoundsForItem(canvas_0, selection.current.cell[0], selection.current.cell[1]);
-      location_0 = selection.current.cell;
-    }
-    onKeyUp === null || onKeyUp === void 0 || onKeyUp({
-      bounds: bounds_0,
-      stopPropagation: () => event_0.stopPropagation(),
-      preventDefault: () => event_0.preventDefault(),
-      cancel: () => void 0,
-      ctrlKey: event_0.ctrlKey,
-      metaKey: event_0.metaKey,
-      shiftKey: event_0.shiftKey,
-      altKey: event_0.altKey,
-      key: event_0.key,
-      keyCode: event_0.keyCode,
-      rawEvent: event_0,
-      location: location_0
-    });
-  }, [onKeyUp, selection, getBoundsForItem]);
-  const refImpl = React.useCallback((instance) => {
-    ref.current = instance;
-    if (canvasRef !== void 0) {
-      canvasRef.current = instance;
-    }
-    if (experimental !== null && experimental !== void 0 && experimental.eventTarget) {
-      windowEventTargetRef.current = experimental.eventTarget;
-    } else if (instance === null) {
-      windowEventTargetRef.current = window;
-    } else {
-      const docRoot = instance.getRootNode();
-      if (docRoot === document) windowEventTargetRef.current = window;
-      windowEventTargetRef.current = docRoot;
-    }
-  }, [canvasRef, experimental === null || experimental === void 0 ? void 0 : experimental.eventTarget]);
-  const [hoveredItem] = hoveredItemInfo !== null && hoveredItemInfo !== void 0 ? hoveredItemInfo : [];
-  const [hCol, hRow] = hoveredItem !== null && hoveredItem !== void 0 ? hoveredItem : [];
+  } = useGridFocusAndAccessibility(t22);
+  let t23;
+  if ($2[156] !== getBoundsForItem || $2[157] !== onKeyDown || $2[158] !== selection) {
+    t23 = (event) => {
+      const canvas = ref.current;
+      if (canvas === null) {
+        return;
+      }
+      let bounds;
+      let location = void 0;
+      if (selection.current !== void 0) {
+        bounds = getBoundsForItem(canvas, selection.current.cell[0], selection.current.cell[1]);
+        location = selection.current.cell;
+      }
+      onKeyDown === null || onKeyDown === void 0 || onKeyDown({
+        bounds,
+        stopPropagation: () => event.stopPropagation(),
+        preventDefault: () => event.preventDefault(),
+        cancel: _temp3$1,
+        ctrlKey: event.ctrlKey,
+        metaKey: event.metaKey,
+        shiftKey: event.shiftKey,
+        altKey: event.altKey,
+        key: event.key,
+        keyCode: event.keyCode,
+        rawEvent: event,
+        location
+      });
+    };
+    $2[156] = getBoundsForItem;
+    $2[157] = onKeyDown;
+    $2[158] = selection;
+    $2[159] = t23;
+  } else {
+    t23 = $2[159];
+  }
+  const onKeyDownImpl = t23;
+  let t24;
+  if ($2[160] !== getBoundsForItem || $2[161] !== onKeyUp || $2[162] !== selection) {
+    t24 = (event_0) => {
+      const canvas_0 = ref.current;
+      if (canvas_0 === null) {
+        return;
+      }
+      let bounds_0;
+      let location_0 = void 0;
+      if (selection.current !== void 0) {
+        bounds_0 = getBoundsForItem(canvas_0, selection.current.cell[0], selection.current.cell[1]);
+        location_0 = selection.current.cell;
+      }
+      onKeyUp === null || onKeyUp === void 0 || onKeyUp({
+        bounds: bounds_0,
+        stopPropagation: () => event_0.stopPropagation(),
+        preventDefault: () => event_0.preventDefault(),
+        cancel: _temp4$1,
+        ctrlKey: event_0.ctrlKey,
+        metaKey: event_0.metaKey,
+        shiftKey: event_0.shiftKey,
+        altKey: event_0.altKey,
+        key: event_0.key,
+        keyCode: event_0.keyCode,
+        rawEvent: event_0,
+        location: location_0
+      });
+    };
+    $2[160] = getBoundsForItem;
+    $2[161] = onKeyUp;
+    $2[162] = selection;
+    $2[163] = t24;
+  } else {
+    t24 = $2[163];
+  }
+  const onKeyUpImpl = t24;
+  let t25;
+  if ($2[164] !== canvasRef || $2[165] !== experimental) {
+    t25 = (instance) => {
+      ref.current = instance;
+      if (canvasRef !== void 0) {
+        canvasRef.current = instance;
+      }
+      if (experimental !== null && experimental !== void 0 && experimental.eventTarget) {
+        setWindowEventTarget(experimental.eventTarget);
+      } else {
+        if (instance === null) {
+          setWindowEventTarget(window);
+        } else {
+          const docRoot = instance.getRootNode();
+          setWindowEventTarget(docRoot === document ? window : docRoot);
+        }
+      }
+    };
+    $2[164] = canvasRef;
+    $2[165] = experimental;
+    $2[166] = t25;
+  } else {
+    t25 = $2[166];
+  }
+  const refImpl = t25;
+  let t26;
+  if ($2[167] !== hoveredItemInfo) {
+    t26 = hoveredItemInfo !== null && hoveredItemInfo !== void 0 ? hoveredItemInfo : [];
+    $2[167] = hoveredItemInfo;
+    $2[168] = t26;
+  } else {
+    t26 = $2[168];
+  }
+  const [hoveredItem] = t26;
+  let t27;
+  if ($2[169] !== hoveredItem) {
+    t27 = hoveredItem !== null && hoveredItem !== void 0 ? hoveredItem : [];
+    $2[169] = hoveredItem;
+    $2[170] = t27;
+  } else {
+    t27 = $2[170];
+  }
+  const [hCol, hRow] = t27;
   const headerHovered = hCol !== void 0 && hRow === -1 && hCol >= 0 && hCol < mappedColumns.length && mappedColumns[hCol].headerRowMarkerDisabled !== true;
   const groupHeaderHovered = hCol !== void 0 && hRow === -2;
   let clickableInnerCellHovered = false;
   let editableBoolHovered = false;
   let cursorOverride = drawCursorOverride;
   if (cursorOverride === void 0 && hCol !== void 0 && hRow !== void 0 && hRow > -1 && hRow < rows) {
-    const cell = getCellContent([hCol, hRow], true);
-    clickableInnerCellHovered = cell.kind === InnerGridCellKind.NewRow || cell.kind === InnerGridCellKind.Marker && cell.markerKind !== "number";
-    editableBoolHovered = cell.kind === GridCellKind.Boolean && booleanCellIsEditable(cell);
+    let cell;
+    let t282;
+    if ($2[171] !== getCellContent || $2[172] !== hCol || $2[173] !== hRow) {
+      cell = getCellContent([hCol, hRow], true);
+      clickableInnerCellHovered = cell.kind === InnerGridCellKind.NewRow || cell.kind === InnerGridCellKind.Marker && cell.markerKind !== "number";
+      t282 = cell.kind === GridCellKind.Boolean && booleanCellIsEditable(cell);
+      $2[171] = getCellContent;
+      $2[172] = hCol;
+      $2[173] = hRow;
+      $2[174] = cell;
+      $2[175] = t282;
+      $2[176] = clickableInnerCellHovered;
+    } else {
+      cell = $2[174];
+      t282 = $2[175];
+      clickableInnerCellHovered = $2[176];
+    }
+    editableBoolHovered = t282;
     cursorOverride = cell.cursor;
   }
   const canDrag = hoveredOnEdge !== null && hoveredOnEdge !== void 0 ? hoveredOnEdge : false;
   const cursor = isDragging ? "grabbing" : canDrag || isResizing ? "col-resize" : overFill || isFilling ? "crosshair" : cursorOverride !== void 0 ? cursorOverride : headerHovered || clickableInnerCellHovered || editableBoolHovered || groupHeaderHovered ? "pointer" : "default";
-  const style = React.useMemo(() => ({
-    contain: "strict",
-    display: "block",
-    cursor
-  }), [cursor]);
-  const lastSetCursor = React.useRef("default");
-  const target = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current;
-  if (target !== null && target !== void 0 && lastSetCursor.current !== style.cursor) {
-    target.style.cursor = lastSetCursor.current = style.cursor;
+  let t28;
+  if ($2[177] !== cursor) {
+    t28 = {
+      contain: "strict",
+      display: "block",
+      cursor
+    };
+    $2[177] = cursor;
+    $2[178] = t28;
+  } else {
+    t28 = $2[178];
   }
-  const opacityX = freezeColumns === 0 || !fixedShadowX ? 0 : cellXOffset > freezeColumns ? 1 : clamp$1(-translateX / 100, 0, 1);
+  const style = t28;
+  const lastSetCursor = React.useRef("default");
+  const cursorStyle = style.cursor;
+  let t29;
+  let t30;
+  if ($2[179] !== cursorStyle || $2[180] !== eventTargetRef) {
+    t29 = () => {
+      if (eventTargetRef === void 0) {
+        return;
+      }
+      const target = eventTargetRef.current;
+      if (target !== null && lastSetCursor.current !== cursorStyle) {
+        lastSetCursor.current = cursorStyle;
+        target.style.cursor = cursorStyle;
+      }
+    };
+    t30 = [eventTargetRef, cursorStyle];
+    $2[179] = cursorStyle;
+    $2[180] = eventTargetRef;
+    $2[181] = t29;
+    $2[182] = t30;
+  } else {
+    t29 = $2[181];
+    t30 = $2[182];
+  }
+  React.useLayoutEffect(t29, t30);
+  let t31;
+  if ($2[183] !== cellXOffset || $2[184] !== fixedShadowX || $2[185] !== freezeColumns || $2[186] !== translateX) {
+    t31 = freezeColumns === 0 || !fixedShadowX ? 0 : cellXOffset > freezeColumns ? 1 : clamp$1(-translateX / 100, 0, 1);
+    $2[183] = cellXOffset;
+    $2[184] = fixedShadowX;
+    $2[185] = freezeColumns;
+    $2[186] = translateX;
+    $2[187] = t31;
+  } else {
+    t31 = $2[187];
+  }
+  const opacityX = t31;
   const absoluteOffsetY = -cellYOffset * 32 + translateY;
-  const opacityY = !fixedShadowY ? 0 : clamp$1(-absoluteOffsetY / 100, 0, 1);
-  const stickyShadow = React.useMemo(() => {
-    if (!opacityX && !opacityY) {
-      return null;
+  let t32;
+  if ($2[188] !== absoluteOffsetY || $2[189] !== fixedShadowY) {
+    t32 = !fixedShadowY ? 0 : clamp$1(-absoluteOffsetY / 100, 0, 1);
+    $2[188] = absoluteOffsetY;
+    $2[189] = fixedShadowY;
+    $2[190] = t32;
+  } else {
+    t32 = $2[190];
+  }
+  const opacityY = t32;
+  let stickyShadow = null;
+  if (opacityX || opacityY) {
+    const t332 = width - stickyX;
+    const t342 = !smoothScrollX ? "opacity 0.2s" : void 0;
+    let t352;
+    if ($2[191] !== height || $2[192] !== opacityX || $2[193] !== stickyX || $2[194] !== t332 || $2[195] !== t342) {
+      t352 = {
+        position: "absolute",
+        top: 0,
+        left: stickyX,
+        width: t332,
+        height,
+        opacity: opacityX,
+        pointerEvents: "none",
+        transition: t342,
+        boxShadow: "inset 13px 0 10px -13px rgba(0, 0, 0, 0.2)"
+      };
+      $2[191] = height;
+      $2[192] = opacityX;
+      $2[193] = stickyX;
+      $2[194] = t332;
+      $2[195] = t342;
+      $2[196] = t352;
+    } else {
+      t352 = $2[196];
     }
-    const styleX = {
+    const styleX = t352;
+    const t362 = !smoothScrollY ? "opacity 0.2s" : void 0;
+    let t37;
+    if ($2[197] !== height || $2[198] !== opacityY || $2[199] !== t362 || $2[200] !== totalHeaderHeight || $2[201] !== width) {
+      t37 = {
+        position: "absolute",
+        top: totalHeaderHeight,
+        left: 0,
+        width,
+        height,
+        opacity: opacityY,
+        pointerEvents: "none",
+        transition: t362,
+        boxShadow: "inset 0 13px 10px -13px rgba(0, 0, 0, 0.2)"
+      };
+      $2[197] = height;
+      $2[198] = opacityY;
+      $2[199] = t362;
+      $2[200] = totalHeaderHeight;
+      $2[201] = width;
+      $2[202] = t37;
+    } else {
+      t37 = $2[202];
+    }
+    const styleY = t37;
+    let t38;
+    if ($2[203] !== opacityX || $2[204] !== styleX) {
+      t38 = opacityX > 0 && /* @__PURE__ */ jsx("div", { id: "shadow-x", style: styleX });
+      $2[203] = opacityX;
+      $2[204] = styleX;
+      $2[205] = t38;
+    } else {
+      t38 = $2[205];
+    }
+    let t39;
+    if ($2[206] !== opacityY || $2[207] !== styleY) {
+      t39 = opacityY > 0 && /* @__PURE__ */ jsx("div", { id: "shadow-y", style: styleY });
+      $2[206] = opacityY;
+      $2[207] = styleY;
+      $2[208] = t39;
+    } else {
+      t39 = $2[208];
+    }
+    let t40;
+    if ($2[209] !== t38 || $2[210] !== t39) {
+      t40 = /* @__PURE__ */ jsxs(Fragment, { children: [
+        t38,
+        t39
+      ] });
+      $2[209] = t38;
+      $2[210] = t39;
+      $2[211] = t40;
+    } else {
+      t40 = $2[211];
+    }
+    stickyShadow = t40;
+  }
+  let t33;
+  if ($2[212] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t33 = {
       position: "absolute",
       top: 0,
-      left: stickyX,
-      width: width - stickyX,
-      height,
-      opacity: opacityX,
-      pointerEvents: "none",
-      transition: !smoothScrollX ? "opacity 0.2s" : void 0,
-      boxShadow: "inset 13px 0 10px -13px rgba(0, 0, 0, 0.2)"
-    };
-    const styleY = {
-      position: "absolute",
-      top: totalHeaderHeight,
       left: 0,
-      width,
-      height,
-      opacity: opacityY,
-      pointerEvents: "none",
-      transition: !smoothScrollY ? "opacity 0.2s" : void 0,
-      boxShadow: "inset 0 13px 10px -13px rgba(0, 0, 0, 0.2)"
+      zIndex: 1,
+      pointerEvents: "none"
     };
-    return /* @__PURE__ */ jsxs(Fragment, { children: [
-      opacityX > 0 && /* @__PURE__ */ jsx("div", { id: "shadow-x", style: styleX }),
-      opacityY > 0 && /* @__PURE__ */ jsx("div", { id: "shadow-y", style: styleY })
+    $2[212] = t33;
+  } else {
+    t33 = $2[212];
+  }
+  const overlayStyle = t33;
+  let t34;
+  if ($2[213] !== accessibilityTree || $2[214] !== onCanvasBlur || $2[215] !== onCanvasFocused || $2[216] !== onKeyDownImpl || $2[217] !== onKeyUpImpl || $2[218] !== refImpl || $2[219] !== style) {
+    t34 = /* @__PURE__ */ jsx("canvas", { "data-testid": "data-grid-canvas", tabIndex: -1, onKeyDown: onKeyDownImpl, onKeyUp: onKeyUpImpl, onFocus: onCanvasFocused, onBlur: onCanvasBlur, ref: refImpl, style, children: accessibilityTree });
+    $2[213] = accessibilityTree;
+    $2[214] = onCanvasBlur;
+    $2[215] = onCanvasFocused;
+    $2[216] = onKeyDownImpl;
+    $2[217] = onKeyUpImpl;
+    $2[218] = refImpl;
+    $2[219] = style;
+    $2[220] = t34;
+  } else {
+    t34 = $2[220];
+  }
+  let t35;
+  if ($2[221] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t35 = /* @__PURE__ */ jsx("canvas", { ref: overlayRef, style: overlayStyle });
+    $2[221] = t35;
+  } else {
+    t35 = $2[221];
+  }
+  let t36;
+  if ($2[222] !== stickyShadow || $2[223] !== t34) {
+    t36 = /* @__PURE__ */ jsxs(Fragment, { children: [
+      t34,
+      t35,
+      stickyShadow
     ] });
-  }, [opacityX, opacityY, stickyX, width, smoothScrollX, totalHeaderHeight, height, smoothScrollY]);
-  const overlayStyle = React.useMemo(() => ({
-    position: "absolute",
-    top: 0,
-    left: 0,
-    zIndex: 1,
-    pointerEvents: "none"
-  }), []);
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx("canvas", { "data-testid": "data-grid-canvas", tabIndex: -1, onKeyDown: onKeyDownImpl, onKeyUp: onKeyUpImpl, onFocus: onCanvasFocused, onBlur: onCanvasBlur, ref: refImpl, style, children: accessibilityTree }),
-    /* @__PURE__ */ jsx("canvas", { ref: overlayRef, style: overlayStyle }),
-    stickyShadow
-  ] });
+    $2[222] = stickyShadow;
+    $2[223] = t34;
+    $2[224] = t36;
+  } else {
+    t36 = $2[224];
+  }
+  return t36;
 };
 const DataGrid$1 = React.memo(React.forwardRef(DataGrid));
+function _temp$4(a, b2) {
+  return a + b2;
+}
+function _temp2$2() {
+}
+function _temp3$1() {
+}
+function _temp4$1() {
+}
 function offsetColumnSize(column, width, min, max) {
   var _column$growOffset;
   return clamp$1(Math.round(width - ((_column$growOffset = column.growOffset) !== null && _column$growOffset !== void 0 ? _column$growOffset : 0)), Math.ceil(min), Math.floor(max));

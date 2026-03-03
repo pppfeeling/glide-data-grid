@@ -379,8 +379,7 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
     const cellXOffset = Math.max(freezeColumns, Math.min(columns.length - 1, cellXOffsetReal));
 
     const ref = React.useRef<HTMLCanvasElement | null>(null);
-    const windowEventTargetRef = React.useRef<HTMLElement | Window | Document>(experimental?.eventTarget ?? window);
-    const windowEventTarget = windowEventTargetRef.current;
+    const [windowEventTarget, setWindowEventTarget] = React.useState<HTMLElement | Window | Document>(experimental?.eventTarget ?? window);
 
     const imageLoader = imageWindowLoader;
     const [hoveredItemInfo, setHoveredItemInfo] = React.useState<[Item, readonly [number, number]] | undefined>();
@@ -389,11 +388,15 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
 
     const [lastWasTouch, setLastWasTouch] = React.useState(false);
     const lastWasTouchRef = React.useRef(lastWasTouch);
-    lastWasTouchRef.current = lastWasTouch;
+    React.useLayoutEffect(() => {
+        lastWasTouchRef.current = lastWasTouch;
+    }, [lastWasTouch]);
 
     const hoverValues = React.useRef<readonly { item: Item; hoverAmount: number }[]>([]);
     const hoverInfoRef = React.useRef(hoveredItemInfo);
-    hoverInfoRef.current = hoveredItemInfo;
+    React.useLayoutEffect(() => {
+        hoverInfoRef.current = hoveredItemInfo;
+    }, [hoveredItemInfo]);
 
     // 1. Geometry hook
     const totalGroupHeaderHeight = enableGroups ? groupHeaderHeights.reduce((a, b) => a + b, 0) : 0;
@@ -428,17 +431,15 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
         dragAndDropState,
     });
 
-    // SpriteManager (needs lastArgsRef/lastDrawRef from renderer hook - use refs for forward reference)
-    const lastDrawRefForSprite = React.useRef<() => void>(() => { /* noop */ });
-    const lastArgsRefForSprite = React.useRef<any>(undefined);
-    const spriteManager = React.useMemo(
-        () =>
-            new SpriteManager(headerIcons, () => {
-                lastArgsRefForSprite.current = undefined;
-                lastDrawRefForSprite.current();
-            }),
-        [headerIcons]
+    // SpriteManager
+    const [spriteManager] = React.useState(
+        () => new SpriteManager(headerIcons, () => {
+            // initial noop - will be replaced in useLayoutEffect
+        })
     );
+    React.useLayoutEffect(() => {
+        spriteManager.updateIcons(headerIcons);
+    }, [spriteManager, headerIcons]);
 
     // 2. Canvas renderer hook
     const {
@@ -492,20 +493,19 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
         getCellRenderer,
         hoveredItemInfo,
         hoverInfoRef,
-        hoverValues,
+        hoverValuesRef: hoverValues,
         lastWasTouch,
         experimental,
         smoothScrollX,
         smoothScrollY,
     });
 
-    // Wire up sprite manager refs
-    lastDrawRefForSprite.current = lastDrawRef.current;
-    lastArgsRefForSprite.current = lastArgsRef.current;
-
-    // Keep spriteManager's invalidate callback in sync
+    // Wire up sprite manager invalidation to renderer
     React.useLayoutEffect(() => {
-        lastDrawRefForSprite.current = lastDrawRef.current;
+        spriteManager.setOnSettled(() => {
+            lastArgsRef.current = undefined;
+            lastDrawRef.current();
+        });
     });
 
     const [overFill, setOverFill] = React.useState(false);
@@ -599,87 +599,76 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
     });
 
     // Keyboard handlers (small, kept in orchestrator)
-    const onKeyDownImpl = React.useCallback(
-        (event: React.KeyboardEvent<HTMLCanvasElement>) => {
-            const canvas = ref.current;
-            if (canvas === null) return;
+    const onKeyDownImpl = (event: React.KeyboardEvent<HTMLCanvasElement>) => {
+        const canvas = ref.current;
+        if (canvas === null) return;
 
-            let bounds: Rectangle | undefined;
-            let location: Item | undefined = undefined;
-            if (selection.current !== undefined) {
-                bounds = getBoundsForItem(canvas, selection.current.cell[0], selection.current.cell[1]);
-                location = selection.current.cell;
-            }
+        let bounds: Rectangle | undefined;
+        let location: Item | undefined = undefined;
+        if (selection.current !== undefined) {
+            bounds = getBoundsForItem(canvas, selection.current.cell[0], selection.current.cell[1]);
+            location = selection.current.cell;
+        }
 
-            onKeyDown?.({
-                bounds,
-                stopPropagation: () => event.stopPropagation(),
-                preventDefault: () => event.preventDefault(),
-                cancel: () => undefined,
-                ctrlKey: event.ctrlKey,
-                metaKey: event.metaKey,
-                shiftKey: event.shiftKey,
-                altKey: event.altKey,
-                key: event.key,
-                keyCode: event.keyCode,
-                rawEvent: event,
-                location,
-            });
-        },
-        [onKeyDown, selection, getBoundsForItem]
-    );
+        onKeyDown?.({
+            bounds,
+            stopPropagation: () => event.stopPropagation(),
+            preventDefault: () => event.preventDefault(),
+            cancel: () => undefined,
+            ctrlKey: event.ctrlKey,
+            metaKey: event.metaKey,
+            shiftKey: event.shiftKey,
+            altKey: event.altKey,
+            key: event.key,
+            keyCode: event.keyCode,
+            rawEvent: event,
+            location,
+        });
+    };
 
-    const onKeyUpImpl = React.useCallback(
-        (event: React.KeyboardEvent<HTMLCanvasElement>) => {
-            const canvas = ref.current;
-            if (canvas === null) return;
+    const onKeyUpImpl = (event: React.KeyboardEvent<HTMLCanvasElement>) => {
+        const canvas = ref.current;
+        if (canvas === null) return;
 
-            let bounds: Rectangle | undefined;
-            let location: Item | undefined = undefined;
-            if (selection.current !== undefined) {
-                bounds = getBoundsForItem(canvas, selection.current.cell[0], selection.current.cell[1]);
-                location = selection.current.cell;
-            }
+        let bounds: Rectangle | undefined;
+        let location: Item | undefined = undefined;
+        if (selection.current !== undefined) {
+            bounds = getBoundsForItem(canvas, selection.current.cell[0], selection.current.cell[1]);
+            location = selection.current.cell;
+        }
 
-            onKeyUp?.({
-                bounds,
-                stopPropagation: () => event.stopPropagation(),
-                preventDefault: () => event.preventDefault(),
-                cancel: () => undefined,
-                ctrlKey: event.ctrlKey,
-                metaKey: event.metaKey,
-                shiftKey: event.shiftKey,
-                altKey: event.altKey,
-                key: event.key,
-                keyCode: event.keyCode,
-                rawEvent: event,
-                location,
-            });
-        },
-        [onKeyUp, selection, getBoundsForItem]
-    );
+        onKeyUp?.({
+            bounds,
+            stopPropagation: () => event.stopPropagation(),
+            preventDefault: () => event.preventDefault(),
+            cancel: () => undefined,
+            ctrlKey: event.ctrlKey,
+            metaKey: event.metaKey,
+            shiftKey: event.shiftKey,
+            altKey: event.altKey,
+            key: event.key,
+            keyCode: event.keyCode,
+            rawEvent: event,
+            location,
+        });
+    };
 
     // Canvas ref callback
-    const refImpl = React.useCallback(
-        (instance: HTMLCanvasElement | null) => {
-            ref.current = instance;
-            if (canvasRef !== undefined) {
-                canvasRef.current = instance;
-            }
+    const refImpl = (instance: HTMLCanvasElement | null) => {
+        ref.current = instance;
+        if (canvasRef !== undefined) {
+            canvasRef.current = instance;
+        }
 
-            if (experimental?.eventTarget) {
-                windowEventTargetRef.current = experimental.eventTarget;
-            } else if (instance === null) {
-                windowEventTargetRef.current = window;
-            } else {
-                const docRoot = instance.getRootNode();
-
-                if (docRoot === document) windowEventTargetRef.current = window;
-                windowEventTargetRef.current = docRoot as any;
-            }
-        },
-        [canvasRef, experimental?.eventTarget]
-    );
+        if (experimental?.eventTarget) {
+            setWindowEventTarget(experimental.eventTarget);
+        } else if (instance === null) {
+            setWindowEventTarget(window);
+        } else {
+            const docRoot = instance.getRootNode();
+            setWindowEventTarget(docRoot === document ? window : docRoot as any);
+        }
+    };
 
     // Cursor logic
     const [hoveredItem] = hoveredItemInfo ?? [];
@@ -715,20 +704,22 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
                 ? "pointer"
                 : "default";
 
-    const style = React.useMemo(
-        () => ({
-            contain: "strict",
-            display: "block",
-            cursor,
-        }),
-        [cursor]
-    );
+    const style = {
+        contain: "strict",
+        display: "block",
+        cursor,
+    };
 
     const lastSetCursor = React.useRef<typeof cursor>("default");
-    const target = eventTargetRef?.current;
-    if (target !== null && target !== undefined && lastSetCursor.current !== style.cursor) {
-        target.style.cursor = lastSetCursor.current = style.cursor;
-    }
+    const cursorStyle = style.cursor;
+    React.useLayoutEffect(() => {
+        if (eventTargetRef === undefined) return;
+        const target = eventTargetRef.current;
+        if (target !== null && lastSetCursor.current !== cursorStyle) {
+            lastSetCursor.current = cursorStyle;
+            target.style.cursor = cursorStyle;
+        }
+    }, [eventTargetRef, cursorStyle]);
 
     // Sticky shadow overlay
     const opacityX =
@@ -737,11 +728,8 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
     const absoluteOffsetY = -cellYOffset * 32 + translateY;
     const opacityY = !fixedShadowY ? 0 : clamp(-absoluteOffsetY / 100, 0, 1);
 
-    const stickyShadow = React.useMemo(() => {
-        if (!opacityX && !opacityY) {
-            return null;
-        }
-
+    let stickyShadow: React.ReactNode = null;
+    if (opacityX || opacityY) {
         const styleX: React.CSSProperties = {
             position: "absolute",
             top: 0,
@@ -766,24 +754,21 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
             boxShadow: "inset 0 13px 10px -13px rgba(0, 0, 0, 0.2)",
         };
 
-        return (
+        stickyShadow = (
             <>
                 {opacityX > 0 && <div id="shadow-x" style={styleX} />}
                 {opacityY > 0 && <div id="shadow-y" style={styleY} />}
             </>
         );
-    }, [opacityX, opacityY, stickyX, width, smoothScrollX, totalHeaderHeight, height, smoothScrollY]);
+    }
 
-    const overlayStyle = React.useMemo<React.CSSProperties>(
-        () => ({
-            position: "absolute",
-            top: 0,
-            left: 0,
-            zIndex: 1,
-            pointerEvents: "none",
-        }),
-        []
-    );
+    const overlayStyle: React.CSSProperties = {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        zIndex: 1,
+        pointerEvents: "none",
+    };
 
     return (
         <>

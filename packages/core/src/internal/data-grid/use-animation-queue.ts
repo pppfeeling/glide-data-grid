@@ -11,7 +11,7 @@ export function useAnimationQueue(draw: (items: CellSet) => void): EnqueueCallba
     const drawRef = React.useRef(draw);
     drawRef.current = draw;
 
-    const loop = React.useCallback(() => {
+    const loop = () => {
         const requeue = () => window.requestAnimationFrame(fn);
 
         const fn = () => {
@@ -27,15 +27,14 @@ export function useAnimationQueue(draw: (items: CellSet) => void): EnqueueCallba
         };
 
         window.requestAnimationFrame(seq.current > 600 ? requeue : fn);
-    }, []);
+    };
 
-    return React.useCallback(
-        (item: Item) => {
-            if (queue.current.length === 0) loop();
-            const packed = packColRowToNumber(item[0], item[1]);
-            if (queue.current.includes(packed)) return;
-            queue.current.push(packed);
-        },
-        [loop]
-    );
+    const enqueue = (item: Item) => {
+        if (queue.current.length === 0) loop();
+        const packed = packColRowToNumber(item[0], item[1]);
+        if (queue.current.includes(packed)) return;
+        queue.current.push(packed);
+    };
+
+    return enqueue;
 }

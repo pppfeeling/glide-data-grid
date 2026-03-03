@@ -60,7 +60,9 @@
       "mcp__ide__getDiagnostics",
       "Bash(git stash:*)",
       "Bash(pnpm build:*)",
-      "Bash(cut:*)"
+      "Bash(cut:*)",
+      "Bash(npx babel-plugin-react-compiler:*)",
+      "Bash(npx react-compiler-healthcheck:*)"
     ],
     "deny": [],
     "ask": []
