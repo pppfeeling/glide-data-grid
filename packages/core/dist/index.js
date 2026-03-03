@@ -4734,67 +4734,35 @@ function getScrollBarWidth() {
   scrollbarWidthCache = w1 - w2;
   return scrollbarWidthCache;
 }
+const emptySymbol = /* @__PURE__ */ Symbol("empty");
 function useStateWithReactiveInput(inputState) {
-  const $2 = compilerRuntimeExports.c(6);
-  const [prevInput, setPrevInput] = React.useState(inputState);
-  const [state, setState] = React.useState(inputState);
-  const [overridden, setOverridden] = React.useState(false);
-  if (prevInput !== inputState) {
-    setPrevInput(inputState);
-    setState(inputState);
-    setOverridden(false);
+  const [, setRenderTrigger] = React.useState(0);
+  const empty = emptySymbol;
+  const inputStateRef = React.useRef([empty, inputState]);
+  if (inputStateRef.current[1] !== inputState) {
+    inputStateRef.current[0] = inputState;
   }
-  const inputStateRef = React.useRef(inputState);
-  let t0;
-  if ($2[0] !== inputState) {
-    t0 = () => {
-      inputStateRef.current = inputState;
-    };
-    $2[0] = inputState;
-    $2[1] = t0;
-  } else {
-    t0 = $2[1];
-  }
-  React.useEffect(t0);
-  let t1;
-  if ($2[2] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
-    t1 = (nv) => {
-      setState((pv) => {
-        const resolved = typeof nv === "function" ? nv(pv) : nv;
-        if (resolved === inputStateRef.current) {
-          setOverridden(false);
-          return inputStateRef.current;
-        }
-        setOverridden(true);
-        return resolved;
-      });
-    };
-    $2[2] = t1;
-  } else {
-    t1 = $2[2];
-  }
-  const setStateOuter = t1;
-  let t2;
-  if ($2[3] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
-    t2 = () => {
-      setOverridden(false);
-      setState(inputStateRef.current);
-    };
-    $2[3] = t2;
-  } else {
-    t2 = $2[3];
-  }
-  const onEmpty = t2;
-  const t3 = overridden ? state : inputState;
-  let t4;
-  if ($2[4] !== t3) {
-    t4 = [t3, setStateOuter, onEmpty];
-    $2[4] = t3;
-    $2[5] = t4;
-  } else {
-    t4 = $2[5];
-  }
-  return t4;
+  inputStateRef.current[1] = inputState;
+  const setState = React.useCallback((nv) => {
+    const ref = inputStateRef.current;
+    const currentValue = ref[0] === empty ? ref[1] : ref[0];
+    const resolved = typeof nv === "function" ? nv(currentValue) : nv;
+    if (resolved === currentValue) {
+      return;
+    }
+    if (resolved === ref[1]) {
+      ref[0] = empty;
+    } else {
+      ref[0] = resolved;
+    }
+    setRenderTrigger((prev) => prev + 1);
+  }, [empty]);
+  const onEmpty = React.useCallback(() => {
+    inputStateRef.current[0] = empty;
+    setRenderTrigger((prev_0) => prev_0 + 1);
+  }, [empty]);
+  const result = inputStateRef.current[0] === empty ? inputStateRef.current[1] : inputStateRef.current[0];
+  return [result, setState, onEmpty];
 }
 function makeAccessibilityStringForArray(arr) {
   if (arr.length === 0) {
@@ -4810,21 +4778,11 @@ function makeAccessibilityStringForArray(arr) {
   return arr.slice(0, index).join(", ");
 }
 function useDeepMemo(value) {
-  const $2 = compilerRuntimeExports.c(3);
-  const [memoized, setMemoized] = React.useState(value);
-  if (!deepEqual(value, memoized)) {
-    setMemoized(value);
+  const ref = React.useRef(value);
+  if (!deepEqual(value, ref.current)) {
+    ref.current = value;
   }
-  let t0;
-  if ($2[0] !== memoized || $2[1] !== value) {
-    t0 = deepEqual(value, memoized) ? memoized : value;
-    $2[0] = memoized;
-    $2[1] = value;
-    $2[2] = t0;
-  } else {
-    t0 = $2[2];
-  }
-  return t0;
+  return ref.current;
 }
 const ImageOverlayEditor = (p2) => {
   const $2 = compilerRuntimeExports.c(30);

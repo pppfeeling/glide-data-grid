@@ -59,7 +59,8 @@
       "Bash(xargs sed:*)",
       "mcp__ide__getDiagnostics",
       "Bash(git stash:*)",
-      "Bash(pnpm build:*)"
+      "Bash(pnpm build:*)",
+      "Bash(cut:*)"
     ],
     "deny": [],
     "ask": []

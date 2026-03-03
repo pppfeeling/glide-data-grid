@@ -215,43 +215,40 @@ export function getScrollBarWidth(): number {
 // I can't tell. It's like poes law but for code.
 //
 // I'm sorry.
+const emptySymbol = Symbol("empty");
+
 export function useStateWithReactiveInput<T>(inputState: T): [T, React.Dispatch<React.SetStateAction<T>>, () => void] {
-    // Track the previous inputState to detect changes
-    const [prevInput, setPrevInput] = React.useState(inputState);
-    const [state, setState] = React.useState(inputState);
-    const [overridden, setOverridden] = React.useState(false);
+    const [, setRenderTrigger] = React.useState(0);
 
-    // When inputState changes, sync internal state
-    if (prevInput !== inputState) {
-        setPrevInput(inputState);
-        setState(inputState);
-        setOverridden(false);
+    const empty = emptySymbol as unknown as T;
+    const inputStateRef = React.useRef<[T | typeof empty, T]>([empty, inputState]);
+    if (inputStateRef.current[1] !== inputState) {
+        inputStateRef.current[0] = inputState;
     }
+    inputStateRef.current[1] = inputState;
 
-    const inputStateRef = React.useRef(inputState);
-    React.useEffect(() => {
-        inputStateRef.current = inputState;
-    });
-
-    const setStateOuter = React.useCallback<typeof setState>(nv => {
-        setState(pv => {
-            const resolved = typeof nv === "function" ? (nv as (pv: T) => T)(pv) : nv;
-            // If setting back to what inputState already is, no need to override
-            if (resolved === inputStateRef.current) {
-                setOverridden(false);
-                return inputStateRef.current;
-            }
-            setOverridden(true);
-            return resolved;
-        });
-    }, []);
+    const setState = React.useCallback<React.Dispatch<React.SetStateAction<T>>>(nv => {
+        const ref = inputStateRef.current;
+        const currentValue = ref[0] === empty ? ref[1] : ref[0];
+        const resolved = typeof nv === "function" ? (nv as (pv: T) => T)(currentValue) : nv;
+        if (resolved === currentValue) {
+            return;
+        }
+        if (resolved === ref[1]) {
+            ref[0] = empty;
+        } else {
+            ref[0] = resolved;
+        }
+        setRenderTrigger(prev => prev + 1);
+    }, [empty]);
 
     const onEmpty = React.useCallback(() => {
-        setOverridden(false);
-        setState(inputStateRef.current);
-    }, []);
+        inputStateRef.current[0] = empty;
+        setRenderTrigger(prev => prev + 1);
+    }, [empty]);
 
-    return [overridden ? state : inputState, setStateOuter, onEmpty];
+    const result = inputStateRef.current[0] === empty ? inputStateRef.current[1] : inputStateRef.current[0];
+    return [result, setState, onEmpty];
 }
 
 export function makeAccessibilityStringForArray(arr: readonly string[]): string {
@@ -272,11 +269,9 @@ export function makeAccessibilityStringForArray(arr: readonly string[]): string 
 }
 
 export function useDeepMemo<T>(value: T): T {
-    const [memoized, setMemoized] = React.useState(value);
-
-    if (!deepEqual(value, memoized)) {
-        setMemoized(value);
+    const ref = React.useRef<T>(value);
+    if (!deepEqual(value, ref.current)) {
+        ref.current = value;
     }
-
-    return deepEqual(value, memoized) ? memoized : value;
+    return ref.current;
 }
