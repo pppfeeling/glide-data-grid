@@ -13476,7 +13476,7 @@ function _temp2$5() {
 function _temp$7(c) {
   return c.sourceIndex;
 }
-const DataGrid = (p2, forwardedRef) => {
+const DataGrid$1 = (p2, forwardedRef) => {
   var _p$translateX, _p$translateY, _experimental$eventTa;
   const {
     width,
@@ -13881,7 +13881,7 @@ const DataGrid = (p2, forwardedRef) => {
     stickyShadow
   ] });
 };
-const DataGrid$1 = React.memo(React.forwardRef(DataGrid));
+const DataGrid = React.memo(React.forwardRef(DataGrid$1));
 function offsetColumnSize(column, width, min, max) {
   var _column$growOffset;
   return clamp$1(Math.round(width - ((_column$growOffset = column.growOffset) !== null && _column$growOffset !== void 0 ? _column$growOffset : 0)), Math.ceil(min), Math.floor(max));
@@ -14254,7 +14254,7 @@ const DataGridDnd = (p2) => {
   const t10 = resizeCol !== void 0;
   let t11;
   if ($2[66] !== canResize || $2[67] !== dragColActive || $2[68] !== dragOffset || $2[69] !== getMangledCellContent || $2[70] !== gridRef || $2[71] !== onDragStartImpl || $2[72] !== onHeaderIndicatorClickMangled || $2[73] !== onHeaderMenuClickMangled || $2[74] !== onItemHoveredImpl || $2[75] !== onMouseDownImpl || $2[76] !== onMouseMove || $2[77] !== onMouseUpImpl || $2[78] !== p2.accessibilityHeight || $2[79] !== p2.canvasRef || $2[80] !== p2.cellXOffset || $2[81] !== p2.cellYOffset || $2[82] !== p2.columns || $2[83] !== p2.disabledRows || $2[84] !== p2.drawCell || $2[85] !== p2.drawFocusRing || $2[86] !== p2.drawHeader || $2[87] !== p2.enableGroups || $2[88] !== p2.eventTargetRef || $2[89] !== p2.experimental || $2[90] !== p2.fillHandle || $2[91] !== p2.firstColAccessible || $2[92] !== p2.fixedShadowX || $2[93] !== p2.fixedShadowY || $2[94] !== p2.freezeColumns || $2[95] !== p2.freezeTrailingRows || $2[96] !== p2.getCellRenderer || $2[97] !== p2.getGroupDetails || $2[98] !== p2.getRowThemeOverride || $2[99] !== p2.groupHeaderHeight || $2[100] !== p2.groupHeaderHeights || $2[101] !== p2.groupLevels || $2[102] !== p2.hasAppendRow || $2[103] !== p2.headerHeight || $2[104] !== p2.headerIcons || $2[105] !== p2.height || $2[106] !== p2.highlightRegions || $2[107] !== p2.imageWindowLoader || $2[108] !== p2.isDraggable || $2[109] !== p2.isFilling || $2[110] !== p2.isFocused || $2[111] !== p2.onCanvasBlur || $2[112] !== p2.onCanvasFocused || $2[113] !== p2.onCellFocused || $2[114] !== p2.onContextMenu || $2[115] !== p2.onDragEnd || $2[116] !== p2.onDragLeave || $2[117] !== p2.onDragOverCell || $2[118] !== p2.onDrop || $2[119] !== p2.onKeyDown || $2[120] !== p2.onKeyUp || $2[121] !== p2.onMouseMove || $2[122] !== p2.prelightCells || $2[123] !== p2.resizeIndicator || $2[124] !== p2.rowHeight || $2[125] !== p2.rows || $2[126] !== p2.selection || $2[127] !== p2.smoothScrollX || $2[128] !== p2.smoothScrollY || $2[129] !== p2.theme || $2[130] !== p2.translateX || $2[131] !== p2.translateY || $2[132] !== p2.verticalBorder || $2[133] !== p2.width || $2[134] !== resizeCol || $2[135] !== t10) {
-    t11 = /* @__PURE__ */ jsx(DataGrid$1, { accessibilityHeight: p2.accessibilityHeight, canvasRef: p2.canvasRef, cellXOffset: p2.cellXOffset, cellYOffset: p2.cellYOffset, columns: p2.columns, disabledRows: p2.disabledRows, drawFocusRing: p2.drawFocusRing, drawHeader: p2.drawHeader, drawCell: p2.drawCell, enableGroups: p2.enableGroups, groupLevels: p2.groupLevels, groupHeaderHeights: p2.groupHeaderHeights, eventTargetRef: p2.eventTargetRef, experimental: p2.experimental, fillHandle: p2.fillHandle, firstColAccessible: p2.firstColAccessible, fixedShadowX: p2.fixedShadowX, fixedShadowY: p2.fixedShadowY, freezeColumns: p2.freezeColumns, getCellRenderer: p2.getCellRenderer, getGroupDetails: p2.getGroupDetails, getRowThemeOverride: p2.getRowThemeOverride, groupHeaderHeight: p2.groupHeaderHeight, headerHeight: p2.headerHeight, headerIcons: p2.headerIcons, height: p2.height, highlightRegions: p2.highlightRegions, imageWindowLoader: p2.imageWindowLoader, resizeColumn: resizeCol, isDraggable: p2.isDraggable, isFilling: p2.isFilling, isFocused: p2.isFocused, onCanvasBlur: p2.onCanvasBlur, onCanvasFocused: p2.onCanvasFocused, onCellFocused: p2.onCellFocused, onContextMenu: p2.onContextMenu, onDragEnd: p2.onDragEnd, onDragLeave: p2.onDragLeave, onDragOverCell: p2.onDragOverCell, onDrop: p2.onDrop, onKeyDown: p2.onKeyDown, onKeyUp: p2.onKeyUp, onMouseMove: p2.onMouseMove, prelightCells: p2.prelightCells, rowHeight: p2.rowHeight, rows: p2.rows, selection: p2.selection, smoothScrollX: p2.smoothScrollX, smoothScrollY: p2.smoothScrollY, theme: p2.theme, freezeTrailingRows: p2.freezeTrailingRows, hasAppendRow: p2.hasAppendRow, translateX: p2.translateX, translateY: p2.translateY, resizeIndicator: p2.resizeIndicator, verticalBorder: p2.verticalBorder, width: p2.width, getCellContent: getMangledCellContent, isResizing: t10, onHeaderMenuClick: onHeaderMenuClickMangled, onHeaderIndicatorClick: onHeaderIndicatorClickMangled, isDragging: dragColActive, onItemHovered: onItemHoveredImpl, onDragStart: onDragStartImpl, onMouseDown: onMouseDownImpl, allowResize: canResize, onMouseUp: onMouseUpImpl, dragAndDropState: dragOffset, onMouseMoveRaw: onMouseMove, ref: gridRef });
+    t11 = /* @__PURE__ */ jsx(DataGrid, { accessibilityHeight: p2.accessibilityHeight, canvasRef: p2.canvasRef, cellXOffset: p2.cellXOffset, cellYOffset: p2.cellYOffset, columns: p2.columns, disabledRows: p2.disabledRows, drawFocusRing: p2.drawFocusRing, drawHeader: p2.drawHeader, drawCell: p2.drawCell, enableGroups: p2.enableGroups, groupLevels: p2.groupLevels, groupHeaderHeights: p2.groupHeaderHeights, eventTargetRef: p2.eventTargetRef, experimental: p2.experimental, fillHandle: p2.fillHandle, firstColAccessible: p2.firstColAccessible, fixedShadowX: p2.fixedShadowX, fixedShadowY: p2.fixedShadowY, freezeColumns: p2.freezeColumns, getCellRenderer: p2.getCellRenderer, getGroupDetails: p2.getGroupDetails, getRowThemeOverride: p2.getRowThemeOverride, groupHeaderHeight: p2.groupHeaderHeight, headerHeight: p2.headerHeight, headerIcons: p2.headerIcons, height: p2.height, highlightRegions: p2.highlightRegions, imageWindowLoader: p2.imageWindowLoader, resizeColumn: resizeCol, isDraggable: p2.isDraggable, isFilling: p2.isFilling, isFocused: p2.isFocused, onCanvasBlur: p2.onCanvasBlur, onCanvasFocused: p2.onCanvasFocused, onCellFocused: p2.onCellFocused, onContextMenu: p2.onContextMenu, onDragEnd: p2.onDragEnd, onDragLeave: p2.onDragLeave, onDragOverCell: p2.onDragOverCell, onDrop: p2.onDrop, onKeyDown: p2.onKeyDown, onKeyUp: p2.onKeyUp, onMouseMove: p2.onMouseMove, prelightCells: p2.prelightCells, rowHeight: p2.rowHeight, rows: p2.rows, selection: p2.selection, smoothScrollX: p2.smoothScrollX, smoothScrollY: p2.smoothScrollY, theme: p2.theme, freezeTrailingRows: p2.freezeTrailingRows, hasAppendRow: p2.hasAppendRow, translateX: p2.translateX, translateY: p2.translateY, resizeIndicator: p2.resizeIndicator, verticalBorder: p2.verticalBorder, width: p2.width, getCellContent: getMangledCellContent, isResizing: t10, onHeaderMenuClick: onHeaderMenuClickMangled, onHeaderIndicatorClick: onHeaderIndicatorClickMangled, isDragging: dragColActive, onItemHovered: onItemHoveredImpl, onDragStart: onDragStartImpl, onMouseDown: onMouseDownImpl, allowResize: canResize, onMouseUp: onMouseUpImpl, dragAndDropState: dragOffset, onMouseMoveRaw: onMouseMove, ref: gridRef });
     $2[66] = canResize;
     $2[67] = dragColActive;
     $2[68] = dragOffset;
@@ -18600,6 +18600,377 @@ function useMouseHandlers(args) {
     isActivelyDraggingHeader
   };
 }
+const loadingCell = {
+  kind: GridCellKind.Loading,
+  allowOverlay: false
+};
+function getRowMarkerConfig(p2, rowSelect, rowsIn) {
+  var _rowMarkersObj$rowNum, _ref, _rowMarkersObj$kind, _rowMarkersObj$width, _ref2, _rowMarkersObj$startI, _rowMarkersObj$theme, _rowMarkersObj$checkb, _rowMarkersObj$rowSta, _rowMarkersObj$rowSta2, _rowMarkersObj$rowId, _rowMarkersObj$rowIdW;
+  const rowMarkersObj = typeof p2.rowMarkers === "string" ? void 0 : p2.rowMarkers;
+  const rowNumberOption = (_rowMarkersObj$rowNum = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowNumber) !== null && _rowMarkersObj$rowNum !== void 0 ? _rowMarkersObj$rowNum : false;
+  let normalizedKind = (_ref = (_rowMarkersObj$kind = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.kind) !== null && _rowMarkersObj$kind !== void 0 ? _rowMarkersObj$kind : p2.rowMarkers) !== null && _ref !== void 0 ? _ref : "none";
+  let showRowNumber = rowNumberOption;
+  if (normalizedKind === "both" || normalizedKind === "checkbox-and-number") {
+    normalizedKind = "checkbox";
+    showRowNumber = true;
+  }
+  const rowMarkers = normalizedKind;
+  const rowMarkerWidthRaw = (_rowMarkersObj$width = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.width) !== null && _rowMarkersObj$width !== void 0 ? _rowMarkersObj$width : p2.rowMarkerWidth;
+  const rowMarkerStartIndex = (_ref2 = (_rowMarkersObj$startI = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.startIndex) !== null && _rowMarkersObj$startI !== void 0 ? _rowMarkersObj$startI : p2.rowMarkerStartIndex) !== null && _ref2 !== void 0 ? _ref2 : 1;
+  const rowMarkerTheme = (_rowMarkersObj$theme = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.theme) !== null && _rowMarkersObj$theme !== void 0 ? _rowMarkersObj$theme : p2.rowMarkerTheme;
+  const headerRowMarkerTheme = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.headerTheme;
+  const headerRowMarkerAlwaysVisible = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.headerAlwaysVisible;
+  const headerRowMarkerDisabled = rowSelect !== "multi" || (rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.headerDisabled) === true;
+  const rowMarkerCheckboxStyle = (_rowMarkersObj$checkb = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.checkboxStyle) !== null && _rowMarkersObj$checkb !== void 0 ? _rowMarkersObj$checkb : "square";
+  const rowStatusOption = (_rowMarkersObj$rowSta = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowStatus) !== null && _rowMarkersObj$rowSta !== void 0 ? _rowMarkersObj$rowSta : false;
+  const rowStatusWidth = (_rowMarkersObj$rowSta2 = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowStatusWidth) !== null && _rowMarkersObj$rowSta2 !== void 0 ? _rowMarkersObj$rowSta2 : 40;
+  const rowStatusTheme = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowStatusTheme;
+  const rowIdOption = (_rowMarkersObj$rowId = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowId) !== null && _rowMarkersObj$rowId !== void 0 ? _rowMarkersObj$rowId : false;
+  const rowIdWidth = (_rowMarkersObj$rowIdW = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowIdWidth) !== null && _rowMarkersObj$rowIdW !== void 0 ? _rowMarkersObj$rowIdW : 80;
+  const rowIdTheme = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowIdTheme;
+  const rowMarkerWidth = rowMarkerWidthRaw !== null && rowMarkerWidthRaw !== void 0 ? rowMarkerWidthRaw : rowsIn > 1e4 ? 48 : rowsIn > 1e3 ? 44 : rowsIn > 100 ? 36 : 32;
+  const hasRowMarkers = rowMarkers !== "none";
+  const hasRowStatus = rowStatusOption === true;
+  const hasRowId = rowIdOption === true;
+  const rowMarkerOffset = (hasRowMarkers ? showRowNumber ? 2 : 1 : 0) + (hasRowStatus ? 1 : 0) + (hasRowId ? 1 : 0);
+  const totalMarkerWidth = (hasRowMarkers ? (showRowNumber ? 2 : 1) * rowMarkerWidth : 0) + (hasRowStatus ? rowStatusWidth : 0) + (hasRowId ? rowIdWidth : 0);
+  return {
+    rowMarkers,
+    showRowNumber,
+    rowMarkerWidth,
+    rowMarkerStartIndex,
+    rowMarkerTheme,
+    headerRowMarkerTheme,
+    headerRowMarkerAlwaysVisible,
+    headerRowMarkerDisabled,
+    rowMarkerCheckboxStyle,
+    hasRowMarkers,
+    hasRowStatus,
+    rowStatusWidth,
+    rowStatusTheme,
+    hasRowId,
+    rowIdWidth,
+    rowIdTheme,
+    rowMarkerOffset,
+    totalMarkerWidth
+  };
+}
+function useMangledCols(config, columns, rows, gridSelectionRows) {
+  const $2 = compilerRuntimeExports.c(38);
+  const {
+    rowMarkers,
+    showRowNumber,
+    rowMarkerWidth,
+    rowMarkerTheme,
+    rowMarkerCheckboxStyle,
+    headerRowMarkerTheme,
+    headerRowMarkerAlwaysVisible,
+    headerRowMarkerDisabled,
+    hasRowStatus,
+    rowStatusWidth,
+    rowStatusTheme,
+    hasRowId,
+    rowIdWidth,
+    rowIdTheme
+  } = config;
+  const numSelectedRows = gridSelectionRows.length;
+  const rowMarkerChecked = rowMarkers === "none" ? void 0 : numSelectedRows === 0 ? false : numSelectedRows === rows ? true : void 0;
+  let markerColumns;
+  if ($2[0] !== hasRowId || $2[1] !== hasRowStatus || $2[2] !== headerRowMarkerAlwaysVisible || $2[3] !== headerRowMarkerDisabled || $2[4] !== headerRowMarkerTheme || $2[5] !== rowIdTheme || $2[6] !== rowIdWidth || $2[7] !== rowMarkerCheckboxStyle || $2[8] !== rowMarkerChecked || $2[9] !== rowMarkerTheme || $2[10] !== rowMarkerWidth || $2[11] !== rowMarkers || $2[12] !== rowStatusTheme || $2[13] !== rowStatusWidth || $2[14] !== showRowNumber) {
+    markerColumns = [];
+    if (rowMarkers !== "none") {
+      if (showRowNumber) {
+        let t03;
+        if ($2[16] !== headerRowMarkerTheme || $2[17] !== rowMarkerCheckboxStyle || $2[18] !== rowMarkerTheme || $2[19] !== rowMarkerWidth) {
+          t03 = {
+            title: "",
+            width: rowMarkerWidth,
+            icon: void 0,
+            hasMenu: false,
+            style: "normal",
+            themeOverride: rowMarkerTheme,
+            rowMarker: rowMarkerCheckboxStyle,
+            rowMarkerChecked: false,
+            headerRowMarkerTheme,
+            headerRowMarkerAlwaysVisible: false,
+            headerRowMarkerDisabled: true
+          };
+          $2[16] = headerRowMarkerTheme;
+          $2[17] = rowMarkerCheckboxStyle;
+          $2[18] = rowMarkerTheme;
+          $2[19] = rowMarkerWidth;
+          $2[20] = t03;
+        } else {
+          t03 = $2[20];
+        }
+        markerColumns.push(t03);
+      }
+      let t02;
+      if ($2[21] !== headerRowMarkerAlwaysVisible || $2[22] !== headerRowMarkerDisabled || $2[23] !== headerRowMarkerTheme || $2[24] !== rowMarkerCheckboxStyle || $2[25] !== rowMarkerChecked || $2[26] !== rowMarkerTheme || $2[27] !== rowMarkerWidth) {
+        t02 = {
+          title: "",
+          width: rowMarkerWidth,
+          icon: void 0,
+          hasMenu: false,
+          style: "normal",
+          themeOverride: rowMarkerTheme,
+          rowMarker: rowMarkerCheckboxStyle,
+          rowMarkerChecked,
+          headerRowMarkerTheme,
+          headerRowMarkerAlwaysVisible,
+          headerRowMarkerDisabled
+        };
+        $2[21] = headerRowMarkerAlwaysVisible;
+        $2[22] = headerRowMarkerDisabled;
+        $2[23] = headerRowMarkerTheme;
+        $2[24] = rowMarkerCheckboxStyle;
+        $2[25] = rowMarkerChecked;
+        $2[26] = rowMarkerTheme;
+        $2[27] = rowMarkerWidth;
+        $2[28] = t02;
+      } else {
+        t02 = $2[28];
+      }
+      markerColumns.push(t02);
+    }
+    if (hasRowStatus) {
+      let t02;
+      if ($2[29] !== rowStatusTheme || $2[30] !== rowStatusWidth) {
+        t02 = {
+          title: "",
+          width: rowStatusWidth,
+          icon: void 0,
+          hasMenu: false,
+          style: "normal",
+          themeOverride: rowStatusTheme
+        };
+        $2[29] = rowStatusTheme;
+        $2[30] = rowStatusWidth;
+        $2[31] = t02;
+      } else {
+        t02 = $2[31];
+      }
+      markerColumns.push(t02);
+    }
+    if (hasRowId) {
+      let t02;
+      if ($2[32] !== rowIdTheme || $2[33] !== rowIdWidth) {
+        t02 = {
+          title: "ID",
+          width: rowIdWidth,
+          icon: void 0,
+          hasMenu: false,
+          style: "normal",
+          themeOverride: rowIdTheme
+        };
+        $2[32] = rowIdTheme;
+        $2[33] = rowIdWidth;
+        $2[34] = t02;
+      } else {
+        t02 = $2[34];
+      }
+      markerColumns.push(t02);
+    }
+    $2[0] = hasRowId;
+    $2[1] = hasRowStatus;
+    $2[2] = headerRowMarkerAlwaysVisible;
+    $2[3] = headerRowMarkerDisabled;
+    $2[4] = headerRowMarkerTheme;
+    $2[5] = rowIdTheme;
+    $2[6] = rowIdWidth;
+    $2[7] = rowMarkerCheckboxStyle;
+    $2[8] = rowMarkerChecked;
+    $2[9] = rowMarkerTheme;
+    $2[10] = rowMarkerWidth;
+    $2[11] = rowMarkers;
+    $2[12] = rowStatusTheme;
+    $2[13] = rowStatusWidth;
+    $2[14] = showRowNumber;
+    $2[15] = markerColumns;
+  } else {
+    markerColumns = $2[15];
+  }
+  let t0;
+  if ($2[35] !== columns || $2[36] !== markerColumns) {
+    t0 = [...markerColumns, ...columns];
+    $2[35] = columns;
+    $2[36] = markerColumns;
+    $2[37] = t0;
+  } else {
+    t0 = $2[37];
+  }
+  return t0;
+}
+function useGetMangledCellContent(params) {
+  const {
+    config,
+    showTrailingBlankRow,
+    mangledRows,
+    onRowStatus,
+    onRowId,
+    rowNumberMapper,
+    gridSelectionRows,
+    onRowMoved,
+    trailingRowOptions,
+    experimental,
+    getCellContent,
+    disabledRows,
+    mangledCols,
+    visibleRegionRef,
+    rowsRef
+  } = params;
+  const {
+    rowMarkers,
+    showRowNumber,
+    rowMarkerStartIndex,
+    rowMarkerCheckboxStyle,
+    rowStatusTheme,
+    rowIdTheme,
+    hasRowMarkers,
+    hasRowStatus,
+    hasRowId,
+    rowMarkerOffset
+  } = config;
+  const mangledColsRef = React.useRef(mangledCols);
+  mangledColsRef.current = mangledCols;
+  return React.useCallback(function(_ref3) {
+    let [col, row] = _ref3;
+    let forceStrict = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : false;
+    const isTrailing = showTrailingBlankRow && row === mangledRows - 1;
+    let currentColIndex = 0;
+    let rowNumberColIndex = -1;
+    let checkboxColIndex = -1;
+    let rowStatusColIndex = -1;
+    let rowIdColIndex = -1;
+    if (hasRowMarkers && showRowNumber) {
+      rowNumberColIndex = currentColIndex++;
+    }
+    if (hasRowMarkers) {
+      checkboxColIndex = currentColIndex++;
+    }
+    if (hasRowStatus) {
+      rowStatusColIndex = currentColIndex++;
+    }
+    if (hasRowId) {
+      rowIdColIndex = currentColIndex++;
+    }
+    if (col === rowNumberColIndex) {
+      if (isTrailing) {
+        return loadingCell;
+      }
+      const mappedRow = rowNumberMapper(row);
+      if (mappedRow === void 0) return loadingCell;
+      return {
+        kind: InnerGridCellKind.Marker,
+        allowOverlay: false,
+        checkboxStyle: rowMarkerCheckboxStyle,
+        checked: false,
+        markerKind: "number",
+        row: rowMarkerStartIndex + mappedRow,
+        drawHandle: false,
+        cursor: void 0,
+        disabled: (disabledRows === null || disabledRows === void 0 ? void 0 : disabledRows(row)) === true
+      };
+    }
+    if (col === checkboxColIndex) {
+      if (isTrailing) {
+        return loadingCell;
+      }
+      const mappedRow_0 = rowNumberMapper(row);
+      if (mappedRow_0 === void 0) return loadingCell;
+      let markerKind;
+      if (showRowNumber) {
+        markerKind = rowMarkers === "checkbox-visible" ? "checkbox-visible" : "checkbox";
+      } else if (rowMarkers === "clickable-number") {
+        markerKind = "number";
+      } else {
+        markerKind = rowMarkers;
+      }
+      return {
+        kind: InnerGridCellKind.Marker,
+        allowOverlay: false,
+        checkboxStyle: rowMarkerCheckboxStyle,
+        checked: gridSelectionRows.hasIndex(row) === true,
+        markerKind,
+        row: rowMarkerStartIndex + mappedRow_0,
+        drawHandle: onRowMoved !== void 0,
+        cursor: showRowNumber ? void 0 : rowMarkers === "clickable-number" ? "pointer" : void 0,
+        disabled: (disabledRows === null || disabledRows === void 0 ? void 0 : disabledRows(row)) === true
+      };
+    }
+    if (col === rowStatusColIndex) {
+      if (isTrailing) {
+        return loadingCell;
+      }
+      const status = onRowStatus === null || onRowStatus === void 0 ? void 0 : onRowStatus(row);
+      return {
+        kind: InnerGridCellKind.RowStatus,
+        allowOverlay: false,
+        status,
+        themeOverride: rowStatusTheme
+      };
+    }
+    if (col === rowIdColIndex) {
+      if (isTrailing) {
+        return loadingCell;
+      }
+      const rowId = onRowId === null || onRowId === void 0 ? void 0 : onRowId(row);
+      return {
+        kind: InnerGridCellKind.RowId,
+        allowOverlay: false,
+        rowId,
+        themeOverride: rowIdTheme
+      };
+    }
+    if (isTrailing) {
+      var _trailingRowOptions$h, _c$trailingRowOptions;
+      const isFirst = col === rowMarkerOffset;
+      const maybeFirstColumnHint = isFirst ? (_trailingRowOptions$h = trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.hint) !== null && _trailingRowOptions$h !== void 0 ? _trailingRowOptions$h : "" : "";
+      const c = mangledColsRef.current[col];
+      if ((c === null || c === void 0 || (_c$trailingRowOptions = c.trailingRowOptions) === null || _c$trailingRowOptions === void 0 ? void 0 : _c$trailingRowOptions.disabled) === true) {
+        return loadingCell;
+      } else {
+        var _c$trailingRowOptions2, _c$trailingRowOptions3, _c$trailingRowOptions4, _c$trailingRowOptions5;
+        const hint = (_c$trailingRowOptions2 = c === null || c === void 0 || (_c$trailingRowOptions3 = c.trailingRowOptions) === null || _c$trailingRowOptions3 === void 0 ? void 0 : _c$trailingRowOptions3.hint) !== null && _c$trailingRowOptions2 !== void 0 ? _c$trailingRowOptions2 : maybeFirstColumnHint;
+        const icon = (_c$trailingRowOptions4 = c === null || c === void 0 || (_c$trailingRowOptions5 = c.trailingRowOptions) === null || _c$trailingRowOptions5 === void 0 ? void 0 : _c$trailingRowOptions5.addIcon) !== null && _c$trailingRowOptions4 !== void 0 ? _c$trailingRowOptions4 : trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.addIcon;
+        return {
+          kind: InnerGridCellKind.NewRow,
+          hint,
+          allowOverlay: false,
+          icon
+        };
+      }
+    } else {
+      const outerCol = col - rowMarkerOffset;
+      if (forceStrict || (experimental === null || experimental === void 0 ? void 0 : experimental.strict) === true) {
+        var _vr$extras, _vr$extras2, _vr$extras3;
+        const vr = visibleRegionRef.current;
+        const isOutsideMainArea = vr.x > outerCol || outerCol > vr.x + vr.width || vr.y > row || row > vr.y + vr.height || row >= rowsRef.current;
+        const isSelected = outerCol === ((_vr$extras = vr.extras) === null || _vr$extras === void 0 || (_vr$extras = _vr$extras.selected) === null || _vr$extras === void 0 ? void 0 : _vr$extras[0]) && row === ((_vr$extras2 = vr.extras) === null || _vr$extras2 === void 0 ? void 0 : _vr$extras2.selected[1]);
+        let isInFreezeArea = false;
+        if (((_vr$extras3 = vr.extras) === null || _vr$extras3 === void 0 ? void 0 : _vr$extras3.freezeRegions) !== void 0) {
+          for (const fr of vr.extras.freezeRegions) {
+            if (pointInRect(fr, outerCol, row)) {
+              isInFreezeArea = true;
+              break;
+            }
+          }
+        }
+        if (isOutsideMainArea && !isSelected && !isInFreezeArea) {
+          return loadingCell;
+        }
+      }
+      let result = getCellContent([outerCol, row]);
+      if (rowMarkerOffset !== 0 && result.span !== void 0) {
+        result = {
+          ...result,
+          span: [result.span[0] + rowMarkerOffset, result.span[1] + rowMarkerOffset]
+        };
+      }
+      return result;
+    }
+  }, [showTrailingBlankRow, mangledRows, hasRowStatus, onRowStatus, rowStatusTheme, hasRowId, onRowId, rowIdTheme, hasRowMarkers, rowNumberMapper, rowMarkerCheckboxStyle, gridSelectionRows, rowMarkers, rowMarkerStartIndex, onRowMoved, rowMarkerOffset, trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.hint, trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.addIcon, experimental === null || experimental === void 0 ? void 0 : experimental.strict, getCellContent, showRowNumber, disabledRows]);
+}
 const DataGridOverlayEditor = React.lazy(async () => await Promise.resolve().then(() => dataGridOverlayEditor));
 let idCounter = 0;
 function getSpanStops(cells) {
@@ -18626,17 +18997,16 @@ function shiftSelection(input, offset) {
     columns: input.columns.offset(offset)
   };
 }
-const loadingCell = {
-  kind: GridCellKind.Loading,
-  allowOverlay: false
-};
+({
+  kind: GridCellKind.Loading
+});
 const emptyGridSelection = {
   columns: CompactSelection.empty(),
   rows: CompactSelection.empty(),
   current: void 0
 };
 const DataEditorImpl = (p2, forwardedRef) => {
-  var _rowMarkersObj$rowNum, _ref, _rowMarkersObj$kind, _rowMarkersObj$width, _ref2, _rowMarkersObj$startI, _rowMarkersObj$theme, _rowMarkersObj$checkb, _rowMarkersObj$rowSta, _rowMarkersObj$rowSta2, _rowMarkersObj$rowId, _rowMarkersObj$rowIdW, _gridSelection$curren, _gridSelection$curren5, _gridSelectionOuter$c, _gridSelectionOuter$c2;
+  var _gridSelection$curren, _gridSelection$curren5, _gridSelectionOuter$c, _gridSelectionOuter$c2;
   const [gridSelectionInner, setGridSelectionInner] = React.useState(emptyGridSelection);
   const [overlay, setOverlay] = React.useState();
   const searchInputRef = React.useRef(null);
@@ -18769,28 +19139,27 @@ const DataEditorImpl = (p2, forwardedRef) => {
     onRowId
   } = p2;
   const drawFocusRing = drawFocusRingIn === "no-editor" ? overlay === void 0 : drawFocusRingIn;
-  const rowMarkersObj = typeof p2.rowMarkers === "string" ? void 0 : p2.rowMarkers;
-  const rowNumberOption = (_rowMarkersObj$rowNum = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowNumber) !== null && _rowMarkersObj$rowNum !== void 0 ? _rowMarkersObj$rowNum : false;
-  let normalizedKind = (_ref = (_rowMarkersObj$kind = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.kind) !== null && _rowMarkersObj$kind !== void 0 ? _rowMarkersObj$kind : p2.rowMarkers) !== null && _ref !== void 0 ? _ref : "none";
-  let showRowNumber = rowNumberOption;
-  if (normalizedKind === "both" || normalizedKind === "checkbox-and-number") {
-    normalizedKind = "checkbox";
-    showRowNumber = true;
-  }
-  const rowMarkers = normalizedKind;
-  const rowMarkerWidthRaw = (_rowMarkersObj$width = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.width) !== null && _rowMarkersObj$width !== void 0 ? _rowMarkersObj$width : p2.rowMarkerWidth;
-  const rowMarkerStartIndex = (_ref2 = (_rowMarkersObj$startI = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.startIndex) !== null && _rowMarkersObj$startI !== void 0 ? _rowMarkersObj$startI : p2.rowMarkerStartIndex) !== null && _ref2 !== void 0 ? _ref2 : 1;
-  const rowMarkerTheme = (_rowMarkersObj$theme = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.theme) !== null && _rowMarkersObj$theme !== void 0 ? _rowMarkersObj$theme : p2.rowMarkerTheme;
-  const headerRowMarkerTheme = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.headerTheme;
-  const headerRowMarkerAlwaysVisible = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.headerAlwaysVisible;
-  const headerRowMarkerDisabled = rowSelect !== "multi" || (rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.headerDisabled) === true;
-  const rowMarkerCheckboxStyle = (_rowMarkersObj$checkb = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.checkboxStyle) !== null && _rowMarkersObj$checkb !== void 0 ? _rowMarkersObj$checkb : "square";
-  const rowStatusOption = (_rowMarkersObj$rowSta = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowStatus) !== null && _rowMarkersObj$rowSta !== void 0 ? _rowMarkersObj$rowSta : false;
-  const rowStatusWidth = (_rowMarkersObj$rowSta2 = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowStatusWidth) !== null && _rowMarkersObj$rowSta2 !== void 0 ? _rowMarkersObj$rowSta2 : 40;
-  const rowStatusTheme = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowStatusTheme;
-  const rowIdOption = (_rowMarkersObj$rowId = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowId) !== null && _rowMarkersObj$rowId !== void 0 ? _rowMarkersObj$rowId : false;
-  const rowIdWidth = (_rowMarkersObj$rowIdW = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowIdWidth) !== null && _rowMarkersObj$rowIdW !== void 0 ? _rowMarkersObj$rowIdW : 80;
-  const rowIdTheme = rowMarkersObj === null || rowMarkersObj === void 0 ? void 0 : rowMarkersObj.rowIdTheme;
+  const rowMarkerConfig = getRowMarkerConfig(p2, rowSelect, rowsIn);
+  const {
+    rowMarkers,
+    showRowNumber,
+    rowMarkerWidth,
+    rowMarkerStartIndex,
+    rowMarkerTheme,
+    headerRowMarkerTheme,
+    headerRowMarkerAlwaysVisible,
+    headerRowMarkerDisabled,
+    rowMarkerCheckboxStyle,
+    hasRowMarkers,
+    hasRowStatus,
+    rowStatusWidth,
+    rowStatusTheme,
+    hasRowId,
+    rowIdWidth,
+    rowIdTheme,
+    rowMarkerOffset,
+    totalMarkerWidth
+  } = rowMarkerConfig;
   const minColumnWidth = Math.max(minColumnWidthIn, 20);
   const maxColumnWidth = Math.max(maxColumnWidthIn, minColumnWidth);
   const maxColumnAutoWidth = Math.max(maxColumnAutoWidthIn !== null && maxColumnAutoWidthIn !== void 0 ? maxColumnAutoWidthIn : maxColumnWidth, minColumnWidth);
@@ -18825,12 +19194,6 @@ const DataEditorImpl = (p2, forwardedRef) => {
     theme: themeIn
   });
   const keybindings = useKeybindingsWithDefaults(keybindingsIn);
-  const rowMarkerWidth = rowMarkerWidthRaw !== null && rowMarkerWidthRaw !== void 0 ? rowMarkerWidthRaw : rowsIn > 1e4 ? 48 : rowsIn > 1e3 ? 44 : rowsIn > 100 ? 36 : 32;
-  const hasRowMarkers = rowMarkers !== "none";
-  const hasRowStatus = rowStatusOption === true;
-  const hasRowId = rowIdOption === true;
-  const rowMarkerOffset = (hasRowMarkers ? showRowNumber ? 2 : 1 : 0) + (hasRowStatus ? 1 : 0) + (hasRowId ? 1 : 0);
-  const totalMarkerWidth = (hasRowMarkers ? (showRowNumber ? 2 : 1) * rowMarkerWidth : 0) + (hasRowStatus ? rowStatusWidth : 0) + (hasRowId ? rowIdWidth : 0);
   const showTrailingBlankRow = trailingRowOptions !== void 0;
   const lastRowSticky = (trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.sticky) === true;
   const [showSearchInner, setShowSearchInner] = React.useState(false);
@@ -18942,62 +19305,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
   }, [groupLevels, groupHeaderHeight]);
   const totalGroupHeaderHeight = groupHeaderHeights.reduce((a, b2) => a + b2, 0);
   const totalHeaderHeight = headerHeight + totalGroupHeaderHeight;
-  const numSelectedRows = gridSelection.rows.length;
-  const rowMarkerChecked = rowMarkers === "none" ? void 0 : numSelectedRows === 0 ? false : numSelectedRows === rows ? true : void 0;
-  const mangledCols = React.useMemo(() => {
-    const markerColumns = [];
-    if (rowMarkers !== "none") {
-      if (showRowNumber) {
-        markerColumns.push({
-          title: "",
-          width: rowMarkerWidth,
-          icon: void 0,
-          hasMenu: false,
-          style: "normal",
-          themeOverride: rowMarkerTheme,
-          rowMarker: rowMarkerCheckboxStyle,
-          rowMarkerChecked: false,
-          headerRowMarkerTheme,
-          headerRowMarkerAlwaysVisible: false,
-          headerRowMarkerDisabled: true
-        });
-      }
-      markerColumns.push({
-        title: "",
-        width: rowMarkerWidth,
-        icon: void 0,
-        hasMenu: false,
-        style: "normal",
-        themeOverride: rowMarkerTheme,
-        rowMarker: rowMarkerCheckboxStyle,
-        rowMarkerChecked,
-        headerRowMarkerTheme,
-        headerRowMarkerAlwaysVisible,
-        headerRowMarkerDisabled
-      });
-    }
-    if (hasRowStatus) {
-      markerColumns.push({
-        title: "",
-        width: rowStatusWidth,
-        icon: void 0,
-        hasMenu: false,
-        style: "normal",
-        themeOverride: rowStatusTheme
-      });
-    }
-    if (hasRowId) {
-      markerColumns.push({
-        title: "ID",
-        width: rowIdWidth,
-        icon: void 0,
-        hasMenu: false,
-        style: "normal",
-        themeOverride: rowIdTheme
-      });
-    }
-    return [...markerColumns, ...columns];
-  }, [hasRowStatus, rowStatusWidth, rowStatusTheme, hasRowId, rowIdWidth, rowIdTheme, rowMarkers, columns, rowMarkerWidth, rowMarkerTheme, rowMarkerCheckboxStyle, rowMarkerChecked, headerRowMarkerTheme, headerRowMarkerAlwaysVisible, headerRowMarkerDisabled, showRowNumber]);
+  const mangledCols = useMangledCols(rowMarkerConfig, columns, rows, gridSelection.rows);
   const visibleRegionRef = React.useRef({
     height: 1,
     width: 1,
@@ -19045,8 +19353,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
   const highlightFocusCol = highlightFocus === null || highlightFocus === void 0 ? void 0 : highlightFocus[0];
   const highlightFocusRow = highlightFocus === null || highlightFocus === void 0 ? void 0 : highlightFocus[1];
   const highlightRegions = React.useMemo(() => {
-    var _ref3, _ref4;
-    if ((highlightRegionsIn === void 0 || highlightRegionsIn.length === 0) && ((_ref3 = (_ref4 = highlightRange !== null && highlightRange !== void 0 ? highlightRange : highlightFocusCol) !== null && _ref4 !== void 0 ? _ref4 : highlightFocusRow) !== null && _ref3 !== void 0 ? _ref3 : fillHighlightRegion) === void 0) return void 0;
+    var _ref, _ref2;
+    if ((highlightRegionsIn === void 0 || highlightRegionsIn.length === 0) && ((_ref = (_ref2 = highlightRange !== null && highlightRange !== void 0 ? highlightRange : highlightFocusCol) !== null && _ref2 !== void 0 ? _ref2 : highlightFocusRow) !== null && _ref !== void 0 ? _ref : fillHighlightRegion) === void 0) return void 0;
     const regions = [];
     if (highlightRegionsIn !== void 0) {
       for (const r of highlightRegionsIn) {
@@ -19092,147 +19400,25 @@ const DataEditorImpl = (p2, forwardedRef) => {
     }
     return regions.length > 0 ? regions : void 0;
   }, [fillHighlightRegion, highlightRange, highlightFocusCol, highlightFocusRow, highlightRegionsIn, mangledCols.length, mergedTheme.accentColor, rowMarkerOffset]);
-  const mangledColsRef = React.useRef(mangledCols);
-  mangledColsRef.current = mangledCols;
-  const getMangledCellContent = React.useCallback(function(_ref5) {
-    let [col, row] = _ref5;
-    let forceStrict = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : false;
-    const isTrailing = showTrailingBlankRow && row === mangledRows - 1;
-    let currentColIndex = 0;
-    let rowNumberColIndex = -1;
-    let checkboxColIndex = -1;
-    let rowStatusColIndex = -1;
-    let rowIdColIndex = -1;
-    if (hasRowMarkers && showRowNumber) {
-      rowNumberColIndex = currentColIndex++;
-    }
-    if (hasRowMarkers) {
-      checkboxColIndex = currentColIndex++;
-    }
-    if (hasRowStatus) {
-      rowStatusColIndex = currentColIndex++;
-    }
-    if (hasRowId) {
-      rowIdColIndex = currentColIndex++;
-    }
-    if (col === rowNumberColIndex) {
-      var _p$disabledRows;
-      if (isTrailing) {
-        return loadingCell;
-      }
-      const mappedRow = rowNumberMapper(row);
-      if (mappedRow === void 0) return loadingCell;
-      return {
-        kind: InnerGridCellKind.Marker,
-        allowOverlay: false,
-        checkboxStyle: rowMarkerCheckboxStyle,
-        checked: false,
-        markerKind: "number",
-        row: rowMarkerStartIndex + mappedRow,
-        drawHandle: false,
-        cursor: void 0,
-        disabled: ((_p$disabledRows = p2.disabledRows) === null || _p$disabledRows === void 0 ? void 0 : _p$disabledRows.call(p2, row)) === true
-      };
-    }
-    if (col === checkboxColIndex) {
-      var _p$disabledRows2;
-      if (isTrailing) {
-        return loadingCell;
-      }
-      const mappedRow = rowNumberMapper(row);
-      if (mappedRow === void 0) return loadingCell;
-      let markerKind;
-      if (showRowNumber) {
-        markerKind = rowMarkers === "checkbox-visible" ? "checkbox-visible" : "checkbox";
-      } else if (rowMarkers === "clickable-number") {
-        markerKind = "number";
-      } else {
-        markerKind = rowMarkers;
-      }
-      return {
-        kind: InnerGridCellKind.Marker,
-        allowOverlay: false,
-        checkboxStyle: rowMarkerCheckboxStyle,
-        checked: (gridSelection === null || gridSelection === void 0 ? void 0 : gridSelection.rows.hasIndex(row)) === true,
-        markerKind,
-        row: rowMarkerStartIndex + mappedRow,
-        drawHandle: onRowMoved !== void 0,
-        cursor: showRowNumber ? void 0 : rowMarkers === "clickable-number" ? "pointer" : void 0,
-        disabled: ((_p$disabledRows2 = p2.disabledRows) === null || _p$disabledRows2 === void 0 ? void 0 : _p$disabledRows2.call(p2, row)) === true
-      };
-    }
-    if (col === rowStatusColIndex) {
-      if (isTrailing) {
-        return loadingCell;
-      }
-      const status = onRowStatus === null || onRowStatus === void 0 ? void 0 : onRowStatus(row);
-      return {
-        kind: InnerGridCellKind.RowStatus,
-        allowOverlay: false,
-        status,
-        themeOverride: rowStatusTheme
-      };
-    }
-    if (col === rowIdColIndex) {
-      if (isTrailing) {
-        return loadingCell;
-      }
-      const rowId = onRowId === null || onRowId === void 0 ? void 0 : onRowId(row);
-      return {
-        kind: InnerGridCellKind.RowId,
-        allowOverlay: false,
-        rowId,
-        themeOverride: rowIdTheme
-      };
-    }
-    if (isTrailing) {
-      var _trailingRowOptions$h, _c$trailingRowOptions;
-      const isFirst = col === rowMarkerOffset;
-      const maybeFirstColumnHint = isFirst ? (_trailingRowOptions$h = trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.hint) !== null && _trailingRowOptions$h !== void 0 ? _trailingRowOptions$h : "" : "";
-      const c = mangledColsRef.current[col];
-      if ((c === null || c === void 0 || (_c$trailingRowOptions = c.trailingRowOptions) === null || _c$trailingRowOptions === void 0 ? void 0 : _c$trailingRowOptions.disabled) === true) {
-        return loadingCell;
-      } else {
-        var _c$trailingRowOptions2, _c$trailingRowOptions3, _c$trailingRowOptions4, _c$trailingRowOptions5;
-        const hint = (_c$trailingRowOptions2 = c === null || c === void 0 || (_c$trailingRowOptions3 = c.trailingRowOptions) === null || _c$trailingRowOptions3 === void 0 ? void 0 : _c$trailingRowOptions3.hint) !== null && _c$trailingRowOptions2 !== void 0 ? _c$trailingRowOptions2 : maybeFirstColumnHint;
-        const icon = (_c$trailingRowOptions4 = c === null || c === void 0 || (_c$trailingRowOptions5 = c.trailingRowOptions) === null || _c$trailingRowOptions5 === void 0 ? void 0 : _c$trailingRowOptions5.addIcon) !== null && _c$trailingRowOptions4 !== void 0 ? _c$trailingRowOptions4 : trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.addIcon;
-        return {
-          kind: InnerGridCellKind.NewRow,
-          hint,
-          allowOverlay: false,
-          icon
-        };
-      }
-    } else {
-      const outerCol = col - rowMarkerOffset;
-      if (forceStrict || (experimental === null || experimental === void 0 ? void 0 : experimental.strict) === true) {
-        var _vr$extras, _vr$extras2, _vr$extras3;
-        const vr = visibleRegionRef.current;
-        const isOutsideMainArea = vr.x > outerCol || outerCol > vr.x + vr.width || vr.y > row || row > vr.y + vr.height || row >= rowsRef.current;
-        const isSelected = outerCol === ((_vr$extras = vr.extras) === null || _vr$extras === void 0 || (_vr$extras = _vr$extras.selected) === null || _vr$extras === void 0 ? void 0 : _vr$extras[0]) && row === ((_vr$extras2 = vr.extras) === null || _vr$extras2 === void 0 ? void 0 : _vr$extras2.selected[1]);
-        let isInFreezeArea = false;
-        if (((_vr$extras3 = vr.extras) === null || _vr$extras3 === void 0 ? void 0 : _vr$extras3.freezeRegions) !== void 0) {
-          for (const fr of vr.extras.freezeRegions) {
-            if (pointInRect(fr, outerCol, row)) {
-              isInFreezeArea = true;
-              break;
-            }
-          }
-        }
-        if (isOutsideMainArea && !isSelected && !isInFreezeArea) {
-          return loadingCell;
-        }
-      }
-      let result = getCellContent([outerCol, row]);
-      if (rowMarkerOffset !== 0 && result.span !== void 0) {
-        result = {
-          ...result,
-          span: [result.span[0] + rowMarkerOffset, result.span[1] + rowMarkerOffset]
-        };
-      }
-      return result;
-    }
-  }, [showTrailingBlankRow, mangledRows, hasRowStatus, onRowStatus, rowStatusTheme, hasRowId, onRowId, rowIdTheme, hasRowMarkers, rowNumberMapper, rowMarkerCheckboxStyle, gridSelection === null || gridSelection === void 0 ? void 0 : gridSelection.rows, rowMarkers, rowMarkerStartIndex, onRowMoved, rowMarkerOffset, trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.hint, trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.addIcon, experimental === null || experimental === void 0 ? void 0 : experimental.strict, getCellContent, showRowNumber]);
+  const rowsRef = React.useRef(rows);
+  rowsRef.current = rows;
+  const getMangledCellContent = useGetMangledCellContent({
+    config: rowMarkerConfig,
+    showTrailingBlankRow,
+    mangledRows,
+    onRowStatus,
+    onRowId,
+    rowNumberMapper,
+    gridSelectionRows: gridSelection.rows,
+    onRowMoved,
+    trailingRowOptions,
+    experimental,
+    getCellContent,
+    disabledRows: p2.disabledRows,
+    mangledCols,
+    visibleRegionRef,
+    rowsRef
+  });
   const mangledGetGroupDetails = React.useCallback((group) => {
     var _getGroupDetails;
     let result = (_getGroupDetails = getGroupDetails === null || getGroupDetails === void 0 ? void 0 : getGroupDetails(group)) !== null && _getGroupDetails !== void 0 ? _getGroupDetails : {
@@ -19483,16 +19669,14 @@ const DataEditorImpl = (p2, forwardedRef) => {
   const getCellContentRef = React.useRef(getCellContent);
   focusCallback.current = focusOnRowFromTrailingBlankRow;
   getCellContentRef.current = getCellContent;
-  const rowsRef = React.useRef(rows);
-  rowsRef.current = rows;
   const colsRef = React.useRef(mangledCols.length);
   colsRef.current = mangledCols.length;
   const appendRow = React.useCallback(async function(col) {
-    var _ref6, _c$trailingRowOptions6, _c$trailingRowOptions7;
+    var _ref3, _onRowAppended, _c$trailingRowOptions;
     let openOverlay = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : true;
     let behavior = arguments.length > 2 ? arguments[2] : void 0;
     const c = mangledCols[col];
-    const appendResult = (_ref6 = (_c$trailingRowOptions6 = c === null || c === void 0 || (_c$trailingRowOptions7 = c.trailingRowOptions) === null || _c$trailingRowOptions7 === void 0 ? void 0 : _c$trailingRowOptions7.onRowAppended) !== null && _c$trailingRowOptions6 !== void 0 ? _c$trailingRowOptions6 : onRowAppended) === null || _ref6 === void 0 ? void 0 : _ref6();
+    const appendResult = (_ref3 = (_onRowAppended = c === null || c === void 0 || (_c$trailingRowOptions = c.trailingRowOptions) === null || _c$trailingRowOptions === void 0 ? void 0 : _c$trailingRowOptions.onRowAppended) !== null && _onRowAppended !== void 0 ? _onRowAppended : onRowAppended) === null || _ref3 === void 0 ? void 0 : _ref3();
     let r = void 0;
     let bottom = true;
     if (appendResult !== void 0) {

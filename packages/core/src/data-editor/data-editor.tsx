@@ -20,16 +20,11 @@ import {
     CompactSelection,
     type Slice,
     isInnerOnlyCell,
-    type ProvideEditorCallback,
     type GridColumn,
     isObjectEditorCallbackResult,
     type Item,
     type MarkerCell,
-    type ValidatedGridCell,
-    type ImageEditorType,
-    type FillHandleDirection,
     type EditListItem,
-    type CellActivationBehavior,
 } from "../internal/data-grid/data-grid-types.js";
 import DataGridSearch, { type DataGridSearchProps } from "../internal/data-grid-search/data-grid-search.js";
 import { browserIsOSX } from "../common/browser-detect.js";
@@ -50,7 +45,7 @@ import {
 import { GroupRename } from "./group-rename.js";
 import { useColumnSizer } from "./use-column-sizer.js";
 import { useKeyboardHandlers } from "./use-keyboard-handlers.js";
-import { type SelectionBlending, useSelectionBehavior } from "../internal/data-grid/use-selection-behavior.js";
+import { useSelectionBehavior } from "../internal/data-grid/use-selection-behavior.js";
 import { useCellsForSelection } from "./use-cells-for-selection.js";
 import { expandSelection, toggleBoolean } from "./data-editor-fns.js";
 import { DataEditorContainer } from "../internal/data-editor-container/data-grid-container.js";
@@ -81,6 +76,7 @@ import type { VisibleRegion } from "./visible-region.js";
 import { GhostInput, type GhostInputRef } from "../internal/ghost-input/index.js";
 import { useGhostInput } from "./use-ghost-input.js";
 import { useMouseHandlers } from "./use-mouse-handlers.js";
+import { getRowMarkerConfig, useMangledCols, useGetMangledCellContent } from "./use-row-markers.js";
 
 const DataGridOverlayEditor = React.lazy(
     async () => await import("../internal/data-grid-overlay-editor/data-grid-overlay-editor.js")
@@ -89,90 +85,9 @@ const DataGridOverlayEditor = React.lazy(
 // There must be a better way
 let idCounter = 0;
 
-export interface RowMarkerOptions {
-    kind: "checkbox" | "number" | "clickable-number" | "checkbox-visible" | "both" | "checkbox-and-number" | "none";
-    checkboxStyle?: "circle" | "square";
-    /** When true, displays row numbers alongside the primary marker (checkbox, etc.) */
-    rowNumber?: boolean;
-    /** When true, displays row status (A/U/D) column */
-    rowStatus?: boolean;
-    /** Width of the row status column in pixels */
-    rowStatusWidth?: number;
-    /** Theme override for the row status column */
-    rowStatusTheme?: Partial<Theme>;
-    /** When true, displays row ID column */
-    rowId?: boolean;
-    /** Width of the row ID column in pixels */
-    rowIdWidth?: number;
-    /** Theme override for the row ID column */
-    rowIdTheme?: Partial<Theme>;
-    startIndex?: number;
-    width?: number;
-    theme?: Partial<Theme>;
-    headerTheme?: Partial<Theme>;
-    headerAlwaysVisible?: boolean;
-    headerDisabled?: boolean;
-}
-
-interface MouseState {
-    readonly previousSelection?: GridSelection;
-    readonly fillHandle?: boolean;
-}
-
-type Props = Partial<
-    Omit<
-        DataGridSearchProps,
-        | "accessibilityHeight"
-        | "canvasRef"
-        | "cellXOffset"
-        | "cellYOffset"
-        | "className"
-        | "clientSize"
-        | "columns"
-        | "disabledRows"
-        | "drawFocusRing"
-        | "enableGroups"
-        | "firstColAccessible"
-        | "firstColSticky"
-        | "freezeColumns"
-        | "hasAppendRow"
-        | "getCellContent"
-        | "getCellRenderer"
-        | "getCellsForSelection"
-        | "getRowThemeOverride"
-        | "gridRef"
-        | "groupHeaderHeight"
-        | "headerHeight"
-        | "isFilling"
-        | "isFocused"
-        | "imageWindowLoader"
-        | "lockColumns"
-        | "maxColumnWidth"
-        | "minColumnWidth"
-        | "nonGrowWidth"
-        | "onCanvasBlur"
-        | "onCanvasFocused"
-        | "onCellFocused"
-        | "onContextMenu"
-        | "onDragEnd"
-        | "onMouseDown"
-        | "onMouseMove"
-        | "onMouseUp"
-        | "onVisibleRegionChanged"
-        | "rowHeight"
-        | "rows"
-        | "scrollRef"
-        | "searchInputRef"
-        | "selectedColumns"
-        | "selection"
-        | "theme"
-        | "translateX"
-        | "translateY"
-        | "verticalBorder"
-    >
->;
-
-type EmitEvents = "copy" | "paste" | "delete" | "fill-right" | "fill-down";
+// Re-export types from data-editor-types.ts for backward compatibility
+export type { RowMarkerOptions, MouseState, DataEditorProps, DataEditorRef, ScrollToFn, EmitEvents } from "./data-editor-types.js";
+import type { RowMarkerOptions, MouseState, DataEditorProps, DataEditorRef, ScrollToFn, EmitEvents } from "./data-editor-types.js";
 
 function getSpanStops(cells: readonly (readonly GridCell[])[]): number[] {
     return uniq(
@@ -206,584 +121,6 @@ function shiftSelection(input: GridSelection, offset: number): GridSelection {
         rows: input.rows,
         columns: input.columns.offset(offset),
     };
-}
-
-/**
- * @category DataEditor
- */
-export interface DataEditorProps extends Props, Pick<DataGridSearchProps, "imageWindowLoader"> {
-    /** Emitted whenever the user has requested the deletion of the selection.
-     * @group Editing
-     */
-    readonly onDelete?: (selection: GridSelection) => boolean | GridSelection;
-    /** Emitted whenever a cell edit is completed.
-     * @group Editing
-     */
-    readonly onCellEdited?: (cell: Item, newValue: EditableGridCell) => void;
-    /** Emitted whenever a cell mutation is completed and provides all edits inbound as a single batch.
-     * @group Editing
-     */
-    readonly onCellsEdited?: (newValues: readonly EditListItem[]) => boolean | void;
-    /** Emitted whenever a row append operation is requested. Append location can be set in callback.
-     * @group Editing
-     */
-    readonly onRowAppended?: () => Promise<"top" | "bottom" | number | undefined> | void;
-    /** Emitted whenever a column append operation is requested. Append location can be set in callback.
-     * @group Editing
-     */
-    readonly onColumnAppended?: () => Promise<"left" | "right" | number | undefined> | void;
-    /** Emitted when a column header should show a context menu. Usually right click.
-     * @group Events
-     */
-    readonly onHeaderClicked?: (colIndex: number, event: HeaderClickedEventArgs) => void;
-    /** Emitted when a group header is clicked.
-     * @group Events
-     */
-    readonly onGroupHeaderClicked?: (colIndex: number, event: GroupHeaderClickedEventArgs) => void;
-    /** Emitted whe the user wishes to rename a group.
-     * @group Events
-     */
-    readonly onGroupHeaderRenamed?: (groupName: string, newVal: string) => void;
-    /** Emitted when a cell is clicked.
-     * @group Events
-     */
-    readonly onCellClicked?: (cell: Item, event: CellClickedEventArgs) => void;
-    /** Emitted when a cell is activated, by pressing Enter, Space or double clicking it.
-     * @group Events
-     */
-    readonly onCellActivated?: (cell: Item, event: CellActivatedEventArgs) => void;
-
-    /**
-     * Emitted whenever the user initiats a pattern fill using the fill handle. This event provides both
-     * a patternSource region and a fillDestination region, and can be prevented.
-     * @group Editing
-     */
-    readonly onFillPattern?: (event: FillPatternEventArgs) => void;
-    /** Emitted when editing has finished, regardless of data changing or not.
-     * @group Editing
-     */
-    readonly onFinishedEditing?: (newValue: GridCell | undefined, movement: Item) => void;
-    /** Emitted when a column header should show a context menu. Usually right click.
-     * @group Events
-     */
-    readonly onHeaderContextMenu?: (colIndex: number, event: HeaderClickedEventArgs) => void;
-    /** Emitted when a group header should show a context menu. Usually right click.
-     * @group Events
-     */
-    readonly onGroupHeaderContextMenu?: (colIndex: number, event: GroupHeaderClickedEventArgs) => void;
-    /** Emitted when a cell should show a context menu. Usually right click.
-     * @group Events
-     */
-    readonly onCellContextMenu?: (cell: Item, event: CellClickedEventArgs) => void;
-    /** Used for validating cell values during editing.
-     * @group Editing
-     * @param cell The cell which is being validated.
-     * @param newValue The new value being proposed.
-     * @param prevValue The previous value before the edit.
-     * @returns A return of false indicates the value will not be accepted. A value of
-     * true indicates the value will be accepted. Returning a new GridCell will immediately coerce the value to match.
-     */
-    readonly validateCell?: (
-        cell: Item,
-        newValue: EditableGridCell,
-        prevValue: GridCell
-    ) => boolean | ValidatedGridCell;
-
-    /** The columns to display in the data grid.
-     * @group Data
-     */
-    readonly columns: readonly GridColumn[];
-
-    /** Controls the trailing row used to insert new data into the grid.
-     * @group Editing
-     */
-    readonly trailingRowOptions?: {
-        /** If the trailing row should be tinted */
-        readonly tint?: boolean;
-        /** A hint string displayed on hover. Usually something like "New row" */
-        readonly hint?: string;
-        /** When set to true, the trailing row is always visible. */
-        readonly sticky?: boolean;
-        /** The icon to use for the cell. Either a GridColumnIcon or a member of the passed headerIcons */
-        readonly addIcon?: string;
-        /** Overrides the column to focus when a new row is created. */
-        readonly targetColumn?: number | GridColumn;
-    };
-    /** Controls the height of the header row
-     * @defaultValue 36
-     * @group Style
-     */
-    readonly headerHeight?: number;
-    /** Controls the header of the group header row
-     * @defaultValue `headerHeight`
-     * @group Style
-     */
-    readonly groupHeaderHeight?: number;
-
-    /**
-     * The number of rows in the grid.
-     * @group Data
-     */
-    readonly rows: number;
-
-    /** Determines if row markers should be automatically added to the grid.
-     * Interactive row markers allow the user to select a row.
-     *
-     * - "clickable-number" renders a number that can be clicked to
-     *   select the row
-     * - "both" causes the row marker to show up as a number but
-     *   reveal a checkbox when the marker is hovered.
-     *
-     * @defaultValue `none`
-     * @group Style
-     */
-    readonly rowMarkers?: RowMarkerOptions["kind"] | RowMarkerOptions;
-    /**
-     * Sets the width of row markers in pixels, if unset row markers will automatically size.
-     * @group Style
-     * @deprecated Use `rowMarkers` instead.
-     */
-    readonly rowMarkerWidth?: number;
-    /** Changes the starting index for row markers.
-     * @defaultValue 1
-     * @group Style
-     * @deprecated Use `rowMarkers` instead.
-     */
-    readonly rowMarkerStartIndex?: number;
-
-    /** Changes the theme of the row marker column
-     * @group Style
-     * @deprecated Use `rowMarkers` instead.
-     */
-    readonly rowMarkerTheme?: Partial<Theme>;
-
-    /** Sets the width of the data grid.
-     * @group Style
-     */
-    readonly width?: number | string;
-    /** Sets the height of the data grid.
-     * @group Style
-     */
-    readonly height?: number | string;
-    /** Custom classname for data grid wrapper.
-     * @group Style
-     */
-    readonly className?: string;
-
-    /** If set to `default`, `gridSelection` will be coerced to always include full spans.
-     * @group Selection
-     * @defaultValue `default`
-     */
-    readonly spanRangeBehavior?: "default" | "allowPartial";
-
-    /** Controls which types of selections can exist at the same time in the grid. If selection blending is set to
-     * exclusive, the grid will clear other types of selections when the exclusive selection is made. By default row,
-     * column, and range selections are exclusive.
-     * @group Selection
-     * @defaultValue `exclusive`
-     * */
-    readonly rangeSelectionBlending?: SelectionBlending;
-    /** {@inheritDoc rangeSelectionBlending}
-     * @group Selection
-     */
-    readonly columnSelectionBlending?: SelectionBlending;
-    /** {@inheritDoc rangeSelectionBlending}
-     * @group Selection
-     */
-    readonly rowSelectionBlending?: SelectionBlending;
-    /** Controls if multi-selection is allowed. If disabled, shift/ctrl/command clicking will work as if no modifiers
-     * are pressed.
-     *
-     * When range select is set to cell, only one cell may be selected at a time. When set to rect one one rect at a
-     * time. The multi variants allow for multiples of the rect or cell to be selected.
-     * @group Selection
-     * @defaultValue `rect`
-     */
-    readonly rangeSelect?: "none" | "cell" | "rect" | "multi-cell" | "multi-rect";
-    /** {@inheritDoc rangeSelect}
-     * @group Selection
-     * @defaultValue `multi`
-     */
-    readonly columnSelect?: "none" | "single" | "multi";
-    /** {@inheritDoc rangeSelect}
-     * @group Selection
-     * @defaultValue `multi`
-     */
-    readonly rowSelect?: "none" | "single" | "multi";
-
-    /** Controls if range selection is allowed to span columns.
-     * @group Selection
-     * @defaultValue `true`
-     */
-    readonly rangeSelectionColumnSpanning?: boolean;
-
-    /** Sets the initial scroll Y offset.
-     * @see {@link scrollOffsetX}
-     * @group Advanced
-     */
-    readonly scrollOffsetY?: number;
-    /** Sets the initial scroll X offset
-     * @see {@link scrollOffsetY}
-     * @group Advanced
-     */
-    readonly scrollOffsetX?: number;
-
-    /** Determins the height of each row.
-     * @group Style
-     * @defaultValue 34
-     */
-    readonly rowHeight?: DataGridSearchProps["rowHeight"];
-    /** Fires whenever the mouse moves
-     * @group Events
-     * @param args
-     */
-    readonly onMouseMove?: DataGridSearchProps["onMouseMove"];
-
-    /**
-     * The minimum width a column can be resized to.
-     * @defaultValue 50
-     * @group Style
-     */
-    readonly minColumnWidth?: DataGridSearchProps["minColumnWidth"];
-    /**
-     * The maximum width a column can be resized to.
-     * @defaultValue 500
-     * @group Style
-     */
-    readonly maxColumnWidth?: DataGridSearchProps["maxColumnWidth"];
-    /**
-     * The maximum width a column can be automatically sized to.
-     * @defaultValue `maxColumnWidth`
-     * @group Style
-     */
-    readonly maxColumnAutoWidth?: number;
-
-    /**
-     * Used to provide an override to the default image editor for the data grid. `provideEditor` may be a better
-     * choice for most people.
-     * @group Advanced
-     * */
-    readonly imageEditorOverride?: ImageEditorType;
-    /**
-     * If specified, it will be used to render Markdown, instead of the default Markdown renderer used by the Grid.
-     * You'll want to use this if you need to process your Markdown for security purposes, or if you want to use a
-     * renderer with different Markdown features.
-     * @group Advanced
-     */
-    readonly markdownDivCreateNode?: (content: string) => DocumentFragment;
-
-    /**
-     * Allows overriding the theme of any row
-     * @param row represents the row index of the row, increasing by 1 for every represented row. Collapsed rows are not included.
-     * @param groupRow represents the row index of the group row. Only distinct when row grouping enabled.
-     * @param contentRow represents the index of the row excluding group headers. Only distinct when row grouping enabled.
-     * @returns
-     */
-    readonly getRowThemeOverride?: (row: number, groupRow: number, contentRow: number) => Partial<Theme> | undefined;
-
-    /** Callback for providing a custom editor for a cell.
-     * @group Editing
-     */
-    readonly provideEditor?: ProvideEditorCallback<GridCell>;
-    /**
-     * Allows coercion of pasted values.
-     * @group Editing
-     * @param val The pasted value
-     * @param cell The cell being pasted into
-     * @returns `undefined` to accept default behavior or a `GridCell` which should be used to represent the pasted value.
-     */
-    readonly coercePasteValue?: (val: string, cell: GridCell) => GridCell | undefined;
-
-    /**
-     * Emitted when the grid selection is cleared.
-     * @group Selection
-     */
-    readonly onSelectionCleared?: () => void;
-
-    /**
-     * The current selection of the data grid. Contains all selected cells, ranges, rows, and columns.
-     * Used in conjunction with {@link onGridSelectionChange}
-     * method to implement a controlled selection.
-     * @group Selection
-     */
-    readonly gridSelection?: GridSelection;
-    /**
-     * Emitted whenever the grid selection changes. Specifying
-     * this function will make the grid’s selection controlled, so
-     * so you will need to specify {@link gridSelection} as well. See
-     * the "Controlled Selection" example for details.
-     *
-     * @param newSelection The new gridSelection as created by user input.
-     * @group Selection
-     */
-    readonly onGridSelectionChange?: (newSelection: GridSelection) => void;
-    /**
-     * Emitted whenever the visible cells change, usually due to scrolling.
-     * @group Events
-     * @param range An inclusive range of all visible cells. May include cells obscured by UI elements such
-     * as headers.
-     * @param tx The x transform of the cell region.
-     * @param ty The y transform of the cell region.
-     * @param extras Contains information about the selected cell and
-     * any visible freeze columns.
-     */
-    readonly onVisibleRegionChanged?: (
-        range: Rectangle,
-        tx: number,
-        ty: number,
-        extras: {
-            /** The selected item if visible */
-            selected?: Item;
-            /** A selection of visible freeze columns
-             * @deprecated
-             */
-            freezeRegion?: Rectangle;
-
-            /**
-             * All visible freeze regions
-             */
-            freezeRegions?: readonly Rectangle[];
-        }
-    ) => void;
-
-    /**
-     * The primary callback for getting cell data into the data grid.
-     * @group Data
-     * @param cell The location of the cell being requested.
-     * @returns A valid GridCell to be rendered by the Grid.
-     */
-    readonly getCellContent: (cell: Item) => GridCell;
-
-    /**
-     * Determines if row selection requires a modifier key to enable multi-selection or not. In auto mode it adapts to
-     * touch or mouse environments automatically, in multi-mode it always acts as if the multi key (Ctrl) is pressed.
-     * @group Editing
-     * @defaultValue `auto`
-     */
-    readonly rowSelectionMode?: "auto" | "multi";
-
-    /**
-     * Determines if column selection requires a modifier key to enable multi-selection or not. In auto mode it adapts to
-     * touch or mouse environments automatically, in multi-mode it always acts as if the multi key (Ctrl) is pressed.
-     * @group Editing
-     * @defaultValue `auto`
-     */
-    readonly columnSelectionMode?: "auto" | "multi";
-
-    /**
-     * Add table headers to copied data.
-     * @group Editing
-     * @defaultValue `false`
-     */
-    readonly copyHeaders?: boolean;
-
-    /**
-     * Determins which keybindings are enabled.
-     * @group Editing
-     */
-    readonly keybindings?: Partial<Keybinds>;
-
-    /**
-     * Determines if the data editor should immediately begin editing when the user types on a selected cell
-     * @group Editing
-     */
-    readonly editOnType?: boolean;
-
-    /**
-     * Used to fetch large amounts of cells at once. Used for copy/paste, if unset copy will not work.
-     *
-     * `getCellsForSelection` is called when the user copies a selection to the clipboard or the data editor needs to
-     * inspect data which may be outside the curently visible range. It must return a two-dimensional array (an array of
-     * rows, where each row is an array of cells) of the cells in the selection's rectangle. Note that the rectangle can
-     * include cells that are not currently visible.
-     *
-     * If `true` is passed instead of a callback, the data grid will internally use the `getCellContent` callback to
-     * provide a basic implementation of `getCellsForSelection`. This can make it easier to light up more data grid
-     * functionality, but may have negative side effects if your data source is not able to handle being queried for
-     * data outside the normal window.
-     *
-     * If `getCellsForSelection` returns a thunk, the data may be loaded asynchronously, however the data grid may be
-     * unable to properly react to column spans when performing range selections. Copying large amounts of data out of
-     * the grid will depend on the performance of the thunk as well.
-     * @group Data
-     * @param {Rectangle} selection The range of requested cells
-     * @param {AbortSignal} abortSignal A signal indicating the requested cells are no longer needed
-     * @returns A row-major collection of cells or an async thunk which returns a row-major collection.
-     */
-    readonly getCellsForSelection?: DataGridSearchProps["getCellsForSelection"] | true;
-
-    /** The number of columns which should remain in place when scrolling horizontally. The row marker column, if
-     * enabled is always frozen and is not included in this count.
-     * @defaultValue 0
-     * @group Style
-     */
-    readonly freezeColumns?: DataGridSearchProps["freezeColumns"];
-
-    /**
-     * Controls the drawing of the left hand vertical border of a column. If set to a boolean value it controls all
-     * borders.
-     * @defaultValue `true`
-     * @group Style
-     */
-    readonly verticalBorder?: DataGridSearchProps["verticalBorder"] | boolean;
-
-    /**
-     * Controls the grouping of rows to be drawn in the grid.
-     */
-    readonly rowGrouping?: RowGroupingOptions;
-
-    /**
-     * Called when data is pasted into the grid. If left undefined, the `DataEditor` will operate in a
-     * fallback mode and attempt to paste the text buffer into the current cell assuming the current cell is not
-     * readonly and can accept the data type. If `onPaste` is set to false or the function returns false, the grid will
-     * simply ignore paste. If `onPaste` evaluates to true the grid will attempt to split the data by tabs and newlines
-     * and paste into available cells.
-     *
-     * The grid will not attempt to add additional rows if more data is pasted then can fit. In that case it is
-     * advisable to simply return false from onPaste and handle the paste manually.
-     * @group Editing
-     */
-    readonly onPaste?: ((target: Item, values: readonly (readonly string[])[]) => boolean) | boolean;
-
-    /**
-     * The theme used by the data grid to get all color and font information
-     * @group Style
-     */
-    readonly theme?: Partial<Theme>;
-
-    readonly renderers?: readonly InternalCellRenderer<InnerGridCell>[];
-
-    /**
-     * An array of custom renderers which can be used to extend the data grid.
-     * @group Advanced
-     */
-    readonly customRenderers?: readonly CustomRenderer<any>[];
-
-    /**
-     * Scales most elements in the theme to match rem scaling automatically
-     * @defaultValue false
-     */
-    readonly scaleToRem?: boolean;
-
-    /**
-     * Custom predicate function to decide whether the click event occurred outside the grid
-     * Especially used when custom editor is opened with the portal and is outside the grid, but there is no possibility
-     * to add a class "click-outside-ignore"
-     * If this function is supplied and returns false, the click event is ignored
-     */
-    readonly isOutsideClick?: (e: MouseEvent | TouchEvent) => boolean;
-
-    /**
-     * Controls which directions fill is allowed in.
-     */
-    readonly allowedFillDirections?: FillHandleDirection;
-
-    /**
-     * Determines when a cell is considered activated and will emit the `onCellActivated` event. Generally an activated
-     * cell will open to edit mode.
-     */
-    readonly cellActivationBehavior?: CellActivationBehavior;
-
-    /**
-     * Controls if focus will trap inside the data grid when doing tab and caret navigation.
-     */
-    readonly trapFocus?: boolean;
-
-    /**
-     * Allows overriding the default amount of bloom (the size growth of the overlay editor)
-     */
-    readonly editorBloom?: readonly [number, number];
-
-    /**
-     * If set to true, the data grid will attempt to scroll to keep the selction in view
-     */
-    readonly scrollToActiveCell?: boolean;
-
-    readonly drawFocusRing?: boolean | "no-editor";
-
-    /**
-     * Allows overriding the default portal element.
-     */
-    readonly portalElementRef?: React.RefObject<HTMLElement>;
-
-    readonly disabledRows?: (row: number) => boolean;
-
-    /**
-     * Callback to get the row status for a given row index.
-     * Only called when rowMarkers.rowStatus is true.
-     * @param rowIndex - The row index
-     * @returns "A" (Added), "U" (Updated), "D" (Deleted), or undefined (no status)
-     */
-    readonly onRowStatus?: (rowIndex: number) => "A" | "U" | "D" | undefined;
-
-    /**
-     * Callback to get the row ID for a given row index.
-     * Only called when rowMarkers.rowId is true.
-     * @param rowIndex - The row index
-     * @returns Row ID string or undefined
-     */
-    readonly onRowId?: (rowIndex: number) => string | undefined;
-}
-
-type ScrollToFn = (
-    col: number | { amount: number; unit: "cell" | "px" },
-    row: number | { amount: number; unit: "cell" | "px" },
-    dir?: "horizontal" | "vertical" | "both",
-    paddingX?: number,
-    paddingY?: number,
-    options?: {
-        hAlign?: "start" | "center" | "end";
-        vAlign?: "start" | "center" | "end";
-        behavior?: ScrollBehavior;
-    }
-) => void;
-
-/** @category DataEditor */
-export interface DataEditorRef {
-    /**
-     * Programatically appends a row.
-     * @param col The column index to focus in the new row.
-     * @returns A promise which waits for the append to complete.
-     */
-    appendRow: (col: number, openOverlay?: boolean, behavior?: ScrollBehavior) => Promise<void>;
-    /**
-     * Programatically appends a column.
-     * @param row The row index to focus in the new column.
-     * @returns A promise which waits for the append to complete.
-     */
-    appendColumn: (row: number, openOverlay?: boolean) => Promise<void>;
-    /**
-     * Triggers cells to redraw.
-     */
-    updateCells: DataGridRef["damage"];
-    /**
-     * Gets the screen space bounds of the requested item.
-     */
-    getBounds: DataGridRef["getBounds"];
-    /**
-     * Triggers the data grid to focus itself or the correct accessibility element.
-     */
-    focus: DataGridRef["focus"];
-    /**
-     * Generic API for emitting events as if they had been triggered via user interaction.
-     */
-    emit: (eventName: EmitEvents) => Promise<void>;
-    /**
-     * Scrolls to the desired cell or location in the grid.
-     */
-    scrollTo: ScrollToFn;
-    /**
-     * Causes the columns in the selection to have their natural size recomputed and re-emitted as a resize event.
-     */
-    remeasureColumns: (cols: CompactSelection) => void;
-    /**
-     * Gets the mouse args from pointer event position.
-     */
-    getMouseArgsForPosition: (
-        posX: number,
-        posY: number,
-        ev?: MouseEvent | TouchEvent
-    ) => GridMouseEventArgs | undefined;
 }
 
 const loadingCell: GridCell = {
@@ -949,37 +286,27 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
     const drawFocusRing = drawFocusRingIn === "no-editor" ? overlay === undefined : drawFocusRingIn;
 
-    const rowMarkersObj = typeof p.rowMarkers === "string" ? undefined : p.rowMarkers;
-
-    // Extract rowNumber option and normalize 'both'/'checkbox-and-number' kinds for backward compatibility
-    const rowNumberOption = rowMarkersObj?.rowNumber ?? false;
-    let normalizedKind = rowMarkersObj?.kind ?? (p.rowMarkers as RowMarkerOptions["kind"]) ?? "none";
-    let showRowNumber = rowNumberOption;
-
-    // Convert 'both' and 'checkbox-and-number' to 'checkbox' with rowNumber enabled for backward compatibility
-    if (normalizedKind === "both" || normalizedKind === "checkbox-and-number") {
-        normalizedKind = "checkbox";
-        showRowNumber = true;
-    }
-
-    const rowMarkers = normalizedKind;
-    const rowMarkerWidthRaw = rowMarkersObj?.width ?? p.rowMarkerWidth;
-    const rowMarkerStartIndex = rowMarkersObj?.startIndex ?? p.rowMarkerStartIndex ?? 1;
-    const rowMarkerTheme = rowMarkersObj?.theme ?? p.rowMarkerTheme;
-    const headerRowMarkerTheme = rowMarkersObj?.headerTheme;
-    const headerRowMarkerAlwaysVisible = rowMarkersObj?.headerAlwaysVisible;
-    const headerRowMarkerDisabled = rowSelect !== "multi" || rowMarkersObj?.headerDisabled === true;
-    const rowMarkerCheckboxStyle = rowMarkersObj?.checkboxStyle ?? "square";
-
-    // Extract rowStatus options
-    const rowStatusOption = rowMarkersObj?.rowStatus ?? false;
-    const rowStatusWidth = rowMarkersObj?.rowStatusWidth ?? 40;
-    const rowStatusTheme = rowMarkersObj?.rowStatusTheme;
-
-    // Extract rowId options
-    const rowIdOption = rowMarkersObj?.rowId ?? false;
-    const rowIdWidth = rowMarkersObj?.rowIdWidth ?? 80;
-    const rowIdTheme = rowMarkersObj?.rowIdTheme;
+    const rowMarkerConfig = getRowMarkerConfig(p, rowSelect, rowsIn);
+    const {
+        rowMarkers,
+        showRowNumber,
+        rowMarkerWidth,
+        rowMarkerStartIndex,
+        rowMarkerTheme,
+        headerRowMarkerTheme,
+        headerRowMarkerAlwaysVisible,
+        headerRowMarkerDisabled,
+        rowMarkerCheckboxStyle,
+        hasRowMarkers,
+        hasRowStatus,
+        rowStatusWidth,
+        rowStatusTheme,
+        hasRowId,
+        rowIdWidth,
+        rowIdTheme,
+        rowMarkerOffset,
+        totalMarkerWidth,
+    } = rowMarkerConfig;
 
     const minColumnWidth = Math.max(minColumnWidthIn, 20);
     const maxColumnWidth = Math.max(maxColumnWidthIn, minColumnWidth);
@@ -1011,23 +338,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
     const keybindings = useKeybindingsWithDefaults(keybindingsIn);
 
-    const rowMarkerWidth = rowMarkerWidthRaw ?? (rowsIn > 10_000 ? 48 : rowsIn > 1000 ? 44 : rowsIn > 100 ? 36 : 32);
-    const hasRowMarkers = rowMarkers !== "none";
-    const hasRowStatus = rowStatusOption === true;
-    const hasRowId = rowIdOption === true;
-    // Calculate offset: rowMarkers (checkbox/number) + rowStatus (if enabled) + rowId (if enabled)
-    // When showRowNumber is true, we need 2 columns: one for rowNumber, one for checkbox
-    const rowMarkerOffset =
-        (hasRowMarkers ? (showRowNumber ? 2 : 1) : 0) +
-        (hasRowStatus ? 1 : 0) +
-        (hasRowId ? 1 : 0);
-    // Total pixel width of all marker columns (rowNumber, checkbox, rowStatus, rowId)
-    // Unlike rowMarkerOffset (column count for coordinate conversion),
-    // this accounts for each column's actual width which may differ.
-    const totalMarkerWidth =
-        (hasRowMarkers ? (showRowNumber ? 2 : 1) * rowMarkerWidth : 0) +
-        (hasRowStatus ? rowStatusWidth : 0) +
-        (hasRowId ? rowIdWidth : 0);
     const showTrailingBlankRow = trailingRowOptions !== undefined;
     const lastRowSticky = trailingRowOptions?.sticky === true;
 
@@ -1223,93 +533,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     const totalGroupHeaderHeight = groupHeaderHeights.reduce((a, b) => a + b, 0);
     const totalHeaderHeight = headerHeight + totalGroupHeaderHeight;
 
-    const numSelectedRows = gridSelection.rows.length;
-    const rowMarkerChecked =
-        rowMarkers === "none" ? undefined : numSelectedRows === 0 ? false : numSelectedRows === rows ? true : undefined;
-
-    const mangledCols = React.useMemo(() => {
-        const markerColumns: any[] = [];
-
-        // Column order: rowNumber → checkbox → rowStatus → rowId → user columns
-
-        // 1. rowMarker columns (rowNumber + checkbox, if enabled)
-        if (rowMarkers !== "none") {
-            // rowNumber column (when showRowNumber is true)
-            if (showRowNumber) {
-                markerColumns.push({
-                    title: "",
-                    width: rowMarkerWidth,
-                    icon: undefined,
-                    hasMenu: false,
-                    style: "normal" as const,
-                    themeOverride: rowMarkerTheme,
-                    rowMarker: rowMarkerCheckboxStyle,
-                    rowMarkerChecked: false,
-                    headerRowMarkerTheme,
-                    headerRowMarkerAlwaysVisible: false,
-                    headerRowMarkerDisabled: true,
-                });
-            }
-
-            // checkbox column (or primary marker when showRowNumber is false)
-            markerColumns.push({
-                title: "",
-                width: rowMarkerWidth,
-                icon: undefined,
-                hasMenu: false,
-                style: "normal" as const,
-                themeOverride: rowMarkerTheme,
-                rowMarker: rowMarkerCheckboxStyle,
-                rowMarkerChecked,
-                headerRowMarkerTheme,
-                headerRowMarkerAlwaysVisible,
-                headerRowMarkerDisabled,
-            });
-        }
-
-        // 2. rowStatus column (third, if enabled)
-        if (hasRowStatus) {
-            markerColumns.push({
-                title: "",
-                width: rowStatusWidth,
-                icon: undefined,
-                hasMenu: false,
-                style: "normal" as const,
-                themeOverride: rowStatusTheme,
-            });
-        }
-
-        // 3. rowId column (fourth, if enabled)
-        if (hasRowId) {
-            markerColumns.push({
-                title: "ID",
-                width: rowIdWidth,
-                icon: undefined,
-                hasMenu: false,
-                style: "normal" as const,
-                themeOverride: rowIdTheme,
-            });
-        }
-
-        return [...markerColumns, ...columns];
-    }, [
-        hasRowStatus,
-        rowStatusWidth,
-        rowStatusTheme,
-        hasRowId,
-        rowIdWidth,
-        rowIdTheme,
-        rowMarkers,
-        columns,
-        rowMarkerWidth,
-        rowMarkerTheme,
-        rowMarkerCheckboxStyle,
-        rowMarkerChecked,
-        headerRowMarkerTheme,
-        headerRowMarkerAlwaysVisible,
-        headerRowMarkerDisabled,
-        showRowNumber,
-    ]);
+    const mangledCols = useMangledCols(rowMarkerConfig, columns, rows, gridSelection.rows);
 
     const visibleRegionRef = React.useRef<VisibleRegion>({
         height: 1,
@@ -1354,9 +578,9 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                 rowMarkerOffset === 0
                     ? items
                     : items.map(x => ({
-                          ...x,
-                          location: [x.location[0] - rowMarkerOffset, x.location[1]] as const,
-                      }));
+                        ...x,
+                        location: [x.location[0] - rowMarkerOffset, x.location[1]] as const,
+                    }));
             const r = onCellsEdited?.(mangledItems);
 
             if (r !== true) {
@@ -1450,205 +674,26 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         rowMarkerOffset,
     ]);
 
-    const mangledColsRef = React.useRef(mangledCols);
-    mangledColsRef.current = mangledCols;
-    const getMangledCellContent = React.useCallback(
-        ([col, row]: Item, forceStrict: boolean = false): InnerGridCell => {
-        const isTrailing = showTrailingBlankRow && row === mangledRows - 1;
+    const rowsRef = React.useRef(rows);
+    rowsRef.current = rows;
 
-        // Calculate column positions based on actual order in mangledCols: rowNumber, checkbox, rowStatus, rowId
-        let currentColIndex = 0;
-
-        // Must match the order in mangledCols exactly
-        let rowNumberColIndex = -1;
-        let checkboxColIndex = -1;
-        let rowStatusColIndex = -1;
-        let rowIdColIndex = -1;
-
-        // 1. rowNumber column (first if enabled)
-        if (hasRowMarkers && showRowNumber) {
-            rowNumberColIndex = currentColIndex++;
-        }
-
-        // 2. checkbox column (second if hasRowMarkers)
-        if (hasRowMarkers) {
-            checkboxColIndex = currentColIndex++;
-        }
-
-        // 3. rowStatus column (third if enabled)
-        if (hasRowStatus) {
-            rowStatusColIndex = currentColIndex++;
-        }
-
-        // 4. rowId column (fourth if enabled)
-        if (hasRowId) {
-            rowIdColIndex = currentColIndex++;
-        }
-
-        // 1. Handle rowNumber column (first if enabled)
-        if (col === rowNumberColIndex) {
-            if (isTrailing) {
-                return loadingCell;
-            }
-            const mappedRow = rowNumberMapper(row);
-            if (mappedRow === undefined) return loadingCell;
-
-            return {
-                kind: InnerGridCellKind.Marker,
-                allowOverlay: false,
-                checkboxStyle: rowMarkerCheckboxStyle,
-                checked: false,
-                markerKind: "number",
-                row: rowMarkerStartIndex + mappedRow,
-                drawHandle: false,
-                cursor: undefined,
-                disabled: p.disabledRows?.(row) === true,
-            };
-        }
-
-        // 2. Handle checkbox column (second if enabled)
-        if (col === checkboxColIndex) {
-            if (isTrailing) {
-                return loadingCell;
-            }
-            const mappedRow = rowNumberMapper(row);
-            if (mappedRow === undefined) return loadingCell;
-
-            // When showRowNumber is false, this is the only marker column
-            let markerKind: "checkbox" | "number" | "both" | "checkbox-visible";
-            if (showRowNumber) {
-                markerKind = rowMarkers === "checkbox-visible" ? "checkbox-visible" : "checkbox";
-            } else if (rowMarkers === "clickable-number") {
-                markerKind = "number";
-            } else {
-                markerKind = rowMarkers as "checkbox" | "number" | "both" | "checkbox-visible";
-            }
-
-            return {
-                kind: InnerGridCellKind.Marker,
-                allowOverlay: false,
-                checkboxStyle: rowMarkerCheckboxStyle,
-                checked: gridSelection?.rows.hasIndex(row) === true,
-                markerKind,
-                row: rowMarkerStartIndex + mappedRow,
-                drawHandle: onRowMoved !== undefined,
-                cursor: showRowNumber ? undefined : (rowMarkers === "clickable-number" ? "pointer" : undefined),
-                disabled: p.disabledRows?.(row) === true,
-            };
-        }
-
-        // 3. Handle rowStatus column (third if enabled)
-        if (col === rowStatusColIndex) {
-            if (isTrailing) {
-                return loadingCell;
-            }
-
-            // Call onRowStatus callback to get the status
-            const status = onRowStatus?.(row);
-
-            return {
-                kind: InnerGridCellKind.RowStatus,
-                allowOverlay: false,
-                status,
-                themeOverride: rowStatusTheme,
-            };
-        }
-
-        // 4. Handle rowId column (fourth if enabled)
-        if (col === rowIdColIndex) {
-            if (isTrailing) {
-                return loadingCell;
-            }
-
-            // Call onRowId callback to get the ID
-            const rowId = onRowId?.(row);
-
-            return {
-                kind: InnerGridCellKind.RowId,
-                allowOverlay: false,
-                rowId,
-                themeOverride: rowIdTheme,
-            };
-        }
-
-        if (isTrailing) {
-            //If the grid is empty, we will return text
-            const isFirst = col === rowMarkerOffset;
-
-            const maybeFirstColumnHint = isFirst ? (trailingRowOptions?.hint ?? "") : "";
-            const c = mangledColsRef.current[col];
-
-            if (c?.trailingRowOptions?.disabled === true) {
-                return loadingCell;
-            } else {
-                const hint = c?.trailingRowOptions?.hint ?? maybeFirstColumnHint;
-                const icon = c?.trailingRowOptions?.addIcon ?? trailingRowOptions?.addIcon;
-                return {
-                    kind: InnerGridCellKind.NewRow,
-                    hint,
-                    allowOverlay: false,
-                    icon,
-                };
-            }
-        } else {
-            const outerCol = col - rowMarkerOffset;
-            if (forceStrict || experimental?.strict === true) {
-                const vr = visibleRegionRef.current;
-                const isOutsideMainArea =
-                    vr.x > outerCol ||
-                    outerCol > vr.x + vr.width ||
-                    vr.y > row ||
-                    row > vr.y + vr.height ||
-                    row >= rowsRef.current;
-                const isSelected = outerCol === vr.extras?.selected?.[0] && row === vr.extras?.selected[1];
-                let isInFreezeArea = false;
-                if (vr.extras?.freezeRegions !== undefined) {
-                    for (const fr of vr.extras.freezeRegions) {
-                        if (pointInRect(fr, outerCol, row)) {
-                            isInFreezeArea = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (isOutsideMainArea && !isSelected && !isInFreezeArea) {
-                    return loadingCell;
-                }
-            }
-            let result = getCellContent([outerCol, row]);
-            if (rowMarkerOffset !== 0 && result.span !== undefined) {
-                result = {
-                    ...result,
-                    span: [result.span[0] + rowMarkerOffset, result.span[1] + rowMarkerOffset],
-                };
-            }
-            return result;
-        }
-    },
-    [
+    const getMangledCellContent = useGetMangledCellContent({
+        config: rowMarkerConfig,
         showTrailingBlankRow,
         mangledRows,
-        hasRowStatus,
         onRowStatus,
-        rowStatusTheme,
-        hasRowId,
         onRowId,
-        rowIdTheme,
-        hasRowMarkers,
         rowNumberMapper,
-        rowMarkerCheckboxStyle,
-        gridSelection?.rows,
-        rowMarkers,
-        rowMarkerStartIndex,
+        gridSelectionRows: gridSelection.rows,
         onRowMoved,
-        rowMarkerOffset,
-        trailingRowOptions?.hint,
-        trailingRowOptions?.addIcon,
-        experimental?.strict,
+        trailingRowOptions,
+        experimental,
         getCellContent,
-        showRowNumber,
-    ]
-    );
+        disabledRows: p.disabledRows,
+        mangledCols,
+        visibleRegionRef,
+        rowsRef,
+    });
 
     const mangledGetGroupDetails = React.useCallback<NonNullable<DataEditorProps["getGroupDetails"]>>(
         group => {
@@ -1682,7 +727,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             const [col, row] = val.cell;
             const column = mangledCols[col];
             const groupTheme =
-                column?.group !== undefined ? mangledGetGroupDetails(column.group)?.overrideTheme : undefined;
+                column?.group !== undefined ? mangledGetGroupDetails(column.group as string)?.overrideTheme : undefined;
             const colTheme = column?.themeOverride;
             const rowTheme = getRowThemeOverride?.(row);
 
@@ -1696,259 +741,259 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
     const reselect = React.useCallback(
         (bounds: Rectangle, activation: CellActivatedEventArgs, initialValue?: string) => {
-        if (gridSelection.current === undefined) return;
+            if (gridSelection.current === undefined) return;
 
-        const [col, row] = gridSelection.current.cell;
-        const c = getMangledCellContent([col, row]);
-        if (c.kind !== GridCellKind.Boolean && c.allowOverlay) {
-            let content = c;
-            if (initialValue !== undefined) {
-                switch (content.kind) {
-                    case GridCellKind.Number: {
-                        const d = maybe(() => (initialValue === "-" ? -0 : Number.parseFloat(initialValue)), 0);
-                        content = {
-                            ...content,
-                            data: Number.isNaN(d) ? 0 : d,
-                        };
-                        break;
+            const [col, row] = gridSelection.current.cell;
+            const c = getMangledCellContent([col, row]);
+            if (c.kind !== GridCellKind.Boolean && c.allowOverlay) {
+                let content = c;
+                if (initialValue !== undefined) {
+                    switch (content.kind) {
+                        case GridCellKind.Number: {
+                            const d = maybe(() => (initialValue === "-" ? -0 : Number.parseFloat(initialValue)), 0);
+                            content = {
+                                ...content,
+                                data: Number.isNaN(d) ? 0 : d,
+                            };
+                            break;
+                        }
+                        case GridCellKind.Text:
+                        case GridCellKind.Markdown:
+                        case GridCellKind.Uri:
+                            content = {
+                                ...content,
+                                data: initialValue,
+                            };
+                            break;
                     }
-                    case GridCellKind.Text:
-                    case GridCellKind.Markdown:
-                    case GridCellKind.Uri:
-                        content = {
-                            ...content,
-                            data: initialValue,
-                        };
-                        break;
                 }
+
+                setOverlaySimple({
+                    target: bounds,
+                    content,
+                    initialValue,
+                    cell: [col, row],
+                    highlight: initialValue === undefined,
+                    forceEditMode: initialValue !== undefined,
+                    activation,
+                });
+
+                // Use GhostInput for character/IME input (not Enter key)
+                // - initialValue !== undefined: character input or IME composition start
+                // - initialValue === undefined: Enter key (use GrowingEntry)
+                const isCustomCell = content.kind === GridCellKind.Custom;
+                const useGhostMode = initialValue !== undefined && !isCustomCell;
+
+                if (useGhostMode) {
+                    // Set GhostInput position and value for IME support (direct DOM manipulation)
+                    // For IME composition, initialValue is "" - don't overwrite with setValue
+                    // as the composition is already in progress in GhostInput
+                    ghostInputRef.current?.setPosition(bounds.x, bounds.y, bounds.width, bounds.height);
+                    if (initialValue.length > 0) {
+                        // Only set value for non-IME character input
+                        ghostInputRef.current?.setValue(initialValue);
+                    }
+                    ghostInputRef.current?.setVisible(true);
+                    setGhostInputVisible(true);
+                } else if (isCustomCell && initialValue !== undefined) {
+                    // For Custom cells, hide GhostInput completely so the custom editor
+                    // receives all keyboard events (Enter, Tab, Escape, etc.)
+                    // The custom editor handles input directly via its own input element
+                    ghostInputRef.current?.clear();
+                    ghostInputRef.current?.setVisible(false);
+                    ghostInputRef.current?.blur();
+                    setGhostInputVisible(false);
+                }
+            } else if (c.kind === GridCellKind.Boolean && activation.inputType === "keyboard" && c.readonly !== true) {
+                mangledOnCellsEdited([
+                    {
+                        location: gridSelection.current.cell,
+                        value: {
+                            ...c,
+                            data: toggleBoolean(c.data),
+                        },
+                    },
+                ]);
+                gridRef.current?.damage([{ cell: gridSelection.current.cell }]);
+            }
+        },
+        [getMangledCellContent, gridSelection, mangledOnCellsEdited, setOverlaySimple]
+    );
+
+    const focusOnRowFromTrailingBlankRow = React.useCallback(
+        (col: number, row: number) => {
+            const bounds = gridRef.current?.getBounds(col, row);
+            if (bounds === undefined || scrollRef.current === null) {
+                return;
+            }
+
+            const content = getMangledCellContent([col, row]);
+            if (!content.allowOverlay) {
+                return;
             }
 
             setOverlaySimple({
                 target: bounds,
                 content,
-                initialValue,
+                initialValue: undefined,
+                highlight: true,
                 cell: [col, row],
-                highlight: initialValue === undefined,
-                forceEditMode: initialValue !== undefined,
-                activation,
+                forceEditMode: true,
+                activation: { inputType: "keyboard", key: "Enter" },
             });
-
-            // Use GhostInput for character/IME input (not Enter key)
-            // - initialValue !== undefined: character input or IME composition start
-            // - initialValue === undefined: Enter key (use GrowingEntry)
-            const isCustomCell = content.kind === GridCellKind.Custom;
-            const useGhostMode = initialValue !== undefined && !isCustomCell;
-
-            if (useGhostMode) {
-                // Set GhostInput position and value for IME support (direct DOM manipulation)
-                // For IME composition, initialValue is "" - don't overwrite with setValue
-                // as the composition is already in progress in GhostInput
-                ghostInputRef.current?.setPosition(bounds.x, bounds.y, bounds.width, bounds.height);
-                if (initialValue.length > 0) {
-                    // Only set value for non-IME character input
-                    ghostInputRef.current?.setValue(initialValue);
-                }
-                ghostInputRef.current?.setVisible(true);
-                setGhostInputVisible(true);
-            } else if (isCustomCell && initialValue !== undefined) {
-                // For Custom cells, hide GhostInput completely so the custom editor
-                // receives all keyboard events (Enter, Tab, Escape, etc.)
-                // The custom editor handles input directly via its own input element
-                ghostInputRef.current?.clear();
-                ghostInputRef.current?.setVisible(false);
-                ghostInputRef.current?.blur();
-                setGhostInputVisible(false);
-            }
-        } else if (c.kind === GridCellKind.Boolean && activation.inputType === "keyboard" && c.readonly !== true) {
-            mangledOnCellsEdited([
-                {
-                    location: gridSelection.current.cell,
-                    value: {
-                        ...c,
-                        data: toggleBoolean(c.data),
-                    },
-                },
-            ]);
-            gridRef.current?.damage([{ cell: gridSelection.current.cell }]);
-        }
-    },
-    [getMangledCellContent, gridSelection, mangledOnCellsEdited, setOverlaySimple]
-    );
-
-    const focusOnRowFromTrailingBlankRow = React.useCallback(
-        (col: number, row: number) => {
-        const bounds = gridRef.current?.getBounds(col, row);
-        if (bounds === undefined || scrollRef.current === null) {
-            return;
-        }
-
-        const content = getMangledCellContent([col, row]);
-        if (!content.allowOverlay) {
-            return;
-        }
-
-        setOverlaySimple({
-            target: bounds,
-            content,
-            initialValue: undefined,
-            highlight: true,
-            cell: [col, row],
-            forceEditMode: true,
-            activation: { inputType: "keyboard", key: "Enter" },
-        });
-    },
-    [getMangledCellContent, scrollRef, setOverlaySimple]
+        },
+        [getMangledCellContent, scrollRef, setOverlaySimple]
     );
 
     const scrollTo = React.useCallback<ScrollToFn>(
         (col, row, dir = "both", paddingX = 0, paddingY = 0, options = undefined): void => {
-        if (scrollRef.current !== null) {
-            const grid = gridRef.current;
-            const canvas = canvasRef.current;
+            if (scrollRef.current !== null) {
+                const grid = gridRef.current;
+                const canvas = canvasRef.current;
 
-            const trueCol = typeof col !== "number" ? (col.unit === "cell" ? col.amount : undefined) : col;
-            const trueRow = typeof row !== "number" ? (row.unit === "cell" ? row.amount : undefined) : row;
-            const desiredX = typeof col !== "number" && col.unit === "px" ? col.amount : undefined;
-            const desiredY = typeof row !== "number" && row.unit === "px" ? row.amount : undefined;
-            if (grid !== null && canvas !== null) {
-                let targetRect: Rectangle = {
-                    x: 0,
-                    y: 0,
-                    width: 0,
-                    height: 0,
-                };
-
-                let scrollX = 0;
-                let scrollY = 0;
-
-                if (trueCol !== undefined || trueRow !== undefined) {
-                    targetRect = grid.getBounds((trueCol ?? 0) + rowMarkerOffset, trueRow ?? 0) ?? targetRect;
-                    if (targetRect.width === 0 || targetRect.height === 0) return;
-                }
-
-                const scrollBounds = canvas.getBoundingClientRect();
-                const scale = scrollBounds.width / canvas.offsetWidth;
-
-                if (desiredX !== undefined) {
-                    targetRect = {
-                        ...targetRect,
-                        x: desiredX - scrollBounds.left - scrollRef.current.scrollLeft,
-                        width: 1,
-                    };
-                }
-                if (desiredY !== undefined) {
-                    targetRect = {
-                        ...targetRect,
-                        y: desiredY + scrollBounds.top - scrollRef.current.scrollTop,
-                        height: 1,
-                    };
-                }
-
-                if (targetRect !== undefined) {
-                    const bounds = {
-                        x: targetRect.x - paddingX,
-                        y: targetRect.y - paddingY,
-                        width: targetRect.width + 2 * paddingX,
-                        height: targetRect.height + 2 * paddingY,
+                const trueCol = typeof col !== "number" ? (col.unit === "cell" ? col.amount : undefined) : col;
+                const trueRow = typeof row !== "number" ? (row.unit === "cell" ? row.amount : undefined) : row;
+                const desiredX = typeof col !== "number" && col.unit === "px" ? col.amount : undefined;
+                const desiredY = typeof row !== "number" && row.unit === "px" ? row.amount : undefined;
+                if (grid !== null && canvas !== null) {
+                    let targetRect: Rectangle = {
+                        x: 0,
+                        y: 0,
+                        width: 0,
+                        height: 0,
                     };
 
-                    let frozenWidth = 0;
-                    for (let i = 0; i < freezeColumns; i++) {
-                        frozenWidth += columns[i].width;
-                    }
-                    let trailingRowHeight = 0;
-                    const freezeTrailingRowsEffective = freezeTrailingRows + (lastRowSticky ? 1 : 0);
-                    if (freezeTrailingRowsEffective > 0) {
-                        trailingRowHeight = getFreezeTrailingHeight(
-                            mangledRows,
-                            freezeTrailingRowsEffective,
-                            rowHeight
-                        );
+                    let scrollX = 0;
+                    let scrollY = 0;
+
+                    if (trueCol !== undefined || trueRow !== undefined) {
+                        targetRect = grid.getBounds((trueCol ?? 0) + rowMarkerOffset, trueRow ?? 0) ?? targetRect;
+                        if (targetRect.width === 0 || targetRect.height === 0) return;
                     }
 
-                    // scrollBounds is already scaled
-                    let sLeft = frozenWidth * scale + scrollBounds.left + totalMarkerWidth * scale;
-                    let sRight = scrollBounds.right;
-                    let sTop = scrollBounds.top + totalHeaderHeight * scale;
-                    let sBottom = scrollBounds.bottom - trailingRowHeight * scale;
+                    const scrollBounds = canvas.getBoundingClientRect();
+                    const scale = scrollBounds.width / canvas.offsetWidth;
 
-                    const minx = targetRect.width + paddingX * 2;
-                    switch (options?.hAlign) {
-                        case "start":
-                            sRight = sLeft + minx;
-                            break;
-                        case "end":
-                            sLeft = sRight - minx;
-                            break;
-                        case "center":
-                            sLeft = Math.floor((sLeft + sRight) / 2) - minx / 2;
-                            sRight = sLeft + minx;
-                            break;
+                    if (desiredX !== undefined) {
+                        targetRect = {
+                            ...targetRect,
+                            x: desiredX - scrollBounds.left - scrollRef.current.scrollLeft,
+                            width: 1,
+                        };
+                    }
+                    if (desiredY !== undefined) {
+                        targetRect = {
+                            ...targetRect,
+                            y: desiredY + scrollBounds.top - scrollRef.current.scrollTop,
+                            height: 1,
+                        };
                     }
 
-                    const miny = targetRect.height + paddingY * 2;
-                    switch (options?.vAlign) {
-                        case "start":
-                            sBottom = sTop + miny;
-                            break;
-                        case "end":
-                            sTop = sBottom - miny;
-                            break;
-                        case "center":
-                            sTop = Math.floor((sTop + sBottom) / 2) - miny / 2;
-                            sBottom = sTop + miny;
-                            break;
-                    }
+                    if (targetRect !== undefined) {
+                        const bounds = {
+                            x: targetRect.x - paddingX,
+                            y: targetRect.y - paddingY,
+                            width: targetRect.width + 2 * paddingX,
+                            height: targetRect.height + 2 * paddingY,
+                        };
 
-                    if (sLeft > bounds.x) {
-                        scrollX = bounds.x - sLeft;
-                    } else if (sRight < bounds.x + bounds.width) {
-                        scrollX = bounds.x + bounds.width - sRight;
-                    }
-
-                    if (sTop > bounds.y) {
-                        scrollY = bounds.y - sTop;
-                    } else if (sBottom < bounds.y + bounds.height) {
-                        scrollY = bounds.y + bounds.height - sBottom;
-                    }
-
-                    if (dir === "vertical" || (typeof col === "number" && col < freezeColumns)) {
-                        scrollX = 0;
-                    } else if (
-                        dir === "horizontal" ||
-                        (typeof row === "number" && row >= mangledRows - freezeTrailingRowsEffective)
-                    ) {
-                        scrollY = 0;
-                    }
-
-                    if (scrollX !== 0 || scrollY !== 0) {
-                        // Remove scaling as scrollTo method is unaffected by transform scale.
-                        if (scale !== 1) {
-                            scrollX /= scale;
-                            scrollY /= scale;
+                        let frozenWidth = 0;
+                        for (let i = 0; i < freezeColumns; i++) {
+                            frozenWidth += columns[i].width;
                         }
-                        scrollRef.current.scrollTo({
-                            left: scrollX + scrollRef.current.scrollLeft,
-                            top: scrollY + scrollRef.current.scrollTop,
-                            behavior: options?.behavior ?? "auto",
-                        });
+                        let trailingRowHeight = 0;
+                        const freezeTrailingRowsEffective = freezeTrailingRows + (lastRowSticky ? 1 : 0);
+                        if (freezeTrailingRowsEffective > 0) {
+                            trailingRowHeight = getFreezeTrailingHeight(
+                                mangledRows,
+                                freezeTrailingRowsEffective,
+                                rowHeight
+                            );
+                        }
+
+                        // scrollBounds is already scaled
+                        let sLeft = frozenWidth * scale + scrollBounds.left + totalMarkerWidth * scale;
+                        let sRight = scrollBounds.right;
+                        let sTop = scrollBounds.top + totalHeaderHeight * scale;
+                        let sBottom = scrollBounds.bottom - trailingRowHeight * scale;
+
+                        const minx = targetRect.width + paddingX * 2;
+                        switch (options?.hAlign) {
+                            case "start":
+                                sRight = sLeft + minx;
+                                break;
+                            case "end":
+                                sLeft = sRight - minx;
+                                break;
+                            case "center":
+                                sLeft = Math.floor((sLeft + sRight) / 2) - minx / 2;
+                                sRight = sLeft + minx;
+                                break;
+                        }
+
+                        const miny = targetRect.height + paddingY * 2;
+                        switch (options?.vAlign) {
+                            case "start":
+                                sBottom = sTop + miny;
+                                break;
+                            case "end":
+                                sTop = sBottom - miny;
+                                break;
+                            case "center":
+                                sTop = Math.floor((sTop + sBottom) / 2) - miny / 2;
+                                sBottom = sTop + miny;
+                                break;
+                        }
+
+                        if (sLeft > bounds.x) {
+                            scrollX = bounds.x - sLeft;
+                        } else if (sRight < bounds.x + bounds.width) {
+                            scrollX = bounds.x + bounds.width - sRight;
+                        }
+
+                        if (sTop > bounds.y) {
+                            scrollY = bounds.y - sTop;
+                        } else if (sBottom < bounds.y + bounds.height) {
+                            scrollY = bounds.y + bounds.height - sBottom;
+                        }
+
+                        if (dir === "vertical" || (typeof col === "number" && col < freezeColumns)) {
+                            scrollX = 0;
+                        } else if (
+                            dir === "horizontal" ||
+                            (typeof row === "number" && row >= mangledRows - freezeTrailingRowsEffective)
+                        ) {
+                            scrollY = 0;
+                        }
+
+                        if (scrollX !== 0 || scrollY !== 0) {
+                            // Remove scaling as scrollTo method is unaffected by transform scale.
+                            if (scale !== 1) {
+                                scrollX /= scale;
+                                scrollY /= scale;
+                            }
+                            scrollRef.current.scrollTo({
+                                left: scrollX + scrollRef.current.scrollLeft,
+                                top: scrollY + scrollRef.current.scrollTop,
+                                behavior: options?.behavior ?? "auto",
+                            });
+                        }
                     }
                 }
             }
-        }
-    },
-    [
-        rowMarkerOffset,
-        freezeTrailingRows,
-        rowMarkerWidth,
-        scrollRef,
-        totalHeaderHeight,
-        freezeColumns,
-        columns,
-        mangledRows,
-        lastRowSticky,
-        rowHeight,
-    ]
+        },
+        [
+            rowMarkerOffset,
+            freezeTrailingRows,
+            rowMarkerWidth,
+            scrollRef,
+            totalHeaderHeight,
+            freezeColumns,
+            columns,
+            mangledRows,
+            lastRowSticky,
+            rowHeight,
+        ]
     );
 
     const scrollToRef = React.useRef(scrollTo);
@@ -1960,115 +1005,114 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     focusCallback.current = focusOnRowFromTrailingBlankRow;
     getCellContentRef.current = getCellContent;
 
-    const rowsRef = React.useRef(rows);
-    rowsRef.current = rows;
+
 
     const colsRef = React.useRef(mangledCols.length);
     colsRef.current = mangledCols.length;
 
     const appendRow = React.useCallback(
         async (col: number, openOverlay: boolean = true, behavior?: ScrollBehavior): Promise<void> => {
-        const c = mangledCols[col];
-        const appendResult = (c?.trailingRowOptions?.onRowAppended ?? onRowAppended)?.();
+            const c = mangledCols[col];
+            const appendResult = ((c?.trailingRowOptions as any)?.onRowAppended ?? onRowAppended)?.();
 
-        let r: "top" | "bottom" | number | undefined = undefined;
-        let bottom = true;
-        if (appendResult !== undefined) {
-            r = await appendResult;
-            if (r === "top") bottom = false;
-            if (typeof r === "number") bottom = false;
-        }
+            let r: "top" | "bottom" | number | undefined = undefined;
+            let bottom = true;
+            if (appendResult !== undefined) {
+                r = await appendResult;
+                if (r === "top") bottom = false;
+                if (typeof r === "number") bottom = false;
+            }
 
-        let backoff = 0;
-        const doFocus = () => {
-            if (rowsRef.current <= rows) {
-                if (backoff < 500) {
-                    window.setTimeout(doFocus, backoff);
+            let backoff = 0;
+            const doFocus = () => {
+                if (rowsRef.current <= rows) {
+                    if (backoff < 500) {
+                        window.setTimeout(doFocus, backoff);
+                    }
+                    backoff = 50 + backoff * 2;
+                    return;
                 }
-                backoff = 50 + backoff * 2;
-                return;
-            }
 
-            const row = typeof r === "number" ? r : bottom ? rows : 0;
-            scrollToRef.current(col - rowMarkerOffset, row, "both", 0, 20, behavior ? { behavior } : undefined);
-            setCurrent(
-                {
-                    cell: [col, row],
-                    range: {
-                        x: col,
-                        y: row,
-                        width: 1,
-                        height: 1,
+                const row = typeof r === "number" ? r : bottom ? rows : 0;
+                scrollToRef.current(col - rowMarkerOffset, row, "both", 0, 20, behavior ? { behavior } : undefined);
+                setCurrent(
+                    {
+                        cell: [col, row],
+                        range: {
+                            x: col,
+                            y: row,
+                            width: 1,
+                            height: 1,
+                        },
                     },
-                },
-                false,
-                false,
-                "edit"
-            );
+                    false,
+                    false,
+                    "edit"
+                );
 
-            const cell = getCellContentRef.current([col - rowMarkerOffset, row]);
-            if (cell.allowOverlay && isReadWriteCell(cell) && cell.readonly !== true && openOverlay) {
-                // wait for scroll to have a chance to process
-                window.setTimeout(() => {
-                    focusCallback.current(col, row);
-                }, 0);
-            }
-        };
-        // Queue up to allow the consumer to react to the event and let us check if they did
-        doFocus();
-    },
-    [mangledCols, onRowAppended, rowMarkerOffset, rows, setCurrent]
+                const cell = getCellContentRef.current([col - rowMarkerOffset, row]);
+                if (cell.allowOverlay && isReadWriteCell(cell) && cell.readonly !== true && openOverlay) {
+                    // wait for scroll to have a chance to process
+                    window.setTimeout(() => {
+                        focusCallback.current(col, row);
+                    }, 0);
+                }
+            };
+            // Queue up to allow the consumer to react to the event and let us check if they did
+            doFocus();
+        },
+        [mangledCols, onRowAppended, rowMarkerOffset, rows, setCurrent]
     );
 
     const appendColumn = React.useCallback(
         async (row: number, openOverlay: boolean = true): Promise<void> => {
-        const appendResult = onColumnAppended?.();
+            const appendResult = onColumnAppended?.();
 
-        let r: "left" | "right" | number | undefined = undefined;
-        let right = true;
-        if (appendResult !== undefined) {
-            r = await appendResult;
-            if (r === "left") right = false;
-            if (typeof r === "number") right = false;
-        }
+            let r: "left" | "right" | number | undefined = undefined;
+            let right = true;
+            if (appendResult !== undefined) {
+                r = await appendResult;
+                if (r === "left") right = false;
+                if (typeof r === "number") right = false;
+            }
 
-        let backoff = 0;
-        const doFocus = () => {
-            if (colsRef.current <= mangledCols.length) {
-                if (backoff < 500) {
-                    window.setTimeout(doFocus, backoff);
+            let backoff = 0;
+            const doFocus = () => {
+                if (colsRef.current <= mangledCols.length) {
+                    if (backoff < 500) {
+                        window.setTimeout(doFocus, backoff);
+                    }
+                    backoff = 50 + backoff * 2;
+                    return;
                 }
-                backoff = 50 + backoff * 2;
-                return;
-            }
 
-            const col = typeof r === "number" ? r : right ? mangledCols.length : 0;
-            scrollToRef.current(col - rowMarkerOffset, row);
-            setCurrent(
-                {
-                    cell: [col, row],
-                    range: {
-                        x: col,
-                        y: row,
-                        width: 1,
-                        height: 1,
+                const col = typeof r === "number" ? r : right ? mangledCols.length : 0;
+                scrollToRef.current(col - rowMarkerOffset, row);
+                setCurrent(
+                    {
+                        cell: [col, row],
+                        range: {
+                            x: col,
+                            y: row,
+                            width: 1,
+                            height: 1,
+                        },
                     },
-                },
-                false,
-                false,
-                "edit"
-            );
+                    false,
+                    false,
+                    "edit"
+                );
 
-            const cell = getCellContentRef.current([col - rowMarkerOffset, row]);
-            if (cell.allowOverlay && isReadWriteCell(cell) && cell.readonly !== true && openOverlay) {
-                window.setTimeout(() => {
-                    focusCallback.current(col, row);
-                }, 0);
-            }
-        };
-        doFocus();
-    },
-    [mangledCols, onColumnAppended, rowMarkerOffset, scrollTo, setCurrent]
+                const cell = getCellContentRef.current([col - rowMarkerOffset, row]);
+                if (cell.allowOverlay && isReadWriteCell(cell) && cell.readonly !== true && openOverlay) {
+                    window.setTimeout(() => {
+                        focusCallback.current(col, row);
+                    }, 0);
+                }
+            };
+            doFocus();
+        },
+        [mangledCols, onColumnAppended, rowMarkerOffset, scrollTo, setCurrent]
     );
 
     const appendRowRef = React.useRef(appendRow);
@@ -2078,25 +1122,25 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
     const getCustomNewRowTargetColumn = React.useCallback(
         (col: number): number | undefined => {
-        const customTargetColumn =
-            columns[col]?.trailingRowOptions?.targetColumn ?? trailingRowOptions?.targetColumn;
+            const customTargetColumn =
+                columns[col]?.trailingRowOptions?.targetColumn ?? trailingRowOptions?.targetColumn;
 
-        if (typeof customTargetColumn === "number") {
-            const customTargetOffset = hasRowMarkers ? 1 : 0;
-            return customTargetColumn + customTargetOffset;
-        }
-
-        if (typeof customTargetColumn === "object") {
-            const maybeIndex = columnsIn.indexOf(customTargetColumn);
-            if (maybeIndex >= 0) {
+            if (typeof customTargetColumn === "number") {
                 const customTargetOffset = hasRowMarkers ? 1 : 0;
-                return maybeIndex + customTargetOffset;
+                return customTargetColumn + customTargetOffset;
             }
-        }
 
-        return undefined;
-    },
-    [columns, columnsIn, hasRowMarkers, trailingRowOptions?.targetColumn]
+            if (typeof customTargetColumn === "object") {
+                const maybeIndex = columnsIn.indexOf(customTargetColumn);
+                if (maybeIndex >= 0) {
+                    const customTargetOffset = hasRowMarkers ? 1 : 0;
+                    return maybeIndex + customTargetOffset;
+                }
+            }
+
+            return undefined;
+        },
+        [columns, columnsIn, hasRowMarkers, trailingRowOptions?.targetColumn]
     );
 
     const lastSelectedRowRef = React.useRef<number>(undefined);
@@ -2123,262 +1167,262 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
     const handleSelect = React.useCallback(
         (args: GridMouseEventArgs) => {
-        const isMultiKey = browserIsOSX.value ? args.metaKey : args.ctrlKey;
-        const isMultiRow = isMultiKey && rowSelect === "multi";
+            const isMultiKey = browserIsOSX.value ? args.metaKey : args.ctrlKey;
+            const isMultiRow = isMultiKey && rowSelect === "multi";
 
-        const [col, row] = args.location;
-        const selectedColumns = gridSelection.columns;
-        const selectedRows = gridSelection.rows;
-        const [cellCol, cellRow] = gridSelection.current?.cell ?? [];
-        // eslint-disable-next-line unicorn/prefer-switch
-        if (args.kind === "cell") {
-            lastSelectedColRef.current = undefined;
+            const [col, row] = args.location;
+            const selectedColumns = gridSelection.columns;
+            const selectedRows = gridSelection.rows;
+            const [cellCol, cellRow] = gridSelection.current?.cell ?? [];
+            // eslint-disable-next-line unicorn/prefer-switch
+            if (args.kind === "cell") {
+                lastSelectedColRef.current = undefined;
 
-            lastMouseSelectLocation.current = [col, row];
+                lastMouseSelectLocation.current = [col, row];
 
-            // Determine which column is the checkbox column based on new order: rowNumber, checkbox, rowStatus
-            const checkboxColIndex = showRowNumber ? 1 : 0;
-            const isCheckboxCol = col === checkboxColIndex;
+                // Determine which column is the checkbox column based on new order: rowNumber, checkbox, rowStatus
+                const checkboxColIndex = showRowNumber ? 1 : 0;
+                const isCheckboxCol = col === checkboxColIndex;
 
-            if (isCheckboxCol && hasRowMarkers) {
-                if (
-                    (showTrailingBlankRow === true && row === rows) ||
-                    rowMarkers === "number" ||
-                    rowSelect === "none"
-                )
-                    return;
+                if (isCheckboxCol && hasRowMarkers) {
+                    if (
+                        (showTrailingBlankRow === true && row === rows) ||
+                        rowMarkers === "number" ||
+                        rowSelect === "none"
+                    )
+                        return;
 
-                const markerCell = getMangledCellContent(args.location);
-                if (markerCell.kind !== InnerGridCellKind.Marker) {
-                    return;
-                }
-                if (markerCell.disabled === true) return;
-
-                if (onRowMoved !== undefined) {
-                    const renderer = getCellRenderer(markerCell);
-                    assert(renderer?.kind === InnerGridCellKind.Marker);
-                    const postClick = renderer?.onClick?.({
-                        ...args,
-                        cell: markerCell,
-                        posX: args.localEventX,
-                        posY: args.localEventY,
-                        bounds: args.bounds,
-                        theme: themeForCell(markerCell, args.location),
-                        preventDefault: () => undefined,
-                    }) as MarkerCell | undefined;
-                    if (postClick === undefined || postClick.checked === markerCell.checked) return;
-                }
-
-                setOverlay(undefined);
-                focus();
-                const isSelected = selectedRows.hasIndex(row);
-
-                const lastHighlighted = lastSelectedRowRef.current;
-                if (
-                    rowSelect === "multi" &&
-                    (args.shiftKey || args.isLongTouch === true) &&
-                    lastHighlighted !== undefined &&
-                    selectedRows.hasIndex(lastHighlighted)
-                ) {
-                    const newSlice: Slice = [Math.min(lastHighlighted, row), Math.max(lastHighlighted, row) + 1];
-
-                    if (isMultiRow || rowSelectionMode === "multi") {
-                        setSelectedRows(undefined, newSlice, true);
-                    } else {
-                        setSelectedRows(CompactSelection.fromSingleSelection(newSlice), undefined, isMultiRow);
+                    const markerCell = getMangledCellContent(args.location);
+                    if (markerCell.kind !== InnerGridCellKind.Marker) {
+                        return;
                     }
-                } else if (rowSelect === "multi" && (isMultiRow || args.isTouch || rowSelectionMode === "multi")) {
-                    if (isSelected) {
-                        setSelectedRows(selectedRows.remove(row), undefined, true);
-                    } else {
-                        setSelectedRows(undefined, row, true);
-                        lastSelectedRowRef.current = row;
-                    }
-                } else if (isSelected && selectedRows.length === 1) {
-                    setSelectedRows(CompactSelection.empty(), undefined, isMultiKey);
-                } else {
-                    setSelectedRows(CompactSelection.fromSingleSelection(row), undefined, isMultiKey);
-                    lastSelectedRowRef.current = row;
-                }
-            } else if (col >= rowMarkerOffset && showTrailingBlankRow && row === rows) {
-                const customTargetColumn = getCustomNewRowTargetColumn(col);
-                void appendRow(customTargetColumn ?? col);
-            } else {
-                if (cellCol !== col || cellRow !== row) {
-                    const cell = getMangledCellContent(args.location);
-                    const renderer = getCellRenderer(cell);
+                    if (markerCell.disabled === true) return;
 
-                    if (renderer?.onSelect !== undefined) {
-                        let prevented = false;
-                        renderer.onSelect({
+                    if (onRowMoved !== undefined) {
+                        const renderer = getCellRenderer(markerCell);
+                        assert(renderer?.kind === InnerGridCellKind.Marker);
+                        const postClick = renderer?.onClick?.({
                             ...args,
-                            cell,
+                            cell: markerCell,
                             posX: args.localEventX,
                             posY: args.localEventY,
                             bounds: args.bounds,
-                            preventDefault: () => (prevented = true),
-                            theme: themeForCell(cell, args.location),
-                        });
-                        if (prevented) {
-                            return;
-                        }
+                            theme: themeForCell(markerCell, args.location),
+                            preventDefault: () => undefined,
+                        }) as MarkerCell | undefined;
+                        if (postClick === undefined || postClick.checked === markerCell.checked) return;
                     }
 
-                    if (rowGroupingNavBehavior === "block" && mapper(row).isGroupHeader) {
-                        return;
-                    }
+                    setOverlay(undefined);
+                    focus();
+                    const isSelected = selectedRows.hasIndex(row);
 
-                    const isLastStickyRow = lastRowSticky && row === rows;
-
-                    const startedFromLastSticky =
-                        lastRowSticky && gridSelection !== undefined && gridSelection.current?.cell[1] === rows;
-
+                    const lastHighlighted = lastSelectedRowRef.current;
                     if (
+                        rowSelect === "multi" &&
                         (args.shiftKey || args.isLongTouch === true) &&
-                        cellCol !== undefined &&
-                        cellRow !== undefined &&
-                        gridSelection.current !== undefined &&
-                        !startedFromLastSticky
+                        lastHighlighted !== undefined &&
+                        selectedRows.hasIndex(lastHighlighted)
                     ) {
-                        if (isLastStickyRow) {
-                            // If we're making a selection and shift click in to the last sticky row,
-                            // just drop the event. Don't kill the selection.
+                        const newSlice: Slice = [Math.min(lastHighlighted, row), Math.max(lastHighlighted, row) + 1];
+
+                        if (isMultiRow || rowSelectionMode === "multi") {
+                            setSelectedRows(undefined, newSlice, true);
+                        } else {
+                            setSelectedRows(CompactSelection.fromSingleSelection(newSlice), undefined, isMultiRow);
+                        }
+                    } else if (rowSelect === "multi" && (isMultiRow || args.isTouch || rowSelectionMode === "multi")) {
+                        if (isSelected) {
+                            setSelectedRows(selectedRows.remove(row), undefined, true);
+                        } else {
+                            setSelectedRows(undefined, row, true);
+                            lastSelectedRowRef.current = row;
+                        }
+                    } else if (isSelected && selectedRows.length === 1) {
+                        setSelectedRows(CompactSelection.empty(), undefined, isMultiKey);
+                    } else {
+                        setSelectedRows(CompactSelection.fromSingleSelection(row), undefined, isMultiKey);
+                        lastSelectedRowRef.current = row;
+                    }
+                } else if (col >= rowMarkerOffset && showTrailingBlankRow && row === rows) {
+                    const customTargetColumn = getCustomNewRowTargetColumn(col);
+                    void appendRow(customTargetColumn ?? col);
+                } else {
+                    if (cellCol !== col || cellRow !== row) {
+                        const cell = getMangledCellContent(args.location);
+                        const renderer = getCellRenderer(cell);
+
+                        if (renderer?.onSelect !== undefined) {
+                            let prevented = false;
+                            renderer.onSelect({
+                                ...args,
+                                cell,
+                                posX: args.localEventX,
+                                posY: args.localEventY,
+                                bounds: args.bounds,
+                                preventDefault: () => (prevented = true),
+                                theme: themeForCell(cell, args.location),
+                            });
+                            if (prevented) {
+                                return;
+                            }
+                        }
+
+                        if (rowGroupingNavBehavior === "block" && mapper(row).isGroupHeader) {
                             return;
                         }
 
-                        const left = Math.min(col, cellCol);
-                        const right = Math.max(col, cellCol);
-                        const top = Math.min(row, cellRow);
-                        const bottom = Math.max(row, cellRow);
-                        setCurrent(
-                            {
-                                ...gridSelection.current,
-                                range: {
-                                    x: left,
-                                    y: top,
-                                    width: right - left + 1,
-                                    height: bottom - top + 1,
+                        const isLastStickyRow = lastRowSticky && row === rows;
+
+                        const startedFromLastSticky =
+                            lastRowSticky && gridSelection !== undefined && gridSelection.current?.cell[1] === rows;
+
+                        if (
+                            (args.shiftKey || args.isLongTouch === true) &&
+                            cellCol !== undefined &&
+                            cellRow !== undefined &&
+                            gridSelection.current !== undefined &&
+                            !startedFromLastSticky
+                        ) {
+                            if (isLastStickyRow) {
+                                // If we're making a selection and shift click in to the last sticky row,
+                                // just drop the event. Don't kill the selection.
+                                return;
+                            }
+
+                            const left = Math.min(col, cellCol);
+                            const right = Math.max(col, cellCol);
+                            const top = Math.min(row, cellRow);
+                            const bottom = Math.max(row, cellRow);
+                            setCurrent(
+                                {
+                                    ...gridSelection.current,
+                                    range: {
+                                        x: left,
+                                        y: top,
+                                        width: right - left + 1,
+                                        height: bottom - top + 1,
+                                    },
                                 },
-                            },
-                            true,
-                            isMultiKey,
-                            "click"
-                        );
-                        lastSelectedRowRef.current = undefined;
-                        focus();
-                    } else {
-                        // Keep row selection when clicking on other cells
-                        const hasRowSelection = gridSelection.rows.length > 0;
-                        setCurrent(
-                            {
-                                cell: [col, row],
-                                range: { x: col, y: row, width: 1, height: 1 },
-                            },
-                            true,
-                            isMultiKey || hasRowSelection,
-                            "click"
-                        );
-                        lastSelectedRowRef.current = undefined;
-                        setOverlay(undefined);
-                        focus();
+                                true,
+                                isMultiKey,
+                                "click"
+                            );
+                            lastSelectedRowRef.current = undefined;
+                            focus();
+                        } else {
+                            // Keep row selection when clicking on other cells
+                            const hasRowSelection = gridSelection.rows.length > 0;
+                            setCurrent(
+                                {
+                                    cell: [col, row],
+                                    range: { x: col, y: row, width: 1, height: 1 },
+                                },
+                                true,
+                                isMultiKey || hasRowSelection,
+                                "click"
+                            );
+                            lastSelectedRowRef.current = undefined;
+                            setOverlay(undefined);
+                            focus();
+                        }
                     }
                 }
-            }
-        } else if (args.kind === "header") {
-            lastMouseSelectLocation.current = [col, row];
-            setOverlay(undefined);
-            const headerCheckboxColIndex = showRowNumber ? 1 : 0;
-            if (hasRowMarkers && col === headerCheckboxColIndex) {
-                lastSelectedRowRef.current = undefined;
-                lastSelectedColRef.current = undefined;
-                if (!headerRowMarkerDisabled && rowSelect === "multi") {
-                    if (selectedRows.length !== rows) {
-                        setSelectedRows(CompactSelection.fromSingleSelection([0, rows]), undefined, isMultiKey);
-                    } else {
-                        setSelectedRows(CompactSelection.empty(), undefined, isMultiKey);
+            } else if (args.kind === "header") {
+                lastMouseSelectLocation.current = [col, row];
+                setOverlay(undefined);
+                const headerCheckboxColIndex = showRowNumber ? 1 : 0;
+                if (hasRowMarkers && col === headerCheckboxColIndex) {
+                    lastSelectedRowRef.current = undefined;
+                    lastSelectedColRef.current = undefined;
+                    if (!headerRowMarkerDisabled && rowSelect === "multi") {
+                        if (selectedRows.length !== rows) {
+                            setSelectedRows(CompactSelection.fromSingleSelection([0, rows]), undefined, isMultiKey);
+                        } else {
+                            setSelectedRows(CompactSelection.empty(), undefined, isMultiKey);
+                        }
+                        focus();
                     }
+                } else {
+                    const lastCol = lastSelectedColRef.current;
+                    if (
+                        columnSelect === "multi" &&
+                        (args.shiftKey || args.isLongTouch === true) &&
+                        lastCol !== undefined &&
+                        selectedColumns.hasIndex(lastCol)
+                    ) {
+                        // Support for selecting a slice of columns:
+                        const newSlice: Slice = [Math.min(lastCol, col), Math.max(lastCol, col) + 1];
+
+                        if (isMultiKey || args.isTouch || columnSelectionMode === "multi") {
+                            setSelectedColumns(undefined, newSlice, isMultiKey);
+                        } else {
+                            setSelectedColumns(CompactSelection.fromSingleSelection(newSlice), undefined, isMultiKey);
+                        }
+                    } else if (
+                        columnSelect === "multi" &&
+                        (isMultiKey || args.isTouch || columnSelectionMode === "multi")
+                    ) {
+                        // Support for selecting a single columns additively:
+                        if (selectedColumns.hasIndex(col)) {
+                            // If the column is already selected, deselect that column:
+                            setSelectedColumns(selectedColumns.remove(col), undefined, isMultiKey);
+                        } else {
+                            setSelectedColumns(undefined, col, isMultiKey);
+                        }
+                        lastSelectedColRef.current = col;
+                    } else if (columnSelect !== "none") {
+                        if (selectedColumns.hasIndex(col)) {
+                            // If the column is already selected, deselect that column:
+                            setSelectedColumns(selectedColumns.remove(col), undefined, isMultiKey);
+                        } else {
+                            setSelectedColumns(CompactSelection.fromSingleSelection(col), undefined, isMultiKey);
+                        }
+                        lastSelectedColRef.current = col;
+                    }
+                    lastSelectedRowRef.current = undefined;
                     focus();
                 }
-            } else {
-                const lastCol = lastSelectedColRef.current;
-                if (
-                    columnSelect === "multi" &&
-                    (args.shiftKey || args.isLongTouch === true) &&
-                    lastCol !== undefined &&
-                    selectedColumns.hasIndex(lastCol)
-                ) {
-                    // Support for selecting a slice of columns:
-                    const newSlice: Slice = [Math.min(lastCol, col), Math.max(lastCol, col) + 1];
-
-                    if (isMultiKey || args.isTouch || columnSelectionMode === "multi") {
-                        setSelectedColumns(undefined, newSlice, isMultiKey);
-                    } else {
-                        setSelectedColumns(CompactSelection.fromSingleSelection(newSlice), undefined, isMultiKey);
-                    }
-                } else if (
-                    columnSelect === "multi" &&
-                    (isMultiKey || args.isTouch || columnSelectionMode === "multi")
-                ) {
-                    // Support for selecting a single columns additively:
-                    if (selectedColumns.hasIndex(col)) {
-                        // If the column is already selected, deselect that column:
-                        setSelectedColumns(selectedColumns.remove(col), undefined, isMultiKey);
-                    } else {
-                        setSelectedColumns(undefined, col, isMultiKey);
-                    }
-                    lastSelectedColRef.current = col;
-                } else if (columnSelect !== "none") {
-                    if (selectedColumns.hasIndex(col)) {
-                        // If the column is already selected, deselect that column:
-                        setSelectedColumns(selectedColumns.remove(col), undefined, isMultiKey);
-                    } else {
-                        setSelectedColumns(CompactSelection.fromSingleSelection(col), undefined, isMultiKey);
-                    }
-                    lastSelectedColRef.current = col;
-                }
-                lastSelectedRowRef.current = undefined;
+            } else if (args.kind === groupHeaderKind) {
+                lastMouseSelectLocation.current = [col, row];
+            } else if (args.kind === outOfBoundsKind && !args.isMaybeScrollbar) {
+                setGridSelection(emptyGridSelection, false);
+                setOverlay(undefined);
                 focus();
+                onSelectionCleared?.();
+                lastSelectedRowRef.current = undefined;
+                lastSelectedColRef.current = undefined;
             }
-        } else if (args.kind === groupHeaderKind) {
-            lastMouseSelectLocation.current = [col, row];
-        } else if (args.kind === outOfBoundsKind && !args.isMaybeScrollbar) {
-            setGridSelection(emptyGridSelection, false);
-            setOverlay(undefined);
-            focus();
-            onSelectionCleared?.();
-            lastSelectedRowRef.current = undefined;
-            lastSelectedColRef.current = undefined;
-        }
-    },
-    [
-        rowSelect,
-        columnSelect,
-        gridSelection,
-        hasRowMarkers,
-        rowMarkerOffset,
-        showTrailingBlankRow,
-        showRowNumber,
-        rows,
-        rowMarkers,
-        getMangledCellContent,
-        onRowMoved,
-        focus,
-        rowSelectionMode,
-        columnSelectionMode,
-        getCellRenderer,
-        themeForCell,
-        setSelectedRows,
-        getCustomNewRowTargetColumn,
-        appendRow,
-        rowGroupingNavBehavior,
-        mapper,
-        lastRowSticky,
-        setCurrent,
-        headerRowMarkerDisabled,
-        setSelectedColumns,
-        setGridSelection,
-        onSelectionCleared,
-    ]
+        },
+        [
+            rowSelect,
+            columnSelect,
+            gridSelection,
+            hasRowMarkers,
+            rowMarkerOffset,
+            showTrailingBlankRow,
+            showRowNumber,
+            rows,
+            rowMarkers,
+            getMangledCellContent,
+            onRowMoved,
+            focus,
+            rowSelectionMode,
+            columnSelectionMode,
+            getCellRenderer,
+            themeForCell,
+            setSelectedRows,
+            getCustomNewRowTargetColumn,
+            appendRow,
+            rowGroupingNavBehavior,
+            mapper,
+            lastRowSticky,
+            setCurrent,
+            headerRowMarkerDisabled,
+            setSelectedColumns,
+            setGridSelection,
+            onSelectionCleared,
+        ]
     );
     // Shared state object for extracted hooks
     const coreState: import("./data-editor-state.js").DataEditorCoreState = {
@@ -2541,82 +1585,82 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
             tx: number,
             ty: number
         ) => {
-        hasJustScrolled.current = false;
+            hasJustScrolled.current = false;
 
-        // Close overlay editor when scrolling
-        if (overlay !== undefined) {
-            const prevRegion = visibleRegionRef.current;
-            const hasScrolled = prevRegion.x !== region.x || prevRegion.y !== region.y;
-            if (hasScrolled) {
-                setOverlay(undefined);
+            // Close overlay editor when scrolling
+            if (overlay !== undefined) {
+                const prevRegion = visibleRegionRef.current;
+                const hasScrolled = prevRegion.x !== region.x || prevRegion.y !== region.y;
+                if (hasScrolled) {
+                    setOverlay(undefined);
+                }
             }
-        }
 
-        let selected = currentCell;
-        if (selected !== undefined) {
-            selected = [selected[0] - rowMarkerOffset, selected[1]];
-        }
+            let selected = currentCell;
+            if (selected !== undefined) {
+                selected = [selected[0] - rowMarkerOffset, selected[1]];
+            }
 
-        const freezeRegion =
-            freezeColumns === 0
-                ? undefined
-                : {
-                    x: 0,
-                    y: region.y,
-                    width: freezeColumns,
-                    height: region.height,
-                };
+            const freezeRegion =
+                freezeColumns === 0
+                    ? undefined
+                    : {
+                        x: 0,
+                        y: region.y,
+                        width: freezeColumns,
+                        height: region.height,
+                    };
 
-        const freezeRegions: Rectangle[] = [];
-        if (freezeRegion !== undefined) freezeRegions.push(freezeRegion);
-        if (freezeTrailingRows > 0) {
-            freezeRegions.push({
-                x: region.x - rowMarkerOffset,
-                y: rows - freezeTrailingRows,
-                width: region.width,
-                height: freezeTrailingRows,
-            });
-
-            if (freezeColumns > 0) {
+            const freezeRegions: Rectangle[] = [];
+            if (freezeRegion !== undefined) freezeRegions.push(freezeRegion);
+            if (freezeTrailingRows > 0) {
                 freezeRegions.push({
-                    x: 0,
+                    x: region.x - rowMarkerOffset,
                     y: rows - freezeTrailingRows,
-                    width: freezeColumns,
+                    width: region.width,
                     height: freezeTrailingRows,
                 });
-            }
-        }
 
-        const newRegion = {
-            x: region.x - rowMarkerOffset,
-            y: region.y,
-            width: region.width,
-            height: showTrailingBlankRow && region.y + region.height >= rows ? region.height - 1 : region.height,
-            tx,
-            ty,
-            extras: {
-                selected,
-                freezeRegion,
-                freezeRegions,
-            },
-        };
-        visibleRegionRef.current = newRegion;
-        setVisibleRegion(newRegion);
-        setClientSize([clientWidth, clientHeight, rightElWidth]);
-        onVisibleRegionChanged?.(newRegion, newRegion.tx, newRegion.ty, newRegion.extras);
-    },
-    [
-        currentCell,
-        overlay,
-        rowMarkerOffset,
-        showTrailingBlankRow,
-        rows,
-        freezeColumns,
-        freezeTrailingRows,
-        setOverlay,
-        setVisibleRegion,
-        onVisibleRegionChanged,
-    ]
+                if (freezeColumns > 0) {
+                    freezeRegions.push({
+                        x: 0,
+                        y: rows - freezeTrailingRows,
+                        width: freezeColumns,
+                        height: freezeTrailingRows,
+                    });
+                }
+            }
+
+            const newRegion = {
+                x: region.x - rowMarkerOffset,
+                y: region.y,
+                width: region.width,
+                height: showTrailingBlankRow && region.y + region.height >= rows ? region.height - 1 : region.height,
+                tx,
+                ty,
+                extras: {
+                    selected,
+                    freezeRegion,
+                    freezeRegions,
+                },
+            };
+            visibleRegionRef.current = newRegion;
+            setVisibleRegion(newRegion);
+            setClientSize([clientWidth, clientHeight, rightElWidth]);
+            onVisibleRegionChanged?.(newRegion, newRegion.tx, newRegion.ty, newRegion.extras);
+        },
+        [
+            currentCell,
+            overlay,
+            rowMarkerOffset,
+            showTrailingBlankRow,
+            rows,
+            freezeColumns,
+            freezeTrailingRows,
+            setOverlay,
+            setVisibleRegion,
+            onVisibleRegionChanged,
+        ]
     );
 
     const onColumnProposeMoveImpl = whenDefined(
@@ -2690,100 +1734,100 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     const hoveredRef = React.useRef<GridMouseEventArgs>(undefined);
     const onItemHoveredImpl = React.useCallback(
         (args: GridMouseEventArgs) => {
-        // make sure we still have a button down
-        if (mouseEventArgsAreEqual(args, hoveredRef.current)) return;
-        hoveredRef.current = args;
-        if (mouseDownData?.current?.button !== undefined && mouseDownData.current.button >= 1) return;
-        if (
-            args.buttons !== 0 &&
-            mouseState !== undefined &&
-            mouseDownData.current?.location[0] === 0 &&
-            rowMarkerOffset === 1 &&
-            rowSelect === "multi" &&
-            mouseState.previousSelection &&
-            !mouseState.previousSelection.rows.hasIndex(mouseDownData.current.location[1]) &&
-            gridSelection.rows.hasIndex(mouseDownData.current.location[1])
-        ) {
-            const start = Math.min(mouseDownData.current.location[1], args.location[1]);
-            const end = Math.max(mouseDownData.current.location[1], args.location[1]) + 1;
-            setSelectedRows(CompactSelection.fromSingleSelection([start, end]), undefined, false);
-        }
-        // Only handle rect selection if not already processed by row selection:
-        else if (
-            args.buttons !== 0 &&
-            mouseState !== undefined &&
-            gridSelection.current !== undefined &&
-            !isActivelyDragging.current &&
-            !isActivelyDraggingHeader.current &&
-            (rangeSelect === "rect" || rangeSelect === "multi-rect")
-        ) {
-            const [selectedCol, selectedRow] = gridSelection.current.cell;
-            // eslint-disable-next-line prefer-const
-            let [col, row] = args.location;
-
-            if (row < 0) {
-                row = visibleRegionRef.current.y;
+            // make sure we still have a button down
+            if (mouseEventArgsAreEqual(args, hoveredRef.current)) return;
+            hoveredRef.current = args;
+            if (mouseDownData?.current?.button !== undefined && mouseDownData.current.button >= 1) return;
+            if (
+                args.buttons !== 0 &&
+                mouseState !== undefined &&
+                mouseDownData.current?.location[0] === 0 &&
+                rowMarkerOffset === 1 &&
+                rowSelect === "multi" &&
+                mouseState.previousSelection &&
+                !mouseState.previousSelection.rows.hasIndex(mouseDownData.current.location[1]) &&
+                gridSelection.rows.hasIndex(mouseDownData.current.location[1])
+            ) {
+                const start = Math.min(mouseDownData.current.location[1], args.location[1]);
+                const end = Math.max(mouseDownData.current.location[1], args.location[1]) + 1;
+                setSelectedRows(CompactSelection.fromSingleSelection([start, end]), undefined, false);
             }
+            // Only handle rect selection if not already processed by row selection:
+            else if (
+                args.buttons !== 0 &&
+                mouseState !== undefined &&
+                gridSelection.current !== undefined &&
+                !isActivelyDragging.current &&
+                !isActivelyDraggingHeader.current &&
+                (rangeSelect === "rect" || rangeSelect === "multi-rect")
+            ) {
+                const [selectedCol, selectedRow] = gridSelection.current.cell;
+                // eslint-disable-next-line prefer-const
+                let [col, row] = args.location;
 
-            if (mouseState.fillHandle === true && mouseState.previousSelection?.current !== undefined) {
-                const prevRange = mouseState.previousSelection.current.range;
-                row = Math.min(row, showTrailingBlankRow ? rows - 1 : rows);
-                const rect = getClosestRect(prevRange, col, row, allowedFillDirections);
-                setFillHighlightRegion(rect);
-            } else {
-                const startedFromLastStickyRow = showTrailingBlankRow && selectedRow === rows;
-                if (startedFromLastStickyRow) return;
-
-                const landedOnLastStickyRow = showTrailingBlankRow && row === rows;
-                if (landedOnLastStickyRow) {
-                    if (args.kind === outOfBoundsKind) row--;
-                    else return;
+                if (row < 0) {
+                    row = visibleRegionRef.current.y;
                 }
 
-                col = Math.max(col, rowMarkerOffset);
-                const clampLimits = getSelectionRowLimits(selectedRow);
-                row = clampLimits === undefined ? row : clamp(row, clampLimits[0], clampLimits[1]);
+                if (mouseState.fillHandle === true && mouseState.previousSelection?.current !== undefined) {
+                    const prevRange = mouseState.previousSelection.current.range;
+                    row = Math.min(row, showTrailingBlankRow ? rows - 1 : rows);
+                    const rect = getClosestRect(prevRange, col, row, allowedFillDirections);
+                    setFillHighlightRegion(rect);
+                } else {
+                    const startedFromLastStickyRow = showTrailingBlankRow && selectedRow === rows;
+                    if (startedFromLastStickyRow) return;
 
-                // FIXME: Restrict row based on rowGrouping.selectionBehavior here
+                    const landedOnLastStickyRow = showTrailingBlankRow && row === rows;
+                    if (landedOnLastStickyRow) {
+                        if (args.kind === outOfBoundsKind) row--;
+                        else return;
+                    }
 
-                const deltaX = col - selectedCol;
-                const deltaY = row - selectedRow;
+                    col = Math.max(col, rowMarkerOffset);
+                    const clampLimits = getSelectionRowLimits(selectedRow);
+                    row = clampLimits === undefined ? row : clamp(row, clampLimits[0], clampLimits[1]);
 
-                const newRange: Rectangle = {
-                    x: deltaX >= 0 ? selectedCol : col,
-                    y: deltaY >= 0 ? selectedRow : row,
-                    width: Math.abs(deltaX) + 1,
-                    height: Math.abs(deltaY) + 1,
-                };
+                    // FIXME: Restrict row based on rowGrouping.selectionBehavior here
 
-                setCurrent(
-                    {
-                        ...gridSelection.current,
-                        range: newRange,
-                    },
-                    true,
-                    false,
-                    "drag"
-                );
+                    const deltaX = col - selectedCol;
+                    const deltaY = row - selectedRow;
+
+                    const newRange: Rectangle = {
+                        x: deltaX >= 0 ? selectedCol : col,
+                        y: deltaY >= 0 ? selectedRow : row,
+                        width: Math.abs(deltaX) + 1,
+                        height: Math.abs(deltaY) + 1,
+                    };
+
+                    setCurrent(
+                        {
+                            ...gridSelection.current,
+                            range: newRange,
+                        },
+                        true,
+                        false,
+                        "drag"
+                    );
+                }
             }
-        }
 
-        onItemHovered?.({ ...args, location: [args.location[0] - rowMarkerOffset, args.location[1]] as any });
-    },
-    [
-        mouseState,
-        rowMarkerOffset,
-        rowSelect,
-        gridSelection,
-        rangeSelect,
-        onItemHovered,
-        setSelectedRows,
-        showTrailingBlankRow,
-        rows,
-        allowedFillDirections,
-        getSelectionRowLimits,
-        setCurrent,
-    ]
+            onItemHovered?.({ ...args, location: [args.location[0] - rowMarkerOffset, args.location[1]] as any });
+        },
+        [
+            mouseState,
+            rowMarkerOffset,
+            rowSelect,
+            gridSelection,
+            rangeSelect,
+            onItemHovered,
+            setSelectedRows,
+            showTrailingBlankRow,
+            rows,
+            allowedFillDirections,
+            getSelectionRowLimits,
+            setCurrent,
+        ]
     );
 
     const adjustSelectionOnScroll = React.useCallback(() => {
@@ -2816,169 +1860,169 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     // 2 === move to end
     const adjustSelection = React.useCallback(
         (direction: [0 | 1 | -1 | 2 | -2, 0 | 1 | -1 | 2 | -2]) => {
-        if (gridSelection.current === undefined) return;
+            if (gridSelection.current === undefined) return;
 
-        const [x, y] = direction;
-        const [col, row] = gridSelection.current.cell;
-        const old = gridSelection.current.range;
-        let left = old.x;
-        let right = old.x + old.width;
-        let top = old.y;
-        let bottom = old.y + old.height;
+            const [x, y] = direction;
+            const [col, row] = gridSelection.current.cell;
+            const old = gridSelection.current.range;
+            let left = old.x;
+            let right = old.x + old.width;
+            let top = old.y;
+            let bottom = old.y + old.height;
 
-        const [minRow, maxRowRaw] = getSelectionRowLimits(row) ?? [0, rows - 1];
-        const maxRow = maxRowRaw + 1; // we need an inclusive value
+            const [minRow, maxRowRaw] = getSelectionRowLimits(row) ?? [0, rows - 1];
+            const maxRow = maxRowRaw + 1; // we need an inclusive value
 
-        // take care of vertical first in case new spans come in
-        if (y !== 0) {
-            switch (y) {
-                case 2: {
-                    // go to end
-                    bottom = maxRow;
-                    top = row;
-                    scrollTo(0, bottom, "vertical");
-
-                    break;
-                }
-                case -2: {
-                    // go to start
-                    top = minRow;
-                    bottom = row + 1;
-                    scrollTo(0, top, "vertical");
-
-                    break;
-                }
-                case 1: {
-                    // motion down
-                    if (top < row) {
-                        top++;
-                        scrollTo(0, top, "vertical");
-                    } else {
-                        bottom = Math.min(maxRow, bottom + 1);
+            // take care of vertical first in case new spans come in
+            if (y !== 0) {
+                switch (y) {
+                    case 2: {
+                        // go to end
+                        bottom = maxRow;
+                        top = row;
                         scrollTo(0, bottom, "vertical");
-                    }
 
-                    break;
-                }
-                case -1: {
-                    // motion up
-                    if (bottom > row + 1) {
-                        bottom--;
-                        scrollTo(0, bottom, "vertical");
-                    } else {
-                        top = Math.max(minRow, top - 1);
+                        break;
+                    }
+                    case -2: {
+                        // go to start
+                        top = minRow;
+                        bottom = row + 1;
                         scrollTo(0, top, "vertical");
-                    }
 
-                    break;
-                }
-                default: {
-                    assertNever(y);
+                        break;
+                    }
+                    case 1: {
+                        // motion down
+                        if (top < row) {
+                            top++;
+                            scrollTo(0, top, "vertical");
+                        } else {
+                            bottom = Math.min(maxRow, bottom + 1);
+                            scrollTo(0, bottom, "vertical");
+                        }
+
+                        break;
+                    }
+                    case -1: {
+                        // motion up
+                        if (bottom > row + 1) {
+                            bottom--;
+                            scrollTo(0, bottom, "vertical");
+                        } else {
+                            top = Math.max(minRow, top - 1);
+                            scrollTo(0, top, "vertical");
+                        }
+
+                        break;
+                    }
+                    default: {
+                        assertNever(y);
+                    }
                 }
             }
-        }
 
-        if (x !== 0) {
-            if (x === 2) {
-                right = mangledCols.length;
-                left = col;
-                scrollTo(right - 1 - rowMarkerOffset, 0, "horizontal");
-            } else if (x === -2) {
-                left = rowMarkerOffset;
-                right = col + 1;
-                scrollTo(left - rowMarkerOffset, 0, "horizontal");
-            } else {
-                let disallowed: number[] = [];
-                if (getCellsForSelection !== undefined) {
-                    const cells = getCellsForSelection(
-                        {
-                            x: left,
-                            y: top,
-                            width: right - left - rowMarkerOffset,
-                            height: bottom - top,
-                        },
-                        abortControllerRef.current.signal
-                    );
-
-                    if (typeof cells === "object") {
-                        disallowed = getSpanStops(cells);
-                    }
-                }
-                if (x === 1) {
-                    // motion right
-                    let done = false;
-                    if (left < col) {
-                        if (disallowed.length > 0) {
-                            const target = range(left + 1, col + 1).find(
-                                (n: number) => !disallowed.includes(n - rowMarkerOffset)
-                            );
-                            if (target !== undefined) {
-                                left = target;
-                                done = true;
-                            }
-                        } else {
-                            left++;
-                            done = true;
-                        }
-                        if (done) scrollTo(left, 0, "horizontal");
-                    }
-                    if (!done) {
-                        right = Math.min(mangledCols.length, right + 1);
-                        scrollTo(right - 1 - rowMarkerOffset, 0, "horizontal");
-                    }
-                } else if (x === -1) {
-                    // motion left
-                    let done = false;
-                    if (right > col + 1) {
-                        if (disallowed.length > 0) {
-                            const target = range(right - 1, col, -1).find(
-                                n => !disallowed.includes(n - rowMarkerOffset)
-                            );
-                            if (target !== undefined) {
-                                right = target;
-                                done = true;
-                            }
-                        } else {
-                            right--;
-                            done = true;
-                        }
-                        if (done) scrollTo(right - rowMarkerOffset, 0, "horizontal");
-                    }
-                    if (!done) {
-                        left = Math.max(rowMarkerOffset, left - 1);
-                        scrollTo(left - rowMarkerOffset, 0, "horizontal");
-                    }
+            if (x !== 0) {
+                if (x === 2) {
+                    right = mangledCols.length;
+                    left = col;
+                    scrollTo(right - 1 - rowMarkerOffset, 0, "horizontal");
+                } else if (x === -2) {
+                    left = rowMarkerOffset;
+                    right = col + 1;
+                    scrollTo(left - rowMarkerOffset, 0, "horizontal");
                 } else {
-                    assertNever(x);
+                    let disallowed: number[] = [];
+                    if (getCellsForSelection !== undefined) {
+                        const cells = getCellsForSelection(
+                            {
+                                x: left,
+                                y: top,
+                                width: right - left - rowMarkerOffset,
+                                height: bottom - top,
+                            },
+                            abortControllerRef.current.signal
+                        );
+
+                        if (typeof cells === "object") {
+                            disallowed = getSpanStops(cells);
+                        }
+                    }
+                    if (x === 1) {
+                        // motion right
+                        let done = false;
+                        if (left < col) {
+                            if (disallowed.length > 0) {
+                                const target = range(left + 1, col + 1).find(
+                                    (n: number) => !disallowed.includes(n - rowMarkerOffset)
+                                );
+                                if (target !== undefined) {
+                                    left = target;
+                                    done = true;
+                                }
+                            } else {
+                                left++;
+                                done = true;
+                            }
+                            if (done) scrollTo(left, 0, "horizontal");
+                        }
+                        if (!done) {
+                            right = Math.min(mangledCols.length, right + 1);
+                            scrollTo(right - 1 - rowMarkerOffset, 0, "horizontal");
+                        }
+                    } else if (x === -1) {
+                        // motion left
+                        let done = false;
+                        if (right > col + 1) {
+                            if (disallowed.length > 0) {
+                                const target = range(right - 1, col, -1).find(
+                                    n => !disallowed.includes(n - rowMarkerOffset)
+                                );
+                                if (target !== undefined) {
+                                    right = target;
+                                    done = true;
+                                }
+                            } else {
+                                right--;
+                                done = true;
+                            }
+                            if (done) scrollTo(right - rowMarkerOffset, 0, "horizontal");
+                        }
+                        if (!done) {
+                            left = Math.max(rowMarkerOffset, left - 1);
+                            scrollTo(left - rowMarkerOffset, 0, "horizontal");
+                        }
+                    } else {
+                        assertNever(x);
+                    }
                 }
             }
-        }
 
-        setCurrent(
-            {
-                cell: gridSelection.current.cell,
-                range: {
-                    x: left,
-                    y: top,
-                    width: right - left,
-                    height: bottom - top,
+            setCurrent(
+                {
+                    cell: gridSelection.current.cell,
+                    range: {
+                        x: left,
+                        y: top,
+                        width: right - left,
+                        height: bottom - top,
+                    },
                 },
-            },
-            true,
-            false,
-            "keyboard-select"
-        );
-    },
-    [
-        getCellsForSelection,
-        getSelectionRowLimits,
-        gridSelection,
-        mangledCols.length,
-        rowMarkerOffset,
-        rows,
-        scrollTo,
-        setCurrent,
-    ]
+                true,
+                false,
+                "keyboard-select"
+            );
+        },
+        [
+            getCellsForSelection,
+            getSelectionRowLimits,
+            gridSelection,
+            mangledCols.length,
+            rowMarkerOffset,
+            rows,
+            scrollTo,
+            setCurrent,
+        ]
     );
 
     const scrollToActiveCellRef = React.useRef(scrollToActiveCell);
@@ -2986,217 +2030,217 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
     const updateSelectedCell = React.useCallback(
         (col: number, row: number, fromEditingTrailingRow: boolean, freeMove: boolean): boolean => {
-        const rowMax = mangledRows - (fromEditingTrailingRow ? 0 : 1);
-        col = clamp(col, rowMarkerOffset, columns.length - 1 + rowMarkerOffset);
-        row = clamp(row, 0, rowMax);
+            const rowMax = mangledRows - (fromEditingTrailingRow ? 0 : 1);
+            col = clamp(col, rowMarkerOffset, columns.length - 1 + rowMarkerOffset);
+            row = clamp(row, 0, rowMax);
 
-        const curCol = currentCell?.[0];
-        const curRow = currentCell?.[1];
+            const curCol = currentCell?.[0];
+            const curRow = currentCell?.[1];
 
-        if (col === curCol && row === curRow) return false;
-        if (freeMove && gridSelection.current !== undefined) {
-            const newStack = [...gridSelection.current.rangeStack];
-            if (gridSelection.current.range.width > 1 || gridSelection.current.range.height > 1) {
-                newStack.push(gridSelection.current.range);
-            }
-            setGridSelection(
-                {
-                    ...gridSelection,
-                    current: {
+            if (col === curCol && row === curRow) return false;
+            if (freeMove && gridSelection.current !== undefined) {
+                const newStack = [...gridSelection.current.rangeStack];
+                if (gridSelection.current.range.width > 1 || gridSelection.current.range.height > 1) {
+                    newStack.push(gridSelection.current.range);
+                }
+                setGridSelection(
+                    {
+                        ...gridSelection,
+                        current: {
+                            cell: [col, row],
+                            range: { x: col, y: row, width: 1, height: 1 },
+                            rangeStack: newStack,
+                        },
+                    },
+                    true
+                );
+            } else {
+                setCurrent(
+                    {
                         cell: [col, row],
                         range: { x: col, y: row, width: 1, height: 1 },
-                        rangeStack: newStack,
                     },
-                },
-                true
-            );
-        } else {
-            setCurrent(
-                {
-                    cell: [col, row],
-                    range: { x: col, y: row, width: 1, height: 1 },
-                },
-                true,
-                false,
-                "keyboard-nav"
-            );
-        }
+                    true,
+                    false,
+                    "keyboard-nav"
+                );
+            }
 
-        if (lastSent.current !== undefined && lastSent.current[0] === col && lastSent.current[1] === row) {
-            lastSent.current = undefined;
-        }
+            if (lastSent.current !== undefined && lastSent.current[0] === col && lastSent.current[1] === row) {
+                lastSent.current = undefined;
+            }
 
-        if (scrollToActiveCellRef.current) {
-            // Add padding to ensure the row is fully visible, especially for the last row
-            const paddingY = 20;
-            scrollTo(col - rowMarkerOffset, row, "both", 0, paddingY);
-        }
+            if (scrollToActiveCellRef.current) {
+                // Add padding to ensure the row is fully visible, especially for the last row
+                const paddingY = 20;
+                scrollTo(col - rowMarkerOffset, row, "both", 0, paddingY);
+            }
 
-        return true;
-    },
-    [
-        mangledRows,
-        rowMarkerOffset,
-        columns.length,
-        currentCell,
-        gridSelection,
-        scrollTo,
-        setGridSelection,
-        setCurrent,
-    ]
+            return true;
+        },
+        [
+            mangledRows,
+            rowMarkerOffset,
+            columns.length,
+            currentCell,
+            gridSelection,
+            scrollTo,
+            setGridSelection,
+            setCurrent,
+        ]
     );
 
     const onFinishEditing = React.useCallback(
         (newValue: GridCell | undefined, movement: readonly [-1 | 0 | 1, -1 | 0 | 1]) => {
-        // Use refs to get current state (avoids stale closure issues)
-        const currentOverlay = overlayRef.current;
-        const isGhostMode = ghostInputVisibleRef.current;
+            // Use refs to get current state (avoids stale closure issues)
+            const currentOverlay = overlayRef.current;
+            const isGhostMode = ghostInputVisibleRef.current;
 
-        // Read value from GhostInput if available (even if isGhostMode is false)
-        // This handles cases where editing is completed by clicking outside
-        let finalValue = newValue;
-        const ghostText = ghostInputRef.current?.getValue() ?? "";
+            // Read value from GhostInput if available (even if isGhostMode is false)
+            // This handles cases where editing is completed by clicking outside
+            let finalValue = newValue;
+            const ghostText = ghostInputRef.current?.getValue() ?? "";
 
-        // IMPORTANT: For Custom cells, the custom editor provides the value via newValue.
-        // We should NOT try to use ghostText for Custom cells because:
-        // 1. Custom cells have their own editors that handle input directly
-        // 2. ghostText might be stale or contain the initial keystroke only
-        // 3. The custom editor's onFinishedEditing callback provides the correct finalValue
-        const isCustomCell = currentOverlay?.content?.kind === GridCellKind.Custom;
+            // IMPORTANT: For Custom cells, the custom editor provides the value via newValue.
+            // We should NOT try to use ghostText for Custom cells because:
+            // 1. Custom cells have their own editors that handle input directly
+            // 2. ghostText might be stale or contain the initial keystroke only
+            // 3. The custom editor's onFinishedEditing callback provides the correct finalValue
+            const isCustomCell = currentOverlay?.content?.kind === GridCellKind.Custom;
 
-        if (currentOverlay?.cell !== undefined && ghostText.length > 0 && currentOverlay.content !== undefined && !isCustomCell) {
-            // Create a new cell value based on the GhostInput text
-            // Important: Update both 'data' and 'displayData' for proper display
-            const cellContent = currentOverlay.content;
-            if (cellContent.kind === GridCellKind.Text) {
-                finalValue = { ...cellContent, data: ghostText, displayData: ghostText };
-            } else if (cellContent.kind === GridCellKind.Number) {
-                const num = Number.parseFloat(ghostText);
-                const numVal = Number.isNaN(num) ? 0 : num;
-                finalValue = { ...cellContent, data: numVal, displayData: numVal.toLocaleString() };
-            } else if (cellContent.kind === GridCellKind.Uri) {
-                finalValue = { ...cellContent, data: ghostText, displayData: ghostText };
-            } else if (cellContent.kind === GridCellKind.Markdown) {
-                finalValue = { ...cellContent, data: ghostText };
-            }
-        } else if (isCustomCell) {
-            // For Custom cells, use newValue from the custom editor
-            // Don't modify it based on ghostText
-            finalValue = newValue;
-        }
-
-        // When GhostInput is empty but newValue comes from overlay editor (e.g., Enter/double-click edit mode),
-        // ensure displayData matches data for text cells to fix display issues
-        if (finalValue !== undefined && ghostText.length === 0) {
-            if (finalValue.kind === GridCellKind.Text && finalValue.data !== finalValue.displayData) {
-                finalValue = { ...finalValue, displayData: finalValue.data };
-            } else if (finalValue.kind === GridCellKind.Number) {
-                const formatted = finalValue.data !== undefined ? finalValue.data.toLocaleString() : "0";
-                if (finalValue.displayData !== formatted) {
-                    finalValue = { ...finalValue, displayData: formatted };
+            if (currentOverlay?.cell !== undefined && ghostText.length > 0 && currentOverlay.content !== undefined && !isCustomCell) {
+                // Create a new cell value based on the GhostInput text
+                // Important: Update both 'data' and 'displayData' for proper display
+                const cellContent = currentOverlay.content;
+                if (cellContent.kind === GridCellKind.Text) {
+                    finalValue = { ...cellContent, data: ghostText, displayData: ghostText };
+                } else if (cellContent.kind === GridCellKind.Number) {
+                    const num = Number.parseFloat(ghostText);
+                    const numVal = Number.isNaN(num) ? 0 : num;
+                    finalValue = { ...cellContent, data: numVal, displayData: numVal.toLocaleString() };
+                } else if (cellContent.kind === GridCellKind.Uri) {
+                    finalValue = { ...cellContent, data: ghostText, displayData: ghostText };
+                } else if (cellContent.kind === GridCellKind.Markdown) {
+                    finalValue = { ...cellContent, data: ghostText };
                 }
-            } else if (finalValue.kind === GridCellKind.Uri && finalValue.data !== finalValue.displayData) {
-                finalValue = { ...finalValue, displayData: finalValue.data };
-            }
-        }
-
-        // Check if the value actually changed by comparing data fields
-        const originalContent = currentOverlay?.content;
-        const hasValueChanged = (): boolean => {
-            if (finalValue === undefined || originalContent === undefined) return false;
-            if (finalValue.kind !== originalContent.kind) return true;
-
-            // Compare based on cell type
-            switch (finalValue.kind) {
-                case GridCellKind.Text:
-                case GridCellKind.Uri:
-                case GridCellKind.Markdown:
-                    return (finalValue as any).data !== (originalContent as any).data;
-                case GridCellKind.Number:
-                    return (finalValue as any).data !== (originalContent as any).data;
-                case GridCellKind.Boolean:
-                    return (finalValue as any).data !== (originalContent as any).data;
-                default:
-                    // For other cell types, assume changed
-                    return true;
-            }
-        };
-
-        if (currentOverlay?.cell !== undefined && finalValue !== undefined && isEditableGridCell(finalValue) && hasValueChanged()) {
-            mangledOnCellsEdited([{ location: currentOverlay.cell, value: finalValue }]);
-            window.requestAnimationFrame(() => {
-                gridRef.current?.damage([
-                    {
-                        cell: currentOverlay.cell,
-                    },
-                ]);
-            });
-        }
-        // Clear GhostInput and hide it (direct DOM manipulation to avoid re-render)
-        ghostInputRef.current?.clear();
-        ghostInputRef.current?.setVisible(false);
-        setGhostInputVisible(false);
-
-        focus(true);
-        // CRITICAL: Reset overlayRef.current immediately (before React re-render)
-        // This ensures onGhostCompositionStart sees undefined when checking
-        // overlayRef.current === undefined for the next cell edit
-        overlayRef.current = undefined;
-        setOverlay(undefined);
-
-        const [movX, movY] = movement;
-        if (gridSelection.current !== undefined && (movX !== 0 || movY !== 0)) {
-            const isEditingLastRow = gridSelection.current.cell[1] === mangledRows - 1;
-
-            if (isEditingLastRow && movY === 1) {
-                onFinishedEditing?.(newValue, [0, 0]);
-                return;
+            } else if (isCustomCell) {
+                // For Custom cells, use newValue from the custom editor
+                // Don't modify it based on ghostText
+                finalValue = newValue;
             }
 
-            const isEditingLastCol =
-                gridSelection.current.cell[0] === mangledCols.length - 1 && newValue !== undefined;
-            let updateSelected = true;
-            if (isEditingLastRow && movY === 1 && onRowAppended !== undefined) {
-                updateSelected = false;
-                const col = gridSelection.current.cell[0] + movX;
-                const customTargetColumn = getCustomNewRowTargetColumn(col);
-                void appendRow(customTargetColumn ?? col, false);
+            // When GhostInput is empty but newValue comes from overlay editor (e.g., Enter/double-click edit mode),
+            // ensure displayData matches data for text cells to fix display issues
+            if (finalValue !== undefined && ghostText.length === 0) {
+                if (finalValue.kind === GridCellKind.Text && finalValue.data !== finalValue.displayData) {
+                    finalValue = { ...finalValue, displayData: finalValue.data };
+                } else if (finalValue.kind === GridCellKind.Number) {
+                    const formatted = finalValue.data !== undefined ? finalValue.data.toLocaleString() : "0";
+                    if (finalValue.displayData !== formatted) {
+                        finalValue = { ...finalValue, displayData: formatted };
+                    }
+                } else if (finalValue.kind === GridCellKind.Uri && finalValue.data !== finalValue.displayData) {
+                    finalValue = { ...finalValue, displayData: finalValue.data };
+                }
             }
-            if (isEditingLastCol && movX === 1 && onColumnAppended !== undefined) {
-                updateSelected = false;
-                const row = gridSelection.current.cell[1] + movY;
-                void appendColumn(row, false);
-            }
-            if (updateSelected) {
-                const newCol = clamp(gridSelection.current.cell[0] + movX, rowMarkerOffset, mangledCols.length - 1);
-                const newRow = clamp(gridSelection.current.cell[1] + movY, 0, mangledRows - 1);
 
-                updateSelectedCell(newCol, newRow, isEditingLastRow, false);
+            // Check if the value actually changed by comparing data fields
+            const originalContent = currentOverlay?.content;
+            const hasValueChanged = (): boolean => {
+                if (finalValue === undefined || originalContent === undefined) return false;
+                if (finalValue.kind !== originalContent.kind) return true;
 
-                // Re-focus GhostInput after cell selection update
-                // This ensures IME input works immediately after navigation
+                // Compare based on cell type
+                switch (finalValue.kind) {
+                    case GridCellKind.Text:
+                    case GridCellKind.Uri:
+                    case GridCellKind.Markdown:
+                        return (finalValue as any).data !== (originalContent as any).data;
+                    case GridCellKind.Number:
+                        return (finalValue as any).data !== (originalContent as any).data;
+                    case GridCellKind.Boolean:
+                        return (finalValue as any).data !== (originalContent as any).data;
+                    default:
+                        // For other cell types, assume changed
+                        return true;
+                }
+            };
+
+            if (currentOverlay?.cell !== undefined && finalValue !== undefined && isEditableGridCell(finalValue) && hasValueChanged()) {
+                mangledOnCellsEdited([{ location: currentOverlay.cell, value: finalValue }]);
                 window.requestAnimationFrame(() => {
-                    ghostInputRef.current?.focus();
+                    gridRef.current?.damage([
+                        {
+                            cell: currentOverlay.cell,
+                        },
+                    ]);
                 });
             }
-        }
-        onFinishedEditing?.(newValue, movement);
-    },
-    [
-        focus,
-        gridSelection,
-        onFinishedEditing,
-        mangledOnCellsEdited,
-        mangledRows,
-        updateSelectedCell,
-        mangledCols.length,
-        appendRow,
-        appendColumn,
-        onRowAppended,
-        onColumnAppended,
-        getCustomNewRowTargetColumn,
-        rowMarkerOffset,
-    ]
+            // Clear GhostInput and hide it (direct DOM manipulation to avoid re-render)
+            ghostInputRef.current?.clear();
+            ghostInputRef.current?.setVisible(false);
+            setGhostInputVisible(false);
+
+            focus(true);
+            // CRITICAL: Reset overlayRef.current immediately (before React re-render)
+            // This ensures onGhostCompositionStart sees undefined when checking
+            // overlayRef.current === undefined for the next cell edit
+            overlayRef.current = undefined;
+            setOverlay(undefined);
+
+            const [movX, movY] = movement;
+            if (gridSelection.current !== undefined && (movX !== 0 || movY !== 0)) {
+                const isEditingLastRow = gridSelection.current.cell[1] === mangledRows - 1;
+
+                if (isEditingLastRow && movY === 1) {
+                    onFinishedEditing?.(newValue, [0, 0]);
+                    return;
+                }
+
+                const isEditingLastCol =
+                    gridSelection.current.cell[0] === mangledCols.length - 1 && newValue !== undefined;
+                let updateSelected = true;
+                if (isEditingLastRow && movY === 1 && onRowAppended !== undefined) {
+                    updateSelected = false;
+                    const col = gridSelection.current.cell[0] + movX;
+                    const customTargetColumn = getCustomNewRowTargetColumn(col);
+                    void appendRow(customTargetColumn ?? col, false);
+                }
+                if (isEditingLastCol && movX === 1 && onColumnAppended !== undefined) {
+                    updateSelected = false;
+                    const row = gridSelection.current.cell[1] + movY;
+                    void appendColumn(row, false);
+                }
+                if (updateSelected) {
+                    const newCol = clamp(gridSelection.current.cell[0] + movX, rowMarkerOffset, mangledCols.length - 1);
+                    const newRow = clamp(gridSelection.current.cell[1] + movY, 0, mangledRows - 1);
+
+                    updateSelectedCell(newCol, newRow, isEditingLastRow, false);
+
+                    // Re-focus GhostInput after cell selection update
+                    // This ensures IME input works immediately after navigation
+                    window.requestAnimationFrame(() => {
+                        ghostInputRef.current?.focus();
+                    });
+                }
+            }
+            onFinishedEditing?.(newValue, movement);
+        },
+        [
+            focus,
+            gridSelection,
+            onFinishedEditing,
+            mangledOnCellsEdited,
+            mangledRows,
+            updateSelectedCell,
+            mangledCols.length,
+            appendRow,
+            appendColumn,
+            onRowAppended,
+            onColumnAppended,
+            getCustomNewRowTargetColumn,
+            rowMarkerOffset,
+        ]
     );
 
     const overlayIDRef = React.useRef<string | null>(null);
@@ -3207,40 +2251,40 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
     const deleteRange = React.useCallback(
         (r: Rectangle) => {
-        focus();
-        const editList: EditListItem[] = [];
-        for (let x = r.x; x < r.x + r.width; x++) {
-            for (let y = r.y; y < r.y + r.height; y++) {
-                const cellValue = getCellContent([x - rowMarkerOffset, y]);
-                if (!cellValue.allowOverlay && cellValue.kind !== GridCellKind.Boolean) continue;
-                let newVal: InnerGridCell | undefined = undefined;
-                if (cellValue.kind === GridCellKind.Custom) {
-                    const toDelete = getCellRenderer(cellValue);
-                    const editor = toDelete?.provideEditor?.({
-                        ...cellValue,
-                        location: [x - rowMarkerOffset, y],
-                    });
-                    if (toDelete?.onDelete !== undefined) {
-                        newVal = toDelete.onDelete(cellValue);
-                    } else if (isObjectEditorCallbackResult(editor)) {
-                        newVal = editor?.deletedValue?.(cellValue);
+            focus();
+            const editList: EditListItem[] = [];
+            for (let x = r.x; x < r.x + r.width; x++) {
+                for (let y = r.y; y < r.y + r.height; y++) {
+                    const cellValue = getCellContent([x - rowMarkerOffset, y]);
+                    if (!cellValue.allowOverlay && cellValue.kind !== GridCellKind.Boolean) continue;
+                    let newVal: InnerGridCell | undefined = undefined;
+                    if (cellValue.kind === GridCellKind.Custom) {
+                        const toDelete = getCellRenderer(cellValue);
+                        const editor = toDelete?.provideEditor?.({
+                            ...cellValue,
+                            location: [x - rowMarkerOffset, y],
+                        });
+                        if (toDelete?.onDelete !== undefined) {
+                            newVal = toDelete.onDelete(cellValue);
+                        } else if (isObjectEditorCallbackResult(editor)) {
+                            newVal = editor?.deletedValue?.(cellValue);
+                        }
+                    } else if (
+                        (isEditableGridCell(cellValue) && cellValue.allowOverlay) ||
+                        cellValue.kind === GridCellKind.Boolean
+                    ) {
+                        const toDelete = getCellRenderer(cellValue);
+                        newVal = toDelete?.onDelete?.(cellValue);
                     }
-                } else if (
-                    (isEditableGridCell(cellValue) && cellValue.allowOverlay) ||
-                    cellValue.kind === GridCellKind.Boolean
-                ) {
-                    const toDelete = getCellRenderer(cellValue);
-                    newVal = toDelete?.onDelete?.(cellValue);
-                }
-                if (newVal !== undefined && !isInnerOnlyCell(newVal) && isEditableGridCell(newVal)) {
-                    editList.push({ location: [x, y], value: newVal });
+                    if (newVal !== undefined && !isInnerOnlyCell(newVal) && isEditableGridCell(newVal)) {
+                        editList.push({ location: [x, y], value: newVal });
+                    }
                 }
             }
-        }
-        mangledOnCellsEdited(editList);
-        gridRef.current?.damage(editList.map(x => ({ cell: x.location })));
-    },
-    [focus, getCellContent, getCellRenderer, mangledOnCellsEdited, rowMarkerOffset]
+            mangledOnCellsEdited(editList);
+            gridRef.current?.damage(editList.map(x => ({ cell: x.location })));
+        },
+        [focus, getCellContent, getCellRenderer, mangledOnCellsEdited, rowMarkerOffset]
     );
 
     const overlayOpen = overlay !== undefined;

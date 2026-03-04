@@ -17,7 +17,7 @@ import isArray from "lodash/isArray.js";
 import { assertNever } from "../../common/support.js";
 import { browserIsFirefox } from "../../common/browser-detect.js";
 import { useResizeDetector } from "react-resize-detector";
-import type { DataEditorProps } from "../data-editor.js";
+import type { DataEditorProps } from "../../data-editor/data-editor-types.js";
 import noop from "lodash/noop.js";
 
 faker.seed(1337);
@@ -856,9 +856,9 @@ const numRows = 1000;
 
 let staticDataCache:
     | {
-          cols: GridColumnWithMockingInfo[];
-          data: ContentCache;
-      }
+        cols: GridColumnWithMockingInfo[];
+        data: ContentCache;
+    }
     | undefined;
 
 function getStaticData() {
