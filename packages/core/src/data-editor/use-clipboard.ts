@@ -56,6 +56,7 @@ export function useClipboard(args: UseClipboardArgs): ClipboardHandlers {
     const {
         gridSelection,
         gridRef,
+        ghostInputRef,
         scrollRef,
         canvasRef,
         abortControllerRef,
@@ -124,7 +125,8 @@ export function useClipboard(args: UseClipboardArgs): ClipboardHandlers {
         const selectedRows = gridSelection.rows;
         const focused =
             scrollRef.current?.contains(document.activeElement) === true ||
-            canvasRef.current?.contains(document.activeElement) === true;
+            canvasRef.current?.contains(document.activeElement) === true ||
+            ghostInputRef.current?.isFocused?.() === true;
 
         let target: Item | undefined;
 
@@ -242,7 +244,8 @@ export function useClipboard(args: UseClipboardArgs): ClipboardHandlers {
         const focused =
             ignoreFocus === true ||
             scrollRef.current?.contains(document.activeElement) === true ||
-            canvasRef.current?.contains(document.activeElement) === true;
+            canvasRef.current?.contains(document.activeElement) === true ||
+            ghostInputRef.current?.isFocused?.() === true;
 
         const selectedColumns = gridSelection.columns;
         const selectedRows = gridSelection.rows;
@@ -336,7 +339,8 @@ export function useClipboard(args: UseClipboardArgs): ClipboardHandlers {
         if (!keybindings.cut) return;
         const focused =
             scrollRef.current?.contains(document.activeElement) === true ||
-            canvasRef.current?.contains(document.activeElement) === true;
+            canvasRef.current?.contains(document.activeElement) === true ||
+            ghostInputRef.current?.isFocused?.() === true;
 
         if (!focused) return;
         await onCopy(e);

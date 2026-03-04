@@ -13802,7 +13802,7 @@ function _temp2$2() {
 function _temp$4(c) {
   return c.sourceIndex;
 }
-const DataGrid = (p2, forwardedRef) => {
+const DataGrid$1 = (p2, forwardedRef) => {
   var _p$translateX, _p$translateY, _experimental$eventTa;
   const {
     width,
@@ -14207,7 +14207,7 @@ const DataGrid = (p2, forwardedRef) => {
     stickyShadow
   ] });
 };
-const DataGrid$1 = React.memo(React.forwardRef(DataGrid));
+const DataGrid = React.memo(React.forwardRef(DataGrid$1));
 function offsetColumnSize(column, width, min, max) {
   var _column$growOffset;
   return clamp$1(Math.round(width - ((_column$growOffset = column.growOffset) !== null && _column$growOffset !== void 0 ? _column$growOffset : 0)), Math.ceil(min), Math.floor(max));
@@ -14580,7 +14580,7 @@ const DataGridDnd = (p2) => {
   const t10 = resizeCol !== void 0;
   let t11;
   if ($2[66] !== canResize || $2[67] !== dragColActive || $2[68] !== dragOffset || $2[69] !== getMangledCellContent || $2[70] !== gridRef || $2[71] !== onDragStartImpl || $2[72] !== onHeaderIndicatorClickMangled || $2[73] !== onHeaderMenuClickMangled || $2[74] !== onItemHoveredImpl || $2[75] !== onMouseDownImpl || $2[76] !== onMouseMove || $2[77] !== onMouseUpImpl || $2[78] !== p2.accessibilityHeight || $2[79] !== p2.canvasRef || $2[80] !== p2.cellXOffset || $2[81] !== p2.cellYOffset || $2[82] !== p2.columns || $2[83] !== p2.disabledRows || $2[84] !== p2.drawCell || $2[85] !== p2.drawFocusRing || $2[86] !== p2.drawHeader || $2[87] !== p2.enableGroups || $2[88] !== p2.eventTargetRef || $2[89] !== p2.experimental || $2[90] !== p2.fillHandle || $2[91] !== p2.firstColAccessible || $2[92] !== p2.fixedShadowX || $2[93] !== p2.fixedShadowY || $2[94] !== p2.freezeColumns || $2[95] !== p2.freezeTrailingRows || $2[96] !== p2.getCellRenderer || $2[97] !== p2.getGroupDetails || $2[98] !== p2.getRowThemeOverride || $2[99] !== p2.groupHeaderHeight || $2[100] !== p2.groupHeaderHeights || $2[101] !== p2.groupLevels || $2[102] !== p2.hasAppendRow || $2[103] !== p2.headerHeight || $2[104] !== p2.headerIcons || $2[105] !== p2.height || $2[106] !== p2.highlightRegions || $2[107] !== p2.imageWindowLoader || $2[108] !== p2.isDraggable || $2[109] !== p2.isFilling || $2[110] !== p2.isFocused || $2[111] !== p2.onCanvasBlur || $2[112] !== p2.onCanvasFocused || $2[113] !== p2.onCellFocused || $2[114] !== p2.onContextMenu || $2[115] !== p2.onDragEnd || $2[116] !== p2.onDragLeave || $2[117] !== p2.onDragOverCell || $2[118] !== p2.onDrop || $2[119] !== p2.onKeyDown || $2[120] !== p2.onKeyUp || $2[121] !== p2.onMouseMove || $2[122] !== p2.prelightCells || $2[123] !== p2.resizeIndicator || $2[124] !== p2.rowHeight || $2[125] !== p2.rows || $2[126] !== p2.selection || $2[127] !== p2.smoothScrollX || $2[128] !== p2.smoothScrollY || $2[129] !== p2.theme || $2[130] !== p2.translateX || $2[131] !== p2.translateY || $2[132] !== p2.verticalBorder || $2[133] !== p2.width || $2[134] !== resizeCol || $2[135] !== t10) {
-    t11 = /* @__PURE__ */ jsx(DataGrid$1, { accessibilityHeight: p2.accessibilityHeight, canvasRef: p2.canvasRef, cellXOffset: p2.cellXOffset, cellYOffset: p2.cellYOffset, columns: p2.columns, disabledRows: p2.disabledRows, drawFocusRing: p2.drawFocusRing, drawHeader: p2.drawHeader, drawCell: p2.drawCell, enableGroups: p2.enableGroups, groupLevels: p2.groupLevels, groupHeaderHeights: p2.groupHeaderHeights, eventTargetRef: p2.eventTargetRef, experimental: p2.experimental, fillHandle: p2.fillHandle, firstColAccessible: p2.firstColAccessible, fixedShadowX: p2.fixedShadowX, fixedShadowY: p2.fixedShadowY, freezeColumns: p2.freezeColumns, getCellRenderer: p2.getCellRenderer, getGroupDetails: p2.getGroupDetails, getRowThemeOverride: p2.getRowThemeOverride, groupHeaderHeight: p2.groupHeaderHeight, headerHeight: p2.headerHeight, headerIcons: p2.headerIcons, height: p2.height, highlightRegions: p2.highlightRegions, imageWindowLoader: p2.imageWindowLoader, resizeColumn: resizeCol, isDraggable: p2.isDraggable, isFilling: p2.isFilling, isFocused: p2.isFocused, onCanvasBlur: p2.onCanvasBlur, onCanvasFocused: p2.onCanvasFocused, onCellFocused: p2.onCellFocused, onContextMenu: p2.onContextMenu, onDragEnd: p2.onDragEnd, onDragLeave: p2.onDragLeave, onDragOverCell: p2.onDragOverCell, onDrop: p2.onDrop, onKeyDown: p2.onKeyDown, onKeyUp: p2.onKeyUp, onMouseMove: p2.onMouseMove, prelightCells: p2.prelightCells, rowHeight: p2.rowHeight, rows: p2.rows, selection: p2.selection, smoothScrollX: p2.smoothScrollX, smoothScrollY: p2.smoothScrollY, theme: p2.theme, freezeTrailingRows: p2.freezeTrailingRows, hasAppendRow: p2.hasAppendRow, translateX: p2.translateX, translateY: p2.translateY, resizeIndicator: p2.resizeIndicator, verticalBorder: p2.verticalBorder, width: p2.width, getCellContent: getMangledCellContent, isResizing: t10, onHeaderMenuClick: onHeaderMenuClickMangled, onHeaderIndicatorClick: onHeaderIndicatorClickMangled, isDragging: dragColActive, onItemHovered: onItemHoveredImpl, onDragStart: onDragStartImpl, onMouseDown: onMouseDownImpl, allowResize: canResize, onMouseUp: onMouseUpImpl, dragAndDropState: dragOffset, onMouseMoveRaw: onMouseMove, ref: gridRef });
+    t11 = /* @__PURE__ */ jsx(DataGrid, { accessibilityHeight: p2.accessibilityHeight, canvasRef: p2.canvasRef, cellXOffset: p2.cellXOffset, cellYOffset: p2.cellYOffset, columns: p2.columns, disabledRows: p2.disabledRows, drawFocusRing: p2.drawFocusRing, drawHeader: p2.drawHeader, drawCell: p2.drawCell, enableGroups: p2.enableGroups, groupLevels: p2.groupLevels, groupHeaderHeights: p2.groupHeaderHeights, eventTargetRef: p2.eventTargetRef, experimental: p2.experimental, fillHandle: p2.fillHandle, firstColAccessible: p2.firstColAccessible, fixedShadowX: p2.fixedShadowX, fixedShadowY: p2.fixedShadowY, freezeColumns: p2.freezeColumns, getCellRenderer: p2.getCellRenderer, getGroupDetails: p2.getGroupDetails, getRowThemeOverride: p2.getRowThemeOverride, groupHeaderHeight: p2.groupHeaderHeight, headerHeight: p2.headerHeight, headerIcons: p2.headerIcons, height: p2.height, highlightRegions: p2.highlightRegions, imageWindowLoader: p2.imageWindowLoader, resizeColumn: resizeCol, isDraggable: p2.isDraggable, isFilling: p2.isFilling, isFocused: p2.isFocused, onCanvasBlur: p2.onCanvasBlur, onCanvasFocused: p2.onCanvasFocused, onCellFocused: p2.onCellFocused, onContextMenu: p2.onContextMenu, onDragEnd: p2.onDragEnd, onDragLeave: p2.onDragLeave, onDragOverCell: p2.onDragOverCell, onDrop: p2.onDrop, onKeyDown: p2.onKeyDown, onKeyUp: p2.onKeyUp, onMouseMove: p2.onMouseMove, prelightCells: p2.prelightCells, rowHeight: p2.rowHeight, rows: p2.rows, selection: p2.selection, smoothScrollX: p2.smoothScrollX, smoothScrollY: p2.smoothScrollY, theme: p2.theme, freezeTrailingRows: p2.freezeTrailingRows, hasAppendRow: p2.hasAppendRow, translateX: p2.translateX, translateY: p2.translateY, resizeIndicator: p2.resizeIndicator, verticalBorder: p2.verticalBorder, width: p2.width, getCellContent: getMangledCellContent, isResizing: t10, onHeaderMenuClick: onHeaderMenuClickMangled, onHeaderIndicatorClick: onHeaderIndicatorClickMangled, isDragging: dragColActive, onItemHovered: onItemHoveredImpl, onDragStart: onDragStartImpl, onMouseDown: onMouseDownImpl, allowResize: canResize, onMouseUp: onMouseUpImpl, dragAndDropState: dragOffset, onMouseMoveRaw: onMouseMove, ref: gridRef });
     $2[66] = canResize;
     $2[67] = dragColActive;
     $2[68] = dragOffset;
@@ -16861,7 +16861,7 @@ function useAutoscroll(scrollDirection, scrollRef, onScroll) {
   React__default.useEffect(t1, t2);
 }
 function useClipboard(args) {
-  const $2 = compilerRuntimeExports.c(38);
+  const $2 = compilerRuntimeExports.c(41);
   const {
     state,
     keybindings,
@@ -16877,6 +16877,7 @@ function useClipboard(args) {
   const {
     gridSelection,
     gridRef,
+    ghostInputRef,
     scrollRef,
     canvasRef,
     abortControllerRef,
@@ -16889,9 +16890,9 @@ function useClipboard(args) {
     getCellRenderer
   } = state;
   let t0;
-  if ($2[0] !== canvasRef || $2[1] !== coercePasteValue || $2[2] !== getCellRenderer || $2[3] !== getMangledCellContent || $2[4] !== gridRef || $2[5] !== gridSelection || $2[6] !== keybindings.paste || $2[7] !== mangledCols || $2[8] !== mangledOnCellsEdited || $2[9] !== mangledRows || $2[10] !== onPaste || $2[11] !== rowMarkerOffset || $2[12] !== rows || $2[13] !== scrollRef) {
+  if ($2[0] !== canvasRef || $2[1] !== coercePasteValue || $2[2] !== getCellRenderer || $2[3] !== getMangledCellContent || $2[4] !== ghostInputRef || $2[5] !== gridRef || $2[6] !== gridSelection || $2[7] !== keybindings.paste || $2[8] !== mangledCols || $2[9] !== mangledOnCellsEdited || $2[10] !== mangledRows || $2[11] !== onPaste || $2[12] !== rowMarkerOffset || $2[13] !== rows || $2[14] !== scrollRef) {
     t0 = async (e) => {
-      var _scrollRef$current, _canvasRef$current;
+      var _scrollRef$current, _canvasRef$current, _ghostInputRef$curren, _ghostInputRef$curren2;
       if (!keybindings.paste) {
         return;
       }
@@ -16944,7 +16945,7 @@ function useClipboard(args) {
       };
       const selectedColumns = gridSelection.columns;
       const selectedRows = gridSelection.rows;
-      const focused = ((_scrollRef$current = scrollRef.current) === null || _scrollRef$current === void 0 ? void 0 : _scrollRef$current.contains(document.activeElement)) === true || ((_canvasRef$current = canvasRef.current) === null || _canvasRef$current === void 0 ? void 0 : _canvasRef$current.contains(document.activeElement)) === true;
+      const focused = ((_scrollRef$current = scrollRef.current) === null || _scrollRef$current === void 0 ? void 0 : _scrollRef$current.contains(document.activeElement)) === true || ((_canvasRef$current = canvasRef.current) === null || _canvasRef$current === void 0 ? void 0 : _canvasRef$current.contains(document.activeElement)) === true || ((_ghostInputRef$curren = ghostInputRef.current) === null || _ghostInputRef$curren === void 0 || (_ghostInputRef$curren2 = _ghostInputRef$curren.isFocused) === null || _ghostInputRef$curren2 === void 0 ? void 0 : _ghostInputRef$curren2.call(_ghostInputRef$curren)) === true;
       let target_0;
       if (gridSelection.current !== void 0) {
         target_0 = [gridSelection.current.range.x, gridSelection.current.range.y];
@@ -17047,30 +17048,31 @@ function useClipboard(args) {
     $2[1] = coercePasteValue;
     $2[2] = getCellRenderer;
     $2[3] = getMangledCellContent;
-    $2[4] = gridRef;
-    $2[5] = gridSelection;
-    $2[6] = keybindings.paste;
-    $2[7] = mangledCols;
-    $2[8] = mangledOnCellsEdited;
-    $2[9] = mangledRows;
-    $2[10] = onPaste;
-    $2[11] = rowMarkerOffset;
-    $2[12] = rows;
-    $2[13] = scrollRef;
-    $2[14] = t0;
+    $2[4] = ghostInputRef;
+    $2[5] = gridRef;
+    $2[6] = gridSelection;
+    $2[7] = keybindings.paste;
+    $2[8] = mangledCols;
+    $2[9] = mangledOnCellsEdited;
+    $2[10] = mangledRows;
+    $2[11] = onPaste;
+    $2[12] = rowMarkerOffset;
+    $2[13] = rows;
+    $2[14] = scrollRef;
+    $2[15] = t0;
   } else {
-    t0 = $2[14];
+    t0 = $2[15];
   }
   const onPasteInternal = t0;
   useEventListener("paste", onPasteInternal, safeWindow, false, true);
   let t1;
-  if ($2[15] !== abortControllerRef || $2[16] !== canvasRef || $2[17] !== columnsIn || $2[18] !== copyHeaders || $2[19] !== getCellsForSelection || $2[20] !== gridSelection || $2[21] !== keybindings.copy || $2[22] !== rowMarkerOffset || $2[23] !== rows || $2[24] !== scrollRef) {
+  if ($2[16] !== abortControllerRef || $2[17] !== canvasRef || $2[18] !== columnsIn || $2[19] !== copyHeaders || $2[20] !== getCellsForSelection || $2[21] !== ghostInputRef || $2[22] !== gridSelection || $2[23] !== keybindings.copy || $2[24] !== rowMarkerOffset || $2[25] !== rows || $2[26] !== scrollRef) {
     t1 = async (e_0, ignoreFocus) => {
-      var _scrollRef$current2, _canvasRef$current2;
+      var _scrollRef$current2, _canvasRef$current2, _ghostInputRef$curren3, _ghostInputRef$curren4;
       if (!keybindings.copy) {
         return;
       }
-      const focused_0 = ignoreFocus === true || ((_scrollRef$current2 = scrollRef.current) === null || _scrollRef$current2 === void 0 ? void 0 : _scrollRef$current2.contains(document.activeElement)) === true || ((_canvasRef$current2 = canvasRef.current) === null || _canvasRef$current2 === void 0 ? void 0 : _canvasRef$current2.contains(document.activeElement)) === true;
+      const focused_0 = ignoreFocus === true || ((_scrollRef$current2 = scrollRef.current) === null || _scrollRef$current2 === void 0 ? void 0 : _scrollRef$current2.contains(document.activeElement)) === true || ((_canvasRef$current2 = canvasRef.current) === null || _canvasRef$current2 === void 0 ? void 0 : _canvasRef$current2.contains(document.activeElement)) === true || ((_ghostInputRef$curren3 = ghostInputRef.current) === null || _ghostInputRef$curren3 === void 0 || (_ghostInputRef$curren4 = _ghostInputRef$curren3.isFocused) === null || _ghostInputRef$curren4 === void 0 ? void 0 : _ghostInputRef$curren4.call(_ghostInputRef$curren3)) === true;
       const selectedColumns_0 = gridSelection.columns;
       const selectedRows_0 = gridSelection.rows;
       const copyToClipboardWithHeaders = (cells, columnIndexes) => {
@@ -17142,30 +17144,31 @@ function useClipboard(args) {
         }
       }
     };
-    $2[15] = abortControllerRef;
-    $2[16] = canvasRef;
-    $2[17] = columnsIn;
-    $2[18] = copyHeaders;
-    $2[19] = getCellsForSelection;
-    $2[20] = gridSelection;
-    $2[21] = keybindings.copy;
-    $2[22] = rowMarkerOffset;
-    $2[23] = rows;
-    $2[24] = scrollRef;
-    $2[25] = t1;
+    $2[16] = abortControllerRef;
+    $2[17] = canvasRef;
+    $2[18] = columnsIn;
+    $2[19] = copyHeaders;
+    $2[20] = getCellsForSelection;
+    $2[21] = ghostInputRef;
+    $2[22] = gridSelection;
+    $2[23] = keybindings.copy;
+    $2[24] = rowMarkerOffset;
+    $2[25] = rows;
+    $2[26] = scrollRef;
+    $2[27] = t1;
   } else {
-    t1 = $2[25];
+    t1 = $2[27];
   }
   const onCopy = t1;
   useEventListener("copy", onCopy, safeWindow, false, false);
   let t2;
-  if ($2[26] !== canvasRef || $2[27] !== deleteRange || $2[28] !== gridSelection || $2[29] !== keybindings.cut || $2[30] !== onCopy || $2[31] !== onDelete || $2[32] !== scrollRef) {
+  if ($2[28] !== canvasRef || $2[29] !== deleteRange || $2[30] !== ghostInputRef || $2[31] !== gridSelection || $2[32] !== keybindings.cut || $2[33] !== onCopy || $2[34] !== onDelete || $2[35] !== scrollRef) {
     t2 = async (e_1) => {
-      var _scrollRef$current3, _canvasRef$current3;
+      var _scrollRef$current3, _canvasRef$current3, _ghostInputRef$curren5, _ghostInputRef$curren6;
       if (!keybindings.cut) {
         return;
       }
-      const focused_1 = ((_scrollRef$current3 = scrollRef.current) === null || _scrollRef$current3 === void 0 ? void 0 : _scrollRef$current3.contains(document.activeElement)) === true || ((_canvasRef$current3 = canvasRef.current) === null || _canvasRef$current3 === void 0 ? void 0 : _canvasRef$current3.contains(document.activeElement)) === true;
+      const focused_1 = ((_scrollRef$current3 = scrollRef.current) === null || _scrollRef$current3 === void 0 ? void 0 : _scrollRef$current3.contains(document.activeElement)) === true || ((_canvasRef$current3 = canvasRef.current) === null || _canvasRef$current3 === void 0 ? void 0 : _canvasRef$current3.contains(document.activeElement)) === true || ((_ghostInputRef$curren5 = ghostInputRef.current) === null || _ghostInputRef$curren5 === void 0 || (_ghostInputRef$curren6 = _ghostInputRef$curren5.isFocused) === null || _ghostInputRef$curren6 === void 0 ? void 0 : _ghostInputRef$curren6.call(_ghostInputRef$curren5)) === true;
       if (!focused_1) {
         return;
       }
@@ -17191,32 +17194,33 @@ function useClipboard(args) {
         deleteRange(effectiveSelection.current.range);
       }
     };
-    $2[26] = canvasRef;
-    $2[27] = deleteRange;
-    $2[28] = gridSelection;
-    $2[29] = keybindings.cut;
-    $2[30] = onCopy;
-    $2[31] = onDelete;
-    $2[32] = scrollRef;
-    $2[33] = t2;
+    $2[28] = canvasRef;
+    $2[29] = deleteRange;
+    $2[30] = ghostInputRef;
+    $2[31] = gridSelection;
+    $2[32] = keybindings.cut;
+    $2[33] = onCopy;
+    $2[34] = onDelete;
+    $2[35] = scrollRef;
+    $2[36] = t2;
   } else {
-    t2 = $2[33];
+    t2 = $2[36];
   }
   const onCut = t2;
   useEventListener("cut", onCut, safeWindow, false, false);
   let t3;
-  if ($2[34] !== onCopy || $2[35] !== onCut || $2[36] !== onPasteInternal) {
+  if ($2[37] !== onCopy || $2[38] !== onCut || $2[39] !== onPasteInternal) {
     t3 = {
       onCopy,
       onCut,
       onPasteInternal
     };
-    $2[34] = onCopy;
-    $2[35] = onCut;
-    $2[36] = onPasteInternal;
-    $2[37] = t3;
+    $2[37] = onCopy;
+    $2[38] = onCut;
+    $2[39] = onPasteInternal;
+    $2[40] = t3;
   } else {
-    t3 = $2[37];
+    t3 = $2[40];
   }
   return t3;
 }
@@ -17842,6 +17846,7 @@ const GhostInputImpl = (props, ref) => {
           el_0.style.height = `${height}px`;
         }
       },
+      isFocused: () => document.activeElement === textareaRef.current,
       setVisible: (visible) => {
         const el_1 = textareaRef.current;
         if (el_1) {
@@ -17869,6 +17874,11 @@ const GhostInputImpl = (props, ref) => {
   let t4;
   if ($2[3] !== onInput) {
     t4 = (e) => {
+      const inputType = e.nativeEvent.inputType;
+      if (inputType === "insertFromPaste" || inputType === "insertFromDrop") {
+        e.currentTarget.value = "";
+        return;
+      }
       const target = e.currentTarget;
       onInput(target.value, isComposingRef.current);
       autoResize();

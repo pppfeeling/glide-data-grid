@@ -9,6 +9,7 @@ export interface GhostInputRef {
     setValue: (value: string) => void;
     setPosition: (x: number, y: number, width: number, height: number) => void;
     setVisible: (visible: boolean) => void;
+    isFocused: () => boolean;
 }
 
 export interface GhostInputPosition {
@@ -105,6 +106,9 @@ const GhostInputImpl: React.ForwardRefRenderFunction<GhostInputRef, GhostInputPr
                 el.style.height = `${height}px`;
             }
         },
+        isFocused: () => {
+            return document.activeElement === textareaRef.current;
+        },
         setVisible: (visible: boolean) => {
             const el = textareaRef.current;
             if (el) {
@@ -127,6 +131,13 @@ const GhostInputImpl: React.ForwardRefRenderFunction<GhostInputRef, GhostInputPr
 
     const handleInput = React.useCallback(
         (e: React.FormEvent<HTMLTextAreaElement>) => {
+            // Skip paste-originated input - clipboard paste is handled by useClipboard
+            const inputType = (e.nativeEvent as InputEvent).inputType;
+            if (inputType === "insertFromPaste" || inputType === "insertFromDrop") {
+                // Clear the pasted text from textarea so it doesn't interfere
+                e.currentTarget.value = "";
+                return;
+            }
             const target = e.currentTarget;
             onInput(target.value, isComposingRef.current);
             // Auto-resize after input
