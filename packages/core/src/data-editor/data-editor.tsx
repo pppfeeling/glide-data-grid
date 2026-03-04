@@ -2342,6 +2342,9 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
 
             // Check if this is a scroll from a parent container (not from data-editor itself)
             if (scrollRef.current && !scrollRef.current.contains(target)) {
+                // Don't close if scrolling inside the overlay editor (rendered via portal)
+                if (target.closest?.(".gdg-clip-region")) return;
+
                 // Close overlay editor when parent container scrolls
                 setOverlay(undefined);
             }
