@@ -8,24 +8,33 @@ import { useStateWithReactiveInput } from "../common/utils.js";
 function useCallbackRef<T>(
     initialValue: T | null,
     callback: (newValue: T | null, lastValue: T | null) => void
-): React.MutableRefObject<T | null> {
-    const [ref] = React.useState(() => ({
-        value: initialValue,
-        callback,
-        facade: {
-            get current() {
-                return ref.value;
-            },
-            set current(value) {
-                const last = ref.value;
+): React.RefObject<T | null> {
+    const innerRef = React.useRef<{
+        value: T | null;
+        callback: (newValue: T | null, lastValue: T | null) => void;
+        facade: React.RefObject<T | null>;
+    } | null>(null);
+    if (innerRef.current === null) {
+        const state: any = {
+            value: initialValue,
+            callback,
+            facade: {
+                get current() {
+                    return state.value;
+                },
+                set current(value: T | null) {
+                    const last = state.value;
 
-                if (last !== value) {
-                    ref.value = value;
-                    ref.callback(value, last);
-                }
+                    if (last !== value) {
+                        state.value = value;
+                        state.callback(value, last);
+                    }
+                },
             },
-        },
-    }));
+        };
+        innerRef.current = state;
+    }
+    const ref = innerRef.current!;
     ref.callback = callback;
 
     return ref.facade;
@@ -35,7 +44,7 @@ export function useInitialScrollOffset(
     scrollOffsetX: number | undefined,
     scrollOffsetY: number | undefined,
     rowHeight: NonNullable<DataEditorCoreProps["rowHeight"]>,
-    visibleRegionRef: React.MutableRefObject<VisibleRegion>,
+    visibleRegionRef: React.RefObject<VisibleRegion>,
     onDidScroll: () => void
 ) {
     const [visibleRegionY, visibleRegionTy] = React.useMemo(() => {

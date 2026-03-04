@@ -877,7 +877,7 @@ declare interface DataGridDndProps extends Props_3 {
      * @param newSizeWithGrow The new size of the column including any addition pixels added by the grow parameter
      */
     readonly onColumnResizeEnd?: (column: GridColumn, newSize: number, colIndex: number, newSizeWithGrow: number) => void;
-    readonly gridRef?: React_2.MutableRefObject<DataGridRef | null>;
+    readonly gridRef?: React_2.RefObject<DataGridRef | null>;
     readonly maxColumnWidth: number;
     readonly minColumnWidth: number;
     readonly lockColumns: number;
@@ -923,8 +923,8 @@ declare interface DataGridProps {
     readonly groupLevels: number;
     readonly groupHeaderHeights: readonly number[];
     readonly rowHeight: number | ((index: number) => number);
-    readonly canvasRef: React_2.MutableRefObject<HTMLCanvasElement | null> | undefined;
-    readonly eventTargetRef: React_2.MutableRefObject<HTMLDivElement | null> | undefined;
+    readonly canvasRef: React_2.RefObject<HTMLCanvasElement | null> | undefined;
+    readonly eventTargetRef: React_2.RefObject<HTMLDivElement | null> | undefined;
     readonly getCellContent: (cell: Item, forceStrict?: boolean) => InnerGridCell;
     /**
      * Provides additional details about groups to extend group functionality.
@@ -1139,7 +1139,7 @@ declare interface DataGridSearchProps extends Omit<ScrollingDataGridProps, "prel
      * @param newVal The new search value
      */
     readonly onSearchValueChange?: (newVal: string) => void;
-    readonly searchInputRef: React_2.MutableRefObject<HTMLInputElement | null>;
+    readonly searchInputRef: React_2.RefObject<HTMLInputElement | null>;
 }
 
 export declare function decodeHTML(html: string): CopyBuffer | undefined;
@@ -1930,7 +1930,7 @@ export declare const rowStatusCellRenderer: InternalCellRenderer<RowStatusCell>;
 declare interface ScrollingDataGridProps extends Props_2 {
     readonly className: string | undefined;
     readonly onVisibleRegionChanged: ((range: Rectangle, clientWidth: number, clientHeight: number, rightElWidth: number, tx: number, ty: number) => void) | undefined;
-    readonly scrollRef: React_2.MutableRefObject<HTMLDivElement | null> | undefined;
+    readonly scrollRef: React_2.RefObject<HTMLDivElement | null> | undefined;
     /**
      * The overscroll properties are used to allow the grid to scroll past the logical end of the content by a fixed
      * number of pixels. This is useful particularly on the X axis if you allow for resizing columns as it can make

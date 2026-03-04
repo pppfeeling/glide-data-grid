@@ -6,7 +6,7 @@ const msToFullSpeed = 1300;
 
 export function useAutoscroll(
     scrollDirection: GridMouseCellEventArgs["scrollEdge"] | undefined,
-    scrollRef: React.MutableRefObject<HTMLDivElement | null>,
+    scrollRef: React.RefObject<HTMLDivElement | null>,
     onScroll?: () => void
 ) {
     const speedScalar = React.useRef(0);

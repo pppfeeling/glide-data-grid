@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 const useKineticScroll = (
     isEnabled: boolean,
     callback: (scrollLeft: number, scrollTop: number) => void,
-    targetScroller: React.MutableRefObject<HTMLDivElement | null>
+    targetScroller: React.RefObject<HTMLDivElement | null>
 ) => {
     const rafId = useRef<number | null>(null);
     const isTouching = useRef<boolean | null>(null);

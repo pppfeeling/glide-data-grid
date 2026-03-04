@@ -14,8 +14,8 @@ import { drawCell } from "./render/data-grid-render.cells.js";
 
 export interface GridDragAndDropArgs {
     // Canvas ref
-    readonly canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
-    readonly eventTargetRef: React.MutableRefObject<HTMLDivElement | null> | undefined;
+    readonly canvasRef: React.RefObject<HTMLCanvasElement | null>;
+    readonly eventTargetRef: React.RefObject<HTMLDivElement | null> | undefined;
 
     // Geometry
     readonly getBoundsForItem: (canvas: HTMLCanvasElement, col: number, row: number) => Rectangle | undefined;

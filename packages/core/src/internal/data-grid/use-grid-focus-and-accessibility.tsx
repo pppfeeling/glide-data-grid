@@ -39,8 +39,8 @@ export interface DataGridRef {
 
 export interface GridFocusAndAccessibilityArgs {
     // Canvas refs
-    readonly canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
-    readonly canvasPropRef: React.MutableRefObject<HTMLCanvasElement | null> | undefined;
+    readonly canvasRef: React.RefObject<HTMLCanvasElement | null>;
+    readonly canvasPropRef: React.RefObject<HTMLCanvasElement | null> | undefined;
 
     // Geometry
     readonly getBoundsForItem: (canvas: HTMLCanvasElement, col: number, row: number) => Rectangle | undefined;

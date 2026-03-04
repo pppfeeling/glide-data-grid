@@ -72,7 +72,7 @@ export interface DataGridDndProps extends Props {
         newSizeWithGrow: number
     ) => void;
 
-    readonly gridRef?: React.MutableRefObject<DataGridRef | null>;
+    readonly gridRef?: React.RefObject<DataGridRef | null>;
     readonly maxColumnWidth: number;
     readonly minColumnWidth: number;
     readonly lockColumns: number;

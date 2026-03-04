@@ -2959,7 +2959,11 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         onFinishedEditing?.(newValue, movement);
     };
 
-    const [overlayID] = React.useState(() => `gdg-overlay-${idCounter++}`);
+    const overlayIDRef = React.useRef<string | null>(null);
+    if (overlayIDRef.current === null) {
+        overlayIDRef.current = `gdg-overlay-${idCounter++}`;
+    }
+    const overlayID = overlayIDRef.current;
 
     const deleteRange = (r: Rectangle) => {
         focus();

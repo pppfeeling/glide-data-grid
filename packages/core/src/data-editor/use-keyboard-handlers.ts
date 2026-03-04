@@ -58,7 +58,7 @@ interface UseKeyboardHandlersArgs {
     readonly fillRight: () => void;
     readonly appendRow: (col: number, openOverlay?: boolean, behavior?: ScrollBehavior) => Promise<void>;
     readonly getCustomNewRowTargetColumn: (col: number) => number | undefined;
-    readonly scrollToRef: React.MutableRefObject<(col: number, row: number) => void>;
+    readonly scrollToRef: React.RefObject<(col: number, row: number) => void>;
 }
 
 export function useKeyboardHandlers(args: UseKeyboardHandlersArgs): KeyboardHandlers {

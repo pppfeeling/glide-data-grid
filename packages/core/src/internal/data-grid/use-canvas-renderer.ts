@@ -39,8 +39,8 @@ function createBufferCanvases(): [CanvasRenderingContext2D | null, CanvasRenderi
 
 export interface CanvasRendererArgs {
     // Canvas refs
-    readonly canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
-    readonly overlayRef: React.MutableRefObject<HTMLCanvasElement | null>;
+    readonly canvasRef: React.RefObject<HTMLCanvasElement | null>;
+    readonly overlayRef: React.RefObject<HTMLCanvasElement | null>;
 
     // Layout
     readonly width: number;
@@ -92,8 +92,8 @@ export interface CanvasRendererArgs {
 
     // Hover state
     readonly hoveredItemInfo: [Item, readonly [number, number]] | undefined;
-    readonly hoverInfoRef: React.MutableRefObject<[Item, readonly [number, number]] | undefined>;
-    readonly hoverValuesRef: React.MutableRefObject<readonly { item: Item; hoverAmount: number }[]>;
+    readonly hoverInfoRef: React.RefObject<[Item, readonly [number, number]] | undefined>;
+    readonly hoverValuesRef: React.RefObject<readonly { item: Item; hoverAmount: number }[]>;
     readonly lastWasTouch: boolean;
 
     // Experimental
@@ -114,12 +114,12 @@ export interface CanvasRendererResult {
     readonly scrolling: boolean;
     readonly damageInternal: (locations: CellSet) => void;
     readonly damage: (cells: DamageUpdateList) => void;
-    readonly enqueueRef: React.MutableRefObject<EnqueueCallback>;
+    readonly enqueueRef: React.RefObject<EnqueueCallback>;
     readonly drawCursorOverride: React.CSSProperties["cursor"] | undefined;
     readonly setDrawCursorOverride: React.Dispatch<React.SetStateAction<React.CSSProperties["cursor"] | undefined>>;
     readonly renderStateProvider: RenderStateProvider;
-    readonly lastDrawRef: React.MutableRefObject<() => void>;
-    readonly lastArgsRef: React.MutableRefObject<DrawGridArg | undefined>;
+    readonly lastDrawRef: React.RefObject<() => void>;
+    readonly lastArgsRef: React.RefObject<DrawGridArg | undefined>;
 }
 
 export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResult {
@@ -197,8 +197,11 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
         // do nothing
     });
 
-    // Lazy-init with useState to avoid ref.current access during render
-    const [[bufferACtx, bufferBCtx]] = React.useState(createBufferCanvases);
+    const bufferCanvasesRef = React.useRef<ReturnType<typeof createBufferCanvases> | null>(null);
+    if (bufferCanvasesRef.current === null) {
+        bufferCanvasesRef.current = createBufferCanvases();
+    }
+    const [bufferACtx, bufferBCtx] = bufferCanvasesRef.current;
 
     React.useLayoutEffect(() => {
         if (bufferACtx === null || bufferBCtx === null) return;
@@ -210,7 +213,11 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
         };
     }, [bufferACtx, bufferBCtx]);
 
-    const [renderStateProvider] = React.useState(() => new RenderStateProvider());
+    const renderStateProviderRef = React.useRef<RenderStateProvider | null>(null);
+    if (renderStateProviderRef.current === null) {
+        renderStateProviderRef.current = new RenderStateProvider();
+    }
+    const renderStateProvider = renderStateProviderRef.current;
 
     const maxDPR = enableFirefoxRescaling && scrolling ? 1 : enableSafariRescaling && scrolling ? 2 : 5;
     const minimumCellWidth = experimental?.disableMinimumCellWidth === true ? 1 : 10;
@@ -405,9 +412,13 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
     });
 
     // Animation manager for hover effects
-    const [animManager] = React.useState(() => new AnimationManager(values => {
-        // initial callback - will be replaced in useLayoutEffect
-    }));
+    const animManagerRef = React.useRef<AnimationManager | null>(null);
+    if (animManagerRef.current === null) {
+        animManagerRef.current = new AnimationManager(_values => {
+            // initial callback - will be replaced in useLayoutEffect
+        });
+    }
+    const animManager = animManagerRef.current;
 
     React.useLayoutEffect(() => {
         animManager.setCallback(values => {

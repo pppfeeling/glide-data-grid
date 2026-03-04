@@ -19,9 +19,9 @@ import type { MappedGridColumn } from "./render/data-grid-lib.js";
  */
 export interface DataGridCoreState {
     // Canvas refs
-    readonly canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
-    readonly overlayRef: React.MutableRefObject<HTMLCanvasElement | null>;
-    readonly windowEventTargetRef: React.MutableRefObject<HTMLElement | Window | Document>;
+    readonly canvasRef: React.RefObject<HTMLCanvasElement | null>;
+    readonly overlayRef: React.RefObject<HTMLCanvasElement | null>;
+    readonly windowEventTargetRef: React.RefObject<HTMLElement | Window | Document>;
 
     // Hover state (orchestrator owns, pointer hook sets)
     readonly hoveredItemInfo: [Item, readonly [number, number]] | undefined;
@@ -31,7 +31,7 @@ export interface DataGridCoreState {
     readonly setOverFill: React.Dispatch<React.SetStateAction<boolean>>;
 
     // Touch
-    readonly lastWasTouchRef: React.MutableRefObject<boolean>;
+    readonly lastWasTouchRef: React.RefObject<boolean>;
     readonly setLastWasTouch: React.Dispatch<React.SetStateAction<boolean>>;
 
     // Geometry (from useGridGeometry)
@@ -57,7 +57,7 @@ export interface DataGridCoreState {
     readonly getCellContent: (cell: Item, forceStrict?: boolean) => InnerGridCell;
     readonly getCellRenderer: GetCellRendererCallback;
     readonly getGroupDetails: GroupDetailsCallback | undefined;
-    readonly eventTargetRef: React.MutableRefObject<HTMLDivElement | null> | undefined;
+    readonly eventTargetRef: React.RefObject<HTMLDivElement | null> | undefined;
     readonly firstColAccessible: boolean;
     readonly isDragging: boolean;
     readonly isResizing: boolean;

@@ -17,7 +17,7 @@ export interface ScrollingDataGridProps extends Props {
               ty: number
           ) => void)
         | undefined;
-    readonly scrollRef: React.MutableRefObject<HTMLDivElement | null> | undefined;
+    readonly scrollRef: React.RefObject<HTMLDivElement | null> | undefined;
 
     /**
      * The overscroll properties are used to allow the grid to scroll past the logical end of the content by a fixed

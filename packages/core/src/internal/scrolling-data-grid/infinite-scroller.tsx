@@ -23,7 +23,7 @@ interface Props {
     };
     readonly rightElement?: React.ReactNode;
     readonly kineticScrollPerfHack?: boolean;
-    readonly scrollRef?: React.MutableRefObject<HTMLDivElement | null>;
+    readonly scrollRef?: React.RefObject<HTMLDivElement | null>;
     readonly update: (region: Rectangle & { paddingRight: number }) => void;
 }
 

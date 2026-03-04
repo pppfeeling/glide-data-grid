@@ -20,9 +20,9 @@ import type { GetCellRendererCallback } from "../../cells/cell-types.js";
 
 export interface GridPointerEventsArgs {
     // Canvas refs
-    readonly canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
+    readonly canvasRef: React.RefObject<HTMLCanvasElement | null>;
     readonly windowEventTarget: HTMLElement | Window | Document;
-    readonly eventTargetRef: React.MutableRefObject<HTMLDivElement | null> | undefined;
+    readonly eventTargetRef: React.RefObject<HTMLDivElement | null> | undefined;
 
     // Geometry
     readonly getBoundsForItem: (canvas: HTMLCanvasElement, col: number, row: number) => Rectangle | undefined;
@@ -39,10 +39,10 @@ export interface GridPointerEventsArgs {
     readonly setHoveredItemInfo: React.Dispatch<React.SetStateAction<[Item, readonly [number, number]] | undefined>>;
     readonly setHoveredOnEdge: React.Dispatch<React.SetStateAction<boolean | undefined>>;
     readonly setOverFill: React.Dispatch<React.SetStateAction<boolean>>;
-    readonly lastWasTouchRef: React.MutableRefObject<boolean>;
+    readonly lastWasTouchRef: React.RefObject<boolean>;
     readonly setLastWasTouch: React.Dispatch<React.SetStateAction<boolean>>;
     readonly setDrawCursorOverride: React.Dispatch<React.SetStateAction<React.CSSProperties["cursor"] | undefined>>;
-    readonly hoverInfoRef: React.MutableRefObject<[Item, readonly [number, number]] | undefined>;
+    readonly hoverInfoRef: React.RefObject<[Item, readonly [number, number]] | undefined>;
 
     // Callbacks
     readonly onMouseDown: (args: GridMouseEventArgs) => void;

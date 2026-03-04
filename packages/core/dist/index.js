@@ -6608,49 +6608,16 @@ function nextInputId() {
   return globalInputID = (globalInputID + 1) % 1e7;
 }
 const GrowingEntry = (props) => {
-  const $2 = compilerRuntimeExports.c(36);
-  let altNewline;
-  let highlight;
-  let onKeyDown;
-  let placeholder;
-  let rest;
-  let validatedSelection;
-  let value;
-  if ($2[0] !== props) {
-    const {
-      placeholder: t02,
-      value: t12,
-      onKeyDown: t22,
-      highlight: t32,
-      altNewline: t42,
-      validatedSelection: t52,
-      autoFocus: _autoFocus,
-      ...t62
-    } = props;
-    placeholder = t02;
-    value = t12;
-    onKeyDown = t22;
-    highlight = t32;
-    altNewline = t42;
-    validatedSelection = t52;
-    rest = t62;
-    $2[0] = props;
-    $2[1] = altNewline;
-    $2[2] = highlight;
-    $2[3] = onKeyDown;
-    $2[4] = placeholder;
-    $2[5] = rest;
-    $2[6] = validatedSelection;
-    $2[7] = value;
-  } else {
-    altNewline = $2[1];
-    highlight = $2[2];
-    onKeyDown = $2[3];
-    placeholder = $2[4];
-    rest = $2[5];
-    validatedSelection = $2[6];
-    value = $2[7];
-  }
+  const {
+    placeholder,
+    value,
+    onKeyDown,
+    highlight,
+    altNewline,
+    validatedSelection,
+    autoFocus: _autoFocus,
+    ...rest
+  } = props;
   const {
     onChange,
     className
@@ -6662,137 +6629,47 @@ const GrowingEntry = (props) => {
   } = React.useContext(GhostModeContext);
   const useText = isGhostMode && ghostValue ? ghostValue : value !== null && value !== void 0 ? value : "";
   assert(onChange !== void 0, "GrowingEntry must be a controlled input area");
-  const [inputID] = React.useState(_temp$8);
+  const inputIDRef = React.useRef(null);
+  if (inputIDRef.current === null) {
+    inputIDRef.current = "input-box-" + nextInputId();
+  }
+  const inputID = inputIDRef.current;
   const useTextRef = React.useRef(useText);
   const highlightRef = React.useRef(highlight);
-  let t0;
-  if ($2[8] !== highlight || $2[9] !== useText) {
-    t0 = () => {
-      useTextRef.current = useText;
-      highlightRef.current = highlight;
-    };
-    $2[8] = highlight;
-    $2[9] = useText;
-    $2[10] = t0;
-  } else {
-    t0 = $2[10];
-  }
-  React.useEffect(t0);
-  let t1;
-  let t2;
-  if ($2[11] !== isGhostMode) {
-    t1 = () => {
-      if (isGhostMode) {
-        return;
-      }
-      const ta = inputRef.current;
-      if (ta === null) {
-        return;
-      }
-      if (ta.disabled) {
-        return;
-      }
-      const length = useTextRef.current.toString().length;
-      ta.focus();
-      ta.setSelectionRange(highlightRef.current ? 0 : length, length);
-    };
-    t2 = [isGhostMode];
-    $2[11] = isGhostMode;
-    $2[12] = t1;
-    $2[13] = t2;
-  } else {
-    t1 = $2[12];
-    t2 = $2[13];
-  }
-  React.useEffect(t1, t2);
-  let t3;
-  let t4;
-  if ($2[14] !== validatedSelection) {
-    t3 = () => {
-      if (validatedSelection !== void 0) {
-        var _inputRef$current;
-        const range2 = typeof validatedSelection === "number" ? [validatedSelection, null] : validatedSelection;
-        (_inputRef$current = inputRef.current) === null || _inputRef$current === void 0 || _inputRef$current.setSelectionRange(range2[0], range2[1]);
-      }
-    };
-    t4 = [validatedSelection];
-    $2[14] = validatedSelection;
-    $2[15] = t3;
-    $2[16] = t4;
-  } else {
-    t3 = $2[15];
-    t4 = $2[16];
-  }
-  React.useLayoutEffect(t3, t4);
-  let t5;
-  if ($2[17] !== altNewline || $2[18] !== onKeyDown) {
-    t5 = (e) => {
-      var _onKeyDown;
-      if (e.key === "Enter" && e.shiftKey && altNewline === true) {
-        return;
-      }
-      (_onKeyDown = onKeyDown) === null || _onKeyDown === void 0 || _onKeyDown(e);
-    };
-    $2[17] = altNewline;
-    $2[18] = onKeyDown;
-    $2[19] = t5;
-  } else {
-    t5 = $2[19];
-  }
-  const onKeyDownInner = t5;
-  let t6;
-  if ($2[20] !== isGhostMode) {
-    t6 = isGhostMode ? {
-      visibility: "hidden"
-    } : void 0;
-    $2[20] = isGhostMode;
-    $2[21] = t6;
-  } else {
-    t6 = $2[21];
-  }
-  const inputStyle = t6;
-  const t7 = useText + "\n";
-  let t8;
-  if ($2[22] !== className || $2[23] !== t7) {
-    t8 = /* @__PURE__ */ jsx(ShadowBox, { className, children: t7 });
-    $2[22] = className;
-    $2[23] = t7;
-    $2[24] = t8;
-  } else {
-    t8 = $2[24];
-  }
-  const t9 = (className !== null && className !== void 0 ? className : "") + " gdg-input";
-  let t10;
-  if ($2[25] !== inputID || $2[26] !== inputStyle || $2[27] !== onKeyDownInner || $2[28] !== placeholder || $2[29] !== rest || $2[30] !== t9 || $2[31] !== useText) {
-    t10 = /* @__PURE__ */ jsx(InputBox, { ...rest, className: t9, id: inputID, ref: inputRef, onKeyDown: onKeyDownInner, value: useText, placeholder, dir: "auto", style: inputStyle });
-    $2[25] = inputID;
-    $2[26] = inputStyle;
-    $2[27] = onKeyDownInner;
-    $2[28] = placeholder;
-    $2[29] = rest;
-    $2[30] = t9;
-    $2[31] = useText;
-    $2[32] = t10;
-  } else {
-    t10 = $2[32];
-  }
-  let t11;
-  if ($2[33] !== t10 || $2[34] !== t8) {
-    t11 = /* @__PURE__ */ jsxs(GrowingEntryStyle, { className: "gdg-growing-entry", children: [
-      t8,
-      t10
-    ] });
-    $2[33] = t10;
-    $2[34] = t8;
-    $2[35] = t11;
-  } else {
-    t11 = $2[35];
-  }
-  return t11;
+  React.useEffect(() => {
+    useTextRef.current = useText;
+    highlightRef.current = highlight;
+  });
+  React.useEffect(() => {
+    if (isGhostMode) return;
+    const ta = inputRef.current;
+    if (ta === null) return;
+    if (ta.disabled) return;
+    const length = useTextRef.current.toString().length;
+    ta.focus();
+    ta.setSelectionRange(highlightRef.current ? 0 : length, length);
+  }, [isGhostMode]);
+  React.useLayoutEffect(() => {
+    if (validatedSelection !== void 0) {
+      var _inputRef$current;
+      const range2 = typeof validatedSelection === "number" ? [validatedSelection, null] : validatedSelection;
+      (_inputRef$current = inputRef.current) === null || _inputRef$current === void 0 || _inputRef$current.setSelectionRange(range2[0], range2[1]);
+    }
+  }, [validatedSelection]);
+  const onKeyDownInner = React.useCallback((e) => {
+    if (e.key === "Enter" && e.shiftKey && altNewline === true) {
+      return;
+    }
+    onKeyDown === null || onKeyDown === void 0 || onKeyDown(e);
+  }, [altNewline, onKeyDown]);
+  const inputStyle = isGhostMode ? {
+    visibility: "hidden"
+  } : void 0;
+  return /* @__PURE__ */ jsxs(GrowingEntryStyle, { className: "gdg-growing-entry", children: [
+    /* @__PURE__ */ jsx(ShadowBox, { className, children: useText + "\n" }),
+    /* @__PURE__ */ jsx(InputBox, { ...rest, className: (className !== null && className !== void 0 ? className : "") + " gdg-input", id: inputID, ref: inputRef, onKeyDown: onKeyDownInner, value: useText, placeholder, dir: "auto", style: inputStyle })
+  ] });
 };
-function _temp$8() {
-  return "input-box-" + nextInputId();
-}
 var d = /* @__PURE__ */ new Map(), b = /* @__PURE__ */ new Map(), z = /* @__PURE__ */ new Map();
 function v() {
   d.clear(), z.clear(), b.clear();
@@ -12532,7 +12409,6 @@ function createBufferCanvases() {
 }
 function useCanvasRenderer(args) {
   var _experimental$enableF, _experimental$enableS;
-  const $2 = compilerRuntimeExports.c(92);
   const {
     canvasRef,
     overlayRef,
@@ -12587,408 +12463,206 @@ function useCanvasRenderer(args) {
   const enableFirefoxRescaling = ((_experimental$enableF = experimental === null || experimental === void 0 ? void 0 : experimental.enableFirefoxRescaling) !== null && _experimental$enableF !== void 0 ? _experimental$enableF : false) && browserIsFirefox.value;
   const enableSafariRescaling = ((_experimental$enableS = experimental === null || experimental === void 0 ? void 0 : experimental.enableSafariRescaling) !== null && _experimental$enableS !== void 0 ? _experimental$enableS : false) && browserIsSafari.value;
   const scrollingStopRef = React.useRef(-1);
-  let t0;
-  if ($2[0] !== enableFirefoxRescaling || $2[1] !== enableSafariRescaling) {
-    t0 = () => {
-      if (window.devicePixelRatio === 1 || !enableFirefoxRescaling && !enableSafariRescaling) {
-        return;
-      }
-      if (scrollingStopRef.current !== -1) {
-        setScrolling(true);
-      }
-      window.clearTimeout(scrollingStopRef.current);
-      scrollingStopRef.current = window.setTimeout(() => {
-        setScrolling(false);
-        scrollingStopRef.current = -1;
-      }, 200);
+  React.useLayoutEffect(() => {
+    if (window.devicePixelRatio === 1 || !enableFirefoxRescaling && !enableSafariRescaling) return;
+    if (scrollingStopRef.current !== -1) {
+      setScrolling(true);
+    }
+    window.clearTimeout(scrollingStopRef.current);
+    scrollingStopRef.current = window.setTimeout(() => {
+      setScrolling(false);
+      scrollingStopRef.current = -1;
+    }, 200);
+  }, [cellYOffset, cellXOffset, translateX, translateY, enableFirefoxRescaling, enableSafariRescaling]);
+  const enqueueRef = React.useRef(() => {
+  });
+  const bufferCanvasesRef = React.useRef(null);
+  if (bufferCanvasesRef.current === null) {
+    bufferCanvasesRef.current = createBufferCanvases();
+  }
+  const [bufferACtx, bufferBCtx] = bufferCanvasesRef.current;
+  React.useLayoutEffect(() => {
+    if (bufferACtx === null || bufferBCtx === null) return;
+    document.documentElement.append(bufferACtx.canvas);
+    document.documentElement.append(bufferBCtx.canvas);
+    return () => {
+      bufferACtx.canvas.remove();
+      bufferBCtx.canvas.remove();
     };
-    $2[0] = enableFirefoxRescaling;
-    $2[1] = enableSafariRescaling;
-    $2[2] = t0;
-  } else {
-    t0 = $2[2];
+  }, [bufferACtx, bufferBCtx]);
+  const renderStateProviderRef = React.useRef(null);
+  if (renderStateProviderRef.current === null) {
+    renderStateProviderRef.current = new RenderStateProvider();
   }
-  let t1;
-  if ($2[3] !== cellXOffset || $2[4] !== cellYOffset || $2[5] !== enableFirefoxRescaling || $2[6] !== enableSafariRescaling || $2[7] !== translateX || $2[8] !== translateY) {
-    t1 = [cellYOffset, cellXOffset, translateX, translateY, enableFirefoxRescaling, enableSafariRescaling];
-    $2[3] = cellXOffset;
-    $2[4] = cellYOffset;
-    $2[5] = enableFirefoxRescaling;
-    $2[6] = enableSafariRescaling;
-    $2[7] = translateX;
-    $2[8] = translateY;
-    $2[9] = t1;
-  } else {
-    t1 = $2[9];
-  }
-  React.useLayoutEffect(t0, t1);
-  const enqueueRef = React.useRef(_temp$6);
-  const [t2] = React.useState(createBufferCanvases);
-  const [bufferACtx, bufferBCtx] = t2;
-  let t3;
-  let t4;
-  if ($2[10] !== bufferACtx || $2[11] !== bufferBCtx) {
-    t3 = () => {
-      if (bufferACtx === null || bufferBCtx === null) {
-        return;
-      }
-      document.documentElement.append(bufferACtx.canvas);
-      document.documentElement.append(bufferBCtx.canvas);
-      return () => {
-        bufferACtx.canvas.remove();
-        bufferBCtx.canvas.remove();
-      };
-    };
-    t4 = [bufferACtx, bufferBCtx];
-    $2[10] = bufferACtx;
-    $2[11] = bufferBCtx;
-    $2[12] = t3;
-    $2[13] = t4;
-  } else {
-    t3 = $2[12];
-    t4 = $2[13];
-  }
-  React.useLayoutEffect(t3, t4);
-  const [renderStateProvider] = React.useState(_temp2$3);
+  const renderStateProvider = renderStateProviderRef.current;
   const maxDPR = enableFirefoxRescaling && scrolling ? 1 : enableSafariRescaling && scrolling ? 2 : 5;
   const minimumCellWidth = (experimental === null || experimental === void 0 ? void 0 : experimental.disableMinimumCellWidth) === true ? 1 : 10;
   const lastArgsRef = React.useRef(void 0);
   const canvasCtx = React.useRef(null);
   const overlayCtx = React.useRef(null);
-  let t5;
-  if ($2[14] !== bufferACtx || $2[15] !== bufferBCtx || $2[16] !== canvasRef || $2[17] !== cellXOffset || $2[18] !== cellYOffset || $2[19] !== disabledRows || $2[20] !== dragAndDropState || $2[21] !== drawCellCallback || $2[22] !== drawFocusRing || $2[23] !== drawHeaderCallback || $2[24] !== enableGroups || $2[25] !== (experimental === null || experimental === void 0 ? void 0 : experimental.hyperWrapping) || $2[26] !== (experimental === null || experimental === void 0 ? void 0 : experimental.renderStrategy) || $2[27] !== fillHandle || $2[28] !== freezeColumns || $2[29] !== freezeTrailingRows || $2[30] !== getCellContent || $2[31] !== getCellRenderer || $2[32] !== getGroupDetails || $2[33] !== getRowThemeOverride || $2[34] !== groupHeaderHeight || $2[35] !== groupHeaderHeights || $2[36] !== groupLevels || $2[37] !== hasAppendRow || $2[38] !== headerHeight || $2[39] !== height || $2[40] !== highlightRegions || $2[41] !== hoverInfoRef || $2[42] !== hoverValuesRef || $2[43] !== imageLoader || $2[44] !== isFocused || $2[45] !== isResizing || $2[46] !== lastWasTouch || $2[47] !== mappedColumns || $2[48] !== maxDPR || $2[49] !== minimumCellWidth || $2[50] !== overlayRef || $2[51] !== prelightCells || $2[52] !== renderStateProvider || $2[53] !== resizeCol || $2[54] !== resizeIndicator || $2[55] !== rowHeight || $2[56] !== rows || $2[57] !== scrolling || $2[58] !== selection || $2[59] !== spriteManager || $2[60] !== theme || $2[61] !== translateX || $2[62] !== translateY || $2[63] !== verticalBorder || $2[64] !== width) {
-    t5 = () => {
-      var _experimental$hyperWr, _experimental$renderS, _hoverInfoRef$current;
-      const canvas = canvasRef.current;
-      const overlay = overlayRef.current;
-      if (canvas === null || overlay === null) {
-        return;
-      }
-      if (canvasCtx.current === null) {
-        canvasCtx.current = canvas.getContext("2d", {
-          alpha: false
-        });
-        canvas.width = 0;
-        canvas.height = 0;
-      }
-      if (overlayCtx.current === null) {
-        overlayCtx.current = overlay.getContext("2d", {
-          alpha: false
-        });
-        overlay.width = 0;
-        overlay.height = 0;
-      }
-      if (canvasCtx.current === null || overlayCtx.current === null || bufferACtx === null || bufferBCtx === null) {
-        return;
-      }
-      let didOverride = false;
-      const overrideCursor = (cursor) => {
-        didOverride = true;
-        setDrawCursorOverride(cursor);
-      };
-      const last = lastArgsRef.current;
-      const current = {
-        headerCanvasCtx: overlayCtx.current,
-        canvasCtx: canvasCtx.current,
-        bufferACtx,
-        bufferBCtx,
-        width,
-        height,
-        cellXOffset,
-        cellYOffset,
-        translateX: Math.round(translateX),
-        translateY: Math.round(translateY),
-        mappedColumns,
-        enableGroups,
-        freezeColumns,
-        dragAndDropState,
-        theme,
-        headerHeight,
-        groupHeaderHeight,
-        groupLevels,
-        groupHeaderHeights,
-        disabledRows: disabledRows !== null && disabledRows !== void 0 ? disabledRows : CompactSelection.empty(),
-        rowHeight,
-        verticalBorder,
-        isResizing,
-        resizeCol,
-        isFocused,
-        selection,
-        fillHandle,
-        drawCellCallback,
-        hasAppendRow,
-        overrideCursor,
-        maxScaleFactor: maxDPR,
-        freezeTrailingRows,
-        rows,
-        drawFocus: drawFocusRing,
-        getCellContent,
-        getGroupDetails: getGroupDetails !== null && getGroupDetails !== void 0 ? getGroupDetails : _temp3$2,
-        getRowThemeOverride,
-        drawHeaderCallback,
-        prelightCells,
-        highlightRegions,
-        imageLoader,
-        lastBlitData,
-        damage: damageRegion.current,
-        hoverValues: hoverValuesRef.current,
-        hoverInfo: hoverInfoRef.current,
-        spriteManager,
-        scrolling,
-        hyperWrapping: (_experimental$hyperWr = experimental === null || experimental === void 0 ? void 0 : experimental.hyperWrapping) !== null && _experimental$hyperWr !== void 0 ? _experimental$hyperWr : false,
-        touchMode: lastWasTouch,
-        enqueue: enqueueRef.current,
-        renderStateProvider,
-        renderStrategy: (_experimental$renderS = experimental === null || experimental === void 0 ? void 0 : experimental.renderStrategy) !== null && _experimental$renderS !== void 0 ? _experimental$renderS : browserIsSafari.value ? "double-buffer" : "single-buffer",
-        getCellRenderer,
-        minimumCellWidth,
-        resizeIndicator
-      };
-      if (current.damage === void 0) {
-        lastArgsRef.current = current;
-        drawGrid(current, last);
-      } else {
-        drawGrid(current, void 0);
-      }
-      if (!didOverride && (current.damage === void 0 || current.damage.has(hoverInfoRef === null || hoverInfoRef === void 0 || (_hoverInfoRef$current = hoverInfoRef.current) === null || _hoverInfoRef$current === void 0 ? void 0 : _hoverInfoRef$current[0]))) {
-        setDrawCursorOverride(void 0);
-      }
+  const draw = React.useCallback(() => {
+    var _experimental$hyperWr, _experimental$renderS, _hoverInfoRef$current;
+    const canvas = canvasRef.current;
+    const overlay = overlayRef.current;
+    if (canvas === null || overlay === null) return;
+    if (canvasCtx.current === null) {
+      canvasCtx.current = canvas.getContext("2d", {
+        alpha: false
+      });
+      canvas.width = 0;
+      canvas.height = 0;
+    }
+    if (overlayCtx.current === null) {
+      overlayCtx.current = overlay.getContext("2d", {
+        alpha: false
+      });
+      overlay.width = 0;
+      overlay.height = 0;
+    }
+    if (canvasCtx.current === null || overlayCtx.current === null || bufferACtx === null || bufferBCtx === null) {
+      return;
+    }
+    let didOverride = false;
+    const overrideCursor = (cursor) => {
+      didOverride = true;
+      setDrawCursorOverride(cursor);
     };
-    $2[14] = bufferACtx;
-    $2[15] = bufferBCtx;
-    $2[16] = canvasRef;
-    $2[17] = cellXOffset;
-    $2[18] = cellYOffset;
-    $2[19] = disabledRows;
-    $2[20] = dragAndDropState;
-    $2[21] = drawCellCallback;
-    $2[22] = drawFocusRing;
-    $2[23] = drawHeaderCallback;
-    $2[24] = enableGroups;
-    $2[25] = experimental === null || experimental === void 0 ? void 0 : experimental.hyperWrapping;
-    $2[26] = experimental === null || experimental === void 0 ? void 0 : experimental.renderStrategy;
-    $2[27] = fillHandle;
-    $2[28] = freezeColumns;
-    $2[29] = freezeTrailingRows;
-    $2[30] = getCellContent;
-    $2[31] = getCellRenderer;
-    $2[32] = getGroupDetails;
-    $2[33] = getRowThemeOverride;
-    $2[34] = groupHeaderHeight;
-    $2[35] = groupHeaderHeights;
-    $2[36] = groupLevels;
-    $2[37] = hasAppendRow;
-    $2[38] = headerHeight;
-    $2[39] = height;
-    $2[40] = highlightRegions;
-    $2[41] = hoverInfoRef;
-    $2[42] = hoverValuesRef;
-    $2[43] = imageLoader;
-    $2[44] = isFocused;
-    $2[45] = isResizing;
-    $2[46] = lastWasTouch;
-    $2[47] = mappedColumns;
-    $2[48] = maxDPR;
-    $2[49] = minimumCellWidth;
-    $2[50] = overlayRef;
-    $2[51] = prelightCells;
-    $2[52] = renderStateProvider;
-    $2[53] = resizeCol;
-    $2[54] = resizeIndicator;
-    $2[55] = rowHeight;
-    $2[56] = rows;
-    $2[57] = scrolling;
-    $2[58] = selection;
-    $2[59] = spriteManager;
-    $2[60] = theme;
-    $2[61] = translateX;
-    $2[62] = translateY;
-    $2[63] = verticalBorder;
-    $2[64] = width;
-    $2[65] = t5;
-  } else {
-    t5 = $2[65];
-  }
-  const draw = t5;
+    const last = lastArgsRef.current;
+    const current = {
+      headerCanvasCtx: overlayCtx.current,
+      canvasCtx: canvasCtx.current,
+      bufferACtx,
+      bufferBCtx,
+      width,
+      height,
+      cellXOffset,
+      cellYOffset,
+      translateX: Math.round(translateX),
+      translateY: Math.round(translateY),
+      mappedColumns,
+      enableGroups,
+      freezeColumns,
+      dragAndDropState,
+      theme,
+      headerHeight,
+      groupHeaderHeight,
+      groupLevels,
+      groupHeaderHeights,
+      disabledRows: disabledRows !== null && disabledRows !== void 0 ? disabledRows : CompactSelection.empty(),
+      rowHeight,
+      verticalBorder,
+      isResizing,
+      resizeCol,
+      isFocused,
+      selection,
+      fillHandle,
+      drawCellCallback,
+      hasAppendRow,
+      overrideCursor,
+      maxScaleFactor: maxDPR,
+      freezeTrailingRows,
+      rows,
+      drawFocus: drawFocusRing,
+      getCellContent,
+      getGroupDetails: getGroupDetails !== null && getGroupDetails !== void 0 ? getGroupDetails : (name) => ({
+        name
+      }),
+      getRowThemeOverride,
+      drawHeaderCallback,
+      prelightCells,
+      highlightRegions,
+      imageLoader,
+      lastBlitData,
+      damage: damageRegion.current,
+      hoverValues: hoverValuesRef.current,
+      hoverInfo: hoverInfoRef.current,
+      spriteManager,
+      scrolling,
+      hyperWrapping: (_experimental$hyperWr = experimental === null || experimental === void 0 ? void 0 : experimental.hyperWrapping) !== null && _experimental$hyperWr !== void 0 ? _experimental$hyperWr : false,
+      touchMode: lastWasTouch,
+      enqueue: enqueueRef.current,
+      renderStateProvider,
+      renderStrategy: (_experimental$renderS = experimental === null || experimental === void 0 ? void 0 : experimental.renderStrategy) !== null && _experimental$renderS !== void 0 ? _experimental$renderS : browserIsSafari.value ? "double-buffer" : "single-buffer",
+      getCellRenderer,
+      minimumCellWidth,
+      resizeIndicator
+    };
+    if (current.damage === void 0) {
+      lastArgsRef.current = current;
+      drawGrid(current, last);
+    } else {
+      drawGrid(current, void 0);
+    }
+    if (!didOverride && (current.damage === void 0 || current.damage.has(hoverInfoRef === null || hoverInfoRef === void 0 || (_hoverInfoRef$current = hoverInfoRef.current) === null || _hoverInfoRef$current === void 0 ? void 0 : _hoverInfoRef$current[0]))) {
+      setDrawCursorOverride(void 0);
+    }
+  }, [canvasRef, overlayRef, width, height, cellXOffset, cellYOffset, translateX, translateY, mappedColumns, enableGroups, freezeColumns, freezeTrailingRows, rows, headerHeight, groupHeaderHeight, groupLevels, groupHeaderHeights, theme, rowHeight, verticalBorder, isResizing, resizeCol, isFocused, fillHandle, drawFocusRing, drawCellCallback, drawHeaderCallback, resizeIndicator, selection, disabledRows, hasAppendRow, getCellContent, getGroupDetails, getRowThemeOverride, prelightCells, highlightRegions, dragAndDropState, spriteManager, imageLoader, getCellRenderer, hoverInfoRef, hoverValuesRef, lastWasTouch, maxDPR, minimumCellWidth, scrolling, renderStateProvider, experimental, bufferACtx, bufferBCtx]);
   const lastDrawRef = React.useRef(draw);
-  let t6;
-  let t7;
-  if ($2[66] !== draw) {
-    t6 = () => {
-      draw();
-      lastDrawRef.current = draw;
+  React.useLayoutEffect(() => {
+    draw();
+    lastDrawRef.current = draw;
+  }, [draw]);
+  React.useLayoutEffect(() => {
+    const fn = async () => {
+      var _document;
+      if (((_document = document) === null || _document === void 0 || (_document = _document.fonts) === null || _document === void 0 ? void 0 : _document.ready) === void 0) return;
+      await document.fonts.ready;
+      lastArgsRef.current = void 0;
+      lastDrawRef.current();
     };
-    t7 = [draw];
-    $2[66] = draw;
-    $2[67] = t6;
-    $2[68] = t7;
-  } else {
-    t6 = $2[67];
-    t7 = $2[68];
+    void fn();
+  }, []);
+  const damageInternal = React.useCallback((locations) => {
+    damageRegion.current = locations;
+    lastDrawRef.current();
+    damageRegion.current = void 0;
+  }, []);
+  const enqueue = useAnimationQueue(damageInternal);
+  React.useLayoutEffect(() => {
+    enqueueRef.current = enqueue;
+  });
+  const damage = React.useCallback((cells) => {
+    damageInternal(new CellSet(cells.map((x2) => x2.cell)));
+  }, [damageInternal]);
+  React.useLayoutEffect(() => {
+    imageLoader.setCallback(damageInternal);
+  });
+  const animManagerRef = React.useRef(null);
+  if (animManagerRef.current === null) {
+    animManagerRef.current = new AnimationManager((_values) => {
+    });
   }
-  React.useLayoutEffect(t6, t7);
-  let t8;
-  let t9;
-  if ($2[69] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
-    t8 = () => {
-      const fn = async () => {
-        var _document;
-        if (((_document = document) === null || _document === void 0 || (_document = _document.fonts) === null || _document === void 0 ? void 0 : _document.ready) === void 0) {
-          return;
-        }
-        await document.fonts.ready;
-        lastArgsRef.current = void 0;
-        lastDrawRef.current();
-      };
-      fn();
-    };
-    t9 = [];
-    $2[69] = t8;
-    $2[70] = t9;
-  } else {
-    t8 = $2[69];
-    t9 = $2[70];
-  }
-  React.useLayoutEffect(t8, t9);
-  let t10;
-  if ($2[71] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
-    t10 = (locations) => {
-      damageRegion.current = locations;
+  const animManager = animManagerRef.current;
+  React.useLayoutEffect(() => {
+    animManager.setCallback((values) => {
+      damageRegion.current = new CellSet(values.map((x_0) => x_0.item));
+      hoverValuesRef.current = values;
       lastDrawRef.current();
       damageRegion.current = void 0;
-    };
-    $2[71] = t10;
-  } else {
-    t10 = $2[71];
-  }
-  const damageInternal = t10;
-  const enqueue = useAnimationQueue(damageInternal);
-  let t11;
-  if ($2[72] !== enqueue) {
-    t11 = () => {
-      enqueueRef.current = enqueue;
-    };
-    $2[72] = enqueue;
-    $2[73] = t11;
-  } else {
-    t11 = $2[73];
-  }
-  React.useLayoutEffect(t11);
-  let t12;
-  if ($2[74] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
-    t12 = (cells) => {
-      damageInternal(new CellSet(cells.map(_temp4$2)));
-    };
-    $2[74] = t12;
-  } else {
-    t12 = $2[74];
-  }
-  const damage = t12;
-  let t13;
-  if ($2[75] !== imageLoader) {
-    t13 = () => {
-      imageLoader.setCallback(damageInternal);
-    };
-    $2[75] = imageLoader;
-    $2[76] = t13;
-  } else {
-    t13 = $2[76];
-  }
-  React.useLayoutEffect(t13);
-  const [animManager] = React.useState(_temp6$1);
-  let t14;
-  if ($2[77] !== animManager || $2[78] !== hoverValuesRef) {
-    t14 = () => {
-      animManager.setCallback((values_0) => {
-        damageRegion.current = new CellSet(values_0.map(_temp7$1));
-        hoverValuesRef.current = values_0;
-        lastDrawRef.current();
-        damageRegion.current = void 0;
-      });
-    };
-    $2[77] = animManager;
-    $2[78] = hoverValuesRef;
-    $2[79] = t14;
-  } else {
-    t14 = $2[79];
-  }
-  React.useLayoutEffect(t14);
-  let t15;
-  if ($2[80] !== hoveredItemInfo) {
-    t15 = hoveredItemInfo !== null && hoveredItemInfo !== void 0 ? hoveredItemInfo : [];
-    $2[80] = hoveredItemInfo;
-    $2[81] = t15;
-  } else {
-    t15 = $2[81];
-  }
-  const [hoveredItem] = t15;
-  let t16;
-  let t17;
-  if ($2[82] !== animManager || $2[83] !== getCellContent || $2[84] !== getCellRenderer || $2[85] !== hoveredItem) {
-    t16 = () => {
-      if (hoveredItem === void 0 || hoveredItem[1] < 0) {
-        animManager.setHovered(hoveredItem);
-        return;
-      }
-      const cell = getCellContent(hoveredItem, true);
-      const r = getCellRenderer(cell);
-      const cellNeedsHover = r === void 0 && cell.kind === GridCellKind.Custom || (r === null || r === void 0 ? void 0 : r.needsHover) !== void 0 && (typeof r.needsHover === "boolean" ? r.needsHover : r.needsHover(cell));
-      animManager.setHovered(cellNeedsHover ? hoveredItem : void 0);
-    };
-    t17 = [getCellContent, getCellRenderer, hoveredItem, animManager];
-    $2[82] = animManager;
-    $2[83] = getCellContent;
-    $2[84] = getCellRenderer;
-    $2[85] = hoveredItem;
-    $2[86] = t16;
-    $2[87] = t17;
-  } else {
-    t16 = $2[86];
-    t17 = $2[87];
-  }
-  React.useLayoutEffect(t16, t17);
-  let t18;
-  if ($2[88] !== drawCursorOverride || $2[89] !== renderStateProvider || $2[90] !== scrolling) {
-    t18 = {
-      scrolling,
-      damageInternal,
-      damage,
-      enqueueRef,
-      drawCursorOverride,
-      setDrawCursorOverride,
-      renderStateProvider,
-      lastDrawRef,
-      lastArgsRef
-    };
-    $2[88] = drawCursorOverride;
-    $2[89] = renderStateProvider;
-    $2[90] = scrolling;
-    $2[91] = t18;
-  } else {
-    t18 = $2[91];
-  }
-  return t18;
-}
-function _temp7$1(x_0) {
-  return x_0.item;
-}
-function _temp6$1() {
-  return new AnimationManager(_temp5$1);
-}
-function _temp5$1(values) {
-}
-function _temp4$2(x2) {
-  return x2.cell;
-}
-function _temp3$2(name) {
+    });
+  });
+  const [hoveredItem] = hoveredItemInfo !== null && hoveredItemInfo !== void 0 ? hoveredItemInfo : [];
+  React.useLayoutEffect(() => {
+    if (hoveredItem === void 0 || hoveredItem[1] < 0) {
+      animManager.setHovered(hoveredItem);
+      return;
+    }
+    const cell = getCellContent(hoveredItem, true);
+    const r = getCellRenderer(cell);
+    const cellNeedsHover = r === void 0 && cell.kind === GridCellKind.Custom || (r === null || r === void 0 ? void 0 : r.needsHover) !== void 0 && (typeof r.needsHover === "boolean" ? r.needsHover : r.needsHover(cell));
+    animManager.setHovered(cellNeedsHover ? hoveredItem : void 0);
+  }, [getCellContent, getCellRenderer, hoveredItem, animManager]);
   return {
-    name
+    scrolling,
+    damageInternal,
+    damage,
+    enqueueRef,
+    drawCursorOverride,
+    setDrawCursorOverride,
+    renderStateProvider,
+    lastDrawRef,
+    lastArgsRef
   };
-}
-function _temp2$3() {
-  return new RenderStateProvider();
-}
-function _temp$6() {
 }
 function useGridPointerEvents(args) {
   const $2 = compilerRuntimeExports.c(59);
@@ -15339,7 +15013,11 @@ const DataGridSearch = (p2) => {
     showSearch = false,
     onSearchClose
   } = p2;
-  const [searchID] = React.useState(() => "search-box-" + Math.round(Math.random() * 1e3));
+  const searchIDRef = React.useRef(null);
+  if (searchIDRef.current === null) {
+    searchIDRef.current = "search-box-" + Math.round(Math.random() * 1e3);
+  }
+  const searchID = searchIDRef.current;
   const [searchStringInner, setSearchStringInner] = React.useState("");
   const searchString = searchValue !== null && searchValue !== void 0 ? searchValue : searchStringInner;
   const setSearchString = React.useCallback((newVal) => {
@@ -17673,22 +17351,27 @@ function getRowGroupingForPath(rowGrouping, path) {
   return getRowGroupingForPath((_rowGrouping$index$su = rowGrouping[index].subGroups) !== null && _rowGrouping$index$su !== void 0 ? _rowGrouping$index$su : [], rest);
 }
 function useCallbackRef(initialValue, callback) {
-  const [ref] = React.useState(() => ({
-    value: initialValue,
-    callback,
-    facade: {
-      get current() {
-        return ref.value;
-      },
-      set current(value) {
-        const last = ref.value;
-        if (last !== value) {
-          ref.value = value;
-          ref.callback(value, last);
+  const innerRef = React.useRef(null);
+  if (innerRef.current === null) {
+    const state = {
+      value: initialValue,
+      callback,
+      facade: {
+        get current() {
+          return state.value;
+        },
+        set current(value) {
+          const last = state.value;
+          if (last !== value) {
+            state.value = value;
+            state.callback(value, last);
+          }
         }
       }
-    }
-  }));
+    };
+    innerRef.current = state;
+  }
+  const ref = innerRef.current;
   ref.callback = callback;
   return ref.facade;
 }
@@ -20348,7 +20031,11 @@ const DataEditorImpl = (p2, forwardedRef) => {
     }
     onFinishedEditing === null || onFinishedEditing === void 0 || onFinishedEditing(newValue, movement);
   };
-  const [overlayID] = React.useState(() => `gdg-overlay-${idCounter++}`);
+  const overlayIDRef = React.useRef(null);
+  if (overlayIDRef.current === null) {
+    overlayIDRef.current = `gdg-overlay-${idCounter++}`;
+  }
+  const overlayID = overlayIDRef.current;
   const deleteRange = (r) => {
     var _gridRef$current4;
     focus();

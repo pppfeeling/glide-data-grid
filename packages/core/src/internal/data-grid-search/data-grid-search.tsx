@@ -85,7 +85,7 @@ export interface DataGridSearchProps extends Omit<ScrollingDataGridProps, "preli
      * @param newVal The new search value
      */
     readonly onSearchValueChange?: (newVal: string) => void;
-    readonly searchInputRef: React.MutableRefObject<HTMLInputElement | null>;
+    readonly searchInputRef: React.RefObject<HTMLInputElement | null>;
 }
 
 const targetSearchTimeMS = 10;
@@ -106,7 +106,11 @@ const DataGridSearch: React.FunctionComponent<DataGridSearchProps> = p => {
         onSearchClose,
     } = p;
 
-    const [searchID] = React.useState(() => "search-box-" + Math.round(Math.random() * 1000));
+    const searchIDRef = React.useRef<string | null>(null);
+    if (searchIDRef.current === null) {
+        searchIDRef.current = "search-box-" + Math.round(Math.random() * 1000);
+    }
+    const searchID = searchIDRef.current;
 
     const [searchStringInner, setSearchStringInner] = React.useState("");
     const searchString = searchValue ?? searchStringInner;
