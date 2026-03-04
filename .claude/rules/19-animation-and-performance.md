@@ -73,7 +73,7 @@ setHovered(새 셀)
         └── shouldStep()이면 다음 rAF 예약, 아니면 종료
 ```
 
-### data-grid.tsx와의 연결 (data-grid.tsx:1288-1309)
+### use-canvas-renderer.ts와의 연결
 
 ```typescript
 // 콜백: 애니메이션 프레임마다 변경된 셀을 damage로 등록하고 다시 그린다
@@ -110,7 +110,7 @@ export function useAnimationQueue(draw: (items: CellSet) => void): EnqueueCallba
 4. 처리 중 새 항목이 추가되면 `seq` 카운터 증가 후 다음 프레임 예약
 5. `seq > 600`이면 이중 rAF (`requeue`)로 한 프레임 쉬어 과부하 방지
 
-**사용처:** `data-grid.tsx:962`에서 `damageInternal`을 감싸 이미지 로더 콜백에 활용.
+**사용처:** `use-canvas-renderer.ts`에서 `damageInternal`을 감싸 이미지 로더 콜백에 활용.
 
 ## Blit 알고리즘 상세
 

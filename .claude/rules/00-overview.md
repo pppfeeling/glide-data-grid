@@ -1,208 +1,138 @@
-# Glide Data Grid 전체 아키텍처 개요
+# Glide Data Grid 아키텍처 & 컨벤션
 
-## 개요
-- **역할**: 캔버스 기반 고성능 React 데이터 그리드
-- **핵심 특징**: 수백만 행 지원, 빠른 스크롤 성능
-- **위치**: `packages/core/src/`
+캔버스 기반 고성능 React 데이터 그리드. 수백만 행 지원. `packages/core/src/`
 
-## 컴포넌트 계층 구조
+## 빌드 및 테스트
+
+```bash
+cd packages/core && npx vitest run --reporter verbose   # 395 tests, ~10s
+npx tsc --noEmit -p packages/core/tsconfig.json         # 타입 체크
+cd packages/core && npm run build                        # 빌드
+npm run start                                            # Storybook → http://localhost:9009
+```
+
+## 코드 컨벤션
+
+- **Import**: `.js` 확장자 사용, barrel exports 없음
+- **Hook**: 개별 파일 분리, 헬퍼 함수는 같은 파일에 co-locate
+- **컬럼 순서 (mangledCols)**: `rowNumber → checkbox → rowStatus → rowId → 사용자 컬럼`, `rowMarkerOffset`으로 내부/외부 인덱스 변환
+- **타입 주의**: `Slice`는 `[number, number]` (mutable), `readonly` 속성 유지 필수, 새 셀 타입 추가시 타입 가드 동기화
+
+## 컴포넌트 계층
 
 ```
 DataEditorAll (data-editor-all.tsx)
-    └── DataEditor (data-editor/data-editor.tsx)
-            └── DataGridSearch (internal/data-grid-search/)
-                    └── DataGrid (internal/data-grid/data-grid.tsx)
-                            └── Canvas Rendering (internal/data-grid/render/)
+    └── DataEditor (data-editor.tsx, 1,551 LOC) ─── 24개 훅
+            └── DataGridSearch (data-grid-search/)
+                    └── DataGrid (data-grid.tsx, 793 LOC) ─── 6개 훅
+                            └── Canvas Rendering (render/)
 ```
 
-### 계층별 역할
+## 파일 위치 참조
 
-| 컴포넌트 | 파일 | 역할 |
-|---------|------|------|
-| `DataEditorAll` | `data-editor-all.tsx` | 모든 셀 렌더러 포함 완전한 버전 |
-| `DataEditor` | `data-editor/data-editor.tsx:1-3802` | Props 처리, 상태 관리, 훅 오케스트레이션 |
-| `DataGridSearch` | `internal/data-grid-search/` | 검색 기능 래퍼 |
-| `DataGrid` | `internal/data-grid/data-grid.tsx:1-1950` | 캔버스 직접 제어, 마우스/키보드 이벤트 |
+### DataEditor 훅 (data-editor/)
 
-## 핵심 모듈 구조
+| 파일 | LOC | 역할 |
+|------|-----|------|
+| `data-editor.tsx` | 1,551 | 오케스트레이터 |
+| `data-editor-types.ts` | 703 | Props/타입 정의 |
+| `data-editor-state.ts` | 104 | 공유 상태 인터페이스 (DataEditorCoreState) |
+| `use-row-markers.ts` | 524 | 행 마커/mangledCols/getMangledCellContent |
+| `use-mouse-handlers.ts` | 641 | 마우스/터치/필 이벤트 |
+| `use-keyboard-handlers.ts` | 523 | 키보드 네비게이션/키바인딩 |
+| `use-clipboard.ts` | 409 | 복사/붙여넣기/잘라내기 |
+| `use-handle-select.ts` | 366 | 셀/헤더/행 선택 처리 |
+| `use-ghost-input.ts` | 330 | IME/GhostInput 핸들러 |
+| `use-selection-navigation.ts` | 305 | 셀 이동/reselect |
+| `use-column-sizer.ts` | 253 | 컬럼 크기 자동 계산 |
+| `use-finish-editing.ts` | 209 | 편집 완료/다음 셀 이동 |
+| `use-hover-handler.ts` | 204 | 드래그 범위 선택/fill handle |
+| `use-scroll-to.ts` | 192 | scrollTo 구현 |
+| `use-append-handlers.ts` | 191 | 행/컬럼 append |
+| `use-data-editor-ref.ts` | 164 | 외부 API (DataEditorRef) |
+| `use-visible-region.ts` | 126 | visible region 갱신 |
+| `use-initial-scroll-offset.ts` | 118 | 초기 스크롤 위치 |
+| `use-column-callbacks.ts` | 94 | 컬럼 이동/드래그 콜백 |
+| `use-selection.ts` | 91 | 선택 상태 관리 |
+| `use-mangled-props.ts` | 85 | mangled 콜백 래핑 |
+| `use-cells-for-selection.ts` | 72 | 범위 셀 데이터 조회 |
+| `use-rem-adjuster.ts` | 56 | rem 단위 스케일링 |
+| `use-overlay-editor.ts` | 50 | 편집 오버레이 상태 |
+| `use-autoscroll.ts` | 41 | 드래그 시 자동 스크롤 |
+| `use-cell-renderer.ts` | 40 | 셀 렌더러 조회 |
+| `use-search.ts` | 27 | 검색 UI 상태 |
 
-```
-packages/core/src/
-├── cells/                    # 셀 렌더러 (15개 타입)
-│   ├── cell-types.ts         # 렌더러 인터페이스
-│   ├── text-cell.tsx
-│   ├── number-cell.tsx
-│   ├── boolean-cell.tsx
-│   └── ...
-├── common/                   # 공유 유틸리티
-│   ├── styles.ts             # Theme 정의
-│   ├── utils.ts              # 유틸 함수
-│   └── support.ts            # 타입 헬퍼
-├── data-editor/              # 메인 컴포넌트
-│   ├── data-editor.tsx       # DataEditor 오케스트레이터 (3,802 LOC)
-│   ├── data-editor-state.ts  # 공유 상태 인터페이스 (104 LOC)
-│   ├── use-mouse-handlers.ts # 마우스/터치/필 이벤트 (637 LOC)
-│   ├── use-keyboard-handlers.ts # 키보드 네비게이션/키바인딩 (523 LOC)
-│   ├── use-clipboard.ts      # 복사/붙여넣기/잘라내기 (403 LOC)
-│   ├── use-ghost-input.ts    # IME/GhostInput 핸들러 (329 LOC)
-│   ├── use-column-sizer.ts   # 컬럼 크기 계산
-│   ├── use-autoscroll.ts     # 자동 스크롤
-│   └── data-editor-fns.ts    # 편집 유틸리티
-└── internal/                 # 내부 구현
-    └── data-grid/
-        ├── data-grid.tsx         # 캔버스 컨트롤러
-        ├── data-grid-types.ts    # 핵심 타입 정의 (748 LOC)
-        ├── event-args.ts         # 이벤트 타입
-        ├── use-selection-behavior.ts  # 선택 로직
-        └── render/               # 렌더링 파이프라인
-            ├── data-grid-render.ts        # 메인 렌더 함수
-            ├── data-grid-render.cells.ts  # 셀 렌더링
-            ├── data-grid-render.header.ts # 헤더 렌더링
-            ├── data-grid-render.lines.ts  # 그리드 라인
-            ├── data-grid-render.blit.ts   # 블릿 최적화
-            └── data-grid-render.walk.ts   # 셀 순회
-```
+### DataGrid 훅 (internal/data-grid/)
+
+| 파일 | LOC | 역할 |
+|------|-----|------|
+| `data-grid.tsx` | 793 | 오케스트레이터 (키보드/커서/shadow) |
+| `use-canvas-renderer.ts` | 458 | 캔버스 렌더링/더블 버퍼/데미지 추적 |
+| `use-grid-pointer-events.ts` | 413 | 포인터/마우스/호버/터치 |
+| `use-grid-geometry.ts` | 383 | 좌표 변환/히트 감지/셀 위치 |
+| `use-grid-focus-and-accessibility.tsx` | 312 | 접근성 트리/포커스/DataGridRef |
+| `use-grid-drag-and-drop.ts` | 271 | HTML5 DnD/드래그 프리뷰 |
+| `use-animation-queue.ts` | 42 | RAF 배치 (쓰로틀링) |
+| `data-grid-types.ts` | 748 | 핵심 타입 정의 |
+
+### 기타
+
+| 파일 | 역할 |
+|------|------|
+| `common/styles.ts` | 테마 정의 (215 LOC) |
+| `render/data-grid-render.ts` | 메인 렌더 진입점 |
+| `render/data-grid-render.cells.ts` | 셀 렌더링 |
+| `render/data-grid-render.header.ts` | 헤더 렌더링 |
+| `use-selection-behavior.ts` | 선택 블렌딩 로직 |
+| `event-args.ts` | 이벤트 타입 |
 
 ## 데이터 흐름
 
 ```
-1. 사용자 입력
-   ├── Props 전달 (columns, rows, getCellContent)
-   └── 이벤트 콜백 등록 (onCellEdited, onGridSelectionChange)
-
-2. DataEditor 처리 (data-editor.tsx + 추출된 훅들)
-   ├── Props 정규화 및 검증 (data-editor.tsx)
-   ├── 내부 상태 관리 (data-editor.tsx → DataEditorCoreState)
-   ├── 마우스/터치 이벤트 (use-mouse-handlers.ts)
-   ├── 키보드 이벤트 (use-keyboard-handlers.ts)
-   ├── IME/문자 입력 (use-ghost-input.ts)
-   ├── 복사/붙여넣기 (use-clipboard.ts)
-   └── 편집 오버레이 관리 (data-editor.tsx)
-
-3. DataGrid 렌더링 (data-grid.tsx)
-   ├── 캔버스 컨텍스트 관리
-   ├── 마우스 위치 추적
-   ├── 애니메이션 관리
-   └── draw() 호출
-
-4. Canvas Rendering (render/)
-   ├── drawGrid() - 메인 진입점
-   ├── blitLastFrame() - 가능시 이전 프레임 재사용
-   ├── drawGridHeaders() - 헤더 렌더링
-   ├── drawCells() - 셀 렌더링
-   ├── drawGridLines() - 경계선
-   └── drawHighlightRings() - 선택 영역 표시
+Props (columns, rows, getCellContent) → DataEditor (24개 훅)
+    → DataGridSearch → DataGrid (6개 훅) → Canvas Rendering (render/)
+콜백: onCellEdited, onGridSelectionChange 등 → 사용자 코드
 ```
 
-## 렌더링 파이프라인
+**DataEditor 훅 의존성 패턴:**
+- `coreState` 기반 (DataEditorCoreState 전체 전달): mouse-handlers, keyboard-handlers, ghost-input, clipboard
+- 개별 의존성 전달: 나머지 훅들
 
-```
-drawGrid() [data-grid-render.ts:115]
-    │
-    ├── computeCanBlit() - 블릿 가능 여부 확인
-    │
-    ├── [Blit 가능시]
-    │   └── blitLastFrame() - 이전 프레임 복사
-    │
-    ├── [전체 렌더링]
-    │   ├── drawGridHeaders() - 헤더 영역
-    │   │   ├── drawHeader() - 개별 헤더
-    │   │   └── drawGroupHeaders() - 그룹 헤더
-    │   │
-    │   ├── drawCells() - 셀 영역
-    │   │   ├── walkColumns() - 컬럼 순회
-    │   │   ├── walkRowsInCol() - 행 순회
-    │   │   └── drawCell() - 개별 셀
-    │   │
-    │   ├── drawGridLines() - 그리드 라인
-    │   │
-    │   └── drawHighlightRings() - 선택 표시
-    │
-    └── drawFillHandle() - 채우기 핸들
-```
+**DataGrid 훅 호출 순서:** geometry → renderer → pointerEvents → dragAndDrop → focusAndAccessibility
 
-## 핵심 상태
+## 수정 체크리스트
 
-### GridSelection (선택 상태)
-```typescript
-interface GridSelection {
-    current?: {
-        cell: Item;           // [col, row] - 현재 활성 셀
-        range: Rectangle;     // 선택 범위
-        rangeStack: Rectangle[]; // 다중 선택시 이전 범위들
-    };
-    columns: CompactSelection;  // 선택된 컬럼
-    rows: CompactSelection;     // 선택된 행
-}
-```
+### 새 Props 추가시
+1. `data-editor-types.ts`: DataEditorProps에 추가
+2. `data-editor.tsx`: 구조 분해 할당에서 추출
+3. 해당 훅 파일에 전달 또는 `coreState`에 추가
 
-### 주요 Props 흐름
-```
-columns (GridColumn[])      → 컬럼 정의
-rows (number)               → 총 행 수
-getCellContent(cell)        → 셀 데이터 제공
-onGridSelectionChange()     → 선택 변경 알림
-onCellEdited()              → 편집 완료 알림
-theme                       → 스타일링
-```
+### 새 셀 타입 추가시
+1. `data-grid-types.ts`: GridCellKind enum + 셀 인터페이스 + GridCell 유니온
+2. `cells/`: 새 렌더러 파일 생성
+3. `data-editor-all.tsx`: 렌더러 등록
+4. 타입 가드 함수 업데이트
 
-## 성능 최적화 기법
+### 이벤트 핸들러 추가시
+1. `event-args.ts`: 이벤트 타입 정의
+2. `data-editor-types.ts`: Props에 콜백 추가
+3. 해당 훅 파일에 로직 구현:
+   - 마우스: `use-mouse-handlers.ts` / 키보드: `use-keyboard-handlers.ts`
+   - 클립보드: `use-clipboard.ts` / IME: `use-ghost-input.ts`
+   - 선택: `use-handle-select.ts` / 편집: `use-finish-editing.ts`
+   - 드래그: `use-hover-handler.ts` / 컬럼: `use-column-callbacks.ts`
+4. 공유 상태 필요시 `data-editor-state.ts` 수정
+5. 저수준 이벤트: `use-grid-pointer-events.ts` 또는 `use-grid-drag-and-drop.ts`
 
-1. **블릿(Blit) 렌더링**: 변경되지 않은 영역 재사용
-2. **데미지 리전**: 변경된 셀만 다시 그리기
-3. **가상화**: 보이는 셀만 렌더링
-4. **더블 버퍼링**: Safari에서 깜빡임 방지
-5. **호버 애니메이션**: requestAnimationFrame 기반
+### 테마 속성 추가시
+1. `common/styles.ts`: Theme 인터페이스 + dataEditorBaseTheme 기본값
+2. 렌더링 코드에서 사용
 
-## 확장 포인트
+## AI 커스텀 기능 (원본 glide-data-grid에 없음)
 
-| 확장 영역 | 방법 | 파일 |
-|----------|------|------|
-| 커스텀 셀 | `customRenderers` prop | `cells/cell-types.ts` |
-| 테마 | `theme` prop | `common/styles.ts` |
-| 커스텀 헤더 | `drawHeader` callback | `data-grid.tsx:223` |
-| 커스텀 셀 렌더링 | `drawCell` callback | `data-grid.tsx:225` |
-| 편집기 | `provideEditor` prop | `data-editor.tsx:492` |
-
-## 의존성 관계
-
-```
-data-editor.tsx (오케스트레이터)
-    ├── data-editor-state.ts (DataEditorCoreState 인터페이스)
-    ├── use-mouse-handlers.ts (마우스/터치/필 이벤트)
-    ├── use-keyboard-handlers.ts (키보드 네비게이션)
-    ├── use-ghost-input.ts (IME/문자 입력)
-    ├── use-clipboard.ts (복사/붙여넣기)
-    ├── data-grid-types.ts (타입)
-    ├── styles.ts (테마)
-    ├── use-selection-behavior.ts (선택)
-    ├── data-grid-search.tsx
-    │   └── data-grid.tsx
-    │       ├── data-grid-render.ts
-    │       └── cell renderers (cells/)
-    └── data-grid-overlay-editor.tsx (편집 오버레이)
-```
-
-### 추출된 훅 의존성 (DataEditorCoreState 기반)
-```
-DataEditorCoreState (data-editor-state.ts)
-    ├── 핵심 상태: gridSelection, overlay
-    ├── Refs: gridRef, ghostInputRef, overlayRef, scrollRef, canvasRef 등
-    ├── 좌표 데이터: rowMarkerOffset, mangledCols, mangledRows, rows
-    └── 콜백: setGridSelection, getMangledCellContent, mangledOnCellsEdited 등
-
-use-mouse-handlers ←── DataEditorCoreState + mouse-specific props
-use-keyboard-handlers ←── DataEditorCoreState + keyboard-specific props
-use-ghost-input ←── DataEditorCoreState + ghost-input-specific props
-use-clipboard ←── DataEditorCoreState + clipboard-specific props
-```
-
-## 수정 시 주의사항
-
-1. **data-editor.tsx**: 3,802줄 (리팩토링 후), 오케스트레이터 역할 - 이벤트 핸들러 수정시 추출된 훅 파일 확인
-2. **추출된 훅 파일**: 마우스/키보드/클립보드/IME 로직은 각각의 use-*.ts 파일에 위치
-3. **DataEditorCoreState**: 훅 간 공유 상태 - 새 상태 추가시 data-editor-state.ts 수정 필요
-4. **data-grid-types.ts**: 타입 변경시 광범위한 영향
-5. **렌더링 파이프라인**: 성능에 민감, 불필요한 리렌더링 주의
-6. **선택 로직**: `use-selection-behavior.ts`의 블렌딩 규칙 이해 필요
-7. **이벤트 처리**: `event-args.ts`의 타입 구조 준수
+1. **Row Status 컬럼** (`rowStatus`, `onRowStatus`): A/U/D 상태 표시
+2. **Row ID 컬럼** (`rowId`, `onRowId`): 행 ID 표시
+3. **Row Number 분리**: `showRowNumber`으로 행 번호와 체크박스 별도 컬럼
+4. **GhostInput**: IME 지원을 위한 별도 textarea
+5. **부모 스크롤 감지**: 부모 컨테이너 스크롤 시 오버레이 자동 닫기
+6. **다중 레벨 그룹 헤더**: 3단 이상 계층적 헤더 지원

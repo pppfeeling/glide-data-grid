@@ -11,7 +11,7 @@ type SetCallback = (newVal: GridSelection, expand: boolean) => void;
  */
 export type SelectionBlending = "exclusive" | "mixed" | "additive";
 
-type SelectionTrigger = "click" | "drag" | "keyboard-nav" | "keyboard-select" | "edit";
+export type SelectionTrigger = "click" | "drag" | "keyboard-nav" | "keyboard-select" | "edit";
 
 export function useSelectionBehavior(
     gridSelection: GridSelection,

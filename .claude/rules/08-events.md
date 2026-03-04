@@ -11,7 +11,9 @@ paths:
 - **역할**: 마우스, 키보드, 드래그 이벤트 처리
 - **핵심 파일**:
   - `internal/data-grid/event-args.ts` (이벤트 타입 정의)
-  - `internal/data-grid/data-grid.tsx` (저수준 이벤트 처리)
+  - `internal/data-grid/data-grid.tsx` (저수준 이벤트 오케스트레이터)
+  - `internal/data-grid/use-grid-pointer-events.ts` (포인터/마우스 이벤트)
+  - `internal/data-grid/use-grid-drag-and-drop.ts` (HTML5 DnD 이벤트)
   - `data-editor/data-editor.tsx` (이벤트 오케스트레이션)
   - `data-editor/use-mouse-handlers.ts` (고수준 마우스 이벤트 - 리팩토링)
   - `data-editor/use-keyboard-handlers.ts` (고수준 키보드 이벤트 - 리팩토링)
@@ -179,9 +181,9 @@ interface GridKeyEventArgs {
 
 ## DataGrid 저수준 이벤트 처리
 
-### 포인터 이벤트
+### 포인터 이벤트 (use-grid-pointer-events.ts)
 ```typescript
-// data-grid.tsx:1076-1133
+// use-grid-pointer-events.ts
 const onPointerDown = useCallback((ev: PointerEvent) => {
     // 1. 위치 → 셀 정보 변환
     const args = getMouseArgsForPosition(canvas, clientX, clientY, ev);
@@ -205,7 +207,7 @@ useEventListener("pointerdown", onPointerDown, windowEventTarget, false);
 ```
 
 ```typescript
-// data-grid.tsx:1138-1197
+// use-grid-pointer-events.ts
 const onPointerUp = useCallback((ev: PointerEvent) => {
     let args = getMouseArgsForPosition(canvas, clientX, clientY, ev);
 
@@ -223,9 +225,9 @@ const onPointerUp = useCallback((ev: PointerEvent) => {
 }, [/* deps */]);
 ```
 
-### 키보드 이벤트
+### 키보드 이벤트 (data-grid.tsx 오케스트레이터에 유지)
 ```typescript
-// data-grid.tsx:1376-1404
+// data-grid.tsx:602-654
 const onKeyDownImpl = useCallback((event: React.KeyboardEvent) => {
     let bounds: Rectangle | undefined;
     let location: Item | undefined;
@@ -252,9 +254,9 @@ const onKeyDownImpl = useCallback((event: React.KeyboardEvent) => {
 }, [/* deps */]);
 ```
 
-### 드래그 앤 드롭
+### 드래그 앤 드롭 (use-grid-drag-and-drop.ts)
 ```typescript
-// data-grid.tsx:1457-1613
+// use-grid-drag-and-drop.ts
 const onDragStartImpl = useCallback((event: DragEvent) => {
     // 드래그 데이터 설정 콜백
     const setData = (mime: string, payload: string) => {
@@ -291,9 +293,10 @@ const onDragStartImpl = useCallback((event: DragEvent) => {
 ```
 1. DOM 이벤트 (Canvas / GhostInput)
         ↓
-2. DataGrid 핸들러 (data-grid.tsx)
-   - 좌표 → 셀 변환
-   - 이벤트 타입 결정
+2. DataGrid 핸들러 (추출된 훅들)
+   - 좌표 → 셀 변환 (use-grid-geometry.ts)
+   - 포인터 이벤트 (use-grid-pointer-events.ts)
+   - DnD 이벤트 (use-grid-drag-and-drop.ts)
         ↓
 3. 추출된 훅 핸들러 (리팩토링된 구조)
    ├── 마우스 이벤트 → useMouseHandlers (use-mouse-handlers.ts)

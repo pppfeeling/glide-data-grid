@@ -213,7 +213,7 @@ const totalHeaderHeight = headerHeight + totalGroupHeaderHeight;
 | `data-grid-search.tsx` | props 전달 |
 | `scrolling-data-grid.tsx` | props 전달 |
 | `data-grid-dnd.tsx` | props 전달 |
-| `data-grid.tsx` | `DataGridProps` 인터페이스 확장, `overlayStyle` 수정 |
+| `data-grid.tsx` | `DataGridProps` 인터페이스 확장, `overlayStyle` 수정 (오케스트레이터) |
 
 ### 렌더링 로직
 | 파일 | 변경 내용 |

@@ -357,7 +357,7 @@ DataEditorImpl
 | ScrollingDataGrid | `scrolling-data-grid.tsx` | 스크롤 통합 관리. 모바일 관성 스크롤(useKineticScroll) 포함 |
 | InfiniteScroller | `infinite-scroller.tsx` | 가상 스크롤. DOM 높이 제한 우회, 보이는 영역만 렌더링 |
 | DataGridDnd | `data-grid-dnd.tsx` | 드래그 앤 드롭. 컬럼/행 순서 변경, 너비 조절 |
-| DataGrid | `data-grid.tsx` | 핵심 Canvas 렌더링 엔진. 셀/헤더/구분선을 Canvas에 직접 그림 |
+| DataGrid | `data-grid.tsx` | 캔버스 오케스트레이터 (793 LOC). 좌표/렌더링/포인터/DnD/접근성을 6개 훅으로 분리 |
 
 ### 핵심 개념: "Mangling" (내부 좌표 변환)
 

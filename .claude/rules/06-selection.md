@@ -226,7 +226,7 @@ const setSelectedRows = useCallback(
 
 ### 단일 셀 클릭
 ```typescript
-// data-grid.tsx 마우스 핸들러
+// use-grid-pointer-events.ts → use-mouse-handlers.ts
 onMouseDown -> setCurrent({ cell, range: singleCellRange }, false, false, "click")
 ```
 
@@ -282,7 +282,7 @@ if (row === -1 && col === markerColumn) {
 ```
 1. 사용자 입력 (클릭, 키보드)
         ↓
-2. 이벤트 핸들러 (data-grid.tsx)
+2. 이벤트 핸들러 (use-grid-pointer-events.ts → use-mouse-handlers.ts)
         ↓
 3. useSelectionBehavior 호출
    - setCurrent / setSelectedRows / setSelectedColumns

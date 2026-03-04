@@ -667,7 +667,7 @@ const MyComponent = () => {
 
 ### 4. 호버 처리
 
-**needsHover 체크** (packages/core/src/internal/data-grid/data-grid.tsx:1302-1307)
+**needsHover 체크** (packages/core/src/internal/data-grid/use-canvas-renderer.ts)
 
 ```typescript
 const cellNeedsHover =
@@ -676,7 +676,7 @@ const cellNeedsHover =
      (typeof r.needsHover === "boolean" ? r.needsHover : r.needsHover(cell)));
 ```
 
-**needsHoverPosition 체크** (packages/core/src/internal/data-grid/data-grid.tsx:1355-1359)
+**needsHoverPosition 체크** (packages/core/src/internal/data-grid/use-grid-pointer-events.ts)
 
 ```typescript
 const rendererNeeds = getCellRenderer(toCheck)?.needsHoverPosition;
