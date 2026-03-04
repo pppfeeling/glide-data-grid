@@ -62,7 +62,17 @@
       "Bash(pnpm build:*)",
       "Bash(cut:*)",
       "Bash(npx babel-plugin-react-compiler:*)",
-      "Bash(npx react-compiler-healthcheck:*)"
+      "Bash(npx react-compiler-healthcheck:*)",
+      "Bash(git -C /Users/pppfeeling/workspace/glide-data-grid diff HEAD~5..HEAD -- packages/core/src/internal/data-grid/render/ packages/core/src/internal/data-grid/data-grid.tsx packages/core/src/data-editor/data-editor.tsx)",
+      "Bash(git -C /Users/pppfeeling/workspace/glide-data-grid diff HEAD~5..HEAD -- packages/core/src/internal/data-grid/data-grid.tsx)",
+      "Bash(git -C /Users/pppfeeling/workspace/glide-data-grid log --oneline -1 --format=\"%H %s\")",
+      "Bash(git -C /Users/pppfeeling/workspace/glide-data-grid show e310662 --stat)",
+      "Bash(git -C /Users/pppfeeling/workspace/glide-data-grid show ee54e6b --stat)",
+      "Bash(git -C /Users/pppfeeling/workspace/glide-data-grid show 4012eca --stat)",
+      "Bash(git -C /Users/pppfeeling/workspace/glide-data-grid show 4012eca -- packages/core/src/internal/data-grid/use-canvas-renderer.ts)",
+      "Bash(git -C /Users/pppfeeling/workspace/glide-data-grid show e310662 -- packages/core/src/internal/data-grid/use-canvas-renderer.ts)",
+      "Bash(git -C /Users/pppfeeling/workspace/glide-data-grid show ee54e6b -- packages/core/src/internal/data-grid/use-canvas-renderer.ts)",
+      "WebFetch(domain:raw.githubusercontent.com)"
     ],
     "deny": [],
     "ask": []

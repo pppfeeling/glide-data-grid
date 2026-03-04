@@ -220,39 +220,41 @@ export function getScrollBarWidth(): number {
 //
 // I'm sorry.
 const emptySymbol = Symbol("empty");
+type Empty = typeof emptySymbol;
 
 export function useStateWithReactiveInput<T>(inputState: T): [T, React.Dispatch<React.SetStateAction<T>>, () => void] {
-    const [, setRenderTrigger] = React.useState(0);
-
-    const empty = emptySymbol as unknown as T;
-    const inputStateRef = React.useRef<[T | typeof empty, T]>([empty, inputState]);
+    // When [0] is not empty we will return it, [1] is always the last value we saw
+    const inputStateRef = React.useRef<[T | Empty, T]>([emptySymbol, inputState]);
     if (inputStateRef.current[1] !== inputState) {
+        // inputState changed, override with new inputState
         inputStateRef.current[0] = inputState;
     }
     inputStateRef.current[1] = inputState;
 
-    const setState = React.useCallback<React.Dispatch<React.SetStateAction<T>>>(nv => {
-        const ref = inputStateRef.current;
-        const currentValue = ref[0] === empty ? ref[1] : ref[0];
-        const resolved = typeof nv === "function" ? (nv as (pv: T) => T)(currentValue) : nv;
-        if (resolved === currentValue) {
-            return;
+    const [state, setState] = React.useState(inputState);
+    const [, forceRender] = React.useState<{} | undefined>();
+    const setStateOuter = React.useCallback<typeof setState>(nv => {
+        const s = inputStateRef.current[0];
+        if (s !== emptySymbol) {
+            nv = typeof nv === "function" ? (nv as (pv: T) => T)(s as T) : nv;
+            if (nv === s) return;
         }
-        if (resolved === ref[1]) {
-            ref[0] = empty;
-        } else {
-            ref[0] = resolved;
-        }
-        setRenderTrigger(prev => prev + 1);
-    }, [empty]);
+        if (s !== emptySymbol) forceRender({});
+        setState(pv => {
+            if (typeof nv === "function") {
+                return (nv as (pv: T) => T)(s === emptySymbol ? pv : (s as T));
+            }
+            return nv;
+        });
+        inputStateRef.current[0] = emptySymbol;
+    }, []);
 
     const onEmpty = React.useCallback(() => {
-        inputStateRef.current[0] = empty;
-        setRenderTrigger(prev => prev + 1);
-    }, [empty]);
+        inputStateRef.current[0] = emptySymbol;
+        forceRender({});
+    }, []);
 
-    const result = inputStateRef.current[0] === empty ? inputStateRef.current[1] : inputStateRef.current[0];
-    return [result, setState, onEmpty];
+    return [inputStateRef.current[0] === emptySymbol ? state : (inputStateRef.current[0] as T), setStateOuter, onEmpty];
 }
 
 export function makeAccessibilityStringForArray(arr: readonly string[]): string {

@@ -32,7 +32,8 @@ export function useResizeDetector<T extends HTMLElement = HTMLElement>(
         return () => {
             resizeObserver.disconnect();
         };
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ref.current]);
 
     return { ref, ...size };
 }

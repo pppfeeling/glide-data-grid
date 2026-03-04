@@ -4744,33 +4744,33 @@ function getScrollBarWidth() {
 }
 const emptySymbol = /* @__PURE__ */ Symbol("empty");
 function useStateWithReactiveInput(inputState) {
-  const [, setRenderTrigger] = React.useState(0);
-  const empty = emptySymbol;
-  const inputStateRef = React.useRef([empty, inputState]);
+  const inputStateRef = React.useRef([emptySymbol, inputState]);
   if (inputStateRef.current[1] !== inputState) {
     inputStateRef.current[0] = inputState;
   }
   inputStateRef.current[1] = inputState;
-  const setState = React.useCallback((nv) => {
-    const ref = inputStateRef.current;
-    const currentValue = ref[0] === empty ? ref[1] : ref[0];
-    const resolved = typeof nv === "function" ? nv(currentValue) : nv;
-    if (resolved === currentValue) {
-      return;
+  const [state, setState] = React.useState(inputState);
+  const [, forceRender] = React.useState();
+  const setStateOuter = React.useCallback((nv) => {
+    const s = inputStateRef.current[0];
+    if (s !== emptySymbol) {
+      nv = typeof nv === "function" ? nv(s) : nv;
+      if (nv === s) return;
     }
-    if (resolved === ref[1]) {
-      ref[0] = empty;
-    } else {
-      ref[0] = resolved;
-    }
-    setRenderTrigger((prev) => prev + 1);
-  }, [empty]);
+    if (s !== emptySymbol) forceRender({});
+    setState((pv) => {
+      if (typeof nv === "function") {
+        return nv(s === emptySymbol ? pv : s);
+      }
+      return nv;
+    });
+    inputStateRef.current[0] = emptySymbol;
+  }, []);
   const onEmpty = React.useCallback(() => {
-    inputStateRef.current[0] = empty;
-    setRenderTrigger((prev_0) => prev_0 + 1);
-  }, [empty]);
-  const result = inputStateRef.current[0] === empty ? inputStateRef.current[1] : inputStateRef.current[0];
-  return [result, setState, onEmpty];
+    inputStateRef.current[0] = emptySymbol;
+    forceRender({});
+  }, []);
+  return [inputStateRef.current[0] === emptySymbol ? state : inputStateRef.current[0], setStateOuter, onEmpty];
 }
 function makeAccessibilityStringForArray(arr) {
   if (arr.length === 0) {
@@ -4813,7 +4813,7 @@ const ImageOverlayEditor = (p2) => {
   if ($2[0] !== renderImage || $2[1] !== urls) {
     t7 = /* @__PURE__ */ Symbol.for("react.early_return_sentinel");
     bb0: {
-      const filtered = urls.filter(_temp$a);
+      const filtered = urls.filter(_temp$9);
       if (filtered.length === 0) {
         t7 = null;
         break bb0;
@@ -4907,7 +4907,7 @@ const ImageOverlayEditor = (p2) => {
   }
   return t10;
 };
-function _temp$a(u) {
+function _temp$9(u) {
   return u !== "";
 }
 function L() {
@@ -6662,7 +6662,7 @@ const GrowingEntry = (props) => {
   } = React.useContext(GhostModeContext);
   const useText = isGhostMode && ghostValue ? ghostValue : value !== null && value !== void 0 ? value : "";
   assert(onChange !== void 0, "GrowingEntry must be a controlled input area");
-  const [inputID] = React.useState(_temp$9);
+  const [inputID] = React.useState(_temp$8);
   const useTextRef = React.useRef(useText);
   const highlightRef = React.useRef(highlight);
   let t0;
@@ -6790,7 +6790,7 @@ const GrowingEntry = (props) => {
   }
   return t11;
 };
-function _temp$9() {
+function _temp$8() {
   return "input-box-" + nextInputId();
 }
 var d = /* @__PURE__ */ new Map(), b = /* @__PURE__ */ new Map(), z = /* @__PURE__ */ new Map();
@@ -7677,22 +7677,22 @@ function useColumnSizer(columns, rows, getCellsForSelection, clientWidth, minCol
   rowsRef.current = rows;
   getCellsForSelectionRef.current = getCellsForSelection;
   themeRef.current = theme;
-  const ctxRef = React.useRef(null);
-  React.useLayoutEffect(() => {
-    if (typeof window === "undefined") return;
+  const [canvas, ctx] = React.useMemo(() => {
+    if (typeof window === "undefined") return [null, null];
     const offscreen = document.createElement("canvas");
     offscreen.style["display"] = "none";
     offscreen.style["opacity"] = "0";
     offscreen.style["position"] = "fixed";
-    document.documentElement.append(offscreen);
-    ctxRef.current = offscreen.getContext("2d", {
+    return [offscreen, offscreen.getContext("2d", {
       alpha: false
-    });
-    return () => {
-      offscreen.remove();
-      ctxRef.current = null;
-    };
+    })];
   }, []);
+  React.useLayoutEffect(() => {
+    if (canvas) document.documentElement.append(canvas);
+    return () => {
+      canvas === null || canvas === void 0 || canvas.remove();
+    };
+  }, [canvas]);
   const memoMap = React.useRef({});
   const lastColumns = React.useRef(void 0);
   const [selectedData, setSelectionData] = React.useState();
@@ -7738,73 +7738,74 @@ function useColumnSizer(columns, rows, getCellsForSelection, clientWidth, minCol
     };
     void fn();
   }, [abortController.signal, columns]);
-  const getRaw = () => {
-    if (columns.every(isSizedGridColumn)) {
-      return columns;
-    }
-    const ctx = ctxRef.current;
-    if (ctx === null) {
-      return columns.map((c) => {
-        if (isSizedGridColumn(c)) return c;
-        return {
-          ...c,
-          width: defaultSize
-        };
+  return React.useMemo(() => {
+    const getRaw = () => {
+      if (columns.every(isSizedGridColumn)) {
+        return columns;
+      }
+      if (ctx === null) {
+        return columns.map((c) => {
+          if (isSizedGridColumn(c)) return c;
+          return {
+            ...c,
+            width: defaultSize
+          };
+        });
+      }
+      ctx.font = themeRef.current.baseFontFull;
+      return columns.map((c_0, colIndex) => {
+        if (isSizedGridColumn(c_0)) return c_0;
+        if (memoMap.current[c_0.id] !== void 0) {
+          return {
+            ...c_0,
+            width: memoMap.current[c_0.id]
+          };
+        }
+        if (selectedData === void 0 || lastColumns.current !== columns || c_0.id === void 0) {
+          return {
+            ...c_0,
+            width: defaultSize
+          };
+        }
+        const r = measureColumn(ctx, theme, c_0, colIndex, selectedData, minColumnWidth, maxColumnWidth, true, getCellRenderer);
+        memoMap.current[c_0.id] = r.width;
+        return r;
       });
-    }
-    ctx.font = themeRef.current.baseFontFull;
-    return columns.map((c_0, colIndex) => {
-      if (isSizedGridColumn(c_0)) return c_0;
-      if (memoMap.current[c_0.id] !== void 0) {
-        return {
-          ...c_0,
-          width: memoMap.current[c_0.id]
-        };
+    };
+    let result = getRaw();
+    let totalWidth = 0;
+    let totalGrow = 0;
+    const distribute = [];
+    for (const [i, c_1] of result.entries()) {
+      totalWidth += c_1.width;
+      if (c_1.grow !== void 0 && c_1.grow > 0) {
+        totalGrow += c_1.grow;
+        distribute.push(i);
       }
-      if (selectedData === void 0 || lastColumns.current !== columns || c_0.id === void 0) {
-        return {
-          ...c_0,
-          width: defaultSize
+    }
+    if (totalWidth < clientWidth && distribute.length > 0) {
+      const writeable = [...result];
+      const extra = clientWidth - totalWidth;
+      let remaining = extra;
+      for (let di = 0; di < distribute.length; di++) {
+        var _result$i_0$grow;
+        const i_0 = distribute[di];
+        const weighted = ((_result$i_0$grow = result[i_0].grow) !== null && _result$i_0$grow !== void 0 ? _result$i_0$grow : 0) / totalGrow;
+        const toAdd = di === distribute.length - 1 ? remaining : Math.min(remaining, Math.floor(extra * weighted));
+        writeable[i_0] = {
+          ...result[i_0],
+          growOffset: toAdd,
+          width: result[i_0].width + toAdd
         };
+        remaining -= toAdd;
       }
-      const r = measureColumn(ctx, theme, c_0, colIndex, selectedData, minColumnWidth, maxColumnWidth, true, getCellRenderer);
-      memoMap.current[c_0.id] = r.width;
-      return r;
-    });
-  };
-  let result = getRaw();
-  let totalWidth = 0;
-  let totalGrow = 0;
-  const distribute = [];
-  for (const [i, c_1] of result.entries()) {
-    totalWidth += c_1.width;
-    if (c_1.grow !== void 0 && c_1.grow > 0) {
-      totalGrow += c_1.grow;
-      distribute.push(i);
+      result = writeable;
     }
-  }
-  if (totalWidth < clientWidth && distribute.length > 0) {
-    const writeable = [...result];
-    const extra = clientWidth - totalWidth;
-    let remaining = extra;
-    for (let di = 0; di < distribute.length; di++) {
-      var _result$i_0$grow;
-      const i_0 = distribute[di];
-      const weighted = ((_result$i_0$grow = result[i_0].grow) !== null && _result$i_0$grow !== void 0 ? _result$i_0$grow : 0) / totalGrow;
-      const toAdd = di === distribute.length - 1 ? remaining : Math.min(remaining, Math.floor(extra * weighted));
-      writeable[i_0] = {
-        ...result[i_0],
-        growOffset: toAdd,
-        width: result[i_0].width + toAdd
-      };
-      remaining -= toAdd;
-    }
-    result = writeable;
-  }
-  return {
-    sizedColumns: result,
-    nonGrowWidth: totalWidth
-  };
+    return {
+      sizedColumns: result,
+      nonGrowWidth: totalWidth
+    };
+  }, [clientWidth, columns, ctx, selectedData, theme, minColumnWidth, maxColumnWidth, getCellRenderer]);
 }
 var _baseClamp;
 var hasRequired_baseClamp;
@@ -9760,7 +9761,7 @@ function useGridGeometry(args) {
   const getMouseArgsForPosition = t2;
   let t3;
   if ($2[40] !== enableGroups || $2[41] !== groupHeaderHeights) {
-    t3 = enableGroups ? groupHeaderHeights.reduce(_temp$8, 0) : 0;
+    t3 = enableGroups ? groupHeaderHeights.reduce(_temp$7, 0) : 0;
     $2[40] = enableGroups;
     $2[41] = groupHeaderHeights;
     $2[42] = t3;
@@ -9790,7 +9791,7 @@ function useGridGeometry(args) {
   }
   return t4;
 }
-function _temp$8(a, b_0) {
+function _temp$7(a, b_0) {
   return a + b_0;
 }
 function drawCheckbox(ctx, theme, checked, x2, y2, width, height, highlighted) {
@@ -12493,7 +12494,7 @@ function useAnimationQueue(draw) {
   const seq = React.useRef(0);
   const drawRef = React.useRef(draw);
   drawRef.current = draw;
-  const loop = () => {
+  const loop = React.useCallback(() => {
     const requeue = () => window.requestAnimationFrame(fn);
     const fn = () => {
       const toDraw = queue.current.map(unpackNumberToColRow);
@@ -12506,14 +12507,13 @@ function useAnimationQueue(draw) {
       }
     };
     window.requestAnimationFrame(seq.current > 600 ? requeue : fn);
-  };
-  const enqueue = (item) => {
+  }, []);
+  return React.useCallback((item) => {
     if (queue.current.length === 0) loop();
     const packed = packColRowToNumber(item[0], item[1]);
     if (queue.current.includes(packed)) return;
     queue.current.push(packed);
-  };
-  return enqueue;
+  }, [loop]);
 }
 function createBufferCanvases() {
   const a = document.createElement("canvas");
@@ -12532,7 +12532,7 @@ function createBufferCanvases() {
 }
 function useCanvasRenderer(args) {
   var _experimental$enableF, _experimental$enableS;
-  const $2 = compilerRuntimeExports.c(91);
+  const $2 = compilerRuntimeExports.c(92);
   const {
     canvasRef,
     overlayRef,
@@ -12622,7 +12622,7 @@ function useCanvasRenderer(args) {
     t1 = $2[9];
   }
   React.useLayoutEffect(t0, t1);
-  const enqueueRef = React.useRef(_temp$7);
+  const enqueueRef = React.useRef(_temp$6);
   const [t2] = React.useState(createBufferCanvases);
   const [bufferACtx, bufferBCtx] = t2;
   let t3;
@@ -12649,7 +12649,7 @@ function useCanvasRenderer(args) {
     t4 = $2[13];
   }
   React.useLayoutEffect(t3, t4);
-  const [renderStateProvider] = React.useState(_temp2$4);
+  const [renderStateProvider] = React.useState(_temp2$3);
   const maxDPR = enableFirefoxRescaling && scrolling ? 1 : enableSafariRescaling && scrolling ? 2 : 5;
   const minimumCellWidth = (experimental === null || experimental === void 0 ? void 0 : experimental.disableMinimumCellWidth) === true ? 1 : 10;
   const lastArgsRef = React.useRef(void 0);
@@ -12723,7 +12723,7 @@ function useCanvasRenderer(args) {
         rows,
         drawFocus: drawFocusRing,
         getCellContent,
-        getGroupDetails: getGroupDetails !== null && getGroupDetails !== void 0 ? getGroupDetails : _temp3$3,
+        getGroupDetails: getGroupDetails !== null && getGroupDetails !== void 0 ? getGroupDetails : _temp3$2,
         getRowThemeOverride,
         drawHeaderCallback,
         prelightCells,
@@ -12812,21 +12812,25 @@ function useCanvasRenderer(args) {
   const draw = t5;
   const lastDrawRef = React.useRef(draw);
   let t6;
+  let t7;
   if ($2[66] !== draw) {
     t6 = () => {
       draw();
       lastDrawRef.current = draw;
     };
+    t7 = [draw];
     $2[66] = draw;
     $2[67] = t6;
+    $2[68] = t7;
   } else {
     t6 = $2[67];
+    t7 = $2[68];
   }
-  React.useLayoutEffect(t6);
-  let t7;
+  React.useLayoutEffect(t6, t7);
   let t8;
-  if ($2[68] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
-    t7 = () => {
+  let t9;
+  if ($2[69] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t8 = () => {
       const fn = async () => {
         var _document;
         if (((_document = document) === null || _document === void 0 || (_document = _document.fonts) === null || _document === void 0 ? void 0 : _document.ready) === void 0) {
@@ -12838,63 +12842,63 @@ function useCanvasRenderer(args) {
       };
       fn();
     };
-    t8 = [];
-    $2[68] = t7;
+    t9 = [];
     $2[69] = t8;
+    $2[70] = t9;
   } else {
-    t7 = $2[68];
     t8 = $2[69];
+    t9 = $2[70];
   }
-  React.useLayoutEffect(t7, t8);
-  let t9;
-  if ($2[70] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
-    t9 = (locations) => {
+  React.useLayoutEffect(t8, t9);
+  let t10;
+  if ($2[71] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t10 = (locations) => {
       damageRegion.current = locations;
       lastDrawRef.current();
       damageRegion.current = void 0;
     };
-    $2[70] = t9;
+    $2[71] = t10;
   } else {
-    t9 = $2[70];
+    t10 = $2[71];
   }
-  const damageInternal = t9;
+  const damageInternal = t10;
   const enqueue = useAnimationQueue(damageInternal);
-  let t10;
-  if ($2[71] !== enqueue) {
-    t10 = () => {
+  let t11;
+  if ($2[72] !== enqueue) {
+    t11 = () => {
       enqueueRef.current = enqueue;
     };
-    $2[71] = enqueue;
-    $2[72] = t10;
-  } else {
-    t10 = $2[72];
-  }
-  React.useLayoutEffect(t10);
-  let t11;
-  if ($2[73] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
-    t11 = (cells) => {
-      damageInternal(new CellSet(cells.map(_temp4$3)));
-    };
+    $2[72] = enqueue;
     $2[73] = t11;
   } else {
     t11 = $2[73];
   }
-  const damage = t11;
+  React.useLayoutEffect(t11);
   let t12;
-  if ($2[74] !== imageLoader) {
-    t12 = () => {
+  if ($2[74] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    t12 = (cells) => {
+      damageInternal(new CellSet(cells.map(_temp4$2)));
+    };
+    $2[74] = t12;
+  } else {
+    t12 = $2[74];
+  }
+  const damage = t12;
+  let t13;
+  if ($2[75] !== imageLoader) {
+    t13 = () => {
       imageLoader.setCallback(damageInternal);
     };
-    $2[74] = imageLoader;
-    $2[75] = t12;
+    $2[75] = imageLoader;
+    $2[76] = t13;
   } else {
-    t12 = $2[75];
+    t13 = $2[76];
   }
-  React.useLayoutEffect(t12);
+  React.useLayoutEffect(t13);
   const [animManager] = React.useState(_temp6$1);
-  let t13;
-  if ($2[76] !== animManager || $2[77] !== hoverValuesRef) {
-    t13 = () => {
+  let t14;
+  if ($2[77] !== animManager || $2[78] !== hoverValuesRef) {
+    t14 = () => {
       animManager.setCallback((values_0) => {
         damageRegion.current = new CellSet(values_0.map(_temp7$1));
         hoverValuesRef.current = values_0;
@@ -12902,26 +12906,26 @@ function useCanvasRenderer(args) {
         damageRegion.current = void 0;
       });
     };
-    $2[76] = animManager;
-    $2[77] = hoverValuesRef;
-    $2[78] = t13;
+    $2[77] = animManager;
+    $2[78] = hoverValuesRef;
+    $2[79] = t14;
   } else {
-    t13 = $2[78];
+    t14 = $2[79];
   }
-  React.useLayoutEffect(t13);
-  let t14;
-  if ($2[79] !== hoveredItemInfo) {
-    t14 = hoveredItemInfo !== null && hoveredItemInfo !== void 0 ? hoveredItemInfo : [];
-    $2[79] = hoveredItemInfo;
-    $2[80] = t14;
-  } else {
-    t14 = $2[80];
-  }
-  const [hoveredItem] = t14;
+  React.useLayoutEffect(t14);
   let t15;
+  if ($2[80] !== hoveredItemInfo) {
+    t15 = hoveredItemInfo !== null && hoveredItemInfo !== void 0 ? hoveredItemInfo : [];
+    $2[80] = hoveredItemInfo;
+    $2[81] = t15;
+  } else {
+    t15 = $2[81];
+  }
+  const [hoveredItem] = t15;
   let t16;
-  if ($2[81] !== animManager || $2[82] !== getCellContent || $2[83] !== getCellRenderer || $2[84] !== hoveredItem) {
-    t15 = () => {
+  let t17;
+  if ($2[82] !== animManager || $2[83] !== getCellContent || $2[84] !== getCellRenderer || $2[85] !== hoveredItem) {
+    t16 = () => {
       if (hoveredItem === void 0 || hoveredItem[1] < 0) {
         animManager.setHovered(hoveredItem);
         return;
@@ -12931,21 +12935,21 @@ function useCanvasRenderer(args) {
       const cellNeedsHover = r === void 0 && cell.kind === GridCellKind.Custom || (r === null || r === void 0 ? void 0 : r.needsHover) !== void 0 && (typeof r.needsHover === "boolean" ? r.needsHover : r.needsHover(cell));
       animManager.setHovered(cellNeedsHover ? hoveredItem : void 0);
     };
-    t16 = [getCellContent, getCellRenderer, hoveredItem, animManager];
-    $2[81] = animManager;
-    $2[82] = getCellContent;
-    $2[83] = getCellRenderer;
-    $2[84] = hoveredItem;
-    $2[85] = t15;
+    t17 = [getCellContent, getCellRenderer, hoveredItem, animManager];
+    $2[82] = animManager;
+    $2[83] = getCellContent;
+    $2[84] = getCellRenderer;
+    $2[85] = hoveredItem;
     $2[86] = t16;
+    $2[87] = t17;
   } else {
-    t15 = $2[85];
     t16 = $2[86];
+    t17 = $2[87];
   }
-  React.useLayoutEffect(t15, t16);
-  let t17;
-  if ($2[87] !== drawCursorOverride || $2[88] !== renderStateProvider || $2[89] !== scrolling) {
-    t17 = {
+  React.useLayoutEffect(t16, t17);
+  let t18;
+  if ($2[88] !== drawCursorOverride || $2[89] !== renderStateProvider || $2[90] !== scrolling) {
+    t18 = {
       scrolling,
       damageInternal,
       damage,
@@ -12956,14 +12960,14 @@ function useCanvasRenderer(args) {
       lastDrawRef,
       lastArgsRef
     };
-    $2[87] = drawCursorOverride;
-    $2[88] = renderStateProvider;
-    $2[89] = scrolling;
-    $2[90] = t17;
+    $2[88] = drawCursorOverride;
+    $2[89] = renderStateProvider;
+    $2[90] = scrolling;
+    $2[91] = t18;
   } else {
-    t17 = $2[90];
+    t18 = $2[91];
   }
-  return t17;
+  return t18;
 }
 function _temp7$1(x_0) {
   return x_0.item;
@@ -12973,18 +12977,18 @@ function _temp6$1() {
 }
 function _temp5$1(values) {
 }
-function _temp4$3(x2) {
+function _temp4$2(x2) {
   return x2.cell;
 }
-function _temp3$3(name) {
+function _temp3$2(name) {
   return {
     name
   };
 }
-function _temp2$4() {
+function _temp2$3() {
   return new RenderStateProvider();
 }
-function _temp$7() {
+function _temp$6() {
 }
 function useGridPointerEvents(args) {
   const $2 = compilerRuntimeExports.c(59);
@@ -13459,7 +13463,7 @@ function useGridDragAndDrop(args) {
                 ctx.font = theme.baseFontFull;
                 ctx.fillStyle = theme.bgCell;
                 ctx.fillRect(0, 0, offscreen.width, offscreen.height);
-                drawCell(ctx, getCellContent([col, row]), 0, row, false, false, 0, 0, boundsForDragTarget.width, boundsForDragTarget.height, false, theme, theme.bgCell, imageLoader, spriteManager, 1, void 0, false, 0, void 0, void 0, void 0, renderStateProvider, getCellRenderer, _temp$6, 0);
+                drawCell(ctx, getCellContent([col, row]), 0, row, false, false, 0, 0, boundsForDragTarget.width, boundsForDragTarget.height, false, theme, theme.bgCell, imageLoader, spriteManager, 1, void 0, false, 0, void 0, void 0, void 0, renderStateProvider, getCellRenderer, _temp$5, 0);
               }
             }
             offscreen.style.left = "-100%";
@@ -13578,7 +13582,7 @@ function useGridDragAndDrop(args) {
   const onDragLeaveImpl = t4;
   useEventListener("dragleave", onDragLeaveImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false, false);
 }
-function _temp$6() {
+function _temp$5() {
 }
 const getRowData = (cell, getCellRenderer) => {
   var _r$getAccessibilitySt;
@@ -13699,7 +13703,7 @@ function useGridFocusAndAccessibility(args) {
       }
       const [fCol, fRow] = (_selection$current$ce = (_selection$current = selection.current) === null || _selection$current === void 0 ? void 0 : _selection$current.cell) !== null && _selection$current$ce !== void 0 ? _selection$current$ce : [];
       const range$1 = (_selection$current2 = selection.current) === null || _selection$current2 === void 0 ? void 0 : _selection$current2.range;
-      const visibleCols = effectiveCols.map(_temp$5);
+      const visibleCols = effectiveCols.map(_temp$4);
       const visibleRows = range(cellYOffset, Math.min(rows, cellYOffset + accessibilityHeight));
       if (fCol !== void 0 && fRow !== void 0 && !(visibleCols.includes(fCol) && visibleRows.includes(fRow))) {
         focusElement(null);
@@ -13726,9 +13730,9 @@ function useGridFocusAndAccessibility(args) {
             }
             return onKeyDown === null || onKeyDown === void 0 ? void 0 : onKeyDown({
               bounds: getBoundsForItem(canvas, col_0, row_0),
-              cancel: _temp2$3,
-              preventDefault: _temp3$2,
-              stopPropagation: _temp4$2,
+              cancel: _temp2$2,
+              preventDefault: _temp3$1,
+              stopPropagation: _temp4$1,
               ctrlKey: false,
               key: "Enter",
               keyCode: 13,
@@ -13789,18 +13793,17 @@ function useGridFocusAndAccessibility(args) {
   }
   return t5;
 }
-function _temp4$2() {
+function _temp4$1() {
 }
-function _temp3$2() {
+function _temp3$1() {
 }
-function _temp2$3() {
+function _temp2$2() {
 }
-function _temp$5(c) {
+function _temp$4(c) {
   return c.sourceIndex;
 }
 const DataGrid = (p2, forwardedRef) => {
   var _p$translateX, _p$translateY, _experimental$eventTa;
-  const $2 = compilerRuntimeExports.c(225);
   const {
     width,
     height,
@@ -13809,7 +13812,7 @@ const DataGrid = (p2, forwardedRef) => {
     cellXOffset: cellXOffsetReal,
     cellYOffset,
     headerHeight,
-    fillHandle: t0,
+    fillHandle = false,
     groupHeaderHeight,
     groupLevels,
     groupHeaderHeights,
@@ -13828,8 +13831,8 @@ const DataGrid = (p2, forwardedRef) => {
     freezeColumns,
     onContextMenu,
     freezeTrailingRows,
-    fixedShadowX: t1,
-    fixedShadowY: t2,
+    fixedShadowX = true,
+    fixedShadowY = true,
     drawFocusRing,
     onMouseDown,
     onMouseUp,
@@ -13848,7 +13851,7 @@ const DataGrid = (p2, forwardedRef) => {
     isResizing,
     resizeColumn: resizeCol,
     isDragging,
-    isDraggable: t3,
+    isDraggable = false,
     allowResize,
     disabledRows,
     hasAppendRow,
@@ -13864,19 +13867,12 @@ const DataGrid = (p2, forwardedRef) => {
     onDrop,
     onDragLeave,
     imageWindowLoader,
-    smoothScrollX: t4,
-    smoothScrollY: t5,
+    smoothScrollX = false,
+    smoothScrollY = false,
     experimental,
     getCellRenderer,
-    resizeIndicator: t6
+    resizeIndicator = "full"
   } = p2;
-  const fillHandle = t0 === void 0 ? false : t0;
-  const fixedShadowX = t1 === void 0 ? true : t1;
-  const fixedShadowY = t2 === void 0 ? true : t2;
-  const isDraggable = t3 === void 0 ? false : t3;
-  const smoothScrollX = t4 === void 0 ? false : t4;
-  const smoothScrollY = t5 === void 0 ? false : t5;
-  const resizeIndicator = t6 === void 0 ? "full" : t6;
   const translateX = (_p$translateX = p2.translateX) !== null && _p$translateX !== void 0 ? _p$translateX : 0;
   const translateY = (_p$translateY = p2.translateY) !== null && _p$translateY !== void 0 ? _p$translateY : 0;
   const cellXOffset = Math.max(freezeColumns, Math.min(columns.length - 1, cellXOffsetReal));
@@ -13888,235 +13884,49 @@ const DataGrid = (p2, forwardedRef) => {
   const overlayRef = React.useRef(null);
   const [lastWasTouch, setLastWasTouch] = React.useState(false);
   const lastWasTouchRef = React.useRef(lastWasTouch);
-  let t7;
-  let t8;
-  if ($2[0] !== lastWasTouch) {
-    t7 = () => {
-      lastWasTouchRef.current = lastWasTouch;
-    };
-    t8 = [lastWasTouch];
-    $2[0] = lastWasTouch;
-    $2[1] = t7;
-    $2[2] = t8;
-  } else {
-    t7 = $2[1];
-    t8 = $2[2];
-  }
-  React.useLayoutEffect(t7, t8);
-  let t9;
-  if ($2[3] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
-    t9 = [];
-    $2[3] = t9;
-  } else {
-    t9 = $2[3];
-  }
-  const hoverValues = React.useRef(t9);
+  React.useLayoutEffect(() => {
+    lastWasTouchRef.current = lastWasTouch;
+  }, [lastWasTouch]);
+  const hoverValues = React.useRef([]);
   const hoverInfoRef = React.useRef(hoveredItemInfo);
-  let t10;
-  let t11;
-  if ($2[4] !== hoveredItemInfo) {
-    t10 = () => {
-      hoverInfoRef.current = hoveredItemInfo;
-    };
-    t11 = [hoveredItemInfo];
-    $2[4] = hoveredItemInfo;
-    $2[5] = t10;
-    $2[6] = t11;
-  } else {
-    t10 = $2[5];
-    t11 = $2[6];
-  }
-  React.useLayoutEffect(t10, t11);
-  let t12;
-  if ($2[7] !== enableGroups || $2[8] !== groupHeaderHeights) {
-    t12 = enableGroups ? groupHeaderHeights.reduce(_temp$4, 0) : 0;
-    $2[7] = enableGroups;
-    $2[8] = groupHeaderHeights;
-    $2[9] = t12;
-  } else {
-    t12 = $2[9];
-  }
-  const totalGroupHeaderHeight = t12;
+  React.useLayoutEffect(() => {
+    hoverInfoRef.current = hoveredItemInfo;
+  }, [hoveredItemInfo]);
+  const totalGroupHeaderHeight = enableGroups ? groupHeaderHeights.reduce((a, b2) => a + b2, 0) : 0;
   const totalHeaderHeight = headerHeight + totalGroupHeaderHeight;
-  let t13;
-  if ($2[10] !== cellXOffset || $2[11] !== cellYOffset || $2[12] !== columns || $2[13] !== dragAndDropState || $2[14] !== enableGroups || $2[15] !== fillHandle || $2[16] !== fixedShadowX || $2[17] !== freezeColumns || $2[18] !== freezeTrailingRows || $2[19] !== groupHeaderHeight || $2[20] !== groupHeaderHeights || $2[21] !== groupLevels || $2[22] !== headerHeight || $2[23] !== height || $2[24] !== rowHeight || $2[25] !== rows || $2[26] !== selection || $2[27] !== totalHeaderHeight || $2[28] !== translateX || $2[29] !== translateY || $2[30] !== width) {
-    t13 = {
-      columns,
-      freezeColumns,
-      width,
-      height,
-      groupHeaderHeight,
-      totalHeaderHeight,
-      cellXOffset,
-      cellYOffset,
-      translateX,
-      translateY,
-      rows,
-      freezeTrailingRows,
-      rowHeight,
-      enableGroups,
-      headerHeight,
-      groupLevels,
-      groupHeaderHeights,
-      fillHandle,
-      selection,
-      fixedShadowX,
-      dragAndDropState
-    };
-    $2[10] = cellXOffset;
-    $2[11] = cellYOffset;
-    $2[12] = columns;
-    $2[13] = dragAndDropState;
-    $2[14] = enableGroups;
-    $2[15] = fillHandle;
-    $2[16] = fixedShadowX;
-    $2[17] = freezeColumns;
-    $2[18] = freezeTrailingRows;
-    $2[19] = groupHeaderHeight;
-    $2[20] = groupHeaderHeights;
-    $2[21] = groupLevels;
-    $2[22] = headerHeight;
-    $2[23] = height;
-    $2[24] = rowHeight;
-    $2[25] = rows;
-    $2[26] = selection;
-    $2[27] = totalHeaderHeight;
-    $2[28] = translateX;
-    $2[29] = translateY;
-    $2[30] = width;
-    $2[31] = t13;
-  } else {
-    t13 = $2[31];
-  }
   const {
     mappedColumns,
     stickyX,
     getBoundsForItem,
     getMouseArgsForPosition
-  } = useGridGeometry(t13);
-  let t14;
-  if ($2[32] !== headerIcons) {
-    t14 = () => new SpriteManager(headerIcons, _temp2$2);
-    $2[32] = headerIcons;
-    $2[33] = t14;
-  } else {
-    t14 = $2[33];
-  }
-  const [spriteManager] = React.useState(t14);
-  let t15;
-  let t16;
-  if ($2[34] !== headerIcons || $2[35] !== spriteManager) {
-    t15 = () => {
-      spriteManager.updateIcons(headerIcons);
-    };
-    t16 = [spriteManager, headerIcons];
-    $2[34] = headerIcons;
-    $2[35] = spriteManager;
-    $2[36] = t15;
-    $2[37] = t16;
-  } else {
-    t15 = $2[36];
-    t16 = $2[37];
-  }
-  React.useLayoutEffect(t15, t16);
-  let t17;
-  if ($2[38] !== cellXOffset || $2[39] !== cellYOffset || $2[40] !== disabledRows || $2[41] !== dragAndDropState || $2[42] !== drawCellCallback || $2[43] !== drawFocusRing || $2[44] !== drawHeaderCallback || $2[45] !== enableGroups || $2[46] !== experimental || $2[47] !== fillHandle || $2[48] !== freezeColumns || $2[49] !== freezeTrailingRows || $2[50] !== getCellContent || $2[51] !== getCellRenderer || $2[52] !== getGroupDetails || $2[53] !== getRowThemeOverride || $2[54] !== groupHeaderHeight || $2[55] !== groupHeaderHeights || $2[56] !== groupLevels || $2[57] !== hasAppendRow || $2[58] !== headerHeight || $2[59] !== height || $2[60] !== highlightRegions || $2[61] !== hoveredItemInfo || $2[62] !== imageLoader || $2[63] !== isFocused || $2[64] !== isResizing || $2[65] !== lastWasTouch || $2[66] !== mappedColumns || $2[67] !== prelightCells || $2[68] !== resizeCol || $2[69] !== resizeIndicator || $2[70] !== rowHeight || $2[71] !== rows || $2[72] !== selection || $2[73] !== smoothScrollX || $2[74] !== smoothScrollY || $2[75] !== spriteManager || $2[76] !== theme || $2[77] !== translateX || $2[78] !== translateY || $2[79] !== verticalBorder || $2[80] !== width) {
-    t17 = {
-      canvasRef: ref,
-      overlayRef,
-      width,
-      height,
-      cellXOffset,
-      cellYOffset,
-      translateX,
-      translateY,
-      mappedColumns,
-      enableGroups,
-      freezeColumns,
-      freezeTrailingRows,
-      rows,
-      headerHeight,
-      groupHeaderHeight,
-      groupLevels,
-      groupHeaderHeights,
-      theme,
-      rowHeight,
-      verticalBorder,
-      isResizing,
-      resizeCol,
-      isFocused,
-      fillHandle,
-      drawFocusRing,
-      drawCellCallback,
-      drawHeaderCallback,
-      resizeIndicator,
-      selection,
-      disabledRows,
-      hasAppendRow,
-      getCellContent,
-      getGroupDetails,
-      getRowThemeOverride,
-      prelightCells,
-      highlightRegions,
-      dragAndDropState,
-      spriteManager,
-      imageLoader,
-      getCellRenderer,
-      hoveredItemInfo,
-      hoverInfoRef,
-      hoverValuesRef: hoverValues,
-      lastWasTouch,
-      experimental,
-      smoothScrollX,
-      smoothScrollY
-    };
-    $2[38] = cellXOffset;
-    $2[39] = cellYOffset;
-    $2[40] = disabledRows;
-    $2[41] = dragAndDropState;
-    $2[42] = drawCellCallback;
-    $2[43] = drawFocusRing;
-    $2[44] = drawHeaderCallback;
-    $2[45] = enableGroups;
-    $2[46] = experimental;
-    $2[47] = fillHandle;
-    $2[48] = freezeColumns;
-    $2[49] = freezeTrailingRows;
-    $2[50] = getCellContent;
-    $2[51] = getCellRenderer;
-    $2[52] = getGroupDetails;
-    $2[53] = getRowThemeOverride;
-    $2[54] = groupHeaderHeight;
-    $2[55] = groupHeaderHeights;
-    $2[56] = groupLevels;
-    $2[57] = hasAppendRow;
-    $2[58] = headerHeight;
-    $2[59] = height;
-    $2[60] = highlightRegions;
-    $2[61] = hoveredItemInfo;
-    $2[62] = imageLoader;
-    $2[63] = isFocused;
-    $2[64] = isResizing;
-    $2[65] = lastWasTouch;
-    $2[66] = mappedColumns;
-    $2[67] = prelightCells;
-    $2[68] = resizeCol;
-    $2[69] = resizeIndicator;
-    $2[70] = rowHeight;
-    $2[71] = rows;
-    $2[72] = selection;
-    $2[73] = smoothScrollX;
-    $2[74] = smoothScrollY;
-    $2[75] = spriteManager;
-    $2[76] = theme;
-    $2[77] = translateX;
-    $2[78] = translateY;
-    $2[79] = verticalBorder;
-    $2[80] = width;
-    $2[81] = t17;
-  } else {
-    t17 = $2[81];
-  }
+  } = useGridGeometry({
+    columns,
+    freezeColumns,
+    width,
+    height,
+    groupHeaderHeight,
+    totalHeaderHeight,
+    cellXOffset,
+    cellYOffset,
+    translateX,
+    translateY,
+    rows,
+    freezeTrailingRows,
+    rowHeight,
+    enableGroups,
+    headerHeight,
+    groupLevels,
+    groupHeaderHeights,
+    fillHandle,
+    selection,
+    fixedShadowX,
+    dragAndDropState
+  });
+  const [spriteManager] = React.useState(() => new SpriteManager(headerIcons, () => {
+  }));
+  React.useLayoutEffect(() => {
+    spriteManager.updateIcons(headerIcons);
+  }, [spriteManager, headerIcons]);
   const {
     damageInternal,
     damage,
@@ -14125,544 +13935,279 @@ const DataGrid = (p2, forwardedRef) => {
     renderStateProvider,
     lastDrawRef,
     lastArgsRef
-  } = useCanvasRenderer(t17);
-  let t18;
-  if ($2[82] !== lastArgsRef || $2[83] !== lastDrawRef || $2[84] !== spriteManager) {
-    t18 = () => {
-      spriteManager.setOnSettled(() => {
-        lastArgsRef.current = void 0;
-        lastDrawRef.current();
-      });
-    };
-    $2[82] = lastArgsRef;
-    $2[83] = lastDrawRef;
-    $2[84] = spriteManager;
-    $2[85] = t18;
-  } else {
-    t18 = $2[85];
-  }
-  React.useLayoutEffect(t18);
+  } = useCanvasRenderer({
+    canvasRef: ref,
+    overlayRef,
+    width,
+    height,
+    cellXOffset,
+    cellYOffset,
+    translateX,
+    translateY,
+    mappedColumns,
+    enableGroups,
+    freezeColumns,
+    freezeTrailingRows,
+    rows,
+    headerHeight,
+    groupHeaderHeight,
+    groupLevels,
+    groupHeaderHeights,
+    theme,
+    rowHeight,
+    verticalBorder,
+    isResizing,
+    resizeCol,
+    isFocused,
+    fillHandle,
+    drawFocusRing,
+    drawCellCallback,
+    drawHeaderCallback,
+    resizeIndicator,
+    selection,
+    disabledRows,
+    hasAppendRow,
+    getCellContent,
+    getGroupDetails,
+    getRowThemeOverride,
+    prelightCells,
+    highlightRegions,
+    dragAndDropState,
+    spriteManager,
+    imageLoader,
+    getCellRenderer,
+    hoveredItemInfo,
+    hoverInfoRef,
+    hoverValuesRef: hoverValues,
+    lastWasTouch,
+    experimental
+  });
+  React.useLayoutEffect(() => {
+    spriteManager.setOnSettled(() => {
+      lastArgsRef.current = void 0;
+      lastDrawRef.current();
+    });
+  });
   const [overFill, setOverFill] = React.useState(false);
-  let t19;
-  if ($2[86] !== allowResize || $2[87] !== damageInternal || $2[88] !== eventTargetRef || $2[89] !== firstColAccessible || $2[90] !== getBoundsForItem || $2[91] !== getCellContent || $2[92] !== getCellRenderer || $2[93] !== getGroupDetails || $2[94] !== getMouseArgsForPosition || $2[95] !== hoveredOnEdge || $2[96] !== isDraggable || $2[97] !== isDragging || $2[98] !== isResizing || $2[99] !== mappedColumns || $2[100] !== onContextMenu || $2[101] !== onHeaderIndicatorClick || $2[102] !== onHeaderMenuClick || $2[103] !== onItemHovered || $2[104] !== onMouseDown || $2[105] !== onMouseMove || $2[106] !== onMouseMoveRaw || $2[107] !== onMouseUp || $2[108] !== rows || $2[109] !== selection || $2[110] !== setDrawCursorOverride || $2[111] !== theme || $2[112] !== windowEventTarget) {
-    t19 = {
-      canvasRef: ref,
-      windowEventTarget,
-      eventTargetRef,
-      getBoundsForItem,
-      getMouseArgsForPosition,
-      mappedColumns,
-      hoveredOnEdge,
-      setHoveredItemInfo,
-      setHoveredOnEdge,
-      setOverFill,
-      lastWasTouchRef,
-      setLastWasTouch,
-      setDrawCursorOverride,
-      hoverInfoRef,
-      onMouseDown,
-      onMouseUp,
-      onMouseMove,
-      onMouseMoveRaw,
-      onItemHovered,
-      onContextMenu,
-      onHeaderMenuClick,
-      onHeaderIndicatorClick,
-      isDraggable,
-      isDragging,
-      isResizing,
-      allowResize,
-      firstColAccessible,
-      theme,
-      selection,
-      rows,
-      getCellContent,
-      getCellRenderer,
-      getGroupDetails,
-      damageInternal
-    };
-    $2[86] = allowResize;
-    $2[87] = damageInternal;
-    $2[88] = eventTargetRef;
-    $2[89] = firstColAccessible;
-    $2[90] = getBoundsForItem;
-    $2[91] = getCellContent;
-    $2[92] = getCellRenderer;
-    $2[93] = getGroupDetails;
-    $2[94] = getMouseArgsForPosition;
-    $2[95] = hoveredOnEdge;
-    $2[96] = isDraggable;
-    $2[97] = isDragging;
-    $2[98] = isResizing;
-    $2[99] = mappedColumns;
-    $2[100] = onContextMenu;
-    $2[101] = onHeaderIndicatorClick;
-    $2[102] = onHeaderMenuClick;
-    $2[103] = onItemHovered;
-    $2[104] = onMouseDown;
-    $2[105] = onMouseMove;
-    $2[106] = onMouseMoveRaw;
-    $2[107] = onMouseUp;
-    $2[108] = rows;
-    $2[109] = selection;
-    $2[110] = setDrawCursorOverride;
-    $2[111] = theme;
-    $2[112] = windowEventTarget;
-    $2[113] = t19;
-  } else {
-    t19 = $2[113];
-  }
-  useGridPointerEvents(t19);
-  let t20;
-  if ($2[114] !== drawHeaderCallback || $2[115] !== eventTargetRef || $2[116] !== firstColAccessible || $2[117] !== getBoundsForItem || $2[118] !== getCellContent || $2[119] !== getCellRenderer || $2[120] !== getMouseArgsForPosition || $2[121] !== imageLoader || $2[122] !== isDraggable || $2[123] !== isResizing || $2[124] !== mappedColumns || $2[125] !== onDragEnd || $2[126] !== onDragLeave || $2[127] !== onDragOverCell || $2[128] !== onDragStart || $2[129] !== onDrop || $2[130] !== renderStateProvider || $2[131] !== spriteManager || $2[132] !== theme) {
-    t20 = {
-      canvasRef: ref,
-      eventTargetRef,
-      getBoundsForItem,
-      getMouseArgsForPosition,
-      mappedColumns,
-      isDraggable,
-      isResizing,
-      firstColAccessible,
-      theme,
-      getCellContent,
-      getCellRenderer,
-      spriteManager,
-      renderStateProvider,
-      imageLoader,
-      drawHeaderCallback,
-      onDragStart,
-      onDragEnd,
-      onDragOverCell,
-      onDrop,
-      onDragLeave
-    };
-    $2[114] = drawHeaderCallback;
-    $2[115] = eventTargetRef;
-    $2[116] = firstColAccessible;
-    $2[117] = getBoundsForItem;
-    $2[118] = getCellContent;
-    $2[119] = getCellRenderer;
-    $2[120] = getMouseArgsForPosition;
-    $2[121] = imageLoader;
-    $2[122] = isDraggable;
-    $2[123] = isResizing;
-    $2[124] = mappedColumns;
-    $2[125] = onDragEnd;
-    $2[126] = onDragLeave;
-    $2[127] = onDragOverCell;
-    $2[128] = onDragStart;
-    $2[129] = onDrop;
-    $2[130] = renderStateProvider;
-    $2[131] = spriteManager;
-    $2[132] = theme;
-    $2[133] = t20;
-  } else {
-    t20 = $2[133];
-  }
-  useGridDragAndDrop(t20);
-  const t21 = (experimental === null || experimental === void 0 ? void 0 : experimental.disableAccessibilityTree) === true;
-  let t22;
-  if ($2[134] !== accessibilityHeight || $2[135] !== canvasRef || $2[136] !== cellXOffset || $2[137] !== cellYOffset || $2[138] !== damage || $2[139] !== dragAndDropState || $2[140] !== firstColAccessible || $2[141] !== forwardedRef || $2[142] !== getBoundsForItem || $2[143] !== getCellContent || $2[144] !== getCellRenderer || $2[145] !== getMouseArgsForPosition || $2[146] !== height || $2[147] !== mappedColumns || $2[148] !== onCellFocused || $2[149] !== onKeyDown || $2[150] !== rows || $2[151] !== selection || $2[152] !== t21 || $2[153] !== translateX || $2[154] !== width) {
-    t22 = {
-      canvasRef: ref,
-      canvasPropRef: canvasRef,
-      getBoundsForItem,
-      getMouseArgsForPosition,
-      mappedColumns,
-      width,
-      height,
-      cellXOffset,
-      cellYOffset,
-      translateX,
-      rows,
-      accessibilityHeight,
-      firstColAccessible,
-      selection,
-      dragAndDropState,
-      onKeyDown,
-      onCellFocused,
-      getCellContent,
-      getCellRenderer,
-      damage,
-      disableAccessibilityTree: t21,
-      forwardedRef
-    };
-    $2[134] = accessibilityHeight;
-    $2[135] = canvasRef;
-    $2[136] = cellXOffset;
-    $2[137] = cellYOffset;
-    $2[138] = damage;
-    $2[139] = dragAndDropState;
-    $2[140] = firstColAccessible;
-    $2[141] = forwardedRef;
-    $2[142] = getBoundsForItem;
-    $2[143] = getCellContent;
-    $2[144] = getCellRenderer;
-    $2[145] = getMouseArgsForPosition;
-    $2[146] = height;
-    $2[147] = mappedColumns;
-    $2[148] = onCellFocused;
-    $2[149] = onKeyDown;
-    $2[150] = rows;
-    $2[151] = selection;
-    $2[152] = t21;
-    $2[153] = translateX;
-    $2[154] = width;
-    $2[155] = t22;
-  } else {
-    t22 = $2[155];
-  }
+  useGridPointerEvents({
+    canvasRef: ref,
+    windowEventTarget,
+    eventTargetRef,
+    getBoundsForItem,
+    getMouseArgsForPosition,
+    mappedColumns,
+    hoveredOnEdge,
+    setHoveredItemInfo,
+    setHoveredOnEdge,
+    setOverFill,
+    lastWasTouchRef,
+    setLastWasTouch,
+    setDrawCursorOverride,
+    hoverInfoRef,
+    onMouseDown,
+    onMouseUp,
+    onMouseMove,
+    onMouseMoveRaw,
+    onItemHovered,
+    onContextMenu,
+    onHeaderMenuClick,
+    onHeaderIndicatorClick,
+    isDraggable,
+    isDragging,
+    isResizing,
+    allowResize,
+    firstColAccessible,
+    theme,
+    getCellContent,
+    getCellRenderer,
+    getGroupDetails,
+    damageInternal
+  });
+  useGridDragAndDrop({
+    canvasRef: ref,
+    eventTargetRef,
+    getBoundsForItem,
+    getMouseArgsForPosition,
+    mappedColumns,
+    isDraggable,
+    isResizing,
+    firstColAccessible,
+    theme,
+    getCellContent,
+    getCellRenderer,
+    spriteManager,
+    renderStateProvider,
+    imageLoader,
+    drawHeaderCallback,
+    onDragStart,
+    onDragEnd,
+    onDragOverCell,
+    onDrop,
+    onDragLeave
+  });
   const {
     accessibilityTree
-  } = useGridFocusAndAccessibility(t22);
-  let t23;
-  if ($2[156] !== getBoundsForItem || $2[157] !== onKeyDown || $2[158] !== selection) {
-    t23 = (event) => {
-      const canvas = ref.current;
-      if (canvas === null) {
-        return;
-      }
-      let bounds;
-      let location = void 0;
-      if (selection.current !== void 0) {
-        bounds = getBoundsForItem(canvas, selection.current.cell[0], selection.current.cell[1]);
-        location = selection.current.cell;
-      }
-      onKeyDown === null || onKeyDown === void 0 || onKeyDown({
-        bounds,
-        stopPropagation: () => event.stopPropagation(),
-        preventDefault: () => event.preventDefault(),
-        cancel: _temp3$1,
-        ctrlKey: event.ctrlKey,
-        metaKey: event.metaKey,
-        shiftKey: event.shiftKey,
-        altKey: event.altKey,
-        key: event.key,
-        keyCode: event.keyCode,
-        rawEvent: event,
-        location
-      });
-    };
-    $2[156] = getBoundsForItem;
-    $2[157] = onKeyDown;
-    $2[158] = selection;
-    $2[159] = t23;
-  } else {
-    t23 = $2[159];
-  }
-  const onKeyDownImpl = t23;
-  let t24;
-  if ($2[160] !== getBoundsForItem || $2[161] !== onKeyUp || $2[162] !== selection) {
-    t24 = (event_0) => {
-      const canvas_0 = ref.current;
-      if (canvas_0 === null) {
-        return;
-      }
-      let bounds_0;
-      let location_0 = void 0;
-      if (selection.current !== void 0) {
-        bounds_0 = getBoundsForItem(canvas_0, selection.current.cell[0], selection.current.cell[1]);
-        location_0 = selection.current.cell;
-      }
-      onKeyUp === null || onKeyUp === void 0 || onKeyUp({
-        bounds: bounds_0,
-        stopPropagation: () => event_0.stopPropagation(),
-        preventDefault: () => event_0.preventDefault(),
-        cancel: _temp4$1,
-        ctrlKey: event_0.ctrlKey,
-        metaKey: event_0.metaKey,
-        shiftKey: event_0.shiftKey,
-        altKey: event_0.altKey,
-        key: event_0.key,
-        keyCode: event_0.keyCode,
-        rawEvent: event_0,
-        location: location_0
-      });
-    };
-    $2[160] = getBoundsForItem;
-    $2[161] = onKeyUp;
-    $2[162] = selection;
-    $2[163] = t24;
-  } else {
-    t24 = $2[163];
-  }
-  const onKeyUpImpl = t24;
-  let t25;
-  if ($2[164] !== canvasRef || $2[165] !== experimental) {
-    t25 = (instance) => {
-      ref.current = instance;
-      if (canvasRef !== void 0) {
-        canvasRef.current = instance;
-      }
-      if (experimental !== null && experimental !== void 0 && experimental.eventTarget) {
-        setWindowEventTarget(experimental.eventTarget);
-      } else {
-        if (instance === null) {
-          setWindowEventTarget(window);
-        } else {
-          const docRoot = instance.getRootNode();
-          setWindowEventTarget(docRoot === document ? window : docRoot);
-        }
-      }
-    };
-    $2[164] = canvasRef;
-    $2[165] = experimental;
-    $2[166] = t25;
-  } else {
-    t25 = $2[166];
-  }
-  const refImpl = t25;
-  let t26;
-  if ($2[167] !== hoveredItemInfo) {
-    t26 = hoveredItemInfo !== null && hoveredItemInfo !== void 0 ? hoveredItemInfo : [];
-    $2[167] = hoveredItemInfo;
-    $2[168] = t26;
-  } else {
-    t26 = $2[168];
-  }
-  const [hoveredItem] = t26;
-  let t27;
-  if ($2[169] !== hoveredItem) {
-    t27 = hoveredItem !== null && hoveredItem !== void 0 ? hoveredItem : [];
-    $2[169] = hoveredItem;
-    $2[170] = t27;
-  } else {
-    t27 = $2[170];
-  }
-  const [hCol, hRow] = t27;
+  } = useGridFocusAndAccessibility({
+    canvasRef: ref,
+    canvasPropRef: canvasRef,
+    getBoundsForItem,
+    getMouseArgsForPosition,
+    mappedColumns,
+    width,
+    cellXOffset,
+    cellYOffset,
+    translateX,
+    rows,
+    accessibilityHeight,
+    firstColAccessible,
+    selection,
+    dragAndDropState,
+    onKeyDown,
+    onCellFocused,
+    getCellContent,
+    getCellRenderer,
+    damage,
+    disableAccessibilityTree: (experimental === null || experimental === void 0 ? void 0 : experimental.disableAccessibilityTree) === true,
+    forwardedRef
+  });
+  const onKeyDownImpl = React.useCallback((event) => {
+    const canvas = ref.current;
+    if (canvas === null) return;
+    let bounds;
+    let location = void 0;
+    if (selection.current !== void 0) {
+      bounds = getBoundsForItem(canvas, selection.current.cell[0], selection.current.cell[1]);
+      location = selection.current.cell;
+    }
+    onKeyDown === null || onKeyDown === void 0 || onKeyDown({
+      bounds,
+      stopPropagation: () => event.stopPropagation(),
+      preventDefault: () => event.preventDefault(),
+      cancel: () => void 0,
+      ctrlKey: event.ctrlKey,
+      metaKey: event.metaKey,
+      shiftKey: event.shiftKey,
+      altKey: event.altKey,
+      key: event.key,
+      keyCode: event.keyCode,
+      rawEvent: event,
+      location
+    });
+  }, [getBoundsForItem, onKeyDown, selection]);
+  const onKeyUpImpl = React.useCallback((event_0) => {
+    const canvas_0 = ref.current;
+    if (canvas_0 === null) return;
+    let bounds_0;
+    let location_0 = void 0;
+    if (selection.current !== void 0) {
+      bounds_0 = getBoundsForItem(canvas_0, selection.current.cell[0], selection.current.cell[1]);
+      location_0 = selection.current.cell;
+    }
+    onKeyUp === null || onKeyUp === void 0 || onKeyUp({
+      bounds: bounds_0,
+      stopPropagation: () => event_0.stopPropagation(),
+      preventDefault: () => event_0.preventDefault(),
+      cancel: () => void 0,
+      ctrlKey: event_0.ctrlKey,
+      metaKey: event_0.metaKey,
+      shiftKey: event_0.shiftKey,
+      altKey: event_0.altKey,
+      key: event_0.key,
+      keyCode: event_0.keyCode,
+      rawEvent: event_0,
+      location: location_0
+    });
+  }, [getBoundsForItem, onKeyUp, selection]);
+  const refImpl = React.useCallback((instance) => {
+    ref.current = instance;
+    if (canvasRef !== void 0) {
+      canvasRef.current = instance;
+    }
+    if (experimental !== null && experimental !== void 0 && experimental.eventTarget) {
+      setWindowEventTarget(experimental.eventTarget);
+    } else if (instance === null) {
+      setWindowEventTarget(window);
+    } else {
+      const docRoot = instance.getRootNode();
+      setWindowEventTarget(docRoot === document ? window : docRoot);
+    }
+  }, [canvasRef, experimental === null || experimental === void 0 ? void 0 : experimental.eventTarget]);
+  const [hoveredItem] = hoveredItemInfo !== null && hoveredItemInfo !== void 0 ? hoveredItemInfo : [];
+  const [hCol, hRow] = hoveredItem !== null && hoveredItem !== void 0 ? hoveredItem : [];
   const headerHovered = hCol !== void 0 && hRow === -1 && hCol >= 0 && hCol < mappedColumns.length && mappedColumns[hCol].headerRowMarkerDisabled !== true;
   const groupHeaderHovered = hCol !== void 0 && hRow === -2;
   let clickableInnerCellHovered = false;
   let editableBoolHovered = false;
   let cursorOverride = drawCursorOverride;
   if (cursorOverride === void 0 && hCol !== void 0 && hRow !== void 0 && hRow > -1 && hRow < rows) {
-    let cell;
-    let t282;
-    if ($2[171] !== getCellContent || $2[172] !== hCol || $2[173] !== hRow) {
-      cell = getCellContent([hCol, hRow], true);
-      clickableInnerCellHovered = cell.kind === InnerGridCellKind.NewRow || cell.kind === InnerGridCellKind.Marker && cell.markerKind !== "number";
-      t282 = cell.kind === GridCellKind.Boolean && booleanCellIsEditable(cell);
-      $2[171] = getCellContent;
-      $2[172] = hCol;
-      $2[173] = hRow;
-      $2[174] = cell;
-      $2[175] = t282;
-      $2[176] = clickableInnerCellHovered;
-    } else {
-      cell = $2[174];
-      t282 = $2[175];
-      clickableInnerCellHovered = $2[176];
-    }
-    editableBoolHovered = t282;
+    const cell = getCellContent([hCol, hRow], true);
+    clickableInnerCellHovered = cell.kind === InnerGridCellKind.NewRow || cell.kind === InnerGridCellKind.Marker && cell.markerKind !== "number";
+    editableBoolHovered = cell.kind === GridCellKind.Boolean && booleanCellIsEditable(cell);
     cursorOverride = cell.cursor;
   }
   const canDrag = hoveredOnEdge !== null && hoveredOnEdge !== void 0 ? hoveredOnEdge : false;
   const cursor = isDragging ? "grabbing" : canDrag || isResizing ? "col-resize" : overFill || isFilling ? "crosshair" : cursorOverride !== void 0 ? cursorOverride : headerHovered || clickableInnerCellHovered || editableBoolHovered || groupHeaderHovered ? "pointer" : "default";
-  let t28;
-  if ($2[177] !== cursor) {
-    t28 = {
-      contain: "strict",
-      display: "block",
-      cursor
-    };
-    $2[177] = cursor;
-    $2[178] = t28;
-  } else {
-    t28 = $2[178];
-  }
-  const style = t28;
+  const style = React.useMemo(() => ({
+    contain: "strict",
+    display: "block",
+    cursor
+  }), [cursor]);
   const lastSetCursor = React.useRef("default");
-  const cursorStyle = style.cursor;
-  let t29;
-  let t30;
-  if ($2[179] !== cursorStyle || $2[180] !== eventTargetRef) {
-    t29 = () => {
-      if (eventTargetRef === void 0) {
-        return;
-      }
-      const target = eventTargetRef.current;
-      if (target !== null && lastSetCursor.current !== cursorStyle) {
-        lastSetCursor.current = cursorStyle;
-        target.style.cursor = cursorStyle;
-      }
-    };
-    t30 = [eventTargetRef, cursorStyle];
-    $2[179] = cursorStyle;
-    $2[180] = eventTargetRef;
-    $2[181] = t29;
-    $2[182] = t30;
-  } else {
-    t29 = $2[181];
-    t30 = $2[182];
-  }
-  React.useLayoutEffect(t29, t30);
-  let t31;
-  if ($2[183] !== cellXOffset || $2[184] !== fixedShadowX || $2[185] !== freezeColumns || $2[186] !== translateX) {
-    t31 = freezeColumns === 0 || !fixedShadowX ? 0 : cellXOffset > freezeColumns ? 1 : clamp$1(-translateX / 100, 0, 1);
-    $2[183] = cellXOffset;
-    $2[184] = fixedShadowX;
-    $2[185] = freezeColumns;
-    $2[186] = translateX;
-    $2[187] = t31;
-  } else {
-    t31 = $2[187];
-  }
-  const opacityX = t31;
+  const cursorStyle = cursor;
+  React.useLayoutEffect(() => {
+    if (eventTargetRef === void 0) return;
+    const target = eventTargetRef.current;
+    if (target !== null && lastSetCursor.current !== cursorStyle) {
+      lastSetCursor.current = cursorStyle;
+      target.style.cursor = cursorStyle;
+    }
+  }, [eventTargetRef, cursorStyle]);
+  const opacityX = freezeColumns === 0 || !fixedShadowX ? 0 : cellXOffset > freezeColumns ? 1 : clamp$1(-translateX / 100, 0, 1);
   const absoluteOffsetY = -cellYOffset * 32 + translateY;
-  let t32;
-  if ($2[188] !== absoluteOffsetY || $2[189] !== fixedShadowY) {
-    t32 = !fixedShadowY ? 0 : clamp$1(-absoluteOffsetY / 100, 0, 1);
-    $2[188] = absoluteOffsetY;
-    $2[189] = fixedShadowY;
-    $2[190] = t32;
-  } else {
-    t32 = $2[190];
-  }
-  const opacityY = t32;
+  const opacityY = !fixedShadowY ? 0 : clamp$1(-absoluteOffsetY / 100, 0, 1);
   let stickyShadow = null;
   if (opacityX || opacityY) {
-    const t332 = width - stickyX;
-    const t342 = !smoothScrollX ? "opacity 0.2s" : void 0;
-    let t352;
-    if ($2[191] !== height || $2[192] !== opacityX || $2[193] !== stickyX || $2[194] !== t332 || $2[195] !== t342) {
-      t352 = {
-        position: "absolute",
-        top: 0,
-        left: stickyX,
-        width: t332,
-        height,
-        opacity: opacityX,
-        pointerEvents: "none",
-        transition: t342,
-        boxShadow: "inset 13px 0 10px -13px rgba(0, 0, 0, 0.2)"
-      };
-      $2[191] = height;
-      $2[192] = opacityX;
-      $2[193] = stickyX;
-      $2[194] = t332;
-      $2[195] = t342;
-      $2[196] = t352;
-    } else {
-      t352 = $2[196];
-    }
-    const styleX = t352;
-    const t362 = !smoothScrollY ? "opacity 0.2s" : void 0;
-    let t37;
-    if ($2[197] !== height || $2[198] !== opacityY || $2[199] !== t362 || $2[200] !== totalHeaderHeight || $2[201] !== width) {
-      t37 = {
-        position: "absolute",
-        top: totalHeaderHeight,
-        left: 0,
-        width,
-        height,
-        opacity: opacityY,
-        pointerEvents: "none",
-        transition: t362,
-        boxShadow: "inset 0 13px 10px -13px rgba(0, 0, 0, 0.2)"
-      };
-      $2[197] = height;
-      $2[198] = opacityY;
-      $2[199] = t362;
-      $2[200] = totalHeaderHeight;
-      $2[201] = width;
-      $2[202] = t37;
-    } else {
-      t37 = $2[202];
-    }
-    const styleY = t37;
-    let t38;
-    if ($2[203] !== opacityX || $2[204] !== styleX) {
-      t38 = opacityX > 0 && /* @__PURE__ */ jsx("div", { id: "shadow-x", style: styleX });
-      $2[203] = opacityX;
-      $2[204] = styleX;
-      $2[205] = t38;
-    } else {
-      t38 = $2[205];
-    }
-    let t39;
-    if ($2[206] !== opacityY || $2[207] !== styleY) {
-      t39 = opacityY > 0 && /* @__PURE__ */ jsx("div", { id: "shadow-y", style: styleY });
-      $2[206] = opacityY;
-      $2[207] = styleY;
-      $2[208] = t39;
-    } else {
-      t39 = $2[208];
-    }
-    let t40;
-    if ($2[209] !== t38 || $2[210] !== t39) {
-      t40 = /* @__PURE__ */ jsxs(Fragment, { children: [
-        t38,
-        t39
-      ] });
-      $2[209] = t38;
-      $2[210] = t39;
-      $2[211] = t40;
-    } else {
-      t40 = $2[211];
-    }
-    stickyShadow = t40;
-  }
-  let t33;
-  if ($2[212] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
-    t33 = {
+    const styleX = {
       position: "absolute",
       top: 0,
-      left: 0,
-      zIndex: 1,
-      pointerEvents: "none"
+      left: stickyX,
+      width: width - stickyX,
+      height,
+      opacity: opacityX,
+      pointerEvents: "none",
+      transition: !smoothScrollX ? "opacity 0.2s" : void 0,
+      boxShadow: "inset 13px 0 10px -13px rgba(0, 0, 0, 0.2)"
     };
-    $2[212] = t33;
-  } else {
-    t33 = $2[212];
-  }
-  const overlayStyle = t33;
-  let t34;
-  if ($2[213] !== accessibilityTree || $2[214] !== onCanvasBlur || $2[215] !== onCanvasFocused || $2[216] !== onKeyDownImpl || $2[217] !== onKeyUpImpl || $2[218] !== refImpl || $2[219] !== style) {
-    t34 = /* @__PURE__ */ jsx("canvas", { "data-testid": "data-grid-canvas", tabIndex: -1, onKeyDown: onKeyDownImpl, onKeyUp: onKeyUpImpl, onFocus: onCanvasFocused, onBlur: onCanvasBlur, ref: refImpl, style, children: accessibilityTree });
-    $2[213] = accessibilityTree;
-    $2[214] = onCanvasBlur;
-    $2[215] = onCanvasFocused;
-    $2[216] = onKeyDownImpl;
-    $2[217] = onKeyUpImpl;
-    $2[218] = refImpl;
-    $2[219] = style;
-    $2[220] = t34;
-  } else {
-    t34 = $2[220];
-  }
-  let t35;
-  if ($2[221] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
-    t35 = /* @__PURE__ */ jsx("canvas", { ref: overlayRef, style: overlayStyle });
-    $2[221] = t35;
-  } else {
-    t35 = $2[221];
-  }
-  let t36;
-  if ($2[222] !== stickyShadow || $2[223] !== t34) {
-    t36 = /* @__PURE__ */ jsxs(Fragment, { children: [
-      t34,
-      t35,
-      stickyShadow
+    const styleY = {
+      position: "absolute",
+      top: totalHeaderHeight,
+      left: 0,
+      width,
+      height,
+      opacity: opacityY,
+      pointerEvents: "none",
+      transition: !smoothScrollY ? "opacity 0.2s" : void 0,
+      boxShadow: "inset 0 13px 10px -13px rgba(0, 0, 0, 0.2)"
+    };
+    stickyShadow = /* @__PURE__ */ jsxs(Fragment, { children: [
+      opacityX > 0 && /* @__PURE__ */ jsx("div", { id: "shadow-x", style: styleX }),
+      opacityY > 0 && /* @__PURE__ */ jsx("div", { id: "shadow-y", style: styleY })
     ] });
-    $2[222] = stickyShadow;
-    $2[223] = t34;
-    $2[224] = t36;
-  } else {
-    t36 = $2[224];
   }
-  return t36;
+  const overlayStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    zIndex: 1,
+    pointerEvents: "none"
+  };
+  return /* @__PURE__ */ jsxs(Fragment, { children: [
+    /* @__PURE__ */ jsx("canvas", { "data-testid": "data-grid-canvas", tabIndex: -1, onKeyDown: onKeyDownImpl, onKeyUp: onKeyUpImpl, onFocus: onCanvasFocused, onBlur: onCanvasBlur, ref: refImpl, style, children: accessibilityTree }),
+    /* @__PURE__ */ jsx("canvas", { ref: overlayRef, style: overlayStyle }),
+    stickyShadow
+  ] });
 };
 const DataGrid$1 = React.memo(React.forwardRef(DataGrid));
-function _temp$4(a, b2) {
-  return a + b2;
-}
-function _temp2$2() {
-}
-function _temp3$1() {
-}
-function _temp4$1() {
-}
 function offsetColumnSize(column, width, min, max) {
   var _column$growOffset;
   return clamp$1(Math.round(width - ((_column$growOffset = column.growOffset) !== null && _column$growOffset !== void 0 ? _column$growOffset : 0)), Math.ceil(min), Math.floor(max));
@@ -15113,67 +14658,36 @@ const DataGridDnd = (p2) => {
   return t11;
 };
 function useResizeDetector(initialSize) {
-  const $2 = compilerRuntimeExports.c(7);
   const ref = useRef(null);
-  const t0 = initialSize === null || initialSize === void 0 ? void 0 : initialSize[0];
-  const t1 = initialSize === null || initialSize === void 0 ? void 0 : initialSize[1];
-  let t2;
-  if ($2[0] !== t0 || $2[1] !== t1) {
-    t2 = {
-      width: t0,
-      height: t1
-    };
-    $2[0] = t0;
-    $2[1] = t1;
-    $2[2] = t2;
-  } else {
-    t2 = $2[2];
-  }
-  const [size, setSize] = useState(t2);
-  let t3;
-  let t4;
-  if ($2[3] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
-    t3 = () => {
-      const resizeCallback = (entries) => {
-        for (const entry of entries) {
-          const {
-            width,
-            height
-          } = entry && entry.contentRect || {};
-          setSize((cv) => cv.width === width && cv.height === height ? cv : {
-            width,
-            height
-          });
-        }
-      };
-      const resizeObserver = new window.ResizeObserver(resizeCallback);
-      if (ref.current) {
-        resizeObserver.observe(ref.current, void 0);
+  const [size, setSize] = useState({
+    width: initialSize === null || initialSize === void 0 ? void 0 : initialSize[0],
+    height: initialSize === null || initialSize === void 0 ? void 0 : initialSize[1]
+  });
+  useLayoutEffect(() => {
+    const resizeCallback = (entries) => {
+      for (const entry of entries) {
+        const {
+          width,
+          height
+        } = entry && entry.contentRect || {};
+        setSize((cv) => cv.width === width && cv.height === height ? cv : {
+          width,
+          height
+        });
       }
-      return () => {
-        resizeObserver.disconnect();
-      };
     };
-    t4 = [];
-    $2[3] = t3;
-    $2[4] = t4;
-  } else {
-    t3 = $2[3];
-    t4 = $2[4];
-  }
-  useLayoutEffect(t3, t4);
-  let t5;
-  if ($2[5] !== size) {
-    t5 = {
-      ref,
-      ...size
+    const resizeObserver = new window.ResizeObserver(resizeCallback);
+    if (ref.current) {
+      resizeObserver.observe(ref.current, void 0);
+    }
+    return () => {
+      resizeObserver.disconnect();
     };
-    $2[5] = size;
-    $2[6] = t5;
-  } else {
-    t5 = $2[6];
-  }
-  return t5;
+  }, [ref.current]);
+  return {
+    ref,
+    ...size
+  };
 }
 const useKineticScroll = (isEnabled, callback, targetScroller) => {
   const rafId = useRef(null);
@@ -18175,15 +17689,20 @@ function useCallbackRef(initialValue, callback) {
   return ref.facade;
 }
 function useInitialScrollOffset(scrollOffsetX, scrollOffsetY, rowHeight, visibleRegionRef, onDidScroll) {
-  var _visibleRegionRef$cur, _visibleRegionRef$cur2, _visibleRegion$height, _visibleRegion$width;
-  const [visibleRegionY, visibleRegionTy] = [scrollOffsetY !== void 0 && typeof rowHeight === "number" ? Math.floor(scrollOffsetY / rowHeight) : 0, scrollOffsetY !== void 0 && typeof rowHeight === "number" ? -(scrollOffsetY % rowHeight) : 0];
-  const visibleRegionInput = {
-    x: visibleRegionRef.current.x,
-    y: visibleRegionY,
-    width: (_visibleRegionRef$cur = visibleRegionRef.current.width) !== null && _visibleRegionRef$cur !== void 0 ? _visibleRegionRef$cur : 1,
-    height: (_visibleRegionRef$cur2 = visibleRegionRef.current.height) !== null && _visibleRegionRef$cur2 !== void 0 ? _visibleRegionRef$cur2 : 1,
-    ty: visibleRegionTy
-  };
+  var _visibleRegion$height, _visibleRegion$width;
+  const [visibleRegionY, visibleRegionTy] = React.useMemo(() => {
+    return [scrollOffsetY !== void 0 && typeof rowHeight === "number" ? Math.floor(scrollOffsetY / rowHeight) : 0, scrollOffsetY !== void 0 && typeof rowHeight === "number" ? -(scrollOffsetY % rowHeight) : 0];
+  }, [scrollOffsetY, rowHeight]);
+  const visibleRegionInput = React.useMemo(() => {
+    var _visibleRegionRef$cur, _visibleRegionRef$cur2;
+    return {
+      x: visibleRegionRef.current.x,
+      y: visibleRegionY,
+      width: (_visibleRegionRef$cur = visibleRegionRef.current.width) !== null && _visibleRegionRef$cur !== void 0 ? _visibleRegionRef$cur : 1,
+      height: (_visibleRegionRef$cur2 = visibleRegionRef.current.height) !== null && _visibleRegionRef$cur2 !== void 0 ? _visibleRegionRef$cur2 : 1,
+      ty: visibleRegionTy
+    };
+  }, [visibleRegionRef, visibleRegionTy, visibleRegionY]);
   const [visibleRegion, setVisibleRegion, empty] = useStateWithReactiveInput(visibleRegionInput);
   const onDidScrollRef = React.useRef(onDidScroll);
   onDidScrollRef.current = onDidScroll;

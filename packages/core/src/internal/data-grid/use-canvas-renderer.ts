@@ -219,7 +219,7 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
     const canvasCtx = React.useRef<CanvasRenderingContext2D | null>(null);
     const overlayCtx = React.useRef<CanvasRenderingContext2D | null>(null);
 
-    const draw = () => {
+    const draw = React.useCallback(() => {
         const canvas = canvasRef.current;
         const overlay = overlayRef.current;
         if (canvas === null || overlay === null) return;
@@ -315,13 +315,64 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
         if (!didOverride && (current.damage === undefined || current.damage.has(hoverInfoRef?.current?.[0]))) {
             setDrawCursorOverride(undefined);
         }
-    };
+    }, [
+        canvasRef,
+        overlayRef,
+        width,
+        height,
+        cellXOffset,
+        cellYOffset,
+        translateX,
+        translateY,
+        mappedColumns,
+        enableGroups,
+        freezeColumns,
+        freezeTrailingRows,
+        rows,
+        headerHeight,
+        groupHeaderHeight,
+        groupLevels,
+        groupHeaderHeights,
+        theme,
+        rowHeight,
+        verticalBorder,
+        isResizing,
+        resizeCol,
+        isFocused,
+        fillHandle,
+        drawFocusRing,
+        drawCellCallback,
+        drawHeaderCallback,
+        resizeIndicator,
+        selection,
+        disabledRows,
+        hasAppendRow,
+        getCellContent,
+        getGroupDetails,
+        getRowThemeOverride,
+        prelightCells,
+        highlightRegions,
+        dragAndDropState,
+        spriteManager,
+        imageLoader,
+        getCellRenderer,
+        hoverInfoRef,
+        hoverValuesRef,
+        lastWasTouch,
+        maxDPR,
+        minimumCellWidth,
+        scrolling,
+        renderStateProvider,
+        experimental,
+        bufferACtx,
+        bufferBCtx,
+    ]);
 
     const lastDrawRef = React.useRef(draw);
     React.useLayoutEffect(() => {
         draw();
         lastDrawRef.current = draw;
-    });
+    }, [draw]);
 
     React.useLayoutEffect(() => {
         const fn = async () => {
@@ -333,11 +384,11 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
         void fn();
     }, []);
 
-    const damageInternal = (locations: CellSet) => {
+    const damageInternal = React.useCallback((locations: CellSet) => {
         damageRegion.current = locations;
         lastDrawRef.current();
         damageRegion.current = undefined;
-    };
+    }, []);
 
     const enqueue = useAnimationQueue(damageInternal);
 
@@ -345,9 +396,9 @@ export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResul
         enqueueRef.current = enqueue;
     });
 
-    const damage = (cells: DamageUpdateList) => {
+    const damage = React.useCallback((cells: DamageUpdateList) => {
         damageInternal(new CellSet(cells.map(x => x.cell)));
-    };
+    }, [damageInternal]);
 
     React.useLayoutEffect(() => {
         imageLoader.setCallback(damageInternal);

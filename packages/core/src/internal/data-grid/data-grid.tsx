@@ -599,7 +599,7 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
     });
 
     // Keyboard handlers (small, kept in orchestrator)
-    const onKeyDownImpl = (event: React.KeyboardEvent<HTMLCanvasElement>) => {
+    const onKeyDownImpl = React.useCallback((event: React.KeyboardEvent<HTMLCanvasElement>) => {
         const canvas = ref.current;
         if (canvas === null) return;
 
@@ -624,9 +624,9 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
             rawEvent: event,
             location,
         });
-    };
+    }, [getBoundsForItem, onKeyDown, selection]);
 
-    const onKeyUpImpl = (event: React.KeyboardEvent<HTMLCanvasElement>) => {
+    const onKeyUpImpl = React.useCallback((event: React.KeyboardEvent<HTMLCanvasElement>) => {
         const canvas = ref.current;
         if (canvas === null) return;
 
@@ -651,10 +651,10 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
             rawEvent: event,
             location,
         });
-    };
+    }, [getBoundsForItem, onKeyUp, selection]);
 
     // Canvas ref callback
-    const refImpl = (instance: HTMLCanvasElement | null) => {
+    const refImpl = React.useCallback((instance: HTMLCanvasElement | null) => {
         ref.current = instance;
         if (canvasRef !== undefined) {
             canvasRef.current = instance;
@@ -668,7 +668,7 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
             const docRoot = instance.getRootNode();
             setWindowEventTarget(docRoot === document ? window : docRoot as any);
         }
-    };
+    }, [canvasRef, experimental?.eventTarget]);
 
     // Cursor logic
     const [hoveredItem] = hoveredItemInfo ?? [];
@@ -704,14 +704,14 @@ const DataGrid: React.ForwardRefRenderFunction<DataGridRef, DataGridProps> = (p,
                 ? "pointer"
                 : "default";
 
-    const style = {
+    const style = React.useMemo<React.CSSProperties>(() => ({
         contain: "strict",
         display: "block",
         cursor,
-    };
+    }), [cursor]);
 
     const lastSetCursor = React.useRef<typeof cursor>("default");
-    const cursorStyle = style.cursor;
+    const cursorStyle = cursor;
     React.useLayoutEffect(() => {
         if (eventTargetRef === undefined) return;
         const target = eventTargetRef.current;
