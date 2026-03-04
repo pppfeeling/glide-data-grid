@@ -1,6 +1,30 @@
 import type { DataGridSearchProps } from "../internal/data-grid-search/data-grid-search.js";
-import { type GridCell, type GridSelection, type Rectangle } from "../internal/data-grid/data-grid-types.js";
+import { type GridCell, type GridSelection, type Rectangle, CompactSelection } from "../internal/data-grid/data-grid-types.js";
 import { getCopyBufferContents, type CopyBuffer } from "./copy-paste.js";
+
+export function shiftSelection(input: GridSelection, offset: number): GridSelection {
+    if (input === undefined || offset === 0 || (input.columns.length === 0 && input.current === undefined))
+        return input;
+
+    return {
+        current:
+            input.current === undefined
+                ? undefined
+                : {
+                    cell: [input.current.cell[0] + offset, input.current.cell[1]],
+                    range: {
+                        ...input.current.range,
+                        x: input.current.range.x + offset,
+                    },
+                    rangeStack: input.current.rangeStack.map(r => ({
+                        ...r,
+                        x: r.x + offset,
+                    })),
+                },
+        rows: input.rows,
+        columns: input.columns.offset(offset),
+    };
+}
 
 export function expandSelection(
     newVal: GridSelection,

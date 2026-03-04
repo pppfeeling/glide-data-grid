@@ -14,6 +14,7 @@ import {
     type InnerGridColumn,
     type GridColumn,
     type Item,
+    type EditListItem,
 } from "../internal/data-grid/data-grid-types.js";
 import type { RowMarkerOptions, DataEditorProps } from "./data-editor-types.js";
 import type { Theme } from "../common/styles.js";
@@ -492,5 +493,32 @@ export function useGetMangledCellContent(params: MangledCellContentParams) {
             showRowNumber,
             disabledRows,
         ]
+    );
+}
+export function useMangledOnCellsEdited(
+    onCellsEdited: DataEditorProps["onCellsEdited"],
+    onCellEdited: DataEditorProps["onCellEdited"],
+    rowMarkerOffset: number
+) {
+    return React.useCallback(
+        (items: readonly EditListItem[]) => {
+            const mangledItems =
+                rowMarkerOffset === 0
+                    ? items
+                    : items.map(x => ({
+                        ...x,
+                        location: [x.location[0] - rowMarkerOffset, x.location[1]] as const,
+                    }));
+            const r = onCellsEdited?.(mangledItems);
+
+            if (r !== true) {
+                for (const i of mangledItems) {
+                    onCellEdited?.(i.location, i.value);
+                }
+            }
+
+            return r;
+        },
+        [onCellEdited, onCellsEdited, rowMarkerOffset]
     );
 }
