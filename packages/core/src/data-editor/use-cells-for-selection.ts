@@ -11,54 +11,60 @@ export function useCellsForSelection(
     abortController: AbortController,
     rows: number
 ) {
-    const getCellsForSelectionDirectWhenValid: CellsForSelectionCallback = rect => {
-        if (getCellsForSelectionIn === true) {
-            const result: GridCell[][] = [];
+    const getCellsForSelectionDirectWhenValid = React.useCallback<CellsForSelectionCallback>(
+        rect => {
+            if (getCellsForSelectionIn === true) {
+                const result: GridCell[][] = [];
 
-            for (let y = rect.y; y < rect.y + rect.height; y++) {
-                const row: GridCell[] = [];
-                for (let x = rect.x; x < rect.x + rect.width; x++) {
-                    if (x < 0 || y >= rows) {
-                        row.push({
-                            kind: GridCellKind.Loading,
-                            allowOverlay: false,
-                        });
-                    } else {
-                        row.push(getCellContent([x, y]));
+                for (let y = rect.y; y < rect.y + rect.height; y++) {
+                    const row: GridCell[] = [];
+                    for (let x = rect.x; x < rect.x + rect.width; x++) {
+                        if (x < 0 || y >= rows) {
+                            row.push({
+                                kind: GridCellKind.Loading,
+                                allowOverlay: false,
+                            });
+                        } else {
+                            row.push(getCellContent([x, y]));
+                        }
                     }
+                    result.push(row);
                 }
-                result.push(row);
-            }
 
-            return result;
-        }
-        return getCellsForSelectionIn?.(rect, abortController.signal) ?? [];
-    };
+                return result;
+            }
+            return getCellsForSelectionIn?.(rect, abortController.signal) ?? [];
+        },
+        [abortController.signal, getCellContent, getCellsForSelectionIn, rows]
+    );
     const getCellsForSelectionDirect =
         getCellsForSelectionIn !== undefined ? getCellsForSelectionDirectWhenValid : undefined;
-    const getCellsForSelectionMangled: CellsForSelectionCallback = rect => {
-        if (getCellsForSelectionDirect === undefined) return [];
-        const newRect = {
-            ...rect,
-            x: rect.x - rowMarkerOffset,
-        };
-        if (newRect.x < 0) {
-            newRect.x = 0;
-            newRect.width--;
-            const r = getCellsForSelectionDirect(newRect, abortController.signal);
+    const getCellsForSelectionMangled = React.useCallback<CellsForSelectionCallback>(
+        rect => {
+            if (getCellsForSelectionDirect === undefined) return [];
+            const newRect = {
+                ...rect,
+                x: rect.x - rowMarkerOffset,
+            };
+            if (newRect.x < 0) {
+                newRect.x = 0;
+                newRect.width--;
+                const r = getCellsForSelectionDirect(newRect, abortController.signal);
 
-            if (typeof r === "function") {
-                return async () =>
-                    // eslint-disable-next-line unicorn/no-await-expression-member
-                    (await r()).map<CellArray[0]>(row => [
-                        { kind: GridCellKind.Loading, allowOverlay: false },
-                        ...row,
-                    ]);
+                if (typeof r === "function") {
+                    return async () =>
+                        // eslint-disable-next-line unicorn/no-await-expression-member
+                        (await r()).map<CellArray[0]>(row => [
+                            { kind: GridCellKind.Loading, allowOverlay: false },
+                            ...row,
+                        ]);
+                }
+                return r.map(row => [{ kind: GridCellKind.Loading, allowOverlay: false }, ...row]);
             }
-            return r.map(row => [{ kind: GridCellKind.Loading, allowOverlay: false }, ...row]);
-        }
-        return getCellsForSelectionDirect(newRect, abortController.signal);
-    };
+            return getCellsForSelectionDirect(newRect, abortController.signal);
+        },
+        [abortController.signal, getCellsForSelectionDirect, rowMarkerOffset]
+    );
 
     const getCellsForSelection = getCellsForSelectionIn !== undefined ? getCellsForSelectionMangled : undefined;
 

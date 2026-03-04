@@ -4813,7 +4813,7 @@ const ImageOverlayEditor = (p2) => {
   if ($2[0] !== renderImage || $2[1] !== urls) {
     t7 = /* @__PURE__ */ Symbol.for("react.early_return_sentinel");
     bb0: {
-      const filtered = urls.filter(_temp$9);
+      const filtered = urls.filter(_temp$a);
       if (filtered.length === 0) {
         t7 = null;
         break bb0;
@@ -4907,7 +4907,7 @@ const ImageOverlayEditor = (p2) => {
   }
   return t10;
 };
-function _temp$9(u) {
+function _temp$a(u) {
   return u !== "";
 }
 function L() {
@@ -9638,7 +9638,7 @@ function useGridGeometry(args) {
   const getMouseArgsForPosition = t2;
   let t3;
   if ($2[40] !== enableGroups || $2[41] !== groupHeaderHeights) {
-    t3 = enableGroups ? groupHeaderHeights.reduce(_temp$7, 0) : 0;
+    t3 = enableGroups ? groupHeaderHeights.reduce(_temp$9, 0) : 0;
     $2[40] = enableGroups;
     $2[41] = groupHeaderHeights;
     $2[42] = t3;
@@ -9668,7 +9668,7 @@ function useGridGeometry(args) {
   }
   return t4;
 }
-function _temp$7(a, b_0) {
+function _temp$9(a, b_0) {
   return a + b_0;
 }
 function drawCheckbox(ctx, theme, checked, x2, y2, width, height, highlighted) {
@@ -13137,7 +13137,7 @@ function useGridDragAndDrop(args) {
                 ctx.font = theme.baseFontFull;
                 ctx.fillStyle = theme.bgCell;
                 ctx.fillRect(0, 0, offscreen.width, offscreen.height);
-                drawCell(ctx, getCellContent([col, row]), 0, row, false, false, 0, 0, boundsForDragTarget.width, boundsForDragTarget.height, false, theme, theme.bgCell, imageLoader, spriteManager, 1, void 0, false, 0, void 0, void 0, void 0, renderStateProvider, getCellRenderer, _temp$5, 0);
+                drawCell(ctx, getCellContent([col, row]), 0, row, false, false, 0, 0, boundsForDragTarget.width, boundsForDragTarget.height, false, theme, theme.bgCell, imageLoader, spriteManager, 1, void 0, false, 0, void 0, void 0, void 0, renderStateProvider, getCellRenderer, _temp$8, 0);
               }
             }
             offscreen.style.left = "-100%";
@@ -13256,7 +13256,7 @@ function useGridDragAndDrop(args) {
   const onDragLeaveImpl = t4;
   useEventListener("dragleave", onDragLeaveImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false, false);
 }
-function _temp$5() {
+function _temp$8() {
 }
 const getRowData = (cell, getCellRenderer) => {
   var _r$getAccessibilitySt;
@@ -13377,7 +13377,7 @@ function useGridFocusAndAccessibility(args) {
       }
       const [fCol, fRow] = (_selection$current$ce = (_selection$current = selection.current) === null || _selection$current === void 0 ? void 0 : _selection$current.cell) !== null && _selection$current$ce !== void 0 ? _selection$current$ce : [];
       const range$1 = (_selection$current2 = selection.current) === null || _selection$current2 === void 0 ? void 0 : _selection$current2.range;
-      const visibleCols = effectiveCols.map(_temp$4);
+      const visibleCols = effectiveCols.map(_temp$7);
       const visibleRows = range(cellYOffset, Math.min(rows, cellYOffset + accessibilityHeight));
       if (fCol !== void 0 && fRow !== void 0 && !(visibleCols.includes(fCol) && visibleRows.includes(fRow))) {
         focusElement(null);
@@ -13404,7 +13404,7 @@ function useGridFocusAndAccessibility(args) {
             }
             return onKeyDown === null || onKeyDown === void 0 ? void 0 : onKeyDown({
               bounds: getBoundsForItem(canvas, col_0, row_0),
-              cancel: _temp2$2,
+              cancel: _temp2$5,
               preventDefault: _temp3$1,
               stopPropagation: _temp4$1,
               ctrlKey: false,
@@ -13471,9 +13471,9 @@ function _temp4$1() {
 }
 function _temp3$1() {
 }
-function _temp2$2() {
+function _temp2$5() {
 }
-function _temp$4(c) {
+function _temp$7(c) {
   return c.sourceIndex;
 }
 const DataGrid = (p2, forwardedRef) => {
@@ -15897,7 +15897,7 @@ function useKeyboardHandlers(args) {
     reselect,
     focus
   } = state;
-  const handleFixedKeybindings = (event) => {
+  const handleFixedKeybindings = React.useCallback((event) => {
     const cancel = () => {
       event.stopPropagation();
       event.preventDefault();
@@ -15963,17 +15963,17 @@ function useKeyboardHandlers(args) {
             deleteRange(r);
           }
         }
-        for (const r of toDelete.rows) {
+        for (const r_0 of toDelete.rows) {
           deleteRange({
             x: rowMarkerOffset,
-            y: r,
+            y: r_0,
             width: columnsInLength,
             height: 1
           });
         }
-        for (const col2 of toDelete.columns) {
+        for (const col of toDelete.columns) {
           deleteRange({
-            x: col2,
+            x: col,
             y: 0,
             width: 1,
             height: rows
@@ -15986,20 +15986,20 @@ function useKeyboardHandlers(args) {
       return true;
     }
     if (gridSelection.current === void 0) return false;
-    let [col, row] = gridSelection.current.cell;
+    let [col_0, row] = gridSelection.current.cell;
     const [, startRow] = gridSelection.current.cell;
     let freeMove = false;
     let cancelOnlyOnMove = false;
     if (isHotkey(keys.scrollToSelectedCell, event, details)) {
-      scrollToRef.current(col - rowMarkerOffset, row);
+      scrollToRef.current(col_0 - rowMarkerOffset, row);
     } else if (columnSelect !== "none" && isHotkey(keys.selectColumn, event, details)) {
-      if (selectedColumns.hasIndex(col)) {
-        setSelectedColumns(selectedColumns.remove(col), void 0, true);
+      if (selectedColumns.hasIndex(col_0)) {
+        setSelectedColumns(selectedColumns.remove(col_0), void 0, true);
       } else {
         if (columnSelect === "single") {
-          setSelectedColumns(CompactSelection.fromSingleSelection(col), void 0, true);
+          setSelectedColumns(CompactSelection.fromSingleSelection(col_0), void 0, true);
         } else {
-          setSelectedColumns(void 0, col, true);
+          setSelectedColumns(void 0, col_0, true);
         }
       }
     } else if (rowSelect !== "none" && isHotkey(keys.selectRow, event, details)) {
@@ -16015,30 +16015,30 @@ function useKeyboardHandlers(args) {
     } else if (!overlayOpen && bounds !== void 0 && isHotkey(keys.activateCell, event, details)) {
       if (row === rows && showTrailingBlankRow) {
         window.setTimeout(() => {
-          const customTargetColumn = getCustomNewRowTargetColumn(col);
-          void appendRow(customTargetColumn !== null && customTargetColumn !== void 0 ? customTargetColumn : col);
+          const customTargetColumn = getCustomNewRowTargetColumn(col_0);
+          void appendRow(customTargetColumn !== null && customTargetColumn !== void 0 ? customTargetColumn : col_0);
         }, 0);
       } else {
         const activationEvent = {
           inputType: "keyboard",
           key: event.key
         };
-        const cellContent = getMangledCellContent([col, row]);
+        const cellContent = getMangledCellContent([col_0, row]);
         if (cellContent.kind === GridCellKind.Boolean && cellContent.readonly !== true) {
           var _gridRef$current;
-          onCellActivated === null || onCellActivated === void 0 || onCellActivated([col - rowMarkerOffset, row], activationEvent);
+          onCellActivated === null || onCellActivated === void 0 || onCellActivated([col_0 - rowMarkerOffset, row], activationEvent);
           mangledOnCellsEdited([{
-            location: [col, row],
+            location: [col_0, row],
             value: {
               ...cellContent,
               data: toggleBoolean(cellContent.data)
             }
           }]);
           (_gridRef$current = gridRef.current) === null || _gridRef$current === void 0 || _gridRef$current.damage([{
-            cell: [col, row]
+            cell: [col_0, row]
           }]);
         } else {
-          onCellActivated === null || onCellActivated === void 0 || onCellActivated([col - rowMarkerOffset, row], activationEvent);
+          onCellActivated === null || onCellActivated === void 0 || onCellActivated([col_0 - rowMarkerOffset, row], activationEvent);
           reselect(bounds, activationEvent);
         }
       }
@@ -16053,11 +16053,11 @@ function useKeyboardHandlers(args) {
     } else if (isHotkey(keys.goToFirstCell, event, details)) {
       setOverlay(void 0);
       row = 0;
-      col = 0;
+      col_0 = 0;
     } else if (isHotkey(keys.goToLastCell, event, details)) {
       setOverlay(void 0);
       row = Number.MAX_SAFE_INTEGER;
-      col = Number.MAX_SAFE_INTEGER;
+      col_0 = Number.MAX_SAFE_INTEGER;
     } else if (isHotkey(keys.selectToFirstCell, event, details)) {
       setOverlay(void 0);
       adjustSelection([-2, -2]);
@@ -16070,9 +16070,9 @@ function useKeyboardHandlers(args) {
       } else if (isHotkey(keys.goUpCell, event, details)) {
         row -= 1;
       } else if (isHotkey(keys.goRightCell, event, details)) {
-        col += 1;
+        col_0 += 1;
       } else if (isHotkey(keys.goLeftCell, event, details)) {
-        col -= 1;
+        col_0 -= 1;
       } else if (isHotkey(keys.goDownCellRetainSelection, event, details)) {
         row += 1;
         freeMove = true;
@@ -16080,19 +16080,19 @@ function useKeyboardHandlers(args) {
         row -= 1;
         freeMove = true;
       } else if (isHotkey(keys.goRightCellRetainSelection, event, details)) {
-        col += 1;
+        col_0 += 1;
         freeMove = true;
       } else if (isHotkey(keys.goLeftCellRetainSelection, event, details)) {
-        col -= 1;
+        col_0 -= 1;
         freeMove = true;
       } else if (isHotkey(keys.goToLastRow, event, details)) {
         row = rows - 1;
       } else if (isHotkey(keys.goToFirstRow, event, details)) {
         row = Number.MIN_SAFE_INTEGER;
       } else if (isHotkey(keys.goToLastColumn, event, details)) {
-        col = Number.MAX_SAFE_INTEGER;
+        col_0 = Number.MAX_SAFE_INTEGER;
       } else if (isHotkey(keys.goToFirstColumn, event, details)) {
-        col = Number.MIN_SAFE_INTEGER;
+        col_0 = Number.MIN_SAFE_INTEGER;
       } else if (rangeSelect === "rect" || rangeSelect === "multi-rect") {
         if (isHotkey(keys.selectGrowDown, event, details)) {
           adjustSelection([0, 1]);
@@ -16127,11 +16127,11 @@ function useKeyboardHandlers(args) {
       }
       if (isHotkey(keys.acceptOverlayLeft, event, details)) {
         setOverlay(void 0);
-        col--;
+        col_0--;
       }
       if (isHotkey(keys.acceptOverlayRight, event, details)) {
         setOverlay(void 0);
-        col++;
+        col_0++;
       }
     }
     const mustRestrictRow = rowGroupingNavBehavior !== void 0 && rowGroupingNavBehavior !== "normal";
@@ -16155,20 +16155,20 @@ function useKeyboardHandlers(args) {
         }
       }
     }
-    const moved = updateSelectedCell(col, row, false, freeMove);
+    const moved = updateSelectedCell(col_0, row, false, freeMove);
     const didMatch = details.didMatch;
     if (didMatch && (moved || !cancelOnlyOnMove || trapFocus)) {
       cancel();
     }
     return didMatch;
-  };
-  const onKeyDown = (event) => {
+  }, [rowGroupingNavBehavior, overlayOpen, gridSelection, keybindings, columnSelect, rowSelect, rangeSelect, rowMarkerOffset, mapper, rows, updateSelectedCell, setGridSelection, onSelectionCleared, columnsInLength, onDelete, trapFocus, deleteRange, setSelectedColumns, setSelectedRows, showTrailingBlankRow, getCustomNewRowTargetColumn, appendRow, onCellActivated, reselect, fillDown, fillRight, adjustSelection, getMangledCellContent, mangledOnCellsEdited, gridRef, setOverlay, focus, visibleRegionRef, searchInputRef, setShowSearchInner, scrollToRef]);
+  const onKeyDown = React.useCallback((event_0) => {
     let cancelled = false;
     if (onKeyDownIn !== void 0) {
       onKeyDownIn({
-        ...event,
-        ...event.location && {
-          location: [event.location[0] - rowMarkerOffset, event.location[1]]
+        ...event_0,
+        ...event_0.location && {
+          location: [event_0.location[0] - rowMarkerOffset, event_0.location[1]]
         },
         cancel: () => {
           cancelled = true;
@@ -16176,35 +16176,35 @@ function useKeyboardHandlers(args) {
       });
     }
     if (cancelled) return;
-    if (handleFixedKeybindings(event)) return;
+    if (handleFixedKeybindings(event_0)) return;
     if (gridSelection.current === void 0) return;
-    const [col, row] = gridSelection.current.cell;
+    const [col_1, row_0] = gridSelection.current.cell;
     const vr = visibleRegionRef.current;
-    const isIMEInput = event.keyCode === 229;
-    const isCharacterInput = editOnType && !event.metaKey && !event.ctrlKey && event.key.length === 1 && /[!-~\xA1-\xAC\xAE-\u0377\u037A-\u037F\u0384-\u038A\u038C\u038E-\u03A1\u03A3-\u052F\u0531-\u0556\u0559-\u058A\u058D-\u058F\u0591-\u05C7\u05D0-\u05EA\u05EF-\u05F4\u0606-\u061B\u061D-\u06DC\u06DE-\u070D\u0710-\u074A\u074D-\u07B1\u07C0-\u07FA\u07FD-\u082D\u0830-\u083E\u0840-\u085B\u085E\u0860-\u086A\u0870-\u088F\u0897-\u08E1\u08E3-\u0983\u0985-\u098C\u098F\u0990\u0993-\u09A8\u09AA-\u09B0\u09B2\u09B6-\u09B9\u09BC-\u09C4\u09C7\u09C8\u09CB-\u09CE\u09D7\u09DC\u09DD\u09DF-\u09E3\u09E6-\u09FE\u0A01-\u0A03\u0A05-\u0A0A\u0A0F\u0A10\u0A13-\u0A28\u0A2A-\u0A30\u0A32\u0A33\u0A35\u0A36\u0A38\u0A39\u0A3C\u0A3E-\u0A42\u0A47\u0A48\u0A4B-\u0A4D\u0A51\u0A59-\u0A5C\u0A5E\u0A66-\u0A76\u0A81-\u0A83\u0A85-\u0A8D\u0A8F-\u0A91\u0A93-\u0AA8\u0AAA-\u0AB0\u0AB2\u0AB3\u0AB5-\u0AB9\u0ABC-\u0AC5\u0AC7-\u0AC9\u0ACB-\u0ACD\u0AD0\u0AE0-\u0AE3\u0AE6-\u0AF1\u0AF9-\u0AFF\u0B01-\u0B03\u0B05-\u0B0C\u0B0F\u0B10\u0B13-\u0B28\u0B2A-\u0B30\u0B32\u0B33\u0B35-\u0B39\u0B3C-\u0B44\u0B47\u0B48\u0B4B-\u0B4D\u0B55-\u0B57\u0B5C\u0B5D\u0B5F-\u0B63\u0B66-\u0B77\u0B82\u0B83\u0B85-\u0B8A\u0B8E-\u0B90\u0B92-\u0B95\u0B99\u0B9A\u0B9C\u0B9E\u0B9F\u0BA3\u0BA4\u0BA8-\u0BAA\u0BAE-\u0BB9\u0BBE-\u0BC2\u0BC6-\u0BC8\u0BCA-\u0BCD\u0BD0\u0BD7\u0BE6-\u0BFA\u0C00-\u0C0C\u0C0E-\u0C10\u0C12-\u0C28\u0C2A-\u0C39\u0C3C-\u0C44\u0C46-\u0C48\u0C4A-\u0C4D\u0C55\u0C56\u0C58-\u0C5A\u0C5C\u0C5D\u0C60-\u0C63\u0C66-\u0C6F\u0C77-\u0C8C\u0C8E-\u0C90\u0C92-\u0CA8\u0CAA-\u0CB3\u0CB5-\u0CB9\u0CBC-\u0CC4\u0CC6-\u0CC8\u0CCA-\u0CCD\u0CD5\u0CD6\u0CDC-\u0CDE\u0CE0-\u0CE3\u0CE6-\u0CEF\u0CF1-\u0CF3\u0D00-\u0D0C\u0D0E-\u0D10\u0D12-\u0D44\u0D46-\u0D48\u0D4A-\u0D4F\u0D54-\u0D63\u0D66-\u0D7F\u0D81-\u0D83\u0D85-\u0D96\u0D9A-\u0DB1\u0DB3-\u0DBB\u0DBD\u0DC0-\u0DC6\u0DCA\u0DCF-\u0DD4\u0DD6\u0DD8-\u0DDF\u0DE6-\u0DEF\u0DF2-\u0DF4\u0E01-\u0E3A\u0E3F-\u0E5B\u0E81\u0E82\u0E84\u0E86-\u0E8A\u0E8C-\u0EA3\u0EA5\u0EA7-\u0EBD\u0EC0-\u0EC4\u0EC6\u0EC8-\u0ECE\u0ED0-\u0ED9\u0EDC-\u0EDF\u0F00-\u0F47\u0F49-\u0F6C\u0F71-\u0F97\u0F99-\u0FBC\u0FBE-\u0FCC\u0FCE-\u0FDA\u1000-\u10C5\u10C7\u10CD\u10D0-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u135D-\u137C\u1380-\u1399\u13A0-\u13F5\u13F8-\u13FD\u1400-\u167F\u1681-\u169C\u16A0-\u16F8\u1700-\u1715\u171F-\u1736\u1740-\u1753\u1760-\u176C\u176E-\u1770\u1772\u1773\u1780-\u17DD\u17E0-\u17E9\u17F0-\u17F9\u1800-\u180D\u180F-\u1819\u1820-\u1878\u1880-\u18AA\u18B0-\u18F5\u1900-\u191E\u1920-\u192B\u1930-\u193B\u1940\u1944-\u196D\u1970-\u1974\u1980-\u19AB\u19B0-\u19C9\u19D0-\u19DA\u19DE-\u1A1B\u1A1E-\u1A5E\u1A60-\u1A7C\u1A7F-\u1A89\u1A90-\u1A99\u1AA0-\u1AAD\u1AB0-\u1ADD\u1AE0-\u1AEB\u1B00-\u1B4C\u1B4E-\u1BF3\u1BFC-\u1C37\u1C3B-\u1C49\u1C4D-\u1C8A\u1C90-\u1CBA\u1CBD-\u1CC7\u1CD0-\u1CFA\u1D00-\u1F15\u1F18-\u1F1D\u1F20-\u1F45\u1F48-\u1F4D\u1F50-\u1F57\u1F59\u1F5B\u1F5D\u1F5F-\u1F7D\u1F80-\u1FB4\u1FB6-\u1FC4\u1FC6-\u1FD3\u1FD6-\u1FDB\u1FDD-\u1FEF\u1FF2-\u1FF4\u1FF6-\u1FFE\u2010-\u2027\u2030-\u205E\u2070\u2071\u2074-\u208E\u2090-\u209C\u20A0-\u20C1\u20D0-\u20F0\u2100-\u218B\u2190-\u2429\u2440-\u244A\u2460-\u2B73\u2B76-\u2CF3\u2CF9-\u2D25\u2D27\u2D2D\u2D30-\u2D67\u2D6F\u2D70\u2D7F-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\u2DE0-\u2E5D\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFF\u3001-\u303F\u3041-\u3096\u3099-\u30FF\u3105-\u312F\u3131-\u318E\u3190-\u31E5\u31EF-\u321E\u3220-\uA48C\uA490-\uA4C6\uA4D0-\uA62B\uA640-\uA6F7\uA700-\uA7DC\uA7F1-\uA82C\uA830-\uA839\uA840-\uA877\uA880-\uA8C5\uA8CE-\uA8D9\uA8E0-\uA953\uA95F-\uA97C\uA980-\uA9CD\uA9CF-\uA9D9\uA9DE-\uA9FE\uAA00-\uAA36\uAA40-\uAA4D\uAA50-\uAA59\uAA5C-\uAAC2\uAADB-\uAAF6\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E\uAB30-\uAB6B\uAB70-\uABED\uABF0-\uABF9\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFA6D\uFA70-\uFAD9\uFB00-\uFB06\uFB13-\uFB17\uFB1D-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFDCF\uFDF0-\uFE19\uFE20-\uFE52\uFE54-\uFE66\uFE68-\uFE6B\uFE70-\uFE74\uFE76-\uFEFC\uFF01-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC\uFFE0-\uFFE6\uFFE8-\uFFEE\uFFFC\uFFFD\u{10000}-\u{1000B}\u{1000D}-\u{10026}\u{10028}-\u{1003A}\u{1003C}\u{1003D}\u{1003F}-\u{1004D}\u{10050}-\u{1005D}\u{10080}-\u{100FA}\u{10100}-\u{10102}\u{10107}-\u{10133}\u{10137}-\u{1018E}\u{10190}-\u{1019C}\u{101A0}\u{101D0}-\u{101FD}\u{10280}-\u{1029C}\u{102A0}-\u{102D0}\u{102E0}-\u{102FB}\u{10300}-\u{10323}\u{1032D}-\u{1034A}\u{10350}-\u{1037A}\u{10380}-\u{1039D}\u{1039F}-\u{103C3}\u{103C8}-\u{103D5}\u{10400}-\u{1049D}\u{104A0}-\u{104A9}\u{104B0}-\u{104D3}\u{104D8}-\u{104FB}\u{10500}-\u{10527}\u{10530}-\u{10563}\u{1056F}-\u{1057A}\u{1057C}-\u{1058A}\u{1058C}-\u{10592}\u{10594}\u{10595}\u{10597}-\u{105A1}\u{105A3}-\u{105B1}\u{105B3}-\u{105B9}\u{105BB}\u{105BC}\u{105C0}-\u{105F3}\u{10600}-\u{10736}\u{10740}-\u{10755}\u{10760}-\u{10767}\u{10780}-\u{10785}\u{10787}-\u{107B0}\u{107B2}-\u{107BA}\u{10800}-\u{10805}\u{10808}\u{1080A}-\u{10835}\u{10837}\u{10838}\u{1083C}\u{1083F}-\u{10855}\u{10857}-\u{1089E}\u{108A7}-\u{108AF}\u{108E0}-\u{108F2}\u{108F4}\u{108F5}\u{108FB}-\u{1091B}\u{1091F}-\u{10939}\u{1093F}-\u{10959}\u{10980}-\u{109B7}\u{109BC}-\u{109CF}\u{109D2}-\u{10A03}\u{10A05}\u{10A06}\u{10A0C}-\u{10A13}\u{10A15}-\u{10A17}\u{10A19}-\u{10A35}\u{10A38}-\u{10A3A}\u{10A3F}-\u{10A48}\u{10A50}-\u{10A58}\u{10A60}-\u{10A9F}\u{10AC0}-\u{10AE6}\u{10AEB}-\u{10AF6}\u{10B00}-\u{10B35}\u{10B39}-\u{10B55}\u{10B58}-\u{10B72}\u{10B78}-\u{10B91}\u{10B99}-\u{10B9C}\u{10BA9}-\u{10BAF}\u{10C00}-\u{10C48}\u{10C80}-\u{10CB2}\u{10CC0}-\u{10CF2}\u{10CFA}-\u{10D27}\u{10D30}-\u{10D39}\u{10D40}-\u{10D65}\u{10D69}-\u{10D85}\u{10D8E}\u{10D8F}\u{10E60}-\u{10E7E}\u{10E80}-\u{10EA9}\u{10EAB}-\u{10EAD}\u{10EB0}\u{10EB1}\u{10EC2}-\u{10EC7}\u{10ED0}-\u{10ED8}\u{10EFA}-\u{10F27}\u{10F30}-\u{10F59}\u{10F70}-\u{10F89}\u{10FB0}-\u{10FCB}\u{10FE0}-\u{10FF6}\u{11000}-\u{1104D}\u{11052}-\u{11075}\u{1107F}-\u{110BC}\u{110BE}-\u{110C2}\u{110D0}-\u{110E8}\u{110F0}-\u{110F9}\u{11100}-\u{11134}\u{11136}-\u{11147}\u{11150}-\u{11176}\u{11180}-\u{111DF}\u{111E1}-\u{111F4}\u{11200}-\u{11211}\u{11213}-\u{11241}\u{11280}-\u{11286}\u{11288}\u{1128A}-\u{1128D}\u{1128F}-\u{1129D}\u{1129F}-\u{112A9}\u{112B0}-\u{112EA}\u{112F0}-\u{112F9}\u{11300}-\u{11303}\u{11305}-\u{1130C}\u{1130F}\u{11310}\u{11313}-\u{11328}\u{1132A}-\u{11330}\u{11332}\u{11333}\u{11335}-\u{11339}\u{1133B}-\u{11344}\u{11347}\u{11348}\u{1134B}-\u{1134D}\u{11350}\u{11357}\u{1135D}-\u{11363}\u{11366}-\u{1136C}\u{11370}-\u{11374}\u{11380}-\u{11389}\u{1138B}\u{1138E}\u{11390}-\u{113B5}\u{113B7}-\u{113C0}\u{113C2}\u{113C5}\u{113C7}-\u{113CA}\u{113CC}-\u{113D5}\u{113D7}\u{113D8}\u{113E1}\u{113E2}\u{11400}-\u{1145B}\u{1145D}-\u{11461}\u{11480}-\u{114C7}\u{114D0}-\u{114D9}\u{11580}-\u{115B5}\u{115B8}-\u{115DD}\u{11600}-\u{11644}\u{11650}-\u{11659}\u{11660}-\u{1166C}\u{11680}-\u{116B9}\u{116C0}-\u{116C9}\u{116D0}-\u{116E3}\u{11700}-\u{1171A}\u{1171D}-\u{1172B}\u{11730}-\u{11746}\u{11800}-\u{1183B}\u{118A0}-\u{118F2}\u{118FF}-\u{11906}\u{11909}\u{1190C}-\u{11913}\u{11915}\u{11916}\u{11918}-\u{11935}\u{11937}\u{11938}\u{1193B}-\u{11946}\u{11950}-\u{11959}\u{119A0}-\u{119A7}\u{119AA}-\u{119D7}\u{119DA}-\u{119E4}\u{11A00}-\u{11A47}\u{11A50}-\u{11AA2}\u{11AB0}-\u{11AF8}\u{11B00}-\u{11B09}\u{11B60}-\u{11B67}\u{11BC0}-\u{11BE1}\u{11BF0}-\u{11BF9}\u{11C00}-\u{11C08}\u{11C0A}-\u{11C36}\u{11C38}-\u{11C45}\u{11C50}-\u{11C6C}\u{11C70}-\u{11C8F}\u{11C92}-\u{11CA7}\u{11CA9}-\u{11CB6}\u{11D00}-\u{11D06}\u{11D08}\u{11D09}\u{11D0B}-\u{11D36}\u{11D3A}\u{11D3C}\u{11D3D}\u{11D3F}-\u{11D47}\u{11D50}-\u{11D59}\u{11D60}-\u{11D65}\u{11D67}\u{11D68}\u{11D6A}-\u{11D8E}\u{11D90}\u{11D91}\u{11D93}-\u{11D98}\u{11DA0}-\u{11DA9}\u{11DB0}-\u{11DDB}\u{11DE0}-\u{11DE9}\u{11EE0}-\u{11EF8}\u{11F00}-\u{11F10}\u{11F12}-\u{11F3A}\u{11F3E}-\u{11F5A}\u{11FB0}\u{11FC0}-\u{11FF1}\u{11FFF}-\u{12399}\u{12400}-\u{1246E}\u{12470}-\u{12474}\u{12480}-\u{12543}\u{12F90}-\u{12FF2}\u{13000}-\u{1342F}\u{13440}-\u{13455}\u{13460}-\u{143FA}\u{14400}-\u{14646}\u{16100}-\u{16139}\u{16800}-\u{16A38}\u{16A40}-\u{16A5E}\u{16A60}-\u{16A69}\u{16A6E}-\u{16ABE}\u{16AC0}-\u{16AC9}\u{16AD0}-\u{16AED}\u{16AF0}-\u{16AF5}\u{16B00}-\u{16B45}\u{16B50}-\u{16B59}\u{16B5B}-\u{16B61}\u{16B63}-\u{16B77}\u{16B7D}-\u{16B8F}\u{16D40}-\u{16D79}\u{16E40}-\u{16E9A}\u{16EA0}-\u{16EB8}\u{16EBB}-\u{16ED3}\u{16F00}-\u{16F4A}\u{16F4F}-\u{16F87}\u{16F8F}-\u{16F9F}\u{16FE0}-\u{16FE4}\u{16FF0}-\u{16FF6}\u{17000}-\u{18CD5}\u{18CFF}-\u{18D1E}\u{18D80}-\u{18DF2}\u{1AFF0}-\u{1AFF3}\u{1AFF5}-\u{1AFFB}\u{1AFFD}\u{1AFFE}\u{1B000}-\u{1B122}\u{1B132}\u{1B150}-\u{1B152}\u{1B155}\u{1B164}-\u{1B167}\u{1B170}-\u{1B2FB}\u{1BC00}-\u{1BC6A}\u{1BC70}-\u{1BC7C}\u{1BC80}-\u{1BC88}\u{1BC90}-\u{1BC99}\u{1BC9C}-\u{1BC9F}\u{1CC00}-\u{1CCFC}\u{1CD00}-\u{1CEB3}\u{1CEBA}-\u{1CED0}\u{1CEE0}-\u{1CEF0}\u{1CF00}-\u{1CF2D}\u{1CF30}-\u{1CF46}\u{1CF50}-\u{1CFC3}\u{1D000}-\u{1D0F5}\u{1D100}-\u{1D126}\u{1D129}-\u{1D172}\u{1D17B}-\u{1D1EA}\u{1D200}-\u{1D245}\u{1D2C0}-\u{1D2D3}\u{1D2E0}-\u{1D2F3}\u{1D300}-\u{1D356}\u{1D360}-\u{1D378}\u{1D400}-\u{1D454}\u{1D456}-\u{1D49C}\u{1D49E}\u{1D49F}\u{1D4A2}\u{1D4A5}\u{1D4A6}\u{1D4A9}-\u{1D4AC}\u{1D4AE}-\u{1D4B9}\u{1D4BB}\u{1D4BD}-\u{1D4C3}\u{1D4C5}-\u{1D505}\u{1D507}-\u{1D50A}\u{1D50D}-\u{1D514}\u{1D516}-\u{1D51C}\u{1D51E}-\u{1D539}\u{1D53B}-\u{1D53E}\u{1D540}-\u{1D544}\u{1D546}\u{1D54A}-\u{1D550}\u{1D552}-\u{1D6A5}\u{1D6A8}-\u{1D7CB}\u{1D7CE}-\u{1DA8B}\u{1DA9B}-\u{1DA9F}\u{1DAA1}-\u{1DAAF}\u{1DF00}-\u{1DF1E}\u{1DF25}-\u{1DF2A}\u{1E000}-\u{1E006}\u{1E008}-\u{1E018}\u{1E01B}-\u{1E021}\u{1E023}\u{1E024}\u{1E026}-\u{1E02A}\u{1E030}-\u{1E06D}\u{1E08F}\u{1E100}-\u{1E12C}\u{1E130}-\u{1E13D}\u{1E140}-\u{1E149}\u{1E14E}\u{1E14F}\u{1E290}-\u{1E2AE}\u{1E2C0}-\u{1E2F9}\u{1E2FF}\u{1E4D0}-\u{1E4F9}\u{1E5D0}-\u{1E5FA}\u{1E5FF}\u{1E6C0}-\u{1E6DE}\u{1E6E0}-\u{1E6F5}\u{1E6FE}\u{1E6FF}\u{1E7E0}-\u{1E7E6}\u{1E7E8}-\u{1E7EB}\u{1E7ED}\u{1E7EE}\u{1E7F0}-\u{1E7FE}\u{1E800}-\u{1E8C4}\u{1E8C7}-\u{1E8D6}\u{1E900}-\u{1E94B}\u{1E950}-\u{1E959}\u{1E95E}\u{1E95F}\u{1EC71}-\u{1ECB4}\u{1ED01}-\u{1ED3D}\u{1EE00}-\u{1EE03}\u{1EE05}-\u{1EE1F}\u{1EE21}\u{1EE22}\u{1EE24}\u{1EE27}\u{1EE29}-\u{1EE32}\u{1EE34}-\u{1EE37}\u{1EE39}\u{1EE3B}\u{1EE42}\u{1EE47}\u{1EE49}\u{1EE4B}\u{1EE4D}-\u{1EE4F}\u{1EE51}\u{1EE52}\u{1EE54}\u{1EE57}\u{1EE59}\u{1EE5B}\u{1EE5D}\u{1EE5F}\u{1EE61}\u{1EE62}\u{1EE64}\u{1EE67}-\u{1EE6A}\u{1EE6C}-\u{1EE72}\u{1EE74}-\u{1EE77}\u{1EE79}-\u{1EE7C}\u{1EE7E}\u{1EE80}-\u{1EE89}\u{1EE8B}-\u{1EE9B}\u{1EEA1}-\u{1EEA3}\u{1EEA5}-\u{1EEA9}\u{1EEAB}-\u{1EEBB}\u{1EEF0}\u{1EEF1}\u{1F000}-\u{1F02B}\u{1F030}-\u{1F093}\u{1F0A0}-\u{1F0AE}\u{1F0B1}-\u{1F0BF}\u{1F0C1}-\u{1F0CF}\u{1F0D1}-\u{1F0F5}\u{1F100}-\u{1F1AD}\u{1F1E6}-\u{1F202}\u{1F210}-\u{1F23B}\u{1F240}-\u{1F248}\u{1F250}\u{1F251}\u{1F260}-\u{1F265}\u{1F300}-\u{1F6D8}\u{1F6DC}-\u{1F6EC}\u{1F6F0}-\u{1F6FC}\u{1F700}-\u{1F7D9}\u{1F7E0}-\u{1F7EB}\u{1F7F0}\u{1F800}-\u{1F80B}\u{1F810}-\u{1F847}\u{1F850}-\u{1F859}\u{1F860}-\u{1F887}\u{1F890}-\u{1F8AD}\u{1F8B0}-\u{1F8BB}\u{1F8C0}\u{1F8C1}\u{1F8D0}-\u{1F8D8}\u{1F900}-\u{1FA57}\u{1FA60}-\u{1FA6D}\u{1FA70}-\u{1FA7C}\u{1FA80}-\u{1FA8A}\u{1FA8E}-\u{1FAC6}\u{1FAC8}\u{1FACD}-\u{1FADC}\u{1FADF}-\u{1FAEA}\u{1FAEF}-\u{1FAF8}\u{1FB00}-\u{1FB92}\u{1FB94}-\u{1FBFA}\u{20000}-\u{2A6DF}\u{2A700}-\u{2B81D}\u{2B820}-\u{2CEAD}\u{2CEB0}-\u{2EBE0}\u{2EBF0}-\u{2EE5D}\u{2F800}-\u{2FA1D}\u{30000}-\u{3134A}\u{31350}-\u{33479}\u{E0100}-\u{E01EF}]/u.test(event.key);
-    if ((isIMEInput || isCharacterInput) && event.bounds !== void 0 && isReadWriteCell(getCellContent([col - rowMarkerOffset, Math.max(0, Math.min(row, rows - 1))]))) {
-      if ((!showTrailingBlankRow || row !== rows) && (vr.y > row || row > vr.y + vr.height || vr.x > col || col > vr.x + vr.width)) {
+    const isIMEInput = event_0.keyCode === 229;
+    const isCharacterInput = editOnType && !event_0.metaKey && !event_0.ctrlKey && event_0.key.length === 1 && /[!-~\xA1-\xAC\xAE-\u0377\u037A-\u037F\u0384-\u038A\u038C\u038E-\u03A1\u03A3-\u052F\u0531-\u0556\u0559-\u058A\u058D-\u058F\u0591-\u05C7\u05D0-\u05EA\u05EF-\u05F4\u0606-\u061B\u061D-\u06DC\u06DE-\u070D\u0710-\u074A\u074D-\u07B1\u07C0-\u07FA\u07FD-\u082D\u0830-\u083E\u0840-\u085B\u085E\u0860-\u086A\u0870-\u088F\u0897-\u08E1\u08E3-\u0983\u0985-\u098C\u098F\u0990\u0993-\u09A8\u09AA-\u09B0\u09B2\u09B6-\u09B9\u09BC-\u09C4\u09C7\u09C8\u09CB-\u09CE\u09D7\u09DC\u09DD\u09DF-\u09E3\u09E6-\u09FE\u0A01-\u0A03\u0A05-\u0A0A\u0A0F\u0A10\u0A13-\u0A28\u0A2A-\u0A30\u0A32\u0A33\u0A35\u0A36\u0A38\u0A39\u0A3C\u0A3E-\u0A42\u0A47\u0A48\u0A4B-\u0A4D\u0A51\u0A59-\u0A5C\u0A5E\u0A66-\u0A76\u0A81-\u0A83\u0A85-\u0A8D\u0A8F-\u0A91\u0A93-\u0AA8\u0AAA-\u0AB0\u0AB2\u0AB3\u0AB5-\u0AB9\u0ABC-\u0AC5\u0AC7-\u0AC9\u0ACB-\u0ACD\u0AD0\u0AE0-\u0AE3\u0AE6-\u0AF1\u0AF9-\u0AFF\u0B01-\u0B03\u0B05-\u0B0C\u0B0F\u0B10\u0B13-\u0B28\u0B2A-\u0B30\u0B32\u0B33\u0B35-\u0B39\u0B3C-\u0B44\u0B47\u0B48\u0B4B-\u0B4D\u0B55-\u0B57\u0B5C\u0B5D\u0B5F-\u0B63\u0B66-\u0B77\u0B82\u0B83\u0B85-\u0B8A\u0B8E-\u0B90\u0B92-\u0B95\u0B99\u0B9A\u0B9C\u0B9E\u0B9F\u0BA3\u0BA4\u0BA8-\u0BAA\u0BAE-\u0BB9\u0BBE-\u0BC2\u0BC6-\u0BC8\u0BCA-\u0BCD\u0BD0\u0BD7\u0BE6-\u0BFA\u0C00-\u0C0C\u0C0E-\u0C10\u0C12-\u0C28\u0C2A-\u0C39\u0C3C-\u0C44\u0C46-\u0C48\u0C4A-\u0C4D\u0C55\u0C56\u0C58-\u0C5A\u0C5C\u0C5D\u0C60-\u0C63\u0C66-\u0C6F\u0C77-\u0C8C\u0C8E-\u0C90\u0C92-\u0CA8\u0CAA-\u0CB3\u0CB5-\u0CB9\u0CBC-\u0CC4\u0CC6-\u0CC8\u0CCA-\u0CCD\u0CD5\u0CD6\u0CDC-\u0CDE\u0CE0-\u0CE3\u0CE6-\u0CEF\u0CF1-\u0CF3\u0D00-\u0D0C\u0D0E-\u0D10\u0D12-\u0D44\u0D46-\u0D48\u0D4A-\u0D4F\u0D54-\u0D63\u0D66-\u0D7F\u0D81-\u0D83\u0D85-\u0D96\u0D9A-\u0DB1\u0DB3-\u0DBB\u0DBD\u0DC0-\u0DC6\u0DCA\u0DCF-\u0DD4\u0DD6\u0DD8-\u0DDF\u0DE6-\u0DEF\u0DF2-\u0DF4\u0E01-\u0E3A\u0E3F-\u0E5B\u0E81\u0E82\u0E84\u0E86-\u0E8A\u0E8C-\u0EA3\u0EA5\u0EA7-\u0EBD\u0EC0-\u0EC4\u0EC6\u0EC8-\u0ECE\u0ED0-\u0ED9\u0EDC-\u0EDF\u0F00-\u0F47\u0F49-\u0F6C\u0F71-\u0F97\u0F99-\u0FBC\u0FBE-\u0FCC\u0FCE-\u0FDA\u1000-\u10C5\u10C7\u10CD\u10D0-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u135D-\u137C\u1380-\u1399\u13A0-\u13F5\u13F8-\u13FD\u1400-\u167F\u1681-\u169C\u16A0-\u16F8\u1700-\u1715\u171F-\u1736\u1740-\u1753\u1760-\u176C\u176E-\u1770\u1772\u1773\u1780-\u17DD\u17E0-\u17E9\u17F0-\u17F9\u1800-\u180D\u180F-\u1819\u1820-\u1878\u1880-\u18AA\u18B0-\u18F5\u1900-\u191E\u1920-\u192B\u1930-\u193B\u1940\u1944-\u196D\u1970-\u1974\u1980-\u19AB\u19B0-\u19C9\u19D0-\u19DA\u19DE-\u1A1B\u1A1E-\u1A5E\u1A60-\u1A7C\u1A7F-\u1A89\u1A90-\u1A99\u1AA0-\u1AAD\u1AB0-\u1ADD\u1AE0-\u1AEB\u1B00-\u1B4C\u1B4E-\u1BF3\u1BFC-\u1C37\u1C3B-\u1C49\u1C4D-\u1C8A\u1C90-\u1CBA\u1CBD-\u1CC7\u1CD0-\u1CFA\u1D00-\u1F15\u1F18-\u1F1D\u1F20-\u1F45\u1F48-\u1F4D\u1F50-\u1F57\u1F59\u1F5B\u1F5D\u1F5F-\u1F7D\u1F80-\u1FB4\u1FB6-\u1FC4\u1FC6-\u1FD3\u1FD6-\u1FDB\u1FDD-\u1FEF\u1FF2-\u1FF4\u1FF6-\u1FFE\u2010-\u2027\u2030-\u205E\u2070\u2071\u2074-\u208E\u2090-\u209C\u20A0-\u20C1\u20D0-\u20F0\u2100-\u218B\u2190-\u2429\u2440-\u244A\u2460-\u2B73\u2B76-\u2CF3\u2CF9-\u2D25\u2D27\u2D2D\u2D30-\u2D67\u2D6F\u2D70\u2D7F-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\u2DE0-\u2E5D\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFF\u3001-\u303F\u3041-\u3096\u3099-\u30FF\u3105-\u312F\u3131-\u318E\u3190-\u31E5\u31EF-\u321E\u3220-\uA48C\uA490-\uA4C6\uA4D0-\uA62B\uA640-\uA6F7\uA700-\uA7DC\uA7F1-\uA82C\uA830-\uA839\uA840-\uA877\uA880-\uA8C5\uA8CE-\uA8D9\uA8E0-\uA953\uA95F-\uA97C\uA980-\uA9CD\uA9CF-\uA9D9\uA9DE-\uA9FE\uAA00-\uAA36\uAA40-\uAA4D\uAA50-\uAA59\uAA5C-\uAAC2\uAADB-\uAAF6\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E\uAB30-\uAB6B\uAB70-\uABED\uABF0-\uABF9\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFA6D\uFA70-\uFAD9\uFB00-\uFB06\uFB13-\uFB17\uFB1D-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFDCF\uFDF0-\uFE19\uFE20-\uFE52\uFE54-\uFE66\uFE68-\uFE6B\uFE70-\uFE74\uFE76-\uFEFC\uFF01-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC\uFFE0-\uFFE6\uFFE8-\uFFEE\uFFFC\uFFFD\u{10000}-\u{1000B}\u{1000D}-\u{10026}\u{10028}-\u{1003A}\u{1003C}\u{1003D}\u{1003F}-\u{1004D}\u{10050}-\u{1005D}\u{10080}-\u{100FA}\u{10100}-\u{10102}\u{10107}-\u{10133}\u{10137}-\u{1018E}\u{10190}-\u{1019C}\u{101A0}\u{101D0}-\u{101FD}\u{10280}-\u{1029C}\u{102A0}-\u{102D0}\u{102E0}-\u{102FB}\u{10300}-\u{10323}\u{1032D}-\u{1034A}\u{10350}-\u{1037A}\u{10380}-\u{1039D}\u{1039F}-\u{103C3}\u{103C8}-\u{103D5}\u{10400}-\u{1049D}\u{104A0}-\u{104A9}\u{104B0}-\u{104D3}\u{104D8}-\u{104FB}\u{10500}-\u{10527}\u{10530}-\u{10563}\u{1056F}-\u{1057A}\u{1057C}-\u{1058A}\u{1058C}-\u{10592}\u{10594}\u{10595}\u{10597}-\u{105A1}\u{105A3}-\u{105B1}\u{105B3}-\u{105B9}\u{105BB}\u{105BC}\u{105C0}-\u{105F3}\u{10600}-\u{10736}\u{10740}-\u{10755}\u{10760}-\u{10767}\u{10780}-\u{10785}\u{10787}-\u{107B0}\u{107B2}-\u{107BA}\u{10800}-\u{10805}\u{10808}\u{1080A}-\u{10835}\u{10837}\u{10838}\u{1083C}\u{1083F}-\u{10855}\u{10857}-\u{1089E}\u{108A7}-\u{108AF}\u{108E0}-\u{108F2}\u{108F4}\u{108F5}\u{108FB}-\u{1091B}\u{1091F}-\u{10939}\u{1093F}-\u{10959}\u{10980}-\u{109B7}\u{109BC}-\u{109CF}\u{109D2}-\u{10A03}\u{10A05}\u{10A06}\u{10A0C}-\u{10A13}\u{10A15}-\u{10A17}\u{10A19}-\u{10A35}\u{10A38}-\u{10A3A}\u{10A3F}-\u{10A48}\u{10A50}-\u{10A58}\u{10A60}-\u{10A9F}\u{10AC0}-\u{10AE6}\u{10AEB}-\u{10AF6}\u{10B00}-\u{10B35}\u{10B39}-\u{10B55}\u{10B58}-\u{10B72}\u{10B78}-\u{10B91}\u{10B99}-\u{10B9C}\u{10BA9}-\u{10BAF}\u{10C00}-\u{10C48}\u{10C80}-\u{10CB2}\u{10CC0}-\u{10CF2}\u{10CFA}-\u{10D27}\u{10D30}-\u{10D39}\u{10D40}-\u{10D65}\u{10D69}-\u{10D85}\u{10D8E}\u{10D8F}\u{10E60}-\u{10E7E}\u{10E80}-\u{10EA9}\u{10EAB}-\u{10EAD}\u{10EB0}\u{10EB1}\u{10EC2}-\u{10EC7}\u{10ED0}-\u{10ED8}\u{10EFA}-\u{10F27}\u{10F30}-\u{10F59}\u{10F70}-\u{10F89}\u{10FB0}-\u{10FCB}\u{10FE0}-\u{10FF6}\u{11000}-\u{1104D}\u{11052}-\u{11075}\u{1107F}-\u{110BC}\u{110BE}-\u{110C2}\u{110D0}-\u{110E8}\u{110F0}-\u{110F9}\u{11100}-\u{11134}\u{11136}-\u{11147}\u{11150}-\u{11176}\u{11180}-\u{111DF}\u{111E1}-\u{111F4}\u{11200}-\u{11211}\u{11213}-\u{11241}\u{11280}-\u{11286}\u{11288}\u{1128A}-\u{1128D}\u{1128F}-\u{1129D}\u{1129F}-\u{112A9}\u{112B0}-\u{112EA}\u{112F0}-\u{112F9}\u{11300}-\u{11303}\u{11305}-\u{1130C}\u{1130F}\u{11310}\u{11313}-\u{11328}\u{1132A}-\u{11330}\u{11332}\u{11333}\u{11335}-\u{11339}\u{1133B}-\u{11344}\u{11347}\u{11348}\u{1134B}-\u{1134D}\u{11350}\u{11357}\u{1135D}-\u{11363}\u{11366}-\u{1136C}\u{11370}-\u{11374}\u{11380}-\u{11389}\u{1138B}\u{1138E}\u{11390}-\u{113B5}\u{113B7}-\u{113C0}\u{113C2}\u{113C5}\u{113C7}-\u{113CA}\u{113CC}-\u{113D5}\u{113D7}\u{113D8}\u{113E1}\u{113E2}\u{11400}-\u{1145B}\u{1145D}-\u{11461}\u{11480}-\u{114C7}\u{114D0}-\u{114D9}\u{11580}-\u{115B5}\u{115B8}-\u{115DD}\u{11600}-\u{11644}\u{11650}-\u{11659}\u{11660}-\u{1166C}\u{11680}-\u{116B9}\u{116C0}-\u{116C9}\u{116D0}-\u{116E3}\u{11700}-\u{1171A}\u{1171D}-\u{1172B}\u{11730}-\u{11746}\u{11800}-\u{1183B}\u{118A0}-\u{118F2}\u{118FF}-\u{11906}\u{11909}\u{1190C}-\u{11913}\u{11915}\u{11916}\u{11918}-\u{11935}\u{11937}\u{11938}\u{1193B}-\u{11946}\u{11950}-\u{11959}\u{119A0}-\u{119A7}\u{119AA}-\u{119D7}\u{119DA}-\u{119E4}\u{11A00}-\u{11A47}\u{11A50}-\u{11AA2}\u{11AB0}-\u{11AF8}\u{11B00}-\u{11B09}\u{11B60}-\u{11B67}\u{11BC0}-\u{11BE1}\u{11BF0}-\u{11BF9}\u{11C00}-\u{11C08}\u{11C0A}-\u{11C36}\u{11C38}-\u{11C45}\u{11C50}-\u{11C6C}\u{11C70}-\u{11C8F}\u{11C92}-\u{11CA7}\u{11CA9}-\u{11CB6}\u{11D00}-\u{11D06}\u{11D08}\u{11D09}\u{11D0B}-\u{11D36}\u{11D3A}\u{11D3C}\u{11D3D}\u{11D3F}-\u{11D47}\u{11D50}-\u{11D59}\u{11D60}-\u{11D65}\u{11D67}\u{11D68}\u{11D6A}-\u{11D8E}\u{11D90}\u{11D91}\u{11D93}-\u{11D98}\u{11DA0}-\u{11DA9}\u{11DB0}-\u{11DDB}\u{11DE0}-\u{11DE9}\u{11EE0}-\u{11EF8}\u{11F00}-\u{11F10}\u{11F12}-\u{11F3A}\u{11F3E}-\u{11F5A}\u{11FB0}\u{11FC0}-\u{11FF1}\u{11FFF}-\u{12399}\u{12400}-\u{1246E}\u{12470}-\u{12474}\u{12480}-\u{12543}\u{12F90}-\u{12FF2}\u{13000}-\u{1342F}\u{13440}-\u{13455}\u{13460}-\u{143FA}\u{14400}-\u{14646}\u{16100}-\u{16139}\u{16800}-\u{16A38}\u{16A40}-\u{16A5E}\u{16A60}-\u{16A69}\u{16A6E}-\u{16ABE}\u{16AC0}-\u{16AC9}\u{16AD0}-\u{16AED}\u{16AF0}-\u{16AF5}\u{16B00}-\u{16B45}\u{16B50}-\u{16B59}\u{16B5B}-\u{16B61}\u{16B63}-\u{16B77}\u{16B7D}-\u{16B8F}\u{16D40}-\u{16D79}\u{16E40}-\u{16E9A}\u{16EA0}-\u{16EB8}\u{16EBB}-\u{16ED3}\u{16F00}-\u{16F4A}\u{16F4F}-\u{16F87}\u{16F8F}-\u{16F9F}\u{16FE0}-\u{16FE4}\u{16FF0}-\u{16FF6}\u{17000}-\u{18CD5}\u{18CFF}-\u{18D1E}\u{18D80}-\u{18DF2}\u{1AFF0}-\u{1AFF3}\u{1AFF5}-\u{1AFFB}\u{1AFFD}\u{1AFFE}\u{1B000}-\u{1B122}\u{1B132}\u{1B150}-\u{1B152}\u{1B155}\u{1B164}-\u{1B167}\u{1B170}-\u{1B2FB}\u{1BC00}-\u{1BC6A}\u{1BC70}-\u{1BC7C}\u{1BC80}-\u{1BC88}\u{1BC90}-\u{1BC99}\u{1BC9C}-\u{1BC9F}\u{1CC00}-\u{1CCFC}\u{1CD00}-\u{1CEB3}\u{1CEBA}-\u{1CED0}\u{1CEE0}-\u{1CEF0}\u{1CF00}-\u{1CF2D}\u{1CF30}-\u{1CF46}\u{1CF50}-\u{1CFC3}\u{1D000}-\u{1D0F5}\u{1D100}-\u{1D126}\u{1D129}-\u{1D172}\u{1D17B}-\u{1D1EA}\u{1D200}-\u{1D245}\u{1D2C0}-\u{1D2D3}\u{1D2E0}-\u{1D2F3}\u{1D300}-\u{1D356}\u{1D360}-\u{1D378}\u{1D400}-\u{1D454}\u{1D456}-\u{1D49C}\u{1D49E}\u{1D49F}\u{1D4A2}\u{1D4A5}\u{1D4A6}\u{1D4A9}-\u{1D4AC}\u{1D4AE}-\u{1D4B9}\u{1D4BB}\u{1D4BD}-\u{1D4C3}\u{1D4C5}-\u{1D505}\u{1D507}-\u{1D50A}\u{1D50D}-\u{1D514}\u{1D516}-\u{1D51C}\u{1D51E}-\u{1D539}\u{1D53B}-\u{1D53E}\u{1D540}-\u{1D544}\u{1D546}\u{1D54A}-\u{1D550}\u{1D552}-\u{1D6A5}\u{1D6A8}-\u{1D7CB}\u{1D7CE}-\u{1DA8B}\u{1DA9B}-\u{1DA9F}\u{1DAA1}-\u{1DAAF}\u{1DF00}-\u{1DF1E}\u{1DF25}-\u{1DF2A}\u{1E000}-\u{1E006}\u{1E008}-\u{1E018}\u{1E01B}-\u{1E021}\u{1E023}\u{1E024}\u{1E026}-\u{1E02A}\u{1E030}-\u{1E06D}\u{1E08F}\u{1E100}-\u{1E12C}\u{1E130}-\u{1E13D}\u{1E140}-\u{1E149}\u{1E14E}\u{1E14F}\u{1E290}-\u{1E2AE}\u{1E2C0}-\u{1E2F9}\u{1E2FF}\u{1E4D0}-\u{1E4F9}\u{1E5D0}-\u{1E5FA}\u{1E5FF}\u{1E6C0}-\u{1E6DE}\u{1E6E0}-\u{1E6F5}\u{1E6FE}\u{1E6FF}\u{1E7E0}-\u{1E7E6}\u{1E7E8}-\u{1E7EB}\u{1E7ED}\u{1E7EE}\u{1E7F0}-\u{1E7FE}\u{1E800}-\u{1E8C4}\u{1E8C7}-\u{1E8D6}\u{1E900}-\u{1E94B}\u{1E950}-\u{1E959}\u{1E95E}\u{1E95F}\u{1EC71}-\u{1ECB4}\u{1ED01}-\u{1ED3D}\u{1EE00}-\u{1EE03}\u{1EE05}-\u{1EE1F}\u{1EE21}\u{1EE22}\u{1EE24}\u{1EE27}\u{1EE29}-\u{1EE32}\u{1EE34}-\u{1EE37}\u{1EE39}\u{1EE3B}\u{1EE42}\u{1EE47}\u{1EE49}\u{1EE4B}\u{1EE4D}-\u{1EE4F}\u{1EE51}\u{1EE52}\u{1EE54}\u{1EE57}\u{1EE59}\u{1EE5B}\u{1EE5D}\u{1EE5F}\u{1EE61}\u{1EE62}\u{1EE64}\u{1EE67}-\u{1EE6A}\u{1EE6C}-\u{1EE72}\u{1EE74}-\u{1EE77}\u{1EE79}-\u{1EE7C}\u{1EE7E}\u{1EE80}-\u{1EE89}\u{1EE8B}-\u{1EE9B}\u{1EEA1}-\u{1EEA3}\u{1EEA5}-\u{1EEA9}\u{1EEAB}-\u{1EEBB}\u{1EEF0}\u{1EEF1}\u{1F000}-\u{1F02B}\u{1F030}-\u{1F093}\u{1F0A0}-\u{1F0AE}\u{1F0B1}-\u{1F0BF}\u{1F0C1}-\u{1F0CF}\u{1F0D1}-\u{1F0F5}\u{1F100}-\u{1F1AD}\u{1F1E6}-\u{1F202}\u{1F210}-\u{1F23B}\u{1F240}-\u{1F248}\u{1F250}\u{1F251}\u{1F260}-\u{1F265}\u{1F300}-\u{1F6D8}\u{1F6DC}-\u{1F6EC}\u{1F6F0}-\u{1F6FC}\u{1F700}-\u{1F7D9}\u{1F7E0}-\u{1F7EB}\u{1F7F0}\u{1F800}-\u{1F80B}\u{1F810}-\u{1F847}\u{1F850}-\u{1F859}\u{1F860}-\u{1F887}\u{1F890}-\u{1F8AD}\u{1F8B0}-\u{1F8BB}\u{1F8C0}\u{1F8C1}\u{1F8D0}-\u{1F8D8}\u{1F900}-\u{1FA57}\u{1FA60}-\u{1FA6D}\u{1FA70}-\u{1FA7C}\u{1FA80}-\u{1FA8A}\u{1FA8E}-\u{1FAC6}\u{1FAC8}\u{1FACD}-\u{1FADC}\u{1FADF}-\u{1FAEA}\u{1FAEF}-\u{1FAF8}\u{1FB00}-\u{1FB92}\u{1FB94}-\u{1FBFA}\u{20000}-\u{2A6DF}\u{2A700}-\u{2B81D}\u{2B820}-\u{2CEAD}\u{2CEB0}-\u{2EBE0}\u{2EBF0}-\u{2EE5D}\u{2F800}-\u{2FA1D}\u{30000}-\u{3134A}\u{31350}-\u{33479}\u{E0100}-\u{E01EF}]/u.test(event_0.key);
+    if ((isIMEInput || isCharacterInput) && event_0.bounds !== void 0 && isReadWriteCell(getCellContent([col_1 - rowMarkerOffset, Math.max(0, Math.min(row_0, rows - 1))]))) {
+      if ((!showTrailingBlankRow || row_0 !== rows) && (vr.y > row_0 || row_0 > vr.y + vr.height || vr.x > col_1 || col_1 > vr.x + vr.width)) {
         return;
       }
-      event.stopPropagation();
-      event.preventDefault();
+      event_0.stopPropagation();
+      event_0.preventDefault();
       if (isIMEInput) {
-        const activationEvent = {
+        const activationEvent_0 = {
           inputType: "keyboard",
           key: ""
         };
-        onCellActivated === null || onCellActivated === void 0 || onCellActivated([col - rowMarkerOffset, row], activationEvent);
-        reselect(event.bounds, activationEvent, "");
+        onCellActivated === null || onCellActivated === void 0 || onCellActivated([col_1 - rowMarkerOffset, row_0], activationEvent_0);
+        reselect(event_0.bounds, activationEvent_0, "");
       } else {
-        const activationEvent = {
+        const activationEvent_1 = {
           inputType: "keyboard",
-          key: event.key
+          key: event_0.key
         };
-        onCellActivated === null || onCellActivated === void 0 || onCellActivated([col - rowMarkerOffset, row], activationEvent);
-        reselect(event.bounds, activationEvent, event.key);
+        onCellActivated === null || onCellActivated === void 0 || onCellActivated([col_1 - rowMarkerOffset, row_0], activationEvent_1);
+        reselect(event_0.bounds, activationEvent_1, event_0.key);
       }
     }
-  };
+  }, [editOnType, onKeyDownIn, handleFixedKeybindings, gridSelection, getCellContent, rowMarkerOffset, rows, showTrailingBlankRow, onCellActivated, reselect, visibleRegionRef]);
   return {
     handleFixedKeybindings,
     onKeyDown
@@ -16357,54 +16357,93 @@ function useSelectionBehavior(gridSelection, setGridSelection, rangeBehavior, co
   return t3;
 }
 function useCellsForSelection(getCellsForSelectionIn, getCellContent, rowMarkerOffset, abortController, rows) {
-  const getCellsForSelectionDirectWhenValid = (rect) => {
-    var _getCellsForSelection;
-    if (getCellsForSelectionIn === true) {
-      const result = [];
-      for (let y2 = rect.y; y2 < rect.y + rect.height; y2++) {
-        const row = [];
-        for (let x2 = rect.x; x2 < rect.x + rect.width; x2++) {
-          if (x2 < 0 || y2 >= rows) {
-            row.push({
-              kind: GridCellKind.Loading,
-              allowOverlay: false
-            });
-          } else {
-            row.push(getCellContent([x2, y2]));
+  const $2 = compilerRuntimeExports.c(12);
+  let t0;
+  if ($2[0] !== abortController.signal || $2[1] !== getCellContent || $2[2] !== getCellsForSelectionIn || $2[3] !== rows) {
+    t0 = (rect) => {
+      var _getCellsForSelection;
+      if (getCellsForSelectionIn === true) {
+        const result = [];
+        for (let y2 = rect.y; y2 < rect.y + rect.height; y2++) {
+          const row = [];
+          for (let x2 = rect.x; x2 < rect.x + rect.width; x2++) {
+            if (x2 < 0 || y2 >= rows) {
+              row.push({
+                kind: GridCellKind.Loading,
+                allowOverlay: false
+              });
+            } else {
+              row.push(getCellContent([x2, y2]));
+            }
           }
+          result.push(row);
         }
-        result.push(row);
+        return result;
       }
-      return result;
-    }
-    return (_getCellsForSelection = getCellsForSelectionIn === null || getCellsForSelectionIn === void 0 ? void 0 : getCellsForSelectionIn(rect, abortController.signal)) !== null && _getCellsForSelection !== void 0 ? _getCellsForSelection : [];
-  };
-  const getCellsForSelectionDirect = getCellsForSelectionIn !== void 0 ? getCellsForSelectionDirectWhenValid : void 0;
-  const getCellsForSelectionMangled = (rect) => {
-    if (getCellsForSelectionDirect === void 0) return [];
-    const newRect = {
-      ...rect,
-      x: rect.x - rowMarkerOffset
+      return (_getCellsForSelection = getCellsForSelectionIn === null || getCellsForSelectionIn === void 0 ? void 0 : getCellsForSelectionIn(rect, abortController.signal)) !== null && _getCellsForSelection !== void 0 ? _getCellsForSelection : [];
     };
-    if (newRect.x < 0) {
-      newRect.x = 0;
-      newRect.width--;
-      const r = getCellsForSelectionDirect(newRect, abortController.signal);
-      if (typeof r === "function") {
-        return async () => (await r()).map((row) => [{
-          kind: GridCellKind.Loading,
-          allowOverlay: false
-        }, ...row]);
+    $2[0] = abortController.signal;
+    $2[1] = getCellContent;
+    $2[2] = getCellsForSelectionIn;
+    $2[3] = rows;
+    $2[4] = t0;
+  } else {
+    t0 = $2[4];
+  }
+  const getCellsForSelectionDirectWhenValid = t0;
+  const getCellsForSelectionDirect = getCellsForSelectionIn !== void 0 ? getCellsForSelectionDirectWhenValid : void 0;
+  let t1;
+  if ($2[5] !== abortController.signal || $2[6] !== getCellsForSelectionDirect || $2[7] !== rowMarkerOffset) {
+    t1 = (rect_0) => {
+      if (getCellsForSelectionDirect === void 0) {
+        return [];
       }
-      return r.map((row) => [{
-        kind: GridCellKind.Loading,
-        allowOverlay: false
-      }, ...row]);
-    }
-    return getCellsForSelectionDirect(newRect, abortController.signal);
-  };
+      const newRect = {
+        ...rect_0,
+        x: rect_0.x - rowMarkerOffset
+      };
+      if (newRect.x < 0) {
+        newRect.x = 0;
+        newRect.width = newRect.width - 1;
+        const r = getCellsForSelectionDirect(newRect, abortController.signal);
+        if (typeof r === "function") {
+          return async () => (await r()).map(_temp$6);
+        }
+        return r.map(_temp2$4);
+      }
+      return getCellsForSelectionDirect(newRect, abortController.signal);
+    };
+    $2[5] = abortController.signal;
+    $2[6] = getCellsForSelectionDirect;
+    $2[7] = rowMarkerOffset;
+    $2[8] = t1;
+  } else {
+    t1 = $2[8];
+  }
+  const getCellsForSelectionMangled = t1;
   const getCellsForSelection = getCellsForSelectionIn !== void 0 ? getCellsForSelectionMangled : void 0;
-  return [getCellsForSelection, getCellsForSelectionDirect];
+  let t2;
+  if ($2[9] !== getCellsForSelection || $2[10] !== getCellsForSelectionDirect) {
+    t2 = [getCellsForSelection, getCellsForSelectionDirect];
+    $2[9] = getCellsForSelection;
+    $2[10] = getCellsForSelectionDirect;
+    $2[11] = t2;
+  } else {
+    t2 = $2[11];
+  }
+  return t2;
+}
+function _temp2$4(row_1) {
+  return [{
+    kind: GridCellKind.Loading,
+    allowOverlay: false
+  }, ...row_1];
+}
+function _temp$6(row_0) {
+  return [{
+    kind: GridCellKind.Loading,
+    allowOverlay: false
+  }, ...row_0];
 }
 function toCss(x2) {
   if (typeof x2 === "string") return x2;
@@ -16568,7 +16607,7 @@ function useClipboard(args) {
     getCellRenderer
   } = state;
   let t0;
-  if ($2[0] !== canvasRef || $2[1] !== coercePasteValue || $2[2] !== getCellRenderer || $2[3] !== getMangledCellContent || $2[4] !== ghostInputRef || $2[5] !== gridRef || $2[6] !== gridSelection || $2[7] !== keybindings.paste || $2[8] !== mangledCols || $2[9] !== mangledOnCellsEdited || $2[10] !== mangledRows || $2[11] !== onPaste || $2[12] !== rowMarkerOffset || $2[13] !== rows || $2[14] !== scrollRef) {
+  if ($2[0] !== canvasRef || $2[1] !== coercePasteValue || $2[2] !== getCellRenderer || $2[3] !== getMangledCellContent || $2[4] !== ghostInputRef || $2[5] !== gridRef || $2[6] !== gridSelection || $2[7] !== keybindings.paste || $2[8] !== mangledCols.length || $2[9] !== mangledOnCellsEdited || $2[10] !== mangledRows || $2[11] !== onPaste || $2[12] !== rowMarkerOffset || $2[13] !== rows || $2[14] !== scrollRef) {
     t0 = async (e) => {
       var _scrollRef$current, _canvasRef$current, _ghostInputRef$curren, _ghostInputRef$curren2;
       if (!keybindings.paste) {
@@ -16681,7 +16720,7 @@ function useClipboard(args) {
           if (onPaste === void 0) {
             var _ref2, _data;
             const cellData = getMangledCellContent(target_0);
-            const rawValue_0 = (_ref2 = text !== null && text !== void 0 ? text : (_data = data) === null || _data === void 0 ? void 0 : _data.map(_temp2$1).join("	")) !== null && _ref2 !== void 0 ? _ref2 : "";
+            const rawValue_0 = (_ref2 = text !== null && text !== void 0 ? text : (_data = data) === null || _data === void 0 ? void 0 : _data.map(_temp2$3).join("	")) !== null && _ref2 !== void 0 ? _ref2 : "";
             const newVal_1 = pasteToCell(cellData, target_0, rawValue_0, void 0);
             if (newVal_1 !== void 0) {
               editList.push(newVal_1);
@@ -16730,7 +16769,7 @@ function useClipboard(args) {
     $2[5] = gridRef;
     $2[6] = gridSelection;
     $2[7] = keybindings.paste;
-    $2[8] = mangledCols;
+    $2[8] = mangledCols.length;
     $2[9] = mangledOnCellsEdited;
     $2[10] = mangledRows;
     $2[11] = onPaste;
@@ -16923,14 +16962,15 @@ function _temp3(cb_0) {
   var _cb_0$rawValue$toStri, _cb_0$rawValue;
   return (_cb_0$rawValue$toStri = (_cb_0$rawValue = cb_0.rawValue) === null || _cb_0$rawValue === void 0 ? void 0 : _cb_0$rawValue.toString()) !== null && _cb_0$rawValue$toStri !== void 0 ? _cb_0$rawValue$toStri : "";
 }
-function _temp2$1(r_0) {
-  return r_0.map(_temp$3).join("	");
+function _temp2$3(r_0) {
+  return r_0.map(_temp$5).join("	");
 }
-function _temp$3(cb) {
+function _temp$5(cb) {
   return cb.rawValue;
 }
-function useRemAdjuster(_ref) {
-  let {
+function useRemAdjuster(t0) {
+  const $2 = compilerRuntimeExports.c(30);
+  const {
     rowHeight: rowHeightIn,
     headerHeight: headerHeightIn,
     groupHeaderHeight: groupHeaderHeightIn,
@@ -16939,27 +16979,106 @@ function useRemAdjuster(_ref) {
     overscrollY: overscrollYIn,
     scaleToRem,
     remSize
-  } = _ref;
-  const [rowHeight, headerHeight, groupHeaderHeight, theme, overscrollX, overscrollY] = ((_themeIn$headerIconSi, _themeIn$cellHorizont, _themeIn$cellVertical) => {
-    if (!scaleToRem || remSize === 16) return [rowHeightIn, headerHeightIn, groupHeaderHeightIn, themeIn, overscrollXIn, overscrollYIn];
+  } = t0;
+  let t1;
+  bb0: {
+    var _themeIn$headerIconSi, _themeIn$cellHorizont, _themeIn$cellVertical;
+    if (!scaleToRem || remSize === 16) {
+      let t23;
+      if ($2[0] !== groupHeaderHeightIn || $2[1] !== headerHeightIn || $2[2] !== overscrollXIn || $2[3] !== overscrollYIn || $2[4] !== rowHeightIn || $2[5] !== themeIn) {
+        t23 = [rowHeightIn, headerHeightIn, groupHeaderHeightIn, themeIn, overscrollXIn, overscrollYIn];
+        $2[0] = groupHeaderHeightIn;
+        $2[1] = headerHeightIn;
+        $2[2] = overscrollXIn;
+        $2[3] = overscrollYIn;
+        $2[4] = rowHeightIn;
+        $2[5] = themeIn;
+        $2[6] = t23;
+      } else {
+        t23 = $2[6];
+      }
+      t1 = t23;
+      break bb0;
+    }
     const scaler = remSize / 16;
     const rh = rowHeightIn;
-    const bt = getDataEditorTheme();
-    return [typeof rh === "number" ? rh * scaler : (n) => Math.ceil(rh(n) * scaler), Math.ceil(headerHeightIn * scaler), Math.ceil(groupHeaderHeightIn * scaler), {
-      ...themeIn,
-      headerIconSize: ((_themeIn$headerIconSi = themeIn === null || themeIn === void 0 ? void 0 : themeIn.headerIconSize) !== null && _themeIn$headerIconSi !== void 0 ? _themeIn$headerIconSi : bt.headerIconSize) * scaler,
-      cellHorizontalPadding: ((_themeIn$cellHorizont = themeIn === null || themeIn === void 0 ? void 0 : themeIn.cellHorizontalPadding) !== null && _themeIn$cellHorizont !== void 0 ? _themeIn$cellHorizont : bt.cellHorizontalPadding) * scaler,
-      cellVerticalPadding: ((_themeIn$cellVertical = themeIn === null || themeIn === void 0 ? void 0 : themeIn.cellVerticalPadding) !== null && _themeIn$cellVertical !== void 0 ? _themeIn$cellVertical : bt.cellVerticalPadding) * scaler
-    }, Math.ceil((overscrollXIn !== null && overscrollXIn !== void 0 ? overscrollXIn : 0) * scaler), Math.ceil((overscrollYIn !== null && overscrollYIn !== void 0 ? overscrollYIn : 0) * scaler)];
-  })();
-  return {
-    rowHeight,
-    headerHeight,
-    groupHeaderHeight,
-    theme,
-    overscrollX,
-    overscrollY
-  };
+    let t22;
+    if ($2[7] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+      t22 = getDataEditorTheme();
+      $2[7] = t22;
+    } else {
+      t22 = $2[7];
+    }
+    const bt = t22;
+    let t3;
+    if ($2[8] !== rh || $2[9] !== scaler) {
+      t3 = typeof rh === "number" ? rh * scaler : (n) => Math.ceil(rh(n) * scaler);
+      $2[8] = rh;
+      $2[9] = scaler;
+      $2[10] = t3;
+    } else {
+      t3 = $2[10];
+    }
+    const t4 = Math.ceil(headerHeightIn * scaler);
+    const t5 = Math.ceil(groupHeaderHeightIn * scaler);
+    const t6 = ((_themeIn$headerIconSi = themeIn === null || themeIn === void 0 ? void 0 : themeIn.headerIconSize) !== null && _themeIn$headerIconSi !== void 0 ? _themeIn$headerIconSi : bt.headerIconSize) * scaler;
+    const t7 = ((_themeIn$cellHorizont = themeIn === null || themeIn === void 0 ? void 0 : themeIn.cellHorizontalPadding) !== null && _themeIn$cellHorizont !== void 0 ? _themeIn$cellHorizont : bt.cellHorizontalPadding) * scaler;
+    const t8 = ((_themeIn$cellVertical = themeIn === null || themeIn === void 0 ? void 0 : themeIn.cellVerticalPadding) !== null && _themeIn$cellVertical !== void 0 ? _themeIn$cellVertical : bt.cellVerticalPadding) * scaler;
+    let t9;
+    if ($2[11] !== t6 || $2[12] !== t7 || $2[13] !== t8 || $2[14] !== themeIn) {
+      t9 = {
+        ...themeIn,
+        headerIconSize: t6,
+        cellHorizontalPadding: t7,
+        cellVerticalPadding: t8
+      };
+      $2[11] = t6;
+      $2[12] = t7;
+      $2[13] = t8;
+      $2[14] = themeIn;
+      $2[15] = t9;
+    } else {
+      t9 = $2[15];
+    }
+    const t10 = Math.ceil((overscrollXIn !== null && overscrollXIn !== void 0 ? overscrollXIn : 0) * scaler);
+    const t11 = Math.ceil((overscrollYIn !== null && overscrollYIn !== void 0 ? overscrollYIn : 0) * scaler);
+    let t12;
+    if ($2[16] !== t10 || $2[17] !== t11 || $2[18] !== t3 || $2[19] !== t4 || $2[20] !== t5 || $2[21] !== t9) {
+      t12 = [t3, t4, t5, t9, t10, t11];
+      $2[16] = t10;
+      $2[17] = t11;
+      $2[18] = t3;
+      $2[19] = t4;
+      $2[20] = t5;
+      $2[21] = t9;
+      $2[22] = t12;
+    } else {
+      t12 = $2[22];
+    }
+    t1 = t12;
+  }
+  const [rowHeight, headerHeight, groupHeaderHeight, theme, overscrollX, overscrollY] = t1;
+  let t2;
+  if ($2[23] !== groupHeaderHeight || $2[24] !== headerHeight || $2[25] !== overscrollX || $2[26] !== overscrollY || $2[27] !== rowHeight || $2[28] !== theme) {
+    t2 = {
+      rowHeight,
+      headerHeight,
+      groupHeaderHeight,
+      theme,
+      overscrollX,
+      overscrollY
+    };
+    $2[23] = groupHeaderHeight;
+    $2[24] = headerHeight;
+    $2[25] = overscrollX;
+    $2[26] = overscrollY;
+    $2[27] = rowHeight;
+    $2[28] = theme;
+    $2[29] = t2;
+  } else {
+    t2 = $2[29];
+  }
+  return t2;
 }
 const keybindingDefaults = {
   downFill: false,
@@ -17228,59 +17347,179 @@ function mapRowIndexToPath(row, flattenedRowGroups) {
   };
 }
 function useRowGroupingInner(options, rows, rowHeightIn, getRowThemeOverrideIn) {
-  const flattenedRowGroups = options === void 0 ? void 0 : flattenRowGroups(options, rows);
-  const flattenedRowGroupsMap = flattenedRowGroups === null || flattenedRowGroups === void 0 ? void 0 : flattenedRowGroups.reduce((acc, group) => {
-    acc[group.rowIndex] = group;
-    return acc;
-  }, {});
-  const effectiveRows = (() => {
-    if (flattenedRowGroups === void 0) return rows;
-    return flattenedRowGroups.reduce((acc, group) => acc + (group.isCollapsed ? 1 : group.rows + 1), 0);
-  })();
-  const rowHeight = (() => {
-    if (options === void 0) return rowHeightIn;
-    if (typeof rowHeightIn === "number" && options.height === rowHeightIn) return rowHeightIn;
-    return (rowIndex) => {
-      if (flattenedRowGroupsMap !== null && flattenedRowGroupsMap !== void 0 && flattenedRowGroupsMap[rowIndex]) return options.height;
-      return typeof rowHeightIn === "number" ? rowHeightIn : rowHeightIn(rowIndex);
-    };
-  })();
-  const rowNumberMapperOut = (row) => {
-    if (flattenedRowGroups === void 0) return row;
-    let toGo = row;
-    for (const group of flattenedRowGroups) {
-      if (toGo === 0) return void 0;
-      toGo--;
-      if (!group.isCollapsed) {
-        if (toGo < group.rows) return group.contentIndex + toGo;
-        toGo -= group.rows;
-      }
+  const $2 = compilerRuntimeExports.c(30);
+  let t0;
+  if ($2[0] !== options || $2[1] !== rows) {
+    t0 = options === void 0 ? void 0 : flattenRowGroups(options, rows);
+    $2[0] = options;
+    $2[1] = rows;
+    $2[2] = t0;
+  } else {
+    t0 = $2[2];
+  }
+  const flattenedRowGroups = t0;
+  let t1;
+  if ($2[3] !== flattenedRowGroups) {
+    t1 = flattenedRowGroups === null || flattenedRowGroups === void 0 ? void 0 : flattenedRowGroups.reduce(_temp$4, {});
+    $2[3] = flattenedRowGroups;
+    $2[4] = t1;
+  } else {
+    t1 = $2[4];
+  }
+  const flattenedRowGroupsMap = t1;
+  let t2;
+  bb0: {
+    if (flattenedRowGroups === void 0) {
+      t2 = rows;
+      break bb0;
     }
-    return row;
-  };
-  const getRowThemeOverride = whenDefined(getRowThemeOverrideIn !== null && getRowThemeOverrideIn !== void 0 ? getRowThemeOverrideIn : options === null || options === void 0 ? void 0 : options.themeOverride, (row) => {
-    if (options === void 0) return getRowThemeOverrideIn === null || getRowThemeOverrideIn === void 0 ? void 0 : getRowThemeOverrideIn(row, row, row);
-    if (getRowThemeOverrideIn === void 0 && (options === null || options === void 0 ? void 0 : options.themeOverride) === void 0) return void 0;
-    const {
-      isGroupHeader,
-      contentIndex,
-      groupIndex
-    } = mapRowIndexToPath(row, flattenedRowGroups);
-    if (isGroupHeader) return options.themeOverride;
-    return getRowThemeOverrideIn === null || getRowThemeOverrideIn === void 0 ? void 0 : getRowThemeOverrideIn(row, groupIndex, contentIndex);
-  });
-  if (options === void 0) return {
-    rowHeight,
-    rows,
-    rowNumberMapper: rowNumberMapperOut,
-    getRowThemeOverride
-  };
-  return {
-    rowHeight,
-    rows: effectiveRows,
-    rowNumberMapper: rowNumberMapperOut,
-    getRowThemeOverride
-  };
+    let t32;
+    if ($2[5] !== flattenedRowGroups) {
+      t32 = flattenedRowGroups.reduce(_temp2$2, 0);
+      $2[5] = flattenedRowGroups;
+      $2[6] = t32;
+    } else {
+      t32 = $2[6];
+    }
+    t2 = t32;
+  }
+  const effectiveRows = t2;
+  let t3;
+  bb1: {
+    if (options === void 0) {
+      t3 = rowHeightIn;
+      break bb1;
+    }
+    if (typeof rowHeightIn === "number" && options.height === rowHeightIn) {
+      t3 = rowHeightIn;
+      break bb1;
+    }
+    let t42;
+    if ($2[7] !== flattenedRowGroupsMap || $2[8] !== options || $2[9] !== rowHeightIn) {
+      t42 = (rowIndex) => {
+        if (flattenedRowGroupsMap !== null && flattenedRowGroupsMap !== void 0 && flattenedRowGroupsMap[rowIndex]) {
+          return options.height;
+        }
+        return typeof rowHeightIn === "number" ? rowHeightIn : rowHeightIn(rowIndex);
+      };
+      $2[7] = flattenedRowGroupsMap;
+      $2[8] = options;
+      $2[9] = rowHeightIn;
+      $2[10] = t42;
+    } else {
+      t42 = $2[10];
+    }
+    t3 = t42;
+  }
+  const rowHeight = t3;
+  let t4;
+  if ($2[11] !== flattenedRowGroups) {
+    t4 = (row) => {
+      if (flattenedRowGroups === void 0) {
+        return row;
+      }
+      let toGo = row;
+      for (const group_1 of flattenedRowGroups) {
+        if (toGo === 0) {
+          return;
+        }
+        toGo--;
+        if (!group_1.isCollapsed) {
+          if (toGo < group_1.rows) {
+            return group_1.contentIndex + toGo;
+          }
+          toGo = toGo - group_1.rows;
+        }
+      }
+      return row;
+    };
+    $2[11] = flattenedRowGroups;
+    $2[12] = t4;
+  } else {
+    t4 = $2[12];
+  }
+  const rowNumberMapperOut = t4;
+  const t5 = getRowThemeOverrideIn !== null && getRowThemeOverrideIn !== void 0 ? getRowThemeOverrideIn : options === null || options === void 0 ? void 0 : options.themeOverride;
+  let t6;
+  if ($2[13] !== flattenedRowGroups || $2[14] !== getRowThemeOverrideIn || $2[15] !== options) {
+    t6 = (row_0) => {
+      if (options === void 0) {
+        return getRowThemeOverrideIn === null || getRowThemeOverrideIn === void 0 ? void 0 : getRowThemeOverrideIn(row_0, row_0, row_0);
+      }
+      if (getRowThemeOverrideIn === void 0 && (options === null || options === void 0 ? void 0 : options.themeOverride) === void 0) {
+        return;
+      }
+      const {
+        isGroupHeader,
+        contentIndex,
+        groupIndex
+      } = mapRowIndexToPath(row_0, flattenedRowGroups);
+      if (isGroupHeader) {
+        return options.themeOverride;
+      }
+      return getRowThemeOverrideIn === null || getRowThemeOverrideIn === void 0 ? void 0 : getRowThemeOverrideIn(row_0, groupIndex, contentIndex);
+    };
+    $2[13] = flattenedRowGroups;
+    $2[14] = getRowThemeOverrideIn;
+    $2[15] = options;
+    $2[16] = t6;
+  } else {
+    t6 = $2[16];
+  }
+  const t7 = t6;
+  let t8;
+  if ($2[17] !== t5 || $2[18] !== t7) {
+    t8 = whenDefined(t5, t7);
+    $2[17] = t5;
+    $2[18] = t7;
+    $2[19] = t8;
+  } else {
+    t8 = $2[19];
+  }
+  const getRowThemeOverride = t8;
+  if (options === void 0) {
+    let t92;
+    if ($2[20] !== getRowThemeOverride || $2[21] !== rowHeight || $2[22] !== rowNumberMapperOut || $2[23] !== rows) {
+      t92 = {
+        rowHeight,
+        rows,
+        rowNumberMapper: rowNumberMapperOut,
+        getRowThemeOverride
+      };
+      $2[20] = getRowThemeOverride;
+      $2[21] = rowHeight;
+      $2[22] = rowNumberMapperOut;
+      $2[23] = rows;
+      $2[24] = t92;
+    } else {
+      t92 = $2[24];
+    }
+    return t92;
+  }
+  let t9;
+  if ($2[25] !== effectiveRows || $2[26] !== getRowThemeOverride || $2[27] !== rowHeight || $2[28] !== rowNumberMapperOut) {
+    t9 = {
+      rowHeight,
+      rows: effectiveRows,
+      rowNumberMapper: rowNumberMapperOut,
+      getRowThemeOverride
+    };
+    $2[25] = effectiveRows;
+    $2[26] = getRowThemeOverride;
+    $2[27] = rowHeight;
+    $2[28] = rowNumberMapperOut;
+    $2[29] = t9;
+  } else {
+    t9 = $2[29];
+  }
+  return t9;
+}
+function _temp2$2(acc_0, group_0) {
+  return acc_0 + (group_0.isCollapsed ? 1 : group_0.rows + 1);
+}
+function _temp$4(acc, group) {
+  acc[group.rowIndex] = group;
+  return acc;
 }
 function useRowGrouping(options, rows) {
   const $2 = compilerRuntimeExports.c(7);
@@ -17638,9 +17877,8 @@ const GhostInputImpl = (props, ref) => {
   return t10;
 };
 const GhostInput = React.memo(React.forwardRef(GhostInputImpl));
-const onGhostCompositionEnd = (_finalValue) => {
-};
 function useGhostInput(args) {
+  const $2 = compilerRuntimeExports.c(41);
   const {
     state,
     onKeyDown,
@@ -17659,114 +17897,148 @@ function useGhostInput(args) {
     getMangledCellContent,
     reselect
   } = state;
-  const onGhostInput = (value, composing) => {
-    if (overlayRef.current !== void 0) {
-      return;
-    }
-    if (!composing && value.length > 0 && value.trim().length > 0 && gridSelection.current !== void 0) {
-      const [col, row] = gridSelection.current.cell;
-      const cell = getMangledCellContent([col, row]);
-      if (cell.kind === GridCellKind.Custom) {
-        const cellData = cell.data;
-        const cellKind = cellData === null || cellData === void 0 ? void 0 : cellData.kind;
-        if (cellKind !== "number-cell" && cellKind !== "date-picker-cell") {
+  let t0;
+  if ($2[0] !== getMangledCellContent || $2[1] !== gridRef || $2[2] !== gridSelection || $2[3] !== onCellActivated || $2[4] !== overlayRef || $2[5] !== reselect || $2[6] !== rowMarkerOffset) {
+    t0 = (value, composing) => {
+      if (overlayRef.current !== void 0) {
+        return;
+      }
+      if (!composing && value.length > 0 && value.trim().length > 0 && gridSelection.current !== void 0) {
+        const [col, row] = gridSelection.current.cell;
+        const cell = getMangledCellContent([col, row]);
+        if (cell.kind === GridCellKind.Custom) {
+          const cellData = cell.data;
+          const cellKind = cellData === null || cellData === void 0 ? void 0 : cellData.kind;
+          if (cellKind !== "number-cell" && cellKind !== "date-picker-cell") {
+            return;
+          }
+        }
+        if (cell.allowOverlay && isReadWriteCell(cell) && cell.readonly !== true) {
+          var _gridRef$current;
+          const bounds = (_gridRef$current = gridRef.current) === null || _gridRef$current === void 0 ? void 0 : _gridRef$current.getBounds(col, row);
+          if (bounds !== void 0) {
+            const activation = {
+              inputType: "keyboard",
+              key: value
+            };
+            onCellActivated === null || onCellActivated === void 0 || onCellActivated([col - rowMarkerOffset, row], activation);
+            reselect(bounds, activation, value);
+          }
+        }
+      }
+    };
+    $2[0] = getMangledCellContent;
+    $2[1] = gridRef;
+    $2[2] = gridSelection;
+    $2[3] = onCellActivated;
+    $2[4] = overlayRef;
+    $2[5] = reselect;
+    $2[6] = rowMarkerOffset;
+    $2[7] = t0;
+  } else {
+    t0 = $2[7];
+  }
+  const onGhostInput = t0;
+  let t1;
+  if ($2[8] !== getMangledCellContent || $2[9] !== ghostInputRef || $2[10] !== gridRef || $2[11] !== gridSelection || $2[12] !== onCellActivated || $2[13] !== overlayRef || $2[14] !== reselect || $2[15] !== rowMarkerOffset || $2[16] !== state) {
+    t1 = () => {
+      var _overlayRef$current;
+      if (gridSelection.current === void 0) {
+        return;
+      }
+      const [col_0, row_0] = gridSelection.current.cell;
+      const currentOverlayCell = (_overlayRef$current = overlayRef.current) === null || _overlayRef$current === void 0 ? void 0 : _overlayRef$current.cell;
+      if (currentOverlayCell !== void 0 && (currentOverlayCell[0] !== col_0 || currentOverlayCell[1] !== row_0)) {
+        var _ghostInputRef$curren, _ghostInputRef$curren2;
+        (_ghostInputRef$curren = ghostInputRef.current) === null || _ghostInputRef$curren === void 0 || _ghostInputRef$curren.clear();
+        (_ghostInputRef$curren2 = ghostInputRef.current) === null || _ghostInputRef$curren2 === void 0 || _ghostInputRef$curren2.setVisible(false);
+        state.setGhostInputVisible(false);
+        overlayRef.current = void 0;
+        state.setOverlay(void 0);
+      }
+      if (overlayRef.current === void 0) {
+        const cell_0 = getMangledCellContent([col_0, row_0]);
+        if (cell_0.kind === GridCellKind.Custom) {
+          const cellData_0 = cell_0.data;
+          const cellKind_0 = cellData_0 === null || cellData_0 === void 0 ? void 0 : cellData_0.kind;
+          if (cellKind_0 !== "number-cell" && cellKind_0 !== "date-picker-cell") {
+            return;
+          }
+        }
+        if (cell_0.allowOverlay && isReadWriteCell(cell_0) && cell_0.readonly !== true) {
+          var _gridRef$current2;
+          const bounds_0 = (_gridRef$current2 = gridRef.current) === null || _gridRef$current2 === void 0 ? void 0 : _gridRef$current2.getBounds(col_0, row_0);
+          if (bounds_0 !== void 0) {
+            var _ghostInputRef$curren3;
+            (_ghostInputRef$curren3 = ghostInputRef.current) === null || _ghostInputRef$curren3 === void 0 || _ghostInputRef$curren3.clear();
+            const activation_0 = {
+              inputType: "keyboard",
+              key: ""
+            };
+            onCellActivated === null || onCellActivated === void 0 || onCellActivated([col_0 - rowMarkerOffset, row_0], activation_0);
+            reselect(bounds_0, activation_0, "");
+          }
+        }
+      }
+    };
+    $2[8] = getMangledCellContent;
+    $2[9] = ghostInputRef;
+    $2[10] = gridRef;
+    $2[11] = gridSelection;
+    $2[12] = onCellActivated;
+    $2[13] = overlayRef;
+    $2[14] = reselect;
+    $2[15] = rowMarkerOffset;
+    $2[16] = state;
+    $2[17] = t1;
+  } else {
+    t1 = $2[17];
+  }
+  const onGhostCompositionStart = t1;
+  const onGhostCompositionEnd = _temp$3;
+  let t2;
+  if ($2[18] !== getMangledCellContent || $2[19] !== ghostInputVisibleRef || $2[20] !== gridRef || $2[21] !== gridSelection || $2[22] !== onFinishEditing || $2[23] !== onKeyDown || $2[24] !== overlayRef) {
+    t2 = (event) => {
+      var _gridSelection$curren, _gridRef$current3;
+      if (event.nativeEvent.isComposing) {
+        return;
+      }
+      if (overlayRef.current !== void 0 && ghostInputVisibleRef.current) {
+        const key = event.key;
+        const cellContent = overlayRef.current.content;
+        if (cellContent.kind === GridCellKind.Custom) {
+          if (key === "Enter" || key === "Tab" || key === "Escape") {
+            event.preventDefault();
+            event.stopPropagation();
+          }
           return;
         }
-      }
-      if (cell.allowOverlay && isReadWriteCell(cell) && cell.readonly !== true) {
-        var _gridRef$current;
-        const bounds = (_gridRef$current = gridRef.current) === null || _gridRef$current === void 0 ? void 0 : _gridRef$current.getBounds(col, row);
-        if (bounds !== void 0) {
-          const activation = {
-            inputType: "keyboard",
-            key: value
-          };
-          onCellActivated === null || onCellActivated === void 0 || onCellActivated([col - rowMarkerOffset, row], activation);
-          reselect(bounds, activation, value);
-        }
-      }
-    }
-  };
-  const onGhostCompositionStart = () => {
-    var _overlayRef$current;
-    if (gridSelection.current === void 0) return;
-    const [col, row] = gridSelection.current.cell;
-    const currentOverlayCell = (_overlayRef$current = overlayRef.current) === null || _overlayRef$current === void 0 ? void 0 : _overlayRef$current.cell;
-    if (currentOverlayCell !== void 0 && (currentOverlayCell[0] !== col || currentOverlayCell[1] !== row)) {
-      var _ghostInputRef$curren, _ghostInputRef$curren2;
-      (_ghostInputRef$curren = ghostInputRef.current) === null || _ghostInputRef$curren === void 0 || _ghostInputRef$curren.clear();
-      (_ghostInputRef$curren2 = ghostInputRef.current) === null || _ghostInputRef$curren2 === void 0 || _ghostInputRef$curren2.setVisible(false);
-      state.setGhostInputVisible(false);
-      overlayRef.current = void 0;
-      state.setOverlay(void 0);
-    }
-    if (overlayRef.current === void 0) {
-      const cell = getMangledCellContent([col, row]);
-      if (cell.kind === GridCellKind.Custom) {
-        const cellData = cell.data;
-        const cellKind = cellData === null || cellData === void 0 ? void 0 : cellData.kind;
-        if (cellKind !== "number-cell" && cellKind !== "date-picker-cell") {
-          return;
-        }
-      }
-      if (cell.allowOverlay && isReadWriteCell(cell) && cell.readonly !== true) {
-        var _gridRef$current2;
-        const bounds = (_gridRef$current2 = gridRef.current) === null || _gridRef$current2 === void 0 ? void 0 : _gridRef$current2.getBounds(col, row);
-        if (bounds !== void 0) {
-          var _ghostInputRef$curren3;
-          (_ghostInputRef$curren3 = ghostInputRef.current) === null || _ghostInputRef$curren3 === void 0 || _ghostInputRef$curren3.clear();
-          const activation = {
-            inputType: "keyboard",
-            key: ""
-          };
-          onCellActivated === null || onCellActivated === void 0 || onCellActivated([col - rowMarkerOffset, row], activation);
-          reselect(bounds, activation, "");
-        }
-      }
-    }
-  };
-  const onGhostKeyDown = (event) => {
-    var _gridSelection$curren, _gridRef$current3;
-    if (event.nativeEvent.isComposing) {
-      return;
-    }
-    if (overlayRef.current !== void 0 && ghostInputVisibleRef.current) {
-      const key = event.key;
-      const cellContent = overlayRef.current.content;
-      if (cellContent.kind === GridCellKind.Custom) {
-        if (key === "Enter" || key === "Tab" || key === "Escape") {
+        if (key === "Escape") {
           event.preventDefault();
           event.stopPropagation();
+          onFinishEditing(void 0, [0, 0]);
+          return;
         }
-        return;
+        if (key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          event.stopPropagation();
+          onFinishEditing(void 0, [0, 1]);
+          return;
+        }
+        if (key === "Tab") {
+          event.preventDefault();
+          event.stopPropagation();
+          onFinishEditing(void 0, event.shiftKey ? [-1, 0] : [1, 0]);
+          return;
+        }
       }
-      if (key === "Escape") {
-        event.preventDefault();
-        event.stopPropagation();
-        onFinishEditing(void 0, [0, 0]);
-        return;
-      }
-      if (key === "Enter" && !event.shiftKey) {
-        event.preventDefault();
-        event.stopPropagation();
-        onFinishEditing(void 0, [0, 1]);
-        return;
-      }
-      if (key === "Tab") {
-        event.preventDefault();
-        event.stopPropagation();
-        onFinishEditing(void 0, event.shiftKey ? [-1, 0] : [1, 0]);
-        return;
-      }
-    }
-    {
-      const key = event.key;
-      const isPrintable = key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey;
+      const key_0 = event.key;
+      const isPrintable = key_0.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey;
       if (isPrintable) {
-        if (key === " " && gridSelection.current !== void 0) {
-          const cell2 = gridSelection.current.cell;
-          const cellContent = getMangledCellContent(cell2);
-          if (cellContent.kind === GridCellKind.Boolean && cellContent.readonly !== true) ;
+        if (key_0 === " " && gridSelection.current !== void 0) {
+          const cell_1 = gridSelection.current.cell;
+          const cellContent_0 = getMangledCellContent(cell_1);
+          if (cellContent_0.kind === GridCellKind.Boolean && cellContent_0.readonly !== true) ;
           else {
             return;
           }
@@ -17774,76 +18046,129 @@ function useGhostInput(args) {
           return;
         }
       }
-    }
-    if (overlayRef.current !== void 0 && ghostInputVisibleRef.current) {
-      const key = event.key;
-      const isEditingKey = key === "Backspace" || key === "Delete";
-      const isCursorKey = key === "ArrowLeft" || key === "ArrowRight" || key === "ArrowUp" || key === "ArrowDown" || key === "Home" || key === "End";
-      if (isEditingKey || isCursorKey) {
-        return;
+      if (overlayRef.current !== void 0 && ghostInputVisibleRef.current) {
+        const key_1 = event.key;
+        const isEditingKey = key_1 === "Backspace" || key_1 === "Delete";
+        const isCursorKey = key_1 === "ArrowLeft" || key_1 === "ArrowRight" || key_1 === "ArrowUp" || key_1 === "ArrowDown" || key_1 === "Home" || key_1 === "End";
+        if (isEditingKey || isCursorKey) {
+          return;
+        }
       }
-    }
-    const cell = (_gridSelection$curren = gridSelection.current) === null || _gridSelection$curren === void 0 ? void 0 : _gridSelection$curren.cell;
-    const bounds = cell !== void 0 ? (_gridRef$current3 = gridRef.current) === null || _gridRef$current3 === void 0 ? void 0 : _gridRef$current3.getBounds(cell[0], cell[1]) : void 0;
-    let cancelled = false;
-    const gridArgs = {
-      bounds,
-      cancel: () => {
-        cancelled = true;
-      },
-      stopPropagation: () => event.stopPropagation(),
-      preventDefault: () => event.preventDefault(),
-      ctrlKey: event.ctrlKey,
-      metaKey: event.metaKey,
-      shiftKey: event.shiftKey,
-      altKey: event.altKey,
-      key: event.key,
-      keyCode: event.keyCode,
-      rawEvent: event,
-      location: cell
+      const cell_2 = (_gridSelection$curren = gridSelection.current) === null || _gridSelection$curren === void 0 ? void 0 : _gridSelection$curren.cell;
+      const bounds_1 = cell_2 !== void 0 ? (_gridRef$current3 = gridRef.current) === null || _gridRef$current3 === void 0 ? void 0 : _gridRef$current3.getBounds(cell_2[0], cell_2[1]) : void 0;
+      let cancelled = false;
+      const gridArgs = {
+        bounds: bounds_1,
+        cancel: () => {
+          cancelled = true;
+        },
+        stopPropagation: () => event.stopPropagation(),
+        preventDefault: () => event.preventDefault(),
+        ctrlKey: event.ctrlKey,
+        metaKey: event.metaKey,
+        shiftKey: event.shiftKey,
+        altKey: event.altKey,
+        key: event.key,
+        keyCode: event.keyCode,
+        rawEvent: event,
+        location: cell_2
+      };
+      onKeyDown(gridArgs);
+      if (cancelled) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
     };
-    onKeyDown(gridArgs);
-    if (cancelled) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  };
-  const onGhostKeyUp = (event) => {
-    var _gridSelection$curren2, _gridRef$current4;
-    const cell = (_gridSelection$curren2 = gridSelection.current) === null || _gridSelection$curren2 === void 0 ? void 0 : _gridSelection$curren2.cell;
-    const bounds = cell !== void 0 ? (_gridRef$current4 = gridRef.current) === null || _gridRef$current4 === void 0 ? void 0 : _gridRef$current4.getBounds(cell[0], cell[1]) : void 0;
-    const gridArgs = {
-      bounds,
-      cancel: () => {
-      },
-      stopPropagation: () => event.stopPropagation(),
-      preventDefault: () => event.preventDefault(),
-      ctrlKey: event.ctrlKey,
-      metaKey: event.metaKey,
-      shiftKey: event.shiftKey,
-      altKey: event.altKey,
-      key: event.key,
-      keyCode: event.keyCode,
-      rawEvent: event,
-      location: cell
+    $2[18] = getMangledCellContent;
+    $2[19] = ghostInputVisibleRef;
+    $2[20] = gridRef;
+    $2[21] = gridSelection;
+    $2[22] = onFinishEditing;
+    $2[23] = onKeyDown;
+    $2[24] = overlayRef;
+    $2[25] = t2;
+  } else {
+    t2 = $2[25];
+  }
+  const onGhostKeyDown = t2;
+  let t3;
+  if ($2[26] !== gridRef || $2[27] !== gridSelection || $2[28] !== onKeyUpIn) {
+    t3 = (event_0) => {
+      var _gridSelection$curren2, _gridRef$current4;
+      const cell_3 = (_gridSelection$curren2 = gridSelection.current) === null || _gridSelection$curren2 === void 0 ? void 0 : _gridSelection$curren2.cell;
+      const bounds_2 = cell_3 !== void 0 ? (_gridRef$current4 = gridRef.current) === null || _gridRef$current4 === void 0 ? void 0 : _gridRef$current4.getBounds(cell_3[0], cell_3[1]) : void 0;
+      const gridArgs_0 = {
+        bounds: bounds_2,
+        cancel: _temp2$1,
+        stopPropagation: () => event_0.stopPropagation(),
+        preventDefault: () => event_0.preventDefault(),
+        ctrlKey: event_0.ctrlKey,
+        metaKey: event_0.metaKey,
+        shiftKey: event_0.shiftKey,
+        altKey: event_0.altKey,
+        key: event_0.key,
+        keyCode: event_0.keyCode,
+        rawEvent: event_0,
+        location: cell_3
+      };
+      onKeyUpIn === null || onKeyUpIn === void 0 || onKeyUpIn(gridArgs_0);
     };
-    onKeyUpIn === null || onKeyUpIn === void 0 || onKeyUpIn(gridArgs);
-  };
-  const onGhostFocus = () => {
-    setIsFocused(true);
-  };
-  const onGhostBlur = () => {
-    setIsFocused(false);
-  };
-  return {
-    onGhostInput,
-    onGhostCompositionStart,
-    onGhostCompositionEnd,
-    onGhostKeyDown,
-    onGhostKeyUp,
-    onGhostFocus,
-    onGhostBlur
-  };
+    $2[26] = gridRef;
+    $2[27] = gridSelection;
+    $2[28] = onKeyUpIn;
+    $2[29] = t3;
+  } else {
+    t3 = $2[29];
+  }
+  const onGhostKeyUp = t3;
+  let t4;
+  if ($2[30] !== setIsFocused) {
+    t4 = () => {
+      setIsFocused(true);
+    };
+    $2[30] = setIsFocused;
+    $2[31] = t4;
+  } else {
+    t4 = $2[31];
+  }
+  const onGhostFocus = t4;
+  let t5;
+  if ($2[32] !== setIsFocused) {
+    t5 = () => {
+      setIsFocused(false);
+    };
+    $2[32] = setIsFocused;
+    $2[33] = t5;
+  } else {
+    t5 = $2[33];
+  }
+  const onGhostBlur = t5;
+  let t6;
+  if ($2[34] !== onGhostBlur || $2[35] !== onGhostCompositionStart || $2[36] !== onGhostFocus || $2[37] !== onGhostInput || $2[38] !== onGhostKeyDown || $2[39] !== onGhostKeyUp) {
+    t6 = {
+      onGhostInput,
+      onGhostCompositionStart,
+      onGhostCompositionEnd,
+      onGhostKeyDown,
+      onGhostKeyUp,
+      onGhostFocus,
+      onGhostBlur
+    };
+    $2[34] = onGhostBlur;
+    $2[35] = onGhostCompositionStart;
+    $2[36] = onGhostFocus;
+    $2[37] = onGhostInput;
+    $2[38] = onGhostKeyDown;
+    $2[39] = onGhostKeyUp;
+    $2[40] = t6;
+  } else {
+    t6 = $2[40];
+  }
+  return t6;
+}
+function _temp2$1() {
+}
+function _temp$3(_finalValue) {
 }
 function useMouseHandlers(args) {
   const {
@@ -17897,7 +18222,7 @@ function useMouseHandlers(args) {
   const touchDownArgs = React.useRef(visibleRegion);
   const mouseDownData = React.useRef(void 0);
   const isPrevented = React.useRef(false);
-  const onMouseDown = (mouseArgs) => {
+  const onMouseDown = React.useCallback((mouseArgs) => {
     isPrevented.current = false;
     touchDownArgs.current = visibleRegionRef.current;
     if (mouseArgs.button !== 0 && mouseArgs.button !== 1) {
@@ -17925,8 +18250,8 @@ function useMouseHandlers(args) {
     } else if (!mouseArgs.isTouch && mouseArgs.button === 1) {
       lastMouseSelectLocation.current = mouseArgs.location;
     }
-  };
-  const handleGroupHeaderSelection = (mouseArgs_0) => {
+  }, [gridSelection, handleSelect]);
+  const handleGroupHeaderSelection = React.useCallback((mouseArgs_0) => {
     if (mouseArgs_0.kind !== groupHeaderKind || columnSelect !== "multi") {
       return;
     }
@@ -17966,8 +18291,8 @@ function useMouseHandlers(args) {
     } else {
       setSelectedColumns(CompactSelection.fromSingleSelection([start, end + 1]), void 0, isMultiKey);
     }
-  };
-  const normalSizeColumn = async (col_0) => {
+  }, [columnSelect, focus, gridSelection.columns, mangledCols, rowMarkerOffset, setSelectedColumns, columnSelectionMode, groupLevels]);
+  const normalSizeColumn = React.useCallback(async (col_0) => {
     if (getCellsForSelection !== void 0 && onColumnResize !== void 0) {
       const start_0 = visibleRegionRef.current.y;
       const end_0 = visibleRegionRef.current.height;
@@ -17991,8 +18316,8 @@ function useMouseHandlers(args) {
         onColumnResize === null || onColumnResize === void 0 || onColumnResize(inputCol, newCol.width, col_0, newCol.width);
       }
     }
-  };
-  const fillPattern = async (previousSelection, currentSelection) => {
+  }, [columns, getCellsForSelection, maxColumnWidth, mergedTheme, minColumnWidth, onColumnResize, rowMarkerOffset, rows, getCellRenderer]);
+  const fillPattern = React.useCallback(async (previousSelection, currentSelection) => {
     var _previousSelection$cu, _gridRef$current;
     const patternRange = (_previousSelection$cu = previousSelection.current) === null || _previousSelection$cu === void 0 ? void 0 : _previousSelection$cu.range;
     if (patternRange === void 0 || getCellsForSelection === void 0 || currentSelection.current === void 0) {
@@ -18036,8 +18361,8 @@ function useMouseHandlers(args) {
     (_gridRef$current = gridRef.current) === null || _gridRef$current === void 0 || _gridRef$current.damage(editItemList.map((c) => ({
       cell: c.location
     })));
-  };
-  const fillRight = () => {
+  }, [getCellsForSelection, mangledOnCellsEdited, onFillPattern, rowMarkerOffset]);
+  const fillRight = React.useCallback(() => {
     if (gridSelection.current === void 0 || gridSelection.current.range.width <= 1) return;
     const firstColSelection = {
       ...gridSelection,
@@ -18050,8 +18375,8 @@ function useMouseHandlers(args) {
       }
     };
     void fillPattern(firstColSelection, gridSelection);
-  };
-  const fillDown = () => {
+  }, [fillPattern, gridSelection]);
+  const fillDown = React.useCallback(() => {
     if (gridSelection.current === void 0 || gridSelection.current.range.height <= 1) return;
     const firstRowSelection = {
       ...gridSelection,
@@ -18064,8 +18389,8 @@ function useMouseHandlers(args) {
       }
     };
     void fillPattern(firstRowSelection, gridSelection);
-  };
-  const onMouseUp = (mouseArgs_1, isOutside) => {
+  }, [fillPattern, gridSelection]);
+  const onMouseUp = React.useCallback((mouseArgs_1, isOutside) => {
     var _mouse$previousSelect, _lastMouseSelectLocat;
     const mouse = mouseState;
     setMouseState(void 0);
@@ -18243,8 +18568,8 @@ function useMouseHandlers(args) {
       handleMaybeClick(mouseArgs_1);
     }
     lastMouseSelectLocation.current = void 0;
-  };
-  const onMouseMoveImpl = (mouseArgs_2) => {
+  }, [mouseState, gridSelection, rowMarkerOffset, fillHighlightRegion, fillPattern, setGridSelection, onCellClicked, getMangledCellContent, getCellRenderer, cellActivationBehavior, themeForCell, mangledOnCellsEdited, onCellActivated, reselect, onCellContextMenu, onHeaderContextMenu, onGroupHeaderContextMenu, handleSelect, onGroupHeaderClicked, onHeaderClicked, normalSizeColumn, handleGroupHeaderSelection]);
+  const onMouseMoveImpl = React.useCallback((mouseArgs_2) => {
     const a_0 = {
       ...mouseArgs_2,
       location: [mouseArgs_2.location[0] - rowMarkerOffset, mouseArgs_2.location[1]]
@@ -18262,7 +18587,7 @@ function useMouseHandlers(args) {
       if (mouseArgs_2.scrollEdge[0] === (cv === null || cv === void 0 ? void 0 : cv[0]) && mouseArgs_2.scrollEdge[1] === cv[1]) return cv;
       return mouseState === void 0 || ((_mouseDownData$curren = (_mouseDownData$curren2 = mouseDownData.current) === null || _mouseDownData$curren2 === void 0 ? void 0 : _mouseDownData$curren2.location[0]) !== null && _mouseDownData$curren !== void 0 ? _mouseDownData$curren : 0) < rowMarkerOffset ? void 0 : mouseArgs_2.scrollEdge;
     });
-  };
+  }, [mouseState, onMouseMove, rowMarkerOffset]);
   return {
     onMouseDown,
     onMouseUp,
@@ -18469,19 +18794,19 @@ const DataEditorImpl = (p2, forwardedRef) => {
   const minColumnWidth = Math.max(minColumnWidthIn, 20);
   const maxColumnWidth = Math.max(maxColumnWidthIn, minColumnWidth);
   const maxColumnAutoWidth = Math.max(maxColumnAutoWidthIn !== null && maxColumnAutoWidthIn !== void 0 ? maxColumnAutoWidthIn : maxColumnWidth, minColumnWidth);
-  const docStyle = (() => {
+  const docStyle = React.useMemo(() => {
     if (typeof window === "undefined") return {
       fontSize: "16px"
     };
     return window.getComputedStyle(document.documentElement);
-  })();
+  }, []);
   const {
     rows,
     rowNumberMapper,
     rowHeight: rowHeightPostGrouping,
     getRowThemeOverride
   } = useRowGroupingInner(rowGrouping, rowsIn, rowHeightIn, getRowThemeOverrideIn);
-  const remSize = Number.parseFloat(docStyle.fontSize);
+  const remSize = React.useMemo(() => Number.parseFloat(docStyle.fontSize), [docStyle]);
   const {
     rowHeight,
     headerHeight,
@@ -18510,23 +18835,25 @@ const DataEditorImpl = (p2, forwardedRef) => {
   const lastRowSticky = (trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.sticky) === true;
   const [showSearchInner, setShowSearchInner] = React.useState(false);
   const showSearch = showSearchIn !== null && showSearchIn !== void 0 ? showSearchIn : showSearchInner;
-  const onSearchClose = () => {
+  const onSearchClose = React.useCallback(() => {
     if (onSearchCloseIn !== void 0) {
       onSearchCloseIn();
     } else {
       setShowSearchInner(false);
     }
-  };
-  const gridSelectionOuterMangled = gridSelectionOuter === void 0 ? void 0 : shiftSelection(gridSelectionOuter, rowMarkerOffset);
+  }, [onSearchCloseIn]);
+  const gridSelectionOuterMangled = React.useMemo(() => {
+    return gridSelectionOuter === void 0 ? void 0 : shiftSelection(gridSelectionOuter, rowMarkerOffset);
+  }, [gridSelectionOuter, rowMarkerOffset]);
   const gridSelection = gridSelectionOuterMangled !== null && gridSelectionOuterMangled !== void 0 ? gridSelectionOuterMangled : gridSelectionInner;
   const abortControllerRef = React.useRef(new AbortController());
   React.useEffect(() => () => abortControllerRef === null || abortControllerRef === void 0 ? void 0 : abortControllerRef.current.abort(), []);
   const [getCellsForSelection, getCellsForSeletionDirect] = useCellsForSelection(getCellsForSelectionIn, getCellContent, rowMarkerOffset, abortControllerRef.current, rows);
-  const validateCell = (cell, newValue, prevValue) => {
+  const validateCell = React.useCallback((cell, newValue, prevValue) => {
     if (validateCellIn === void 0) return true;
     const item = [cell[0] - rowMarkerOffset, cell[1]];
     return validateCellIn === null || validateCellIn === void 0 ? void 0 : validateCellIn(item, newValue, prevValue);
-  };
+  }, [rowMarkerOffset, validateCellIn]);
   const expectedExternalGridSelection = React.useRef(gridSelectionOuter);
   const setGridSelection = React.useCallback((newVal, expand) => {
     if (expand) {
@@ -18539,30 +18866,30 @@ const DataEditorImpl = (p2, forwardedRef) => {
       setGridSelectionInner(newVal);
     }
   }, [getCellsForSelection, onGridSelectionChange, rowMarkerOffset, setGridSelectionInner, spanRangeBehavior]);
-  const onColumnResize = whenDefined(onColumnResizeIn, ((_2, w2, ind, wg) => {
+  const onColumnResize = whenDefined(onColumnResizeIn, React.useCallback((_2, w2, ind, wg) => {
     onColumnResizeIn === null || onColumnResizeIn === void 0 || onColumnResizeIn(columnsIn[ind - rowMarkerOffset], w2, ind - rowMarkerOffset, wg);
-  }));
-  const onColumnResizeEnd = whenDefined(onColumnResizeEndIn, ((_2, w2, ind, wg) => {
+  }, [onColumnResizeIn, rowMarkerOffset, columnsIn]));
+  const onColumnResizeEnd = whenDefined(onColumnResizeEndIn, React.useCallback((_2, w2, ind, wg) => {
     onColumnResizeEndIn === null || onColumnResizeEndIn === void 0 || onColumnResizeEndIn(columnsIn[ind - rowMarkerOffset], w2, ind - rowMarkerOffset, wg);
-  }));
-  const onColumnResizeStart = whenDefined(onColumnResizeStartIn, ((_2, w2, ind, wg) => {
+  }, [onColumnResizeEndIn, rowMarkerOffset, columnsIn]));
+  const onColumnResizeStart = whenDefined(onColumnResizeStartIn, React.useCallback((_2, w2, ind, wg) => {
     onColumnResizeStartIn === null || onColumnResizeStartIn === void 0 || onColumnResizeStartIn(columnsIn[ind - rowMarkerOffset], w2, ind - rowMarkerOffset, wg);
-  }));
-  const drawHeader2 = whenDefined(drawHeaderIn, ((args, draw) => {
+  }, [onColumnResizeStartIn, rowMarkerOffset, columnsIn]));
+  const drawHeader2 = whenDefined(drawHeaderIn, React.useCallback((args, draw) => {
     var _drawHeaderIn;
     return (_drawHeaderIn = drawHeaderIn === null || drawHeaderIn === void 0 ? void 0 : drawHeaderIn({
       ...args,
       columnIndex: args.columnIndex - rowMarkerOffset
     }, draw)) !== null && _drawHeaderIn !== void 0 ? _drawHeaderIn : false;
-  }));
-  const drawCell2 = whenDefined(drawCellIn, ((args, draw) => {
+  }, [drawHeaderIn, rowMarkerOffset]));
+  const drawCell2 = whenDefined(drawCellIn, React.useCallback((args, draw) => {
     var _drawCellIn;
     return (_drawCellIn = drawCellIn === null || drawCellIn === void 0 ? void 0 : drawCellIn({
       ...args,
       col: args.col - rowMarkerOffset
     }, draw)) !== null && _drawCellIn !== void 0 ? _drawCellIn : false;
-  }));
-  const onDelete = (sel) => {
+  }, [drawCellIn, rowMarkerOffset]));
+  const onDelete = React.useCallback((sel) => {
     if (onDeleteIn !== void 0) {
       const result = onDeleteIn(shiftSelection(sel, -rowMarkerOffset));
       if (typeof result === "boolean") {
@@ -18571,30 +18898,32 @@ const DataEditorImpl = (p2, forwardedRef) => {
       return shiftSelection(result, rowMarkerOffset);
     }
     return true;
-  };
+  }, [onDeleteIn, rowMarkerOffset]);
   const [setCurrent, setSelectedRows, setSelectedColumns] = useSelectionBehavior(gridSelection, setGridSelection, rangeSelectionBlending, columnSelectionBlending, rowSelectionBlending, rangeSelect, rangeSelectionColumnSpanning);
-  const mergedTheme = mergeAndRealizeTheme(getDataEditorTheme(), theme);
+  const mergedTheme = React.useMemo(() => {
+    return mergeAndRealizeTheme(getDataEditorTheme(), theme);
+  }, [theme]);
   const [clientSize, setClientSize] = React.useState([0, 0, 0]);
-  const rendererMap = (() => {
+  const rendererMap = React.useMemo(() => {
     if (renderers === void 0) return {};
     const result = {};
     for (const r of renderers) {
       result[r.kind] = r;
     }
     return result;
-  })();
-  const getCellRenderer = (cell) => {
+  }, [renderers]);
+  const getCellRenderer = React.useCallback((cell) => {
     if (cell.kind !== GridCellKind.Custom) {
       return rendererMap[cell.kind];
     }
     return additionalRenderers === null || additionalRenderers === void 0 ? void 0 : additionalRenderers.find((x2) => x2.isMatch(cell));
-  };
+  }, [additionalRenderers, rendererMap]);
   let {
     sizedColumns: columns,
     nonGrowWidth
   } = useColumnSizer(columnsIn, rows, getCellsForSeletionDirect, clientSize[0] - totalMarkerWidth - clientSize[2], minColumnWidth, maxColumnAutoWidth, mergedTheme, getCellRenderer, abortControllerRef.current);
   nonGrowWidth += totalMarkerWidth;
-  const groupLevels = (() => {
+  const groupLevels = React.useMemo(() => {
     let maxLevel = 0;
     for (const col of columns) {
       if (col.group === void 0) continue;
@@ -18605,14 +18934,17 @@ const DataEditorImpl = (p2, forwardedRef) => {
       }
     }
     return maxLevel;
-  })();
+  }, [columns]);
   const enableGroups = groupLevels > 0;
-  const groupHeaderHeights = groupLevels === 0 ? [] : Array(groupLevels).fill(groupHeaderHeight);
+  const groupHeaderHeights = React.useMemo(() => {
+    if (groupLevels === 0) return [];
+    return Array(groupLevels).fill(groupHeaderHeight);
+  }, [groupLevels, groupHeaderHeight]);
   const totalGroupHeaderHeight = groupHeaderHeights.reduce((a, b2) => a + b2, 0);
   const totalHeaderHeight = headerHeight + totalGroupHeaderHeight;
   const numSelectedRows = gridSelection.rows.length;
   const rowMarkerChecked = rowMarkers === "none" ? void 0 : numSelectedRows === 0 ? false : numSelectedRows === rows ? true : void 0;
-  const mangledCols = (() => {
+  const mangledCols = React.useMemo(() => {
     const markerColumns = [];
     if (rowMarkers !== "none") {
       if (showRowNumber) {
@@ -18665,7 +18997,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
       });
     }
     return [...markerColumns, ...columns];
-  })();
+  }, [hasRowStatus, rowStatusWidth, rowStatusTheme, hasRowId, rowIdWidth, rowIdTheme, rowMarkers, columns, rowMarkerWidth, rowMarkerTheme, rowMarkerCheckboxStyle, rowMarkerChecked, headerRowMarkerTheme, headerRowMarkerAlwaysVisible, headerRowMarkerDisabled, showRowNumber]);
   const visibleRegionRef = React.useRef({
     height: 1,
     width: 1,
@@ -18682,7 +19014,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
   const cellXOffset = visibleRegion.x + rowMarkerOffset;
   const cellYOffset = visibleRegion.y;
   const gridRef = React.useRef(null);
-  const focus = (immediate) => {
+  const focus = React.useCallback((immediate) => {
     if (immediate === true) {
       var _ghostInputRef$curren;
       (_ghostInputRef$curren = ghostInputRef.current) === null || _ghostInputRef$curren === void 0 || _ghostInputRef$curren.focus();
@@ -18692,9 +19024,9 @@ const DataEditorImpl = (p2, forwardedRef) => {
         (_ghostInputRef$curren2 = ghostInputRef.current) === null || _ghostInputRef$curren2 === void 0 || _ghostInputRef$curren2.focus();
       });
     }
-  };
+  }, []);
   const mangledRows = showTrailingBlankRow ? rows + 1 : rows;
-  const mangledOnCellsEdited = (items) => {
+  const mangledOnCellsEdited = React.useCallback((items) => {
     const mangledItems = rowMarkerOffset === 0 ? items : items.map((x2) => ({
       ...x2,
       location: [x2.location[0] - rowMarkerOffset, x2.location[1]]
@@ -18706,13 +19038,14 @@ const DataEditorImpl = (p2, forwardedRef) => {
       }
     }
     return r;
-  };
+  }, [onCellEdited, onCellsEdited, rowMarkerOffset]);
   const [fillHighlightRegion, setFillHighlightRegion] = React.useState();
   const highlightRange = gridSelection.current !== void 0 && gridSelection.current.range.width * gridSelection.current.range.height > 1 ? gridSelection.current.range : void 0;
   const highlightFocus = drawFocusRing ? (_gridSelection$curren = gridSelection.current) === null || _gridSelection$curren === void 0 ? void 0 : _gridSelection$curren.cell : void 0;
   const highlightFocusCol = highlightFocus === null || highlightFocus === void 0 ? void 0 : highlightFocus[0];
   const highlightFocusRow = highlightFocus === null || highlightFocus === void 0 ? void 0 : highlightFocus[1];
-  const highlightRegions = ((_ref3, _ref4) => {
+  const highlightRegions = React.useMemo(() => {
+    var _ref3, _ref4;
     if ((highlightRegionsIn === void 0 || highlightRegionsIn.length === 0) && ((_ref3 = (_ref4 = highlightRange !== null && highlightRange !== void 0 ? highlightRange : highlightFocusCol) !== null && _ref4 !== void 0 ? _ref4 : highlightFocusRow) !== null && _ref3 !== void 0 ? _ref3 : fillHighlightRegion) === void 0) return void 0;
     const regions = [];
     if (highlightRegionsIn !== void 0) {
@@ -18758,10 +19091,10 @@ const DataEditorImpl = (p2, forwardedRef) => {
       });
     }
     return regions.length > 0 ? regions : void 0;
-  })();
+  }, [fillHighlightRegion, highlightRange, highlightFocusCol, highlightFocusRow, highlightRegionsIn, mangledCols.length, mergedTheme.accentColor, rowMarkerOffset]);
   const mangledColsRef = React.useRef(mangledCols);
   mangledColsRef.current = mangledCols;
-  const getMangledCellContent = function(_ref5) {
+  const getMangledCellContent = React.useCallback(function(_ref5) {
     let [col, row] = _ref5;
     let forceStrict = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : false;
     const isTrailing = showTrailingBlankRow && row === mangledRows - 1;
@@ -18899,8 +19232,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
       }
       return result;
     }
-  };
-  const mangledGetGroupDetails = (group) => {
+  }, [showTrailingBlankRow, mangledRows, hasRowStatus, onRowStatus, rowStatusTheme, hasRowId, onRowId, rowIdTheme, hasRowMarkers, rowNumberMapper, rowMarkerCheckboxStyle, gridSelection === null || gridSelection === void 0 ? void 0 : gridSelection.rows, rowMarkers, rowMarkerStartIndex, onRowMoved, rowMarkerOffset, trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.hint, trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.addIcon, experimental === null || experimental === void 0 ? void 0 : experimental.strict, getCellContent, showRowNumber]);
+  const mangledGetGroupDetails = React.useCallback((group) => {
     var _getGroupDetails;
     let result = (_getGroupDetails = getGroupDetails === null || getGroupDetails === void 0 ? void 0 : getGroupDetails(group)) !== null && _getGroupDetails !== void 0 ? _getGroupDetails : {
       name: group
@@ -18922,8 +19255,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
       };
     }
     return result;
-  };
-  const setOverlaySimple = (val) => {
+  }, [getGroupDetails, onGroupHeaderRenamed]);
+  const setOverlaySimple = React.useCallback((val) => {
     var _mangledGetGroupDetai;
     const [col, row] = val.cell;
     const column = mangledCols[col];
@@ -18934,8 +19267,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
       ...val,
       theme: mergeAndRealizeTheme(mergedTheme, groupTheme, colTheme, rowTheme, val.content.themeOverride)
     });
-  };
-  const reselect = (bounds, activation, initialValue) => {
+  }, [getRowThemeOverride, mangledCols, mangledGetGroupDetails, mergedTheme]);
+  const reselect = React.useCallback((bounds, activation, initialValue) => {
     if (gridSelection.current === void 0) return;
     const [col, row] = gridSelection.current.cell;
     const c = getMangledCellContent([col, row]);
@@ -19001,8 +19334,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
         cell: gridSelection.current.cell
       }]);
     }
-  };
-  const focusOnRowFromTrailingBlankRow = (col, row) => {
+  }, [getMangledCellContent, gridSelection, mangledOnCellsEdited, setOverlaySimple]);
+  const focusOnRowFromTrailingBlankRow = React.useCallback((col, row) => {
     var _gridRef$current2;
     const bounds = (_gridRef$current2 = gridRef.current) === null || _gridRef$current2 === void 0 ? void 0 : _gridRef$current2.getBounds(col, row);
     if (bounds === void 0 || scrollRef.current === null) {
@@ -19024,8 +19357,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
         key: "Enter"
       }
     });
-  };
-  const scrollTo = function(col, row) {
+  }, [getMangledCellContent, scrollRef, setOverlaySimple]);
+  const scrollTo = React.useCallback(function(col, row) {
     let dir = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "both";
     let paddingX = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : 0;
     let paddingY = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : 0;
@@ -19143,7 +19476,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
         }
       }
     }
-  };
+  }, [rowMarkerOffset, freezeTrailingRows, rowMarkerWidth, scrollRef, totalHeaderHeight, freezeColumns, columns, mangledRows, lastRowSticky, rowHeight]);
   const scrollToRef = React.useRef(scrollTo);
   scrollToRef.current = scrollTo;
   const focusCallback = React.useRef(focusOnRowFromTrailingBlankRow);
@@ -19154,7 +19487,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
   rowsRef.current = rows;
   const colsRef = React.useRef(mangledCols.length);
   colsRef.current = mangledCols.length;
-  const appendRow = async function(col) {
+  const appendRow = React.useCallback(async function(col) {
     var _ref6, _c$trailingRowOptions6, _c$trailingRowOptions7;
     let openOverlay = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : true;
     let behavior = arguments.length > 2 ? arguments[2] : void 0;
@@ -19197,8 +19530,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
       }
     };
     doFocus();
-  };
-  const appendColumn = async function(row) {
+  }, [mangledCols, onRowAppended, rowMarkerOffset, rows, setCurrent]);
+  const appendColumn = React.useCallback(async function(row) {
     let openOverlay = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : true;
     const appendResult = onColumnAppended === null || onColumnAppended === void 0 ? void 0 : onColumnAppended();
     let r = void 0;
@@ -19236,12 +19569,12 @@ const DataEditorImpl = (p2, forwardedRef) => {
       }
     };
     doFocus();
-  };
+  }, [mangledCols, onColumnAppended, rowMarkerOffset, scrollTo, setCurrent]);
   const appendRowRef = React.useRef(appendRow);
   appendRowRef.current = appendRow;
   const appendColumnRef = React.useRef(appendColumn);
   appendColumnRef.current = appendColumn;
-  const getCustomNewRowTargetColumn = (col) => {
+  const getCustomNewRowTargetColumn = React.useCallback((col) => {
     var _columns$col$trailing, _columns$col;
     const customTargetColumn = (_columns$col$trailing = (_columns$col = columns[col]) === null || _columns$col === void 0 || (_columns$col = _columns$col.trailingRowOptions) === null || _columns$col === void 0 ? void 0 : _columns$col.targetColumn) !== null && _columns$col$trailing !== void 0 ? _columns$col$trailing : trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.targetColumn;
     if (typeof customTargetColumn === "number") {
@@ -19256,20 +19589,20 @@ const DataEditorImpl = (p2, forwardedRef) => {
       }
     }
     return void 0;
-  };
+  }, [columns, columnsIn, hasRowMarkers, trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.targetColumn]);
   const lastSelectedRowRef = React.useRef(void 0);
   const lastSelectedColRef = React.useRef(void 0);
-  const themeForCell = (cell, pos) => {
+  const themeForCell = React.useCallback((cell, pos) => {
     var _mangledCols$col;
     const [col, row] = pos;
     return mergeAndRealizeTheme(mergedTheme, (_mangledCols$col = mangledCols[col]) === null || _mangledCols$col === void 0 ? void 0 : _mangledCols$col.themeOverride, getRowThemeOverride === null || getRowThemeOverride === void 0 ? void 0 : getRowThemeOverride(row), cell.themeOverride);
-  };
+  }, [getRowThemeOverride, mangledCols, mergedTheme]);
   const {
     mapper
   } = useRowGrouping(rowGrouping, rowsIn);
   const rowGroupingNavBehavior = rowGrouping === null || rowGrouping === void 0 ? void 0 : rowGrouping.navigationBehavior;
   const lastMouseSelectLocation = React.useRef(void 0);
-  const handleSelect = (args) => {
+  const handleSelect = React.useCallback((args) => {
     var _gridSelection$curren2, _gridSelection$curren3;
     const isMultiKey = browserIsOSX.value ? args.metaKey : args.ctrlKey;
     const isMultiRow = isMultiKey && rowSelect === "multi";
@@ -19444,7 +19777,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
       lastSelectedRowRef.current = void 0;
       lastSelectedColRef.current = void 0;
     }
-  };
+  }, [rowSelect, columnSelect, gridSelection, hasRowMarkers, rowMarkerOffset, showTrailingBlankRow, showRowNumber, rows, rowMarkers, getMangledCellContent, onRowMoved, focus, rowSelectionMode, columnSelectionMode, getCellRenderer, themeForCell, setSelectedRows, getCustomNewRowTargetColumn, appendRow, rowGroupingNavBehavior, mapper, lastRowSticky, setCurrent, headerRowMarkerDisabled, setSelectedColumns, setGridSelection, onSelectionCleared]);
   const coreState = {
     gridSelection,
     overlay,
@@ -19511,12 +19844,12 @@ const DataEditorImpl = (p2, forwardedRef) => {
     lastMouseSelectLocation
   });
   const [renameGroup, setRenameGroup] = React.useState();
-  const onHeaderMenuClickInner = (col, screenPosition) => {
+  const onHeaderMenuClickInner = React.useCallback((col, screenPosition) => {
     onHeaderMenuClick === null || onHeaderMenuClick === void 0 || onHeaderMenuClick(col - rowMarkerOffset, screenPosition);
-  };
-  const onHeaderIndicatorClickInner = (col, screenPosition) => {
+  }, [onHeaderMenuClick, rowMarkerOffset]);
+  const onHeaderIndicatorClickInner = React.useCallback((col, screenPosition) => {
     onHeaderIndicatorClick === null || onHeaderIndicatorClick === void 0 || onHeaderIndicatorClick(col - rowMarkerOffset, screenPosition);
-  };
+  }, [onHeaderIndicatorClick, rowMarkerOffset]);
   React.useEffect(() => {
     if (overlay === void 0) return;
     const findScrollableParents = (element) => {
@@ -19559,7 +19892,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
     };
   }, [overlay, setOverlay, scrollRef]);
   const currentCell = gridSelection === null || gridSelection === void 0 || (_gridSelection$curren5 = gridSelection.current) === null || _gridSelection$curren5 === void 0 ? void 0 : _gridSelection$curren5.cell;
-  const onVisibleRegionChangedImpl = (region, clientWidth, clientHeight, rightElWidth, tx, ty) => {
+  const onVisibleRegionChangedImpl = React.useCallback((region, clientWidth, clientHeight, rightElWidth, tx, ty) => {
     hasJustScrolled.current = false;
     if (overlay !== void 0) {
       const prevRegion = visibleRegionRef.current;
@@ -19613,18 +19946,18 @@ const DataEditorImpl = (p2, forwardedRef) => {
     setVisibleRegion(newRegion);
     setClientSize([clientWidth, clientHeight, rightElWidth]);
     onVisibleRegionChanged === null || onVisibleRegionChanged === void 0 || onVisibleRegionChanged(newRegion, newRegion.tx, newRegion.ty, newRegion.extras);
-  };
-  const onColumnProposeMoveImpl = whenDefined(onColumnProposeMove, (startIndex, endIndex) => {
+  }, [currentCell, overlay, rowMarkerOffset, showTrailingBlankRow, rows, freezeColumns, freezeTrailingRows, setOverlay, setVisibleRegion, onVisibleRegionChanged]);
+  const onColumnProposeMoveImpl = whenDefined(onColumnProposeMove, React.useCallback((startIndex, endIndex) => {
     return (onColumnProposeMove === null || onColumnProposeMove === void 0 ? void 0 : onColumnProposeMove(startIndex - rowMarkerOffset, endIndex - rowMarkerOffset)) !== false;
-  });
-  const onColumnMovedImpl = whenDefined(onColumnMoved, (startIndex, endIndex) => {
+  }, [onColumnProposeMove, rowMarkerOffset]));
+  const onColumnMovedImpl = whenDefined(onColumnMoved, React.useCallback((startIndex, endIndex) => {
     onColumnMoved === null || onColumnMoved === void 0 || onColumnMoved(startIndex - rowMarkerOffset, endIndex - rowMarkerOffset);
     if (columnSelect !== "none") {
       setSelectedColumns(CompactSelection.fromSingleSelection(endIndex), void 0, true);
     }
-  });
+  }, [columnSelect, onColumnMoved, rowMarkerOffset, setSelectedColumns]));
   const isActivelyDragging = React.useRef(false);
-  const onDragStartImpl = (args) => {
+  const onDragStartImpl = React.useCallback((args) => {
     if (args.location[0] === 0 && rowMarkerOffset > 0) {
       args.preventDefault();
       return;
@@ -19637,12 +19970,12 @@ const DataEditorImpl = (p2, forwardedRef) => {
       isActivelyDragging.current = true;
     }
     setMouseState(void 0);
-  };
-  const onDragEnd = () => {
+  }, [onDragStart, rowMarkerOffset]);
+  const onDragEnd = React.useCallback(() => {
     isActivelyDragging.current = false;
-  };
+  }, []);
   const rowGroupingSelectionBehavior = rowGrouping === null || rowGrouping === void 0 ? void 0 : rowGrouping.selectionBehavior;
-  const getSelectionRowLimits = (selectedRow) => {
+  const getSelectionRowLimits = React.useCallback((selectedRow) => {
     if (rowGroupingSelectionBehavior !== "block-spanning") return void 0;
     const {
       isGroupHeader,
@@ -19656,9 +19989,9 @@ const DataEditorImpl = (p2, forwardedRef) => {
     const lowerBounds = selectedRow - groupRowIndex;
     const upperBounds = selectedRow + groupRows - groupRowIndex - 1;
     return [lowerBounds, upperBounds];
-  };
+  }, [mapper, rowGroupingSelectionBehavior]);
   const hoveredRef = React.useRef(void 0);
-  const onItemHoveredImpl = (args) => {
+  const onItemHoveredImpl = React.useCallback((args) => {
     var _mouseDownData$curren, _mouseDownData$curren2;
     if (mouseEventArgsAreEqual(args, hoveredRef.current)) return;
     hoveredRef.current = args;
@@ -19708,8 +20041,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
       ...args,
       location: [args.location[0] - rowMarkerOffset, args.location[1]]
     });
-  };
-  const adjustSelectionOnScroll = () => {
+  }, [mouseState, rowMarkerOffset, rowSelect, gridSelection, rangeSelect, onItemHovered, setSelectedRows, showTrailingBlankRow, rows, allowedFillDirections, getSelectionRowLimits, setCurrent]);
+  const adjustSelectionOnScroll = React.useCallback(() => {
     const args = hoveredRef.current;
     if (args === void 0) return;
     const [xDir, yDir] = args.scrollEdge;
@@ -19732,9 +20065,9 @@ const DataEditorImpl = (p2, forwardedRef) => {
       ...args,
       location: [col, row]
     });
-  };
+  }, [mangledCols.length, onItemHoveredImpl, rows]);
   useAutoscroll(scrollDir, scrollRef, adjustSelectionOnScroll);
-  const adjustSelection = (direction2) => {
+  const adjustSelection = React.useCallback((direction2) => {
     var _getSelectionRowLimit;
     if (gridSelection.current === void 0) return;
     const [x2, y2] = direction2;
@@ -19859,10 +20192,10 @@ const DataEditorImpl = (p2, forwardedRef) => {
         height: bottom - top
       }
     }, true, false, "keyboard-select");
-  };
+  }, [getCellsForSelection, getSelectionRowLimits, gridSelection, mangledCols.length, rowMarkerOffset, rows, scrollTo, setCurrent]);
   const scrollToActiveCellRef = React.useRef(scrollToActiveCell);
   scrollToActiveCellRef.current = scrollToActiveCell;
-  const updateSelectedCell = (col, row, fromEditingTrailingRow, freeMove) => {
+  const updateSelectedCell = React.useCallback((col, row, fromEditingTrailingRow, freeMove) => {
     const rowMax = mangledRows - (fromEditingTrailingRow ? 0 : 1);
     col = clamp$1(col, rowMarkerOffset, columns.length - 1 + rowMarkerOffset);
     row = clamp$1(row, 0, rowMax);
@@ -19906,8 +20239,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
       scrollTo(col - rowMarkerOffset, row, "both", 0, paddingY);
     }
     return true;
-  };
-  const onFinishEditing = (newValue, movement) => {
+  }, [mangledRows, rowMarkerOffset, columns.length, currentCell, gridSelection, scrollTo, setGridSelection, setCurrent]);
+  const onFinishEditing = React.useCallback((newValue, movement) => {
     var _ghostInputRef$curren9, _ghostInputRef$curren0, _currentOverlay$conte, _ghostInputRef$curren1, _ghostInputRef$curren10;
     const currentOverlay = overlayRef.current;
     ghostInputVisibleRef.current;
@@ -20032,13 +20365,13 @@ const DataEditorImpl = (p2, forwardedRef) => {
       }
     }
     onFinishedEditing === null || onFinishedEditing === void 0 || onFinishedEditing(newValue, movement);
-  };
+  }, [focus, gridSelection, onFinishedEditing, mangledOnCellsEdited, mangledRows, updateSelectedCell, mangledCols.length, appendRow, appendColumn, onRowAppended, onColumnAppended, getCustomNewRowTargetColumn, rowMarkerOffset]);
   const overlayIDRef = React.useRef(null);
   if (overlayIDRef.current === null) {
     overlayIDRef.current = `gdg-overlay-${idCounter++}`;
   }
   const overlayID = overlayIDRef.current;
-  const deleteRange = (r) => {
+  const deleteRange = React.useCallback((r) => {
     var _gridRef$current4;
     focus();
     const editList = [];
@@ -20077,7 +20410,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
     (_gridRef$current4 = gridRef.current) === null || _gridRef$current4 === void 0 || _gridRef$current4.damage(editList.map((x2) => ({
       cell: x2.location
     })));
-  };
+  }, [focus, getCellContent, getCellRenderer, mangledOnCellsEdited, rowMarkerOffset]);
   const overlayOpen = overlay !== void 0;
   const {
     onKeyDown
@@ -20119,7 +20452,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
   const {
     onGhostInput,
     onGhostCompositionStart,
-    onGhostCompositionEnd: onGhostCompositionEnd2,
+    onGhostCompositionEnd,
     onGhostKeyDown,
     onGhostKeyUp,
     onGhostFocus,
@@ -20132,7 +20465,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
     onCellActivated,
     setIsFocused
   });
-  const onContextMenu = (args, preventDefault) => {
+  const onContextMenu = React.useCallback((args, preventDefault) => {
     const adjustedCol = args.location[0] - rowMarkerOffset;
     if (args.kind === "header") {
       onHeaderContextMenu === null || onHeaderContextMenu === void 0 || onHeaderContextMenu(adjustedCol, {
@@ -20159,7 +20492,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
         updateSelectedCell(col, row, false, false);
       }
     }
-  };
+  }, [gridSelection, onCellContextMenu, onGroupHeaderContextMenu, onHeaderContextMenu, rowMarkerOffset, updateSelectedCell]);
   const {
     onCopy,
     onPasteInternal
@@ -20175,7 +20508,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
     deleteRange,
     safeWindow
   });
-  const onSearchResultsChanged = (results, navIndex) => {
+  const onSearchResultsChanged = React.useCallback((results, navIndex) => {
     if (onSearchResultsChangedIn !== void 0) {
       if (rowMarkerOffset !== 0) {
         results = results.map((item) => [item[0] - rowMarkerOffset, item[1]]);
@@ -20190,7 +20523,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
     }
     lastSent.current = [col, row];
     updateSelectedCell(col, row, false, false);
-  };
+  }, [onSearchResultsChangedIn, rowMarkerOffset, updateSelectedCell]);
   const [outCol, outRow] = (_gridSelectionOuter$c = gridSelectionOuter === null || gridSelectionOuter === void 0 || (_gridSelectionOuter$c2 = gridSelectionOuter.current) === null || _gridSelectionOuter$c2 === void 0 ? void 0 : _gridSelectionOuter$c2.cell) !== null && _gridSelectionOuter$c !== void 0 ? _gridSelectionOuter$c : [];
   React.useLayoutEffect(() => {
     var _expectedExternalGrid, _expectedExternalGrid2;
@@ -20205,15 +20538,28 @@ const DataEditorImpl = (p2, forwardedRef) => {
       setGridSelection(emptyGridSelection, false);
     }
   }, [selectionOutOfBounds, setGridSelection]);
-  const disabledRows = showTrailingBlankRow === true && (trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.tint) === true ? CompactSelection.fromSingleSelection(mangledRows - 1) : CompactSelection.empty();
-  const mangledVerticalBorder = (col) => {
+  const disabledRows = React.useMemo(() => {
+    if (showTrailingBlankRow === true && (trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.tint) === true) {
+      return CompactSelection.fromSingleSelection(mangledRows - 1);
+    }
+    return CompactSelection.empty();
+  }, [mangledRows, showTrailingBlankRow, trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.tint]);
+  const mangledVerticalBorder = React.useCallback((col) => {
     var _verticalBorder;
     return typeof verticalBorder === "boolean" ? verticalBorder : (_verticalBorder = verticalBorder === null || verticalBorder === void 0 ? void 0 : verticalBorder(col - rowMarkerOffset)) !== null && _verticalBorder !== void 0 ? _verticalBorder : true;
-  };
-  const renameGroupNode = renameGroup === void 0 || canvasRef.current === null ? null : /* @__PURE__ */ jsx(GroupRename, { bounds: renameGroup.bounds, group: renameGroup.group, canvasBounds: canvasRef.current.getBoundingClientRect(), onClose: () => setRenameGroup(void 0), onFinish: (newVal) => {
-    setRenameGroup(void 0);
-    onGroupHeaderRenamed === null || onGroupHeaderRenamed === void 0 || onGroupHeaderRenamed(renameGroup.group, newVal);
-  } });
+  }, [rowMarkerOffset, verticalBorder]);
+  const renameGroupNode = React.useMemo(() => {
+    if (renameGroup === void 0 || canvasRef.current === null) return null;
+    const {
+      bounds,
+      group
+    } = renameGroup;
+    const canvasBounds = canvasRef.current.getBoundingClientRect();
+    return /* @__PURE__ */ jsx(GroupRename, { bounds, group, canvasBounds, onClose: () => setRenameGroup(void 0), onFinish: (newVal) => {
+      setRenameGroup(void 0);
+      onGroupHeaderRenamed === null || onGroupHeaderRenamed === void 0 || onGroupHeaderRenamed(group, newVal);
+    } });
+  }, [onGroupHeaderRenamed, renameGroup]);
   const mangledFreezeColumns = Math.min(mangledCols.length, freezeColumns + rowMarkerOffset);
   React.useImperativeHandle(forwardedRef, () => ({
     appendRow: (col, openOverlay) => appendRowRef.current(col + rowMarkerOffset, openOverlay),
@@ -20327,7 +20673,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
     }
   }), [normalSizeColumn, scrollRef, onCopy, onKeyDown, onPasteInternal, rowMarkerOffset]);
   const [selCol, selRow] = currentCell !== null && currentCell !== void 0 ? currentCell : [];
-  const onCellFocused = (cell) => {
+  const onCellFocused = React.useCallback((cell) => {
     const [col, row] = cell;
     if (row === -1) {
       if (columnSelect !== "none") {
@@ -20347,8 +20693,8 @@ const DataEditorImpl = (p2, forwardedRef) => {
       }
     }, true, false, "keyboard-nav");
     scrollTo(col, row);
-  };
-  const onCanvasFocused = () => {
+  }, [columnSelect, focus, scrollTo, selCol, selRow, setCurrent, setSelectedColumns]);
+  const onCanvasFocused = React.useCallback(() => {
     setIsFocusedDebounced.current(true);
     if (gridSelection.current === void 0 && gridSelection.columns.length === 0 && gridSelection.rows.length === 0 && mouseState === void 0) {
       setCurrent({
@@ -20361,11 +20707,12 @@ const DataEditorImpl = (p2, forwardedRef) => {
         }
       }, true, false, "keyboard-select");
     }
-  };
-  const onFocusOut = () => {
+  }, [cellYOffset, gridSelection, mouseState, rowMarkerOffset, setCurrent]);
+  const onFocusOut = React.useCallback(() => {
     setIsFocusedDebounced.current(false);
-  };
-  const [idealWidth, idealHeight] = ((_experimental$scrollb) => {
+  }, []);
+  const [idealWidth, idealHeight] = React.useMemo(() => {
+    var _experimental$scrollb;
     let h;
     const scrollbarWidth = (_experimental$scrollb = experimental === null || experimental === void 0 ? void 0 : experimental.scrollbarWidthOverride) !== null && _experimental$scrollb !== void 0 ? _experimental$scrollb : getScrollBarWidth();
     const rowsCountWithTrailingRow = rows + (showTrailingBlankRow ? 1 : 0);
@@ -20383,8 +20730,10 @@ const DataEditorImpl = (p2, forwardedRef) => {
     h += scrollbarWidth;
     const w2 = mangledCols.reduce((acc, x2) => x2.width + acc, 0) + scrollbarWidth;
     return [`${Math.min(1e5, w2)}px`, `${Math.min(1e5, h)}px`];
-  })();
-  const cssStyle = makeCSSStyle(mergedTheme);
+  }, [mangledCols, experimental === null || experimental === void 0 ? void 0 : experimental.scrollbarWidthOverride, rowHeight, rows, showTrailingBlankRow, totalHeaderHeight]);
+  const cssStyle = React.useMemo(() => {
+    return makeCSSStyle(mergedTheme);
+  }, [mergedTheme]);
   return /* @__PURE__ */ jsxs(ThemeContext.Provider, { value: mergedTheme, children: [
     /* @__PURE__ */ jsxs(DataEditorContainer, { style: cssStyle, className, inWidth: width !== null && width !== void 0 ? width : idealWidth, inHeight: height !== null && height !== void 0 ? height : idealHeight, children: [
       /* @__PURE__ */ jsx(DataGridSearch, { fillHandle, drawFocusRing, experimental, fixedShadowX, fixedShadowY, getRowThemeOverride, headerIcons, imageWindowLoader, initialSize, isDraggable, onDragLeave, onRowMoved, overscrollX, overscrollY, preventDiagonalScrolling, rightElement, rightElementProps, smoothScrollX, smoothScrollY, className, enableGroups, onCanvasFocused, onCanvasBlur: onFocusOut, canvasRef, onContextMenu, theme: mergedTheme, cellXOffset, cellYOffset, accessibilityHeight: visibleRegion.height, onDragEnd, columns: mangledCols, nonGrowWidth, drawHeader: drawHeader2, onColumnProposeMove: onColumnProposeMoveImpl, drawCell: drawCell2, disabledRows, freezeColumns: mangledFreezeColumns, lockColumns: rowMarkerOffset, firstColAccessible: rowMarkerOffset === 0, getCellContent: getMangledCellContent, minColumnWidth, maxColumnWidth, searchInputRef, showSearch, onSearchClose, highlightRegions, getCellsForSelection, getGroupDetails: mangledGetGroupDetails, headerHeight, isFocused, groupHeaderHeight: enableGroups ? groupHeaderHeight : 0, groupLevels, groupHeaderHeights, freezeTrailingRows: freezeTrailingRows + (showTrailingBlankRow && (trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.sticky) === true ? 1 : 0), hasAppendRow: showTrailingBlankRow, onColumnResize, onColumnResizeEnd, onColumnResizeStart, onCellFocused, onColumnMoved: onColumnMovedImpl, onDragStart: onDragStartImpl, onHeaderMenuClick: onHeaderMenuClickInner, onHeaderIndicatorClick: onHeaderIndicatorClickInner, onItemHovered: onItemHoveredImpl, isFilling: (mouseState === null || mouseState === void 0 ? void 0 : mouseState.fillHandle) === true, onMouseMove: onMouseMoveImpl, onKeyDown, onKeyUp: onKeyUpIn, onMouseDown, onMouseUp, onDragOverCell, onDrop, onSearchResultsChanged, onVisibleRegionChanged: onVisibleRegionChangedImpl, clientSize, rowHeight, searchResults, searchValue, onSearchValueChange, rows: mangledRows, scrollRef, selection: gridSelection, translateX: visibleRegion.tx, translateY: visibleRegion.ty, verticalBorder: mangledVerticalBorder, gridRef, getCellRenderer, resizeIndicator }),
@@ -20394,7 +20743,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
     ((_portalElementRef$cur) => {
       const portalElement = (_portalElementRef$cur = portalElementRef === null || portalElementRef === void 0 ? void 0 : portalElementRef.current) !== null && _portalElementRef$cur !== void 0 ? _portalElementRef$cur : document.getElementById("portal");
       if (portalElement === null) return null;
-      return createPortal(/* @__PURE__ */ jsx(GhostInput, { ref: ghostInputRef, onInput: onGhostInput, onCompositionStart: onGhostCompositionStart, onCompositionEnd: onGhostCompositionEnd2, onKeyDown: onGhostKeyDown, onKeyUp: onGhostKeyUp, onFocus: onGhostFocus, onBlur: onGhostBlur }), portalElement);
+      return createPortal(/* @__PURE__ */ jsx(GhostInput, { ref: ghostInputRef, onInput: onGhostInput, onCompositionStart: onGhostCompositionStart, onCompositionEnd: onGhostCompositionEnd, onKeyDown: onGhostKeyDown, onKeyUp: onGhostKeyUp, onFocus: onGhostFocus, onBlur: onGhostBlur }), portalElement);
     })()
   ] });
 };

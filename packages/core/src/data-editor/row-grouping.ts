@@ -250,52 +250,63 @@ export function useRowGroupingInner(
     rowHeightIn: NonNullable<DataEditorProps["rowHeight"]>,
     getRowThemeOverrideIn: DataEditorProps["getRowThemeOverride"]
 ): UseRowGroupingInnerResult {
-    const flattenedRowGroups = options === undefined ? undefined : flattenRowGroups(options, rows);
+    const flattenedRowGroups = React.useMemo(
+        () => (options === undefined ? undefined : flattenRowGroups(options, rows)),
+        [options, rows]
+    );
 
-    const flattenedRowGroupsMap = flattenedRowGroups?.reduce<{ [rowIndex: number]: FlattenedRowGroup | undefined }>((acc, group) => {
-        acc[group.rowIndex] = group;
-        return acc;
-    }, {});
+    const flattenedRowGroupsMap = React.useMemo(() => {
+        return flattenedRowGroups?.reduce<{ [rowIndex: number]: FlattenedRowGroup | undefined }>((acc, group) => {
+            acc[group.rowIndex] = group;
+            return acc;
+        }, {});
+    }, [flattenedRowGroups]);
 
-    const effectiveRows = (() => {
+    const effectiveRows = React.useMemo(() => {
         if (flattenedRowGroups === undefined) return rows;
         return flattenedRowGroups.reduce((acc, group) => acc + (group.isCollapsed ? 1 : group.rows + 1), 0);
-    })();
+    }, [flattenedRowGroups, rows]);
 
-    const rowHeight = (() => {
+    const rowHeight = React.useMemo(() => {
         if (options === undefined) return rowHeightIn;
         if (typeof rowHeightIn === "number" && options.height === rowHeightIn) return rowHeightIn;
         return (rowIndex: number) => {
             if (flattenedRowGroupsMap?.[rowIndex]) return options.height;
             return typeof rowHeightIn === "number" ? rowHeightIn : rowHeightIn(rowIndex);
         };
-    })();
+    }, [flattenedRowGroupsMap, options, rowHeightIn]);
 
-    const rowNumberMapperOut = (row: number): number | undefined => {
-        if (flattenedRowGroups === undefined) return row;
-        let toGo = row;
+    const rowNumberMapperOut = React.useCallback(
+        (row: number): number | undefined => {
+            if (flattenedRowGroups === undefined) return row;
+            let toGo = row;
 
-        for (const group of flattenedRowGroups) {
-            if (toGo === 0) return undefined;
-            toGo--;
-            if (!group.isCollapsed) {
-                if (toGo < group.rows) return group.contentIndex + toGo;
-                toGo -= group.rows;
+            for (const group of flattenedRowGroups) {
+                if (toGo === 0) return undefined;
+                toGo--;
+                if (!group.isCollapsed) {
+                    if (toGo < group.rows) return group.contentIndex + toGo;
+                    toGo -= group.rows;
+                }
             }
-        }
 
-        return row;
-    };
+            return row;
+        },
+        [flattenedRowGroups]
+    );
 
     const getRowThemeOverride = whenDefined(
         getRowThemeOverrideIn ?? options?.themeOverride,
-        (row: number): Partial<Theme> | undefined => {
-            if (options === undefined) return getRowThemeOverrideIn?.(row, row, row);
-            if (getRowThemeOverrideIn === undefined && options?.themeOverride === undefined) return undefined;
-            const { isGroupHeader, contentIndex, groupIndex } = mapRowIndexToPath(row, flattenedRowGroups);
-            if (isGroupHeader) return options.themeOverride;
-            return getRowThemeOverrideIn?.(row, groupIndex, contentIndex);
-        }
+        React.useCallback(
+            (row: number): Partial<Theme> | undefined => {
+                if (options === undefined) return getRowThemeOverrideIn?.(row, row, row);
+                if (getRowThemeOverrideIn === undefined && options?.themeOverride === undefined) return undefined;
+                const { isGroupHeader, contentIndex, groupIndex } = mapRowIndexToPath(row, flattenedRowGroups);
+                if (isGroupHeader) return options.themeOverride;
+                return getRowThemeOverrideIn?.(row, groupIndex, contentIndex);
+            },
+            [flattenedRowGroups, getRowThemeOverrideIn, options]
+        )
     );
 
     if (options === undefined)
