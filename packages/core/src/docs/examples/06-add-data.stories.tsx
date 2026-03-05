@@ -354,27 +354,79 @@ export const AddData = () => {
     const onDeleteRow = React.useCallback(() => {
         if (gridSelection.rows.length === 0) return;
 
-        // Mark selected rows as Deleted (or remove if they were Added)
-        setRowStatuses(prev => {
-            const newStatuses = new Map(prev);
-            gridSelection.rows.toArray().forEach(rowIndex => {
-                const currentStatus = prev.get(rowIndex);
-                if (currentStatus === "A") {
-                    // If row was just added, remove it completely
-                    newStatuses.delete(rowIndex);
-                } else {
-                    // Otherwise mark as Deleted
-                    newStatuses.set(rowIndex, "D");
-                }
+        const selectedRows = gridSelection.rows.toArray();
+
+        // Separate rows to physically delete (status 'A') vs mark as 'D'
+        const rowsToDelete = selectedRows.filter(r => rowStatuses.get(r) === "A");
+        const rowsToMark = selectedRows.filter(r => rowStatuses.get(r) !== "A");
+
+        if (rowsToDelete.length > 0) {
+            // Sort descending so splicing from the end doesn't shift earlier indices
+            const deleteSet = new Set(rowsToDelete);
+            const sortedToDelete = [...rowsToDelete].sort((a, b) => b - a);
+
+            setData(prevData => {
+                const newData = [...prevData];
+                sortedToDelete.forEach(rowIndex => {
+                    newData.splice(rowIndex, 1);
+                });
+                setNumRows(newData.length);
+                return newData;
             });
-            return newStatuses;
-        });
+
+            // Rebuild rowStatuses and rowIds with deleted rows removed and indices shifted
+            setRowStatuses(prev => {
+                const remaining: Array<[number, "A" | "U" | "D"]> = [];
+                prev.forEach((status, row) => {
+                    if (!deleteSet.has(row)) {
+                        remaining.push([row, status]);
+                    }
+                });
+                // Re-index: count how many deleted rows are below each row
+                const result = new Map<number, "A" | "U" | "D">();
+                remaining.forEach(([row, status]) => {
+                    const shift = sortedToDelete.filter(d => d < row).length;
+                    const newRow = row - shift;
+                    result.set(newRow, status);
+                });
+                // Also apply 'D' marks for non-deleted selected rows, adjusted for shift
+                rowsToMark.forEach(row => {
+                    const shift = sortedToDelete.filter(d => d < row).length;
+                    result.set(row - shift, "D");
+                });
+                return result;
+            });
+
+            setRowIds(prev => {
+                const remaining: Array<[number, string]> = [];
+                prev.forEach((id, row) => {
+                    if (!deleteSet.has(row)) {
+                        remaining.push([row, id]);
+                    }
+                });
+                const result = new Map<number, string>();
+                remaining.forEach(([row, id]) => {
+                    const shift = sortedToDelete.filter(d => d < row).length;
+                    result.set(row - shift, id);
+                });
+                return result;
+            });
+        } else {
+            // No rows to physically delete, just mark as 'D'
+            setRowStatuses(prev => {
+                const newStatuses = new Map(prev);
+                rowsToMark.forEach(rowIndex => {
+                    newStatuses.set(rowIndex, "D");
+                });
+                return newStatuses;
+            });
+        }
 
         setGridSelection({
             columns: CompactSelection.empty(),
             rows: CompactSelection.empty(),
         });
-    }, [gridSelection.rows]);
+    }, [gridSelection.rows, rowStatuses]);
 
     const onCsvDownload = React.useCallback(() => {
         if (data.length === 0) return;
