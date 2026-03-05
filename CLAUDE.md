@@ -9,6 +9,10 @@ Glide Data Grid is a canvas-based React data grid component that supports millio
 - **`packages/core`** - Main data grid component (`@glideapps/glide-data-grid`)
 
 ## Development Commands
+### React 19 버젼에 맞춰 개발해야 함.
+- 컴포넌트 생성시 forwardRef 사용하지 않음
+- useRef사용시 RefObject를 사용함
+
 
 ### Test Command (Storybook 시각적 테스트)
 새로운 기능을 구현한 후 Storybook 예제를 작성하여 시각적으로 확인합니다.

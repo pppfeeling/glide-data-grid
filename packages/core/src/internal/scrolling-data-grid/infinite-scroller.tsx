@@ -330,10 +330,10 @@ export const InfiniteScroller: React.FC<Props> = p => {
         lastProps.current = { width, height };
     }
 
-    if ((width ?? 0) === 0 || (height ?? 0) === 0) return <div ref={ref} />;
+    if ((width ?? 0) === 0 || (height ?? 0) === 0) return <div ref={ref as React.RefObject<HTMLDivElement>} />;
 
     return (
-        <div ref={ref}>
+        <div ref={ref as React.RefObject<HTMLDivElement>}>
             <ScrollRegionStyle isSafari={browserIsSafari.value}>
                 <div className="dvn-underlay">{children}</div>
                 <div
