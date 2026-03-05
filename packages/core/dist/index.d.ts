@@ -877,7 +877,7 @@ declare interface DataGridDndProps extends Props_3 {
      * @param newSizeWithGrow The new size of the column including any addition pixels added by the grow parameter
      */
     readonly onColumnResizeEnd?: (column: GridColumn, newSize: number, colIndex: number, newSizeWithGrow: number) => void;
-    readonly gridRef?: React_2.RefObject<DataGridRef | null>;
+    readonly gridRef?: React_2.RefObject<DataGridRef>;
     readonly maxColumnWidth: number;
     readonly minColumnWidth: number;
     readonly lockColumns: number;
@@ -923,7 +923,7 @@ declare interface DataGridProps {
     readonly groupLevels: number;
     readonly groupHeaderHeights: readonly number[];
     readonly rowHeight: number | ((index: number) => number);
-    readonly canvasRef: React_2.RefObject<HTMLCanvasElement | null> | undefined;
+    readonly canvasRef: React_2.MutableRefObject<HTMLCanvasElement | null> | undefined;
     readonly eventTargetRef: React_2.RefObject<HTMLDivElement | null> | undefined;
     readonly getCellContent: (cell: Item, forceStrict?: boolean) => InnerGridCell;
     /**
@@ -1139,7 +1139,7 @@ declare interface DataGridSearchProps extends Omit<ScrollingDataGridProps, "prel
      * @param newVal The new search value
      */
     readonly onSearchValueChange?: (newVal: string) => void;
-    readonly searchInputRef: React_2.RefObject<HTMLInputElement | null>;
+    readonly searchInputRef: React_2.RefObject<HTMLInputElement>;
 }
 
 export declare function decodeHTML(html: string): CopyBuffer | undefined;

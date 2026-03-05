@@ -92,8 +92,8 @@ export interface CanvasRendererArgs {
 
     // Hover state
     readonly hoveredItemInfo: [Item, readonly [number, number]] | undefined;
-    readonly hoverInfoRef: React.RefObject<[Item, readonly [number, number]] | undefined>;
-    readonly hoverValuesRef: React.RefObject<readonly { item: Item; hoverAmount: number }[]>;
+    readonly hoverInfoRef: React.MutableRefObject<[Item, readonly [number, number]] | undefined>;
+    readonly hoverValuesRef: React.MutableRefObject<readonly { item: Item; hoverAmount: number }[]>;
     readonly lastWasTouch: boolean;
 
     // Experimental
@@ -114,12 +114,12 @@ export interface CanvasRendererResult {
     readonly scrolling: boolean;
     readonly damageInternal: (locations: CellSet) => void;
     readonly damage: (cells: DamageUpdateList) => void;
-    readonly enqueueRef: React.RefObject<EnqueueCallback>;
+    readonly enqueueRef: React.MutableRefObject<EnqueueCallback>;
     readonly drawCursorOverride: React.CSSProperties["cursor"] | undefined;
     readonly setDrawCursorOverride: React.Dispatch<React.SetStateAction<React.CSSProperties["cursor"] | undefined>>;
     readonly renderStateProvider: RenderStateProvider;
-    readonly lastDrawRef: React.RefObject<() => void>;
-    readonly lastArgsRef: React.RefObject<DrawGridArg | undefined>;
+    readonly lastDrawRef: React.MutableRefObject<() => void>;
+    readonly lastArgsRef: React.MutableRefObject<DrawGridArg | undefined>;
 }
 
 export function useCanvasRenderer(args: CanvasRendererArgs): CanvasRendererResult {

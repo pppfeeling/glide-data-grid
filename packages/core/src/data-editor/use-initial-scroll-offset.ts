@@ -44,7 +44,7 @@ export function useInitialScrollOffset(
     scrollOffsetX: number | undefined,
     scrollOffsetY: number | undefined,
     rowHeight: NonNullable<DataEditorCoreProps["rowHeight"]>,
-    visibleRegionRef: React.RefObject<VisibleRegion>,
+    visibleRegionRef: React.MutableRefObject<VisibleRegion>,
     onDidScroll: () => void
 ) {
     const [visibleRegionY, visibleRegionTy] = React.useMemo(() => {

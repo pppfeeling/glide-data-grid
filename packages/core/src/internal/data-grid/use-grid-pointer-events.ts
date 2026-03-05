@@ -42,7 +42,7 @@ export interface GridPointerEventsArgs {
     readonly lastWasTouchRef: React.RefObject<boolean>;
     readonly setLastWasTouch: React.Dispatch<React.SetStateAction<boolean>>;
     readonly setDrawCursorOverride: React.Dispatch<React.SetStateAction<React.CSSProperties["cursor"] | undefined>>;
-    readonly hoverInfoRef: React.RefObject<[Item, readonly [number, number]] | undefined>;
+    readonly hoverInfoRef: React.MutableRefObject<[Item, readonly [number, number]] | undefined>;
 
     // Callbacks
     readonly onMouseDown: (args: GridMouseEventArgs) => void;
@@ -343,20 +343,8 @@ export function useGridPointerEvents(args: GridPointerEventsArgs): void {
     };
     useEventListener("contextmenu", onContextMenuImpl, eventTargetRef ?? null, false);
 
-    const hoveredRef = React.useRef<GridMouseEventArgs | undefined>(undefined);
-    const onPointerMove = (ev: MouseEvent) => {
-        const canvas = canvasRef.current;
-        if (canvas === null) return;
-
-        const eventTarget = eventTargetRef?.current;
-        const isIndirect = ev.target !== canvas && ev.target !== eventTarget;
-
-        const mouseArgs = getMouseArgsForPosition(canvas, ev.clientX, ev.clientY, ev);
-        if (mouseArgs.kind !== "out-of-bounds" && isIndirect && !mouseDown.current && !mouseArgs.isTouch) {
-            return;
-        }
-
-        const maybeSetHoveredInfo = (newVal: typeof hoverInfoRef.current, needPosition: boolean) => {
+    const maybeSetHoveredInfo = React.useCallback(
+        (newVal: typeof hoverInfoRef.current, needPosition: boolean) => {
             setHoveredItemInfo(cv => {
                 if (cv === newVal) return cv;
                 if (cv !== undefined && newVal !== undefined) {
@@ -369,7 +357,22 @@ export function useGridPointerEvents(args: GridPointerEventsArgs): void {
                 }
                 return newVal;
             });
-        };
+        },
+        [hoverInfoRef, setHoveredItemInfo]
+    );
+
+    const hoveredRef = React.useRef<GridMouseEventArgs | undefined>(undefined);
+    const onPointerMove = (ev: MouseEvent) => {
+        const canvas = canvasRef.current;
+        if (canvas === null) return;
+
+        const eventTarget = eventTargetRef?.current;
+        const isIndirect = ev.target !== canvas && ev.target !== eventTarget;
+
+        const mouseArgs = getMouseArgsForPosition(canvas, ev.clientX, ev.clientY, ev);
+        if (mouseArgs.kind !== "out-of-bounds" && isIndirect && !mouseDown.current && !mouseArgs.isTouch) {
+            return;
+        }
 
         if (!mouseEventArgsAreEqual(mouseArgs, hoveredRef.current)) {
             setDrawCursorOverride(undefined);

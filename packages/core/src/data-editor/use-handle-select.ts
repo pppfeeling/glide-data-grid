@@ -64,9 +64,9 @@ interface UseHandleSelectArgs {
     readonly onRowMoved: unknown;
     readonly onSelectionCleared: (() => void) | undefined;
 
-    readonly lastSelectedRowRef: React.RefObject<number | undefined>;
-    readonly lastSelectedColRef: React.RefObject<number | undefined>;
-    readonly lastMouseSelectLocation: React.RefObject<readonly [number, number] | undefined>;
+    readonly lastSelectedRowRef: React.MutableRefObject<number | undefined>;
+    readonly lastSelectedColRef: React.MutableRefObject<number | undefined>;
+    readonly lastMouseSelectLocation: React.MutableRefObject<readonly [number, number] | undefined>;
 }
 
 export function useHandleSelect(args: UseHandleSelectArgs): (args: GridMouseEventArgs) => void {
@@ -105,16 +105,16 @@ export function useHandleSelect(args: UseHandleSelectArgs): (args: GridMouseEven
     } = args;
 
     return React.useCallback(
-        (args: GridMouseEventArgs) => {
-            const isMultiKey = browserIsOSX.value ? args.metaKey : args.ctrlKey;
+        (mouseArgs: GridMouseEventArgs) => {
+            const isMultiKey = browserIsOSX.value ? mouseArgs.metaKey : mouseArgs.ctrlKey;
             const isMultiRow = isMultiKey && rowSelect === "multi";
 
-            const [col, row] = args.location;
+            const [col, row] = mouseArgs.location;
             const selectedColumns = gridSelection.columns;
             const selectedRows = gridSelection.rows;
             const [cellCol, cellRow] = gridSelection.current?.cell ?? [];
             // eslint-disable-next-line unicorn/prefer-switch
-            if (args.kind === "cell") {
+            if (mouseArgs.kind === "cell") {
                 lastSelectedColRef.current = undefined;
 
                 lastMouseSelectLocation.current = [col, row];
@@ -131,7 +131,7 @@ export function useHandleSelect(args: UseHandleSelectArgs): (args: GridMouseEven
                     )
                         return;
 
-                    const markerCell = getMangledCellContent(args.location);
+                    const markerCell = getMangledCellContent(mouseArgs.location);
                     if (markerCell.kind !== InnerGridCellKind.Marker) {
                         return;
                     }
@@ -141,12 +141,12 @@ export function useHandleSelect(args: UseHandleSelectArgs): (args: GridMouseEven
                         const renderer = getCellRenderer(markerCell);
                         assert(renderer?.kind === InnerGridCellKind.Marker);
                         const postClick = renderer?.onClick?.({
-                            ...args,
+                            ...mouseArgs,
                             cell: markerCell,
-                            posX: args.localEventX,
-                            posY: args.localEventY,
-                            bounds: args.bounds,
-                            theme: themeForCell(markerCell, args.location),
+                            posX: mouseArgs.localEventX,
+                            posY: mouseArgs.localEventY,
+                            bounds: mouseArgs.bounds,
+                            theme: themeForCell(markerCell, mouseArgs.location),
                             preventDefault: () => undefined,
                         }) as MarkerCell | undefined;
                         if (postClick === undefined || postClick.checked === markerCell.checked) return;
@@ -159,7 +159,7 @@ export function useHandleSelect(args: UseHandleSelectArgs): (args: GridMouseEven
                     const lastHighlighted = lastSelectedRowRef.current;
                     if (
                         rowSelect === "multi" &&
-                        (args.shiftKey || args.isLongTouch === true) &&
+                        (mouseArgs.shiftKey || mouseArgs.isLongTouch === true) &&
                         lastHighlighted !== undefined &&
                         selectedRows.hasIndex(lastHighlighted)
                     ) {
@@ -170,7 +170,7 @@ export function useHandleSelect(args: UseHandleSelectArgs): (args: GridMouseEven
                         } else {
                             setSelectedRows(CompactSelection.fromSingleSelection(newSlice), undefined, isMultiRow);
                         }
-                    } else if (rowSelect === "multi" && (isMultiRow || args.isTouch || rowSelectionMode === "multi")) {
+                    } else if (rowSelect === "multi" && (isMultiRow || mouseArgs.isTouch || rowSelectionMode === "multi")) {
                         if (isSelected) {
                             setSelectedRows(selectedRows.remove(row), undefined, true);
                         } else {
@@ -188,19 +188,19 @@ export function useHandleSelect(args: UseHandleSelectArgs): (args: GridMouseEven
                     void appendRow(customTargetColumn ?? col);
                 } else {
                     if (cellCol !== col || cellRow !== row) {
-                        const cell = getMangledCellContent(args.location);
+                        const cell = getMangledCellContent(mouseArgs.location);
                         const renderer = getCellRenderer(cell);
 
                         if (renderer?.onSelect !== undefined) {
                             let prevented = false;
                             renderer.onSelect({
-                                ...args,
+                                ...mouseArgs,
                                 cell,
-                                posX: args.localEventX,
-                                posY: args.localEventY,
-                                bounds: args.bounds,
+                                posX: mouseArgs.localEventX,
+                                posY: mouseArgs.localEventY,
+                                bounds: mouseArgs.bounds,
                                 preventDefault: () => (prevented = true),
-                                theme: themeForCell(cell, args.location),
+                                theme: themeForCell(cell, mouseArgs.location),
                             });
                             if (prevented) {
                                 return;
@@ -217,7 +217,7 @@ export function useHandleSelect(args: UseHandleSelectArgs): (args: GridMouseEven
                             lastRowSticky && gridSelection !== undefined && gridSelection.current?.cell[1] === rows;
 
                         if (
-                            (args.shiftKey || args.isLongTouch === true) &&
+                            (mouseArgs.shiftKey || mouseArgs.isLongTouch === true) &&
                             cellCol !== undefined &&
                             cellRow !== undefined &&
                             gridSelection.current !== undefined &&
@@ -267,7 +267,7 @@ export function useHandleSelect(args: UseHandleSelectArgs): (args: GridMouseEven
                         }
                     }
                 }
-            } else if (args.kind === "header") {
+            } else if (mouseArgs.kind === "header") {
                 lastMouseSelectLocation.current = [col, row];
                 setOverlay(undefined);
                 const headerCheckboxColIndex = showRowNumber ? 1 : 0;
@@ -286,21 +286,21 @@ export function useHandleSelect(args: UseHandleSelectArgs): (args: GridMouseEven
                     const lastCol = lastSelectedColRef.current;
                     if (
                         columnSelect === "multi" &&
-                        (args.shiftKey || args.isLongTouch === true) &&
+                        (mouseArgs.shiftKey || mouseArgs.isLongTouch === true) &&
                         lastCol !== undefined &&
                         selectedColumns.hasIndex(lastCol)
                     ) {
                         // Support for selecting a slice of columns:
                         const newSlice: Slice = [Math.min(lastCol, col), Math.max(lastCol, col) + 1];
 
-                        if (isMultiKey || args.isTouch || columnSelectionMode === "multi") {
+                        if (isMultiKey || mouseArgs.isTouch || columnSelectionMode === "multi") {
                             setSelectedColumns(undefined, newSlice, isMultiKey);
                         } else {
                             setSelectedColumns(CompactSelection.fromSingleSelection(newSlice), undefined, isMultiKey);
                         }
                     } else if (
                         columnSelect === "multi" &&
-                        (isMultiKey || args.isTouch || columnSelectionMode === "multi")
+                        (isMultiKey || mouseArgs.isTouch || columnSelectionMode === "multi")
                     ) {
                         // Support for selecting a single columns additively:
                         if (selectedColumns.hasIndex(col)) {
@@ -322,9 +322,9 @@ export function useHandleSelect(args: UseHandleSelectArgs): (args: GridMouseEven
                     lastSelectedRowRef.current = undefined;
                     focus();
                 }
-            } else if (args.kind === groupHeaderKind) {
+            } else if (mouseArgs.kind === groupHeaderKind) {
                 lastMouseSelectLocation.current = [col, row];
-            } else if (args.kind === outOfBoundsKind && !args.isMaybeScrollbar) {
+            } else if (mouseArgs.kind === outOfBoundsKind && !mouseArgs.isMaybeScrollbar) {
                 setGridSelection(emptyGridSelection, false);
                 setOverlay(undefined);
                 focus();

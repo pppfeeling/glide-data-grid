@@ -11,8 +11,8 @@ interface UseVisibleRegionArgs {
     readonly rows: number;
     readonly freezeColumns: number;
     readonly freezeTrailingRows: number;
-    readonly visibleRegionRef: React.RefObject<VisibleRegion>;
-    readonly hasJustScrolled: React.RefObject<boolean>;
+    readonly visibleRegionRef: React.MutableRefObject<VisibleRegion>;
+    readonly hasJustScrolled: React.MutableRefObject<boolean>;
 
     readonly setOverlay: (overlay: OverlayState | undefined) => void;
     readonly setVisibleRegion: (region: VisibleRegion) => void;

@@ -29,7 +29,7 @@ interface UseHoverHandlerArgs {
     readonly rows: number;
     readonly mangledCols: readonly GridColumn[];
     readonly allowedFillDirections: FillHandleDirection;
-    readonly visibleRegionRef: React.RefObject<VisibleRegion>;
+    readonly visibleRegionRef: React.MutableRefObject<VisibleRegion>;
     readonly mouseDownData: MouseHandlers["mouseDownData"];
     readonly isActivelyDraggingRef: React.RefObject<boolean>;
     readonly isActivelyDraggingHeader: React.RefObject<boolean>;
@@ -81,13 +81,13 @@ export function useHoverHandler(args: UseHoverHandlerArgs): HoverHandlerResult {
     const hoveredRef = React.useRef<GridMouseEventArgs>(undefined);
 
     const onItemHoveredImpl = React.useCallback(
-        (args: GridMouseEventArgs) => {
+        (mouseArgs: GridMouseEventArgs) => {
             // make sure we still have a button down
-            if (mouseEventArgsAreEqual(args, hoveredRef.current)) return;
-            hoveredRef.current = args;
+            if (mouseEventArgsAreEqual(mouseArgs, hoveredRef.current)) return;
+            hoveredRef.current = mouseArgs;
             if (mouseDownData?.current?.button !== undefined && mouseDownData.current.button >= 1) return;
             if (
-                args.buttons !== 0 &&
+                mouseArgs.buttons !== 0 &&
                 mouseState !== undefined &&
                 mouseDownData.current?.location[0] === 0 &&
                 rowMarkerOffset === 1 &&
@@ -96,13 +96,13 @@ export function useHoverHandler(args: UseHoverHandlerArgs): HoverHandlerResult {
                 !mouseState.previousSelection.rows.hasIndex(mouseDownData.current.location[1]) &&
                 gridSelection.rows.hasIndex(mouseDownData.current.location[1])
             ) {
-                const start = Math.min(mouseDownData.current.location[1], args.location[1]);
-                const end = Math.max(mouseDownData.current.location[1], args.location[1]) + 1;
+                const start = Math.min(mouseDownData.current.location[1], mouseArgs.location[1]);
+                const end = Math.max(mouseDownData.current.location[1], mouseArgs.location[1]) + 1;
                 setSelectedRows(CompactSelection.fromSingleSelection([start, end]), undefined, false);
             }
             // Only handle rect selection if not already processed by row selection:
             else if (
-                args.buttons !== 0 &&
+                mouseArgs.buttons !== 0 &&
                 mouseState !== undefined &&
                 gridSelection.current !== undefined &&
                 !isActivelyDraggingRef.current &&
@@ -111,7 +111,7 @@ export function useHoverHandler(args: UseHoverHandlerArgs): HoverHandlerResult {
             ) {
                 const [selectedCol, selectedRow] = gridSelection.current.cell;
                 // eslint-disable-next-line prefer-const
-                let [col, row] = args.location;
+                let [col, row] = mouseArgs.location;
 
                 if (row < 0) {
                     row = visibleRegionRef.current.y;
@@ -128,7 +128,7 @@ export function useHoverHandler(args: UseHoverHandlerArgs): HoverHandlerResult {
 
                     const landedOnLastStickyRow = showTrailingBlankRow && row === rows;
                     if (landedOnLastStickyRow) {
-                        if (args.kind === outOfBoundsKind) row--;
+                        if (mouseArgs.kind === outOfBoundsKind) row--;
                         else return;
                     }
 
@@ -158,7 +158,7 @@ export function useHoverHandler(args: UseHoverHandlerArgs): HoverHandlerResult {
                 }
             }
 
-            onItemHovered?.({ ...args, location: [args.location[0] - rowMarkerOffset, args.location[1]] as any });
+            onItemHovered?.({ ...mouseArgs, location: [mouseArgs.location[0] - rowMarkerOffset, mouseArgs.location[1]] as any });
         },
         [
             mouseState,
@@ -177,10 +177,10 @@ export function useHoverHandler(args: UseHoverHandlerArgs): HoverHandlerResult {
     );
 
     const adjustSelectionOnScroll = React.useCallback(() => {
-        const args = hoveredRef.current;
-        if (args === undefined) return;
-        const [xDir, yDir] = args.scrollEdge;
-        let [col, row] = args.location;
+        const hovered = hoveredRef.current;
+        if (hovered === undefined) return;
+        const [xDir, yDir] = hovered.scrollEdge;
+        let [col, row] = hovered.location;
         const visible = visibleRegionRef.current;
         if (xDir === -1) {
             col = visible.extras?.freezeRegion?.x ?? visible.x;
@@ -195,7 +195,7 @@ export function useHoverHandler(args: UseHoverHandlerArgs): HoverHandlerResult {
         col = clamp(col, 0, mangledCols.length - 1);
         row = clamp(row, 0, rows - 1);
         onItemHoveredImpl({
-            ...args,
+            ...hovered,
             location: [col, row] as any,
         });
     }, [mangledCols.length, onItemHoveredImpl, rows]);

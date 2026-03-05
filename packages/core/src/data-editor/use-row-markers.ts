@@ -257,8 +257,8 @@ interface MangledCellContentParams {
     readonly getCellContent: DataEditorProps["getCellContent"];
     readonly disabledRows: DataEditorProps["disabledRows"];
     readonly mangledCols: readonly GridColumn[];
-    readonly visibleRegionRef: React.RefObject<VisibleRegion>;
-    readonly rowsRef: React.RefObject<number>;
+    readonly visibleRegionRef: React.MutableRefObject<VisibleRegion>;
+    readonly rowsRef: React.MutableRefObject<number>;
 }
 
 export function useGetMangledCellContent(params: MangledCellContentParams) {

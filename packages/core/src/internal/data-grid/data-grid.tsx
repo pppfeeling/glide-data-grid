@@ -85,7 +85,7 @@ export interface DataGridProps {
     readonly groupHeaderHeights: readonly number[];
     readonly rowHeight: number | ((index: number) => number);
 
-    readonly canvasRef: React.RefObject<HTMLCanvasElement | null> | undefined;
+    readonly canvasRef: React.MutableRefObject<HTMLCanvasElement | null> | undefined;
 
     readonly eventTargetRef: React.RefObject<HTMLDivElement | null> | undefined;
 

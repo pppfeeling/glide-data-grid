@@ -62,17 +62,17 @@ export function useColumnCallbacks(args: UseColumnCallbacksArgs): ColumnCallback
 
     const isActivelyDragging = React.useRef(false);
     const onDragStartImpl = React.useCallback(
-        (args: GridDragEventArgs) => {
-            if (args.location[0] === 0 && rowMarkerOffset > 0) {
-                args.preventDefault();
+        (dragArgs: GridDragEventArgs) => {
+            if (dragArgs.location[0] === 0 && rowMarkerOffset > 0) {
+                dragArgs.preventDefault();
                 return;
             }
             onDragStart?.({
-                ...args,
-                location: [args.location[0] - rowMarkerOffset, args.location[1]] as any,
+                ...dragArgs,
+                location: [dragArgs.location[0] - rowMarkerOffset, dragArgs.location[1]] as any,
             });
 
-            if (!args.defaultPrevented()) {
+            if (!dragArgs.defaultPrevented()) {
                 isActivelyDragging.current = true;
             }
             setMouseState(undefined);

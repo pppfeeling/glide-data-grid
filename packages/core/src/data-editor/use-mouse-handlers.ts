@@ -85,7 +85,7 @@ interface UseMouseHandlersArgs {
         expand: boolean
     ) => void;
     readonly visibleRegion: VisibleRegion;
-    readonly lastMouseSelectLocation: React.RefObject<readonly [number, number] | undefined>;
+    readonly lastMouseSelectLocation: React.MutableRefObject<readonly [number, number] | undefined>;
 }
 
 export function useMouseHandlers(args: UseMouseHandlersArgs): MouseHandlers {

@@ -85,7 +85,7 @@ export interface DataGridSearchProps extends Omit<ScrollingDataGridProps, "preli
      * @param newVal The new search value
      */
     readonly onSearchValueChange?: (newVal: string) => void;
-    readonly searchInputRef: React.RefObject<HTMLInputElement | null>;
+    readonly searchInputRef: React.RefObject<HTMLInputElement>;
 }
 
 const targetSearchTimeMS = 10;

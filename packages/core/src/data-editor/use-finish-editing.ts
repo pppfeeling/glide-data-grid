@@ -20,7 +20,7 @@ interface UseFinishEditingArgs {
 
     readonly gridRef: React.RefObject<DataGridRef | null>;
     readonly ghostInputRef: React.RefObject<GhostInputRef | null>;
-    readonly overlayRef: React.RefObject<OverlayState | undefined>;
+    readonly overlayRef: React.MutableRefObject<OverlayState | undefined>;
     readonly focus: (immediate?: boolean) => void;
     readonly setOverlay: (overlay: OverlayState | undefined) => void;
     readonly setGhostInputVisible: (visible: boolean) => void;

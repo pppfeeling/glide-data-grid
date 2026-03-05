@@ -42,12 +42,12 @@ export interface DataEditorCoreState {
     // Refs
     readonly gridRef: React.RefObject<DataGridRef | null>;
     readonly ghostInputRef: React.RefObject<GhostInputRef | null>;
-    readonly overlayRef: React.RefObject<OverlayState | undefined>;
-    readonly ghostInputVisibleRef: React.RefObject<boolean>;
+    readonly overlayRef: React.MutableRefObject<OverlayState | undefined>;
+    readonly ghostInputVisibleRef: React.MutableRefObject<boolean>;
     readonly scrollRef: React.RefObject<HTMLDivElement | null>;
     readonly canvasRef: React.RefObject<HTMLCanvasElement | null>;
-    readonly visibleRegionRef: React.RefObject<VisibleRegion>;
-    readonly abortControllerRef: React.RefObject<AbortController>;
+    readonly visibleRegionRef: React.MutableRefObject<VisibleRegion>;
+    readonly abortControllerRef: React.MutableRefObject<AbortController>;
 
     // Coordinate conversion
     readonly rowMarkerOffset: number;
@@ -95,10 +95,10 @@ export interface MouseHandlers {
     readonly normalSizeColumn: (col: number) => Promise<void>;
     readonly fillDown: () => void;
     readonly fillRight: () => void;
-    readonly mouseDownData: React.RefObject<{
+    readonly mouseDownData: React.MutableRefObject<{
         readonly time: number;
         readonly button: number;
         readonly location: Item;
     } | undefined>;
-    readonly isActivelyDraggingHeader: React.RefObject<boolean>;
+    readonly isActivelyDraggingHeader: React.MutableRefObject<boolean>;
 }

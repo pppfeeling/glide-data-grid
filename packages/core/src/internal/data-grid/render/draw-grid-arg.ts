@@ -69,7 +69,7 @@ export interface DrawGridArg {
     readonly prelightCells: CellList | undefined;
     readonly highlightRegions: readonly Highlight[] | undefined;
     readonly imageLoader: ImageWindowLoader;
-    readonly lastBlitData: React.RefObject<BlitData | undefined>;
+    readonly lastBlitData: React.MutableRefObject<BlitData | undefined>;
     readonly damage: CellSet | undefined;
     readonly hoverValues: HoverValues;
     readonly hoverInfo: HoverInfo | undefined;
