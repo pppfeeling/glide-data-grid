@@ -154,7 +154,7 @@ packages/core/src/
 ### analyze/에 남아있는 참고 자료
 - `analyze/API.md` - 전체 API 레퍼런스 (대용량, 필요 시 직접 참조)
 - `analyze/glide-data-grid-core-사용자가이드.md` - 사용자 가이드
-- `analyze/learning/` - 튜토리얼 콘텐츠
+
 
 ### When to Use
 1. **새 기능 추가 전**: 관련 문서에서 기존 패턴 확인 (자동 로드됨)
