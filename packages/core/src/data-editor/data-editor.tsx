@@ -90,7 +90,7 @@ const loadingCell: GridCell = {
 const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorProps> = (p, forwardedRef) => {
 
 
-    const searchInputRef = React.useRef<HTMLInputElement | null>(null);
+    const searchInputRef = React.useRef<HTMLInputElement>(null);
     const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
     const [renameGroup, setRenameGroup] = React.useState<{
@@ -476,7 +476,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     const cellXOffset = visibleRegion.x + rowMarkerOffset;
     const cellYOffset = visibleRegion.y;
 
-    const gridRef = React.useRef<DataGridRef | null>(null);
+    const gridRef = React.useRef<DataGridRef>(null);
 
     const focus = React.useCallback((immediate?: boolean) => {
         // Always focus on GhostInput for IME support
@@ -1058,7 +1058,7 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         onFinishedEditing,
     });
 
-    const overlayIDRef = React.useRef<string | null>(null);
+    const overlayIDRef = React.useRef<string>(null);
     if (overlayIDRef.current === null) {
         overlayIDRef.current = `gdg-overlay-${idCounter++}`;
     }

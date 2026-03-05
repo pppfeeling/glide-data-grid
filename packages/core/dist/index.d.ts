@@ -877,7 +877,7 @@ declare interface DataGridDndProps extends Props_3 {
      * @param newSizeWithGrow The new size of the column including any addition pixels added by the grow parameter
      */
     readonly onColumnResizeEnd?: (column: GridColumn, newSize: number, colIndex: number, newSizeWithGrow: number) => void;
-    readonly gridRef?: React_2.RefObject<DataGridRef>;
+    readonly gridRef?: React_2.RefObject<DataGridRef | null>;
     readonly maxColumnWidth: number;
     readonly minColumnWidth: number;
     readonly lockColumns: number;
@@ -1139,7 +1139,7 @@ declare interface DataGridSearchProps extends Omit<ScrollingDataGridProps, "prel
      * @param newVal The new search value
      */
     readonly onSearchValueChange?: (newVal: string) => void;
-    readonly searchInputRef: React_2.RefObject<HTMLInputElement>;
+    readonly searchInputRef: React_2.RefObject<HTMLInputElement | null>;
 }
 
 export declare function decodeHTML(html: string): CopyBuffer | undefined;

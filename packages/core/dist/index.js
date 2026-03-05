@@ -3,8 +3,8 @@ import * as React from "react";
 import React__default, { forwardRef, createElement, useRef, useState, useLayoutEffect, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
-function getDefaultExportFromCjs(x) {
-  return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
+function getDefaultExportFromCjs(x2) {
+  return x2 && x2.__esModule && Object.prototype.hasOwnProperty.call(x2, "default") ? x2["default"] : x2;
 }
 var _baseHas;
 var hasRequired_baseHas;
@@ -888,10 +888,10 @@ function require_hasPath() {
   return _hasPath;
 }
 var has_1;
-var hasRequiredHas;
-function requireHas() {
-  if (hasRequiredHas) return has_1;
-  hasRequiredHas = 1;
+var hasRequiredHas$1;
+function requireHas$1() {
+  if (hasRequiredHas$1) return has_1;
+  hasRequiredHas$1 = 1;
   var baseHas = require_baseHas(), hasPath = require_hasPath();
   function has2(object, path) {
     return object != null && hasPath(object, path, baseHas);
@@ -899,8 +899,8 @@ function requireHas() {
   has_1 = has2;
   return has_1;
 }
-var hasExports = requireHas();
-const has$1 = /* @__PURE__ */ getDefaultExportFromCjs(hasExports);
+var hasExports = requireHas$1();
+const has$2 = /* @__PURE__ */ getDefaultExportFromCjs(hasExports);
 function panic() {
   let message = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : "This should not happen";
   throw new Error(message);
@@ -920,7 +920,7 @@ function maybe(fn, defaultValue) {
     return defaultValue;
   }
 }
-const has = Object.prototype.hasOwnProperty;
+const has$1 = Object.prototype.hasOwnProperty;
 function deepEqual(foo, bar) {
   let ctor, len;
   if (foo === bar) return true;
@@ -936,7 +936,7 @@ function deepEqual(foo, bar) {
     if (!ctor || typeof foo === "object") {
       len = 0;
       for (ctor in foo) {
-        if (has.call(foo, ctor) && ++len && !has.call(bar, ctor)) return false;
+        if (has$1.call(foo, ctor) && ++len && !has$1.call(bar, ctor)) return false;
         if (!(ctor in bar) || !deepEqual(foo[ctor], bar[ctor])) return false;
       }
       return Object.keys(bar).length === len;
@@ -1042,7 +1042,7 @@ function isRectangleEqual(a, b2) {
   return a.x === b2.x && a.y === b2.y && a.width === b2.width && a.height === b2.height;
 }
 function isObjectEditorCallbackResult(obj) {
-  return has$1(obj, "editor");
+  return has$2(obj, "editor");
 }
 function booleanCellIsEditable(cell) {
   var _cell$readonly;
@@ -1089,7 +1089,7 @@ class CompactSelection {
   }
   offset(amount) {
     if (amount === 0) return this;
-    const newItems = this.items.map((x) => [x[0] + amount, x[1] + amount]);
+    const newItems = this.items.map((x2) => [x2[0] + amount, x2[1] + amount]);
     return new CompactSelection(newItems);
   }
   add(selection) {
@@ -1132,8 +1132,8 @@ class CompactSelection {
     return false;
   }
   hasAll(index) {
-    for (let x = index[0]; x < index[1]; x++) {
-      if (!this.hasIndex(x)) return false;
+    for (let x2 = index[0]; x2 < index[1]; x2++) {
+      if (!this.hasIndex(x2)) return false;
     }
     return true;
   }
@@ -1156,8 +1156,8 @@ class CompactSelection {
   toArray() {
     const result = [];
     for (const [start, end] of this.items) {
-      for (let x = start; x < end; x++) {
-        result.push(x);
+      for (let x2 = start; x2 < end; x2++) {
+        result.push(x2);
       }
     }
     return result;
@@ -1171,8 +1171,8 @@ class CompactSelection {
   }
   *[Symbol.iterator]() {
     for (const [start, end] of this.items) {
-      for (let x = start; x < end; x++) {
-        yield x;
+      for (let x2 = start; x2 < end; x2++) {
+        yield x2;
       }
     }
   }
@@ -1241,7 +1241,7 @@ function memoize(fn) {
     return cache2[arg];
   };
 }
-var reactPropsRegex = /^((children|dangerouslySetInnerHTML|key|ref|autoFocus|defaultValue|defaultChecked|innerHTML|suppressContentEditableWarning|suppressHydrationWarning|valueLink|abbr|accept|acceptCharset|accessKey|action|allow|allowUserMedia|allowPaymentRequest|allowFullScreen|allowTransparency|alt|async|autoComplete|autoPlay|capture|cellPadding|cellSpacing|challenge|charSet|checked|cite|classID|className|cols|colSpan|content|contentEditable|contextMenu|controls|controlsList|coords|crossOrigin|data|dateTime|decoding|default|defer|dir|disabled|disablePictureInPicture|download|draggable|encType|enterKeyHint|form|formAction|formEncType|formMethod|formNoValidate|formTarget|frameBorder|headers|height|hidden|high|href|hrefLang|htmlFor|httpEquiv|id|inputMode|integrity|is|keyParams|keyType|kind|label|lang|list|loading|loop|low|marginHeight|marginWidth|max|maxLength|media|mediaGroup|method|min|minLength|multiple|muted|name|nonce|noValidate|open|optimum|pattern|placeholder|playsInline|poster|preload|profile|radioGroup|readOnly|referrerPolicy|rel|required|reversed|role|rows|rowSpan|sandbox|scope|scoped|scrolling|seamless|selected|shape|size|sizes|slot|span|spellCheck|src|srcDoc|srcLang|srcSet|start|step|style|summary|tabIndex|target|title|translate|type|useMap|value|width|wmode|wrap|about|datatype|inlist|prefix|property|resource|typeof|vocab|autoCapitalize|autoCorrect|autoSave|color|incremental|fallback|inert|itemProp|itemScope|itemType|itemID|itemRef|on|option|results|security|unselectable|accentHeight|accumulate|additive|alignmentBaseline|allowReorder|alphabetic|amplitude|arabicForm|ascent|attributeName|attributeType|autoReverse|azimuth|baseFrequency|baselineShift|baseProfile|bbox|begin|bias|by|calcMode|capHeight|clip|clipPathUnits|clipPath|clipRule|colorInterpolation|colorInterpolationFilters|colorProfile|colorRendering|contentScriptType|contentStyleType|cursor|cx|cy|d|decelerate|descent|diffuseConstant|direction|display|divisor|dominantBaseline|dur|dx|dy|edgeMode|elevation|enableBackground|end|exponent|externalResourcesRequired|fill|fillOpacity|fillRule|filter|filterRes|filterUnits|floodColor|floodOpacity|focusable|fontFamily|fontSize|fontSizeAdjust|fontStretch|fontStyle|fontVariant|fontWeight|format|from|fr|fx|fy|g1|g2|glyphName|glyphOrientationHorizontal|glyphOrientationVertical|glyphRef|gradientTransform|gradientUnits|hanging|horizAdvX|horizOriginX|ideographic|imageRendering|in|in2|intercept|k|k1|k2|k3|k4|kernelMatrix|kernelUnitLength|kerning|keyPoints|keySplines|keyTimes|lengthAdjust|letterSpacing|lightingColor|limitingConeAngle|local|markerEnd|markerMid|markerStart|markerHeight|markerUnits|markerWidth|mask|maskContentUnits|maskUnits|mathematical|mode|numOctaves|offset|opacity|operator|order|orient|orientation|origin|overflow|overlinePosition|overlineThickness|panose1|paintOrder|pathLength|patternContentUnits|patternTransform|patternUnits|pointerEvents|points|pointsAtX|pointsAtY|pointsAtZ|preserveAlpha|preserveAspectRatio|primitiveUnits|r|radius|refX|refY|renderingIntent|repeatCount|repeatDur|requiredExtensions|requiredFeatures|restart|result|rotate|rx|ry|scale|seed|shapeRendering|slope|spacing|specularConstant|specularExponent|speed|spreadMethod|startOffset|stdDeviation|stemh|stemv|stitchTiles|stopColor|stopOpacity|strikethroughPosition|strikethroughThickness|string|stroke|strokeDasharray|strokeDashoffset|strokeLinecap|strokeLinejoin|strokeMiterlimit|strokeOpacity|strokeWidth|surfaceScale|systemLanguage|tableValues|targetX|targetY|textAnchor|textDecoration|textRendering|textLength|to|transform|u1|u2|underlinePosition|underlineThickness|unicode|unicodeBidi|unicodeRange|unitsPerEm|vAlphabetic|vHanging|vIdeographic|vMathematical|values|vectorEffect|version|vertAdvY|vertOriginX|vertOriginY|viewBox|viewTarget|visibility|widths|wordSpacing|writingMode|x|xHeight|x1|x2|xChannelSelector|xlinkActuate|xlinkArcrole|xlinkHref|xlinkRole|xlinkShow|xlinkTitle|xlinkType|xmlBase|xmlns|xmlnsXlink|xmlLang|xmlSpace|y|y1|y2|yChannelSelector|z|zoomAndPan|for|class|autofocus)|(([Dd][Aa][Tt][Aa]|[Aa][Rr][Ii][Aa]|x)-.*))$/;
+var reactPropsRegex = /^((children|dangerouslySetInnerHTML|key|ref|autoFocus|defaultValue|defaultChecked|innerHTML|suppressContentEditableWarning|suppressHydrationWarning|valueLink|abbr|accept|acceptCharset|accessKey|action|allow|allowUserMedia|allowPaymentRequest|allowFullScreen|allowTransparency|alt|async|autoComplete|autoPlay|capture|cellPadding|cellSpacing|challenge|charSet|checked|cite|classID|className|cols|colSpan|content|contentEditable|contextMenu|controls|controlsList|coords|crossOrigin|data|dateTime|decoding|default|defer|dir|disabled|disablePictureInPicture|disableRemotePlayback|download|draggable|encType|enterKeyHint|fetchpriority|fetchPriority|form|formAction|formEncType|formMethod|formNoValidate|formTarget|frameBorder|headers|height|hidden|high|href|hrefLang|htmlFor|httpEquiv|id|inputMode|integrity|is|keyParams|keyType|kind|label|lang|list|loading|loop|low|marginHeight|marginWidth|max|maxLength|media|mediaGroup|method|min|minLength|multiple|muted|name|nonce|noValidate|open|optimum|pattern|placeholder|playsInline|popover|popoverTarget|popoverTargetAction|poster|preload|profile|radioGroup|readOnly|referrerPolicy|rel|required|reversed|role|rows|rowSpan|sandbox|scope|scoped|scrolling|seamless|selected|shape|size|sizes|slot|span|spellCheck|src|srcDoc|srcLang|srcSet|start|step|style|summary|tabIndex|target|title|translate|type|useMap|value|width|wmode|wrap|about|datatype|inlist|prefix|property|resource|typeof|vocab|autoCapitalize|autoCorrect|autoSave|color|incremental|fallback|inert|itemProp|itemScope|itemType|itemID|itemRef|on|option|results|security|unselectable|accentHeight|accumulate|additive|alignmentBaseline|allowReorder|alphabetic|amplitude|arabicForm|ascent|attributeName|attributeType|autoReverse|azimuth|baseFrequency|baselineShift|baseProfile|bbox|begin|bias|by|calcMode|capHeight|clip|clipPathUnits|clipPath|clipRule|colorInterpolation|colorInterpolationFilters|colorProfile|colorRendering|contentScriptType|contentStyleType|cursor|cx|cy|d|decelerate|descent|diffuseConstant|direction|display|divisor|dominantBaseline|dur|dx|dy|edgeMode|elevation|enableBackground|end|exponent|externalResourcesRequired|fill|fillOpacity|fillRule|filter|filterRes|filterUnits|floodColor|floodOpacity|focusable|fontFamily|fontSize|fontSizeAdjust|fontStretch|fontStyle|fontVariant|fontWeight|format|from|fr|fx|fy|g1|g2|glyphName|glyphOrientationHorizontal|glyphOrientationVertical|glyphRef|gradientTransform|gradientUnits|hanging|horizAdvX|horizOriginX|ideographic|imageRendering|in|in2|intercept|k|k1|k2|k3|k4|kernelMatrix|kernelUnitLength|kerning|keyPoints|keySplines|keyTimes|lengthAdjust|letterSpacing|lightingColor|limitingConeAngle|local|markerEnd|markerMid|markerStart|markerHeight|markerUnits|markerWidth|mask|maskContentUnits|maskUnits|mathematical|mode|numOctaves|offset|opacity|operator|order|orient|orientation|origin|overflow|overlinePosition|overlineThickness|panose1|paintOrder|pathLength|patternContentUnits|patternTransform|patternUnits|pointerEvents|points|pointsAtX|pointsAtY|pointsAtZ|preserveAlpha|preserveAspectRatio|primitiveUnits|r|radius|refX|refY|renderingIntent|repeatCount|repeatDur|requiredExtensions|requiredFeatures|restart|result|rotate|rx|ry|scale|seed|shapeRendering|slope|spacing|specularConstant|specularExponent|speed|spreadMethod|startOffset|stdDeviation|stemh|stemv|stitchTiles|stopColor|stopOpacity|strikethroughPosition|strikethroughThickness|string|stroke|strokeDasharray|strokeDashoffset|strokeLinecap|strokeLinejoin|strokeMiterlimit|strokeOpacity|strokeWidth|surfaceScale|systemLanguage|tableValues|targetX|targetY|textAnchor|textDecoration|textRendering|textLength|to|transform|u1|u2|underlinePosition|underlineThickness|unicode|unicodeBidi|unicodeRange|unitsPerEm|vAlphabetic|vHanging|vIdeographic|vMathematical|values|vectorEffect|version|vertAdvY|vertOriginX|vertOriginY|viewBox|viewTarget|visibility|widths|wordSpacing|writingMode|x|xHeight|x1|x2|xChannelSelector|xlinkActuate|xlinkArcrole|xlinkHref|xlinkRole|xlinkShow|xlinkTitle|xlinkType|xmlBase|xmlns|xmlnsXlink|xmlLang|xmlSpace|y|y1|y2|yChannelSelector|z|zoomAndPan|for|class|autofocus)|(([Dd][Aa][Tt][Aa]|[Aa][Rr][Ii][Aa]|x)-.*))$/;
 var isPropValid = /* @__PURE__ */ memoize(
   function(prop) {
     return reactPropsRegex.test(prop) || prop.charCodeAt(0) === 111 && prop.charCodeAt(1) === 110 && prop.charCodeAt(2) < 91;
@@ -1395,15 +1395,15 @@ var hasRequiredReactIs_production_min;
 function requireReactIs_production_min() {
   if (hasRequiredReactIs_production_min) return reactIs_production_min;
   hasRequiredReactIs_production_min = 1;
-  var b2 = "function" === typeof Symbol && Symbol.for, c = b2 ? /* @__PURE__ */ Symbol.for("react.element") : 60103, d2 = b2 ? /* @__PURE__ */ Symbol.for("react.portal") : 60106, e = b2 ? /* @__PURE__ */ Symbol.for("react.fragment") : 60107, f = b2 ? /* @__PURE__ */ Symbol.for("react.strict_mode") : 60108, g = b2 ? /* @__PURE__ */ Symbol.for("react.profiler") : 60114, h = b2 ? /* @__PURE__ */ Symbol.for("react.provider") : 60109, k = b2 ? /* @__PURE__ */ Symbol.for("react.context") : 60110, l = b2 ? /* @__PURE__ */ Symbol.for("react.async_mode") : 60111, m = b2 ? /* @__PURE__ */ Symbol.for("react.concurrent_mode") : 60111, n = b2 ? /* @__PURE__ */ Symbol.for("react.forward_ref") : 60112, p2 = b2 ? /* @__PURE__ */ Symbol.for("react.suspense") : 60113, q = b2 ? /* @__PURE__ */ Symbol.for("react.suspense_list") : 60120, r = b2 ? /* @__PURE__ */ Symbol.for("react.memo") : 60115, t = b2 ? /* @__PURE__ */ Symbol.for("react.lazy") : 60116, v2 = b2 ? /* @__PURE__ */ Symbol.for("react.block") : 60121, w2 = b2 ? /* @__PURE__ */ Symbol.for("react.fundamental") : 60117, x = b2 ? /* @__PURE__ */ Symbol.for("react.responder") : 60118, y = b2 ? /* @__PURE__ */ Symbol.for("react.scope") : 60119;
+  var b2 = "function" === typeof Symbol && Symbol.for, c = b2 ? /* @__PURE__ */ Symbol.for("react.element") : 60103, d2 = b2 ? /* @__PURE__ */ Symbol.for("react.portal") : 60106, e = b2 ? /* @__PURE__ */ Symbol.for("react.fragment") : 60107, f = b2 ? /* @__PURE__ */ Symbol.for("react.strict_mode") : 60108, g = b2 ? /* @__PURE__ */ Symbol.for("react.profiler") : 60114, h = b2 ? /* @__PURE__ */ Symbol.for("react.provider") : 60109, k2 = b2 ? /* @__PURE__ */ Symbol.for("react.context") : 60110, l3 = b2 ? /* @__PURE__ */ Symbol.for("react.async_mode") : 60111, m2 = b2 ? /* @__PURE__ */ Symbol.for("react.concurrent_mode") : 60111, n = b2 ? /* @__PURE__ */ Symbol.for("react.forward_ref") : 60112, p2 = b2 ? /* @__PURE__ */ Symbol.for("react.suspense") : 60113, q2 = b2 ? /* @__PURE__ */ Symbol.for("react.suspense_list") : 60120, r = b2 ? /* @__PURE__ */ Symbol.for("react.memo") : 60115, t = b2 ? /* @__PURE__ */ Symbol.for("react.lazy") : 60116, v2 = b2 ? /* @__PURE__ */ Symbol.for("react.block") : 60121, w2 = b2 ? /* @__PURE__ */ Symbol.for("react.fundamental") : 60117, x2 = b2 ? /* @__PURE__ */ Symbol.for("react.responder") : 60118, y2 = b2 ? /* @__PURE__ */ Symbol.for("react.scope") : 60119;
   function z2(a) {
     if ("object" === typeof a && null !== a) {
       var u = a.$$typeof;
       switch (u) {
         case c:
           switch (a = a.type, a) {
-            case l:
-            case m:
+            case l3:
+            case m2:
             case e:
             case g:
             case f:
@@ -1411,7 +1411,7 @@ function requireReactIs_production_min() {
               return a;
             default:
               switch (a = a && a.$$typeof, a) {
-                case k:
+                case k2:
                 case n:
                 case t:
                 case r:
@@ -1427,11 +1427,11 @@ function requireReactIs_production_min() {
     }
   }
   function A(a) {
-    return z2(a) === m;
+    return z2(a) === m2;
   }
-  reactIs_production_min.AsyncMode = l;
-  reactIs_production_min.ConcurrentMode = m;
-  reactIs_production_min.ContextConsumer = k;
+  reactIs_production_min.AsyncMode = l3;
+  reactIs_production_min.ConcurrentMode = m2;
+  reactIs_production_min.ContextConsumer = k2;
   reactIs_production_min.ContextProvider = h;
   reactIs_production_min.Element = c;
   reactIs_production_min.ForwardRef = n;
@@ -1443,11 +1443,11 @@ function requireReactIs_production_min() {
   reactIs_production_min.StrictMode = f;
   reactIs_production_min.Suspense = p2;
   reactIs_production_min.isAsyncMode = function(a) {
-    return A(a) || z2(a) === l;
+    return A(a) || z2(a) === l3;
   };
   reactIs_production_min.isConcurrentMode = A;
   reactIs_production_min.isContextConsumer = function(a) {
-    return z2(a) === k;
+    return z2(a) === k2;
   };
   reactIs_production_min.isContextProvider = function(a) {
     return z2(a) === h;
@@ -1480,7 +1480,7 @@ function requireReactIs_production_min() {
     return z2(a) === p2;
   };
   reactIs_production_min.isValidElementType = function(a) {
-    return "string" === typeof a || "function" === typeof a || a === e || a === m || a === g || a === f || a === p2 || a === q || "object" === typeof a && null !== a && (a.$$typeof === t || a.$$typeof === r || a.$$typeof === h || a.$$typeof === k || a.$$typeof === n || a.$$typeof === w2 || a.$$typeof === x || a.$$typeof === y || a.$$typeof === v2);
+    return "string" === typeof a || "function" === typeof a || a === e || a === m2 || a === g || a === f || a === p2 || a === q2 || "object" === typeof a && null !== a && (a.$$typeof === t || a.$$typeof === r || a.$$typeof === h || a.$$typeof === k2 || a.$$typeof === n || a.$$typeof === w2 || a.$$typeof === x2 || a.$$typeof === y2 || a.$$typeof === v2);
   };
   reactIs_production_min.typeOf = z2;
   return reactIs_production_min;
@@ -1729,6 +1729,14 @@ function requireReactPropTypesSecret() {
   ReactPropTypesSecret_1 = ReactPropTypesSecret;
   return ReactPropTypesSecret_1;
 }
+var has;
+var hasRequiredHas;
+function requireHas() {
+  if (hasRequiredHas) return has;
+  hasRequiredHas = 1;
+  has = Function.call.bind(Object.prototype.hasOwnProperty);
+  return has;
+}
 var checkPropTypes_1;
 var hasRequiredCheckPropTypes;
 function requireCheckPropTypes() {
@@ -1737,9 +1745,9 @@ function requireCheckPropTypes() {
   var printWarning = function() {
   };
   if (process.env.NODE_ENV !== "production") {
-    var ReactPropTypesSecret = requireReactPropTypesSecret();
+    var ReactPropTypesSecret = /* @__PURE__ */ requireReactPropTypesSecret();
     var loggedTypeFailures = {};
-    var has2 = Function.call.bind(Object.prototype.hasOwnProperty);
+    var has2 = /* @__PURE__ */ requireHas();
     printWarning = function(text) {
       var message = "Warning: " + text;
       if (typeof console !== "undefined") {
@@ -1747,7 +1755,7 @@ function requireCheckPropTypes() {
       }
       try {
         throw new Error(message);
-      } catch (x) {
+      } catch (x2) {
       }
     };
   }
@@ -1759,7 +1767,7 @@ function requireCheckPropTypes() {
           try {
             if (typeof typeSpecs[typeSpecName] !== "function") {
               var err = Error(
-                (componentName || "React class") + ": " + location + " type `" + typeSpecName + "` is invalid; it must be a function, usually from the `prop-types` package, but received `" + typeof typeSpecs[typeSpecName] + "`."
+                (componentName || "React class") + ": " + location + " type `" + typeSpecName + "` is invalid; it must be a function, usually from the `prop-types` package, but received `" + typeof typeSpecs[typeSpecName] + "`.This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`."
               );
               err.name = "Invariant Violation";
               throw err;
@@ -1799,9 +1807,9 @@ function requireFactoryWithTypeCheckers() {
   hasRequiredFactoryWithTypeCheckers = 1;
   var ReactIs = requireReactIs();
   var assign = requireObjectAssign();
-  var ReactPropTypesSecret = requireReactPropTypesSecret();
-  var checkPropTypes = requireCheckPropTypes();
-  var has2 = Function.call.bind(Object.prototype.hasOwnProperty);
+  var ReactPropTypesSecret = /* @__PURE__ */ requireReactPropTypesSecret();
+  var has2 = /* @__PURE__ */ requireHas();
+  var checkPropTypes = /* @__PURE__ */ requireCheckPropTypes();
   var printWarning = function() {
   };
   if (process.env.NODE_ENV !== "production") {
@@ -1812,7 +1820,7 @@ function requireFactoryWithTypeCheckers() {
       }
       try {
         throw new Error(message);
-      } catch (x) {
+      } catch (x2) {
       }
     };
   }
@@ -1831,6 +1839,7 @@ function requireFactoryWithTypeCheckers() {
     var ANONYMOUS = "<<anonymous>>";
     var ReactPropTypes = {
       array: createPrimitiveTypeChecker("array"),
+      bigint: createPrimitiveTypeChecker("bigint"),
       bool: createPrimitiveTypeChecker("boolean"),
       func: createPrimitiveTypeChecker("function"),
       number: createPrimitiveTypeChecker("number"),
@@ -1849,15 +1858,16 @@ function requireFactoryWithTypeCheckers() {
       shape: createShapeTypeChecker,
       exact: createStrictShapeTypeChecker
     };
-    function is(x, y) {
-      if (x === y) {
-        return x !== 0 || 1 / x === 1 / y;
+    function is(x2, y2) {
+      if (x2 === y2) {
+        return x2 !== 0 || 1 / x2 === 1 / y2;
       } else {
-        return x !== x && y !== y;
+        return x2 !== x2 && y2 !== y2;
       }
     }
-    function PropTypeError(message) {
+    function PropTypeError(message, data) {
       this.message = message;
+      this.data = data && typeof data === "object" ? data : {};
       this.stack = "";
     }
     PropTypeError.prototype = Error.prototype;
@@ -1910,7 +1920,10 @@ function requireFactoryWithTypeCheckers() {
         var propType = getPropType(propValue);
         if (propType !== expectedType) {
           var preciseType = getPreciseType(propValue);
-          return new PropTypeError("Invalid " + location + " `" + propFullName + "` of type " + ("`" + preciseType + "` supplied to `" + componentName + "`, expected ") + ("`" + expectedType + "`."));
+          return new PropTypeError(
+            "Invalid " + location + " `" + propFullName + "` of type " + ("`" + preciseType + "` supplied to `" + componentName + "`, expected ") + ("`" + expectedType + "`."),
+            { expectedType }
+          );
         }
         return null;
       }
@@ -2040,13 +2053,19 @@ function requireFactoryWithTypeCheckers() {
         }
       }
       function validate(props, propName, componentName, location, propFullName) {
+        var expectedTypes = [];
         for (var i2 = 0; i2 < arrayOfTypeCheckers.length; i2++) {
           var checker2 = arrayOfTypeCheckers[i2];
-          if (checker2(props, propName, componentName, location, propFullName, ReactPropTypesSecret) == null) {
+          var checkerResult = checker2(props, propName, componentName, location, propFullName, ReactPropTypesSecret);
+          if (checkerResult == null) {
             return null;
           }
+          if (checkerResult.data && has2(checkerResult.data, "expectedType")) {
+            expectedTypes.push(checkerResult.data.expectedType);
+          }
         }
-        return new PropTypeError("Invalid " + location + " `" + propFullName + "` supplied to " + ("`" + componentName + "`."));
+        var expectedTypesMessage = expectedTypes.length > 0 ? ", expected one of type [" + expectedTypes.join(", ") + "]" : "";
+        return new PropTypeError("Invalid " + location + " `" + propFullName + "` supplied to " + ("`" + componentName + "`" + expectedTypesMessage + "."));
       }
       return createChainableTypeChecker(validate);
     }
@@ -2059,6 +2078,11 @@ function requireFactoryWithTypeCheckers() {
       }
       return createChainableTypeChecker(validate);
     }
+    function invalidValidatorError(componentName, location, propFullName, key, type) {
+      return new PropTypeError(
+        (componentName || "React class") + ": " + location + " type `" + propFullName + "." + key + "` is invalid; it must be a function, usually from the `prop-types` package, but received `" + type + "`."
+      );
+    }
     function createShapeTypeChecker(shapeTypes) {
       function validate(props, propName, componentName, location, propFullName) {
         var propValue = props[propName];
@@ -2068,8 +2092,8 @@ function requireFactoryWithTypeCheckers() {
         }
         for (var key in shapeTypes) {
           var checker = shapeTypes[key];
-          if (!checker) {
-            continue;
+          if (typeof checker !== "function") {
+            return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
           }
           var error = checker(propValue, key, componentName, location, propFullName + "." + key, ReactPropTypesSecret);
           if (error) {
@@ -2090,6 +2114,9 @@ function requireFactoryWithTypeCheckers() {
         var allKeys = assign({}, props[propName], shapeTypes);
         for (var key in allKeys) {
           var checker = shapeTypes[key];
+          if (has2(shapeTypes, key) && typeof checker !== "function") {
+            return invalidValidatorError(componentName, location, propFullName, key, getPreciseType(checker));
+          }
           if (!checker) {
             return new PropTypeError(
               "Invalid " + location + " `" + propFullName + "` key `" + key + "` supplied to `" + componentName + "`.\nBad object: " + JSON.stringify(props[propName], null, "  ") + "\nValid keys: " + JSON.stringify(Object.keys(shapeTypes), null, "  ")
@@ -2221,7 +2248,7 @@ var hasRequiredFactoryWithThrowingShims;
 function requireFactoryWithThrowingShims() {
   if (hasRequiredFactoryWithThrowingShims) return factoryWithThrowingShims;
   hasRequiredFactoryWithThrowingShims = 1;
-  var ReactPropTypesSecret = requireReactPropTypesSecret();
+  var ReactPropTypesSecret = /* @__PURE__ */ requireReactPropTypesSecret();
   function emptyFunction() {
   }
   function emptyFunctionWithReset() {
@@ -2244,6 +2271,7 @@ function requireFactoryWithThrowingShims() {
     }
     var ReactPropTypes = {
       array: shim,
+      bigint: shim,
       bool: shim,
       func: shim,
       number: shim,
@@ -2276,9 +2304,9 @@ function requirePropTypes() {
   if (process.env.NODE_ENV !== "production") {
     var ReactIs = requireReactIs();
     var throwOnDirectAccess = true;
-    propTypes.exports = requireFactoryWithTypeCheckers()(ReactIs.isElement, throwOnDirectAccess);
+    propTypes.exports = /* @__PURE__ */ requireFactoryWithTypeCheckers()(ReactIs.isElement, throwOnDirectAccess);
   } else {
-    propTypes.exports = requireFactoryWithThrowingShims()();
+    propTypes.exports = /* @__PURE__ */ requireFactoryWithThrowingShims()();
   }
   return propTypes.exports;
 }
@@ -2286,16 +2314,16 @@ var hasRequiredReactSwipe;
 function requireReactSwipe() {
   if (hasRequiredReactSwipe) return reactSwipe;
   hasRequiredReactSwipe = 1;
-  (function(exports) {
+  (function(exports$1) {
     (function(global2, factory) {
       {
-        factory(exports, React__default, requirePropTypes());
+        factory(exports$1, React__default, /* @__PURE__ */ requirePropTypes());
       }
-    })(reactSwipe, function(exports2, _react, _propTypes) {
-      Object.defineProperty(exports2, "__esModule", {
+    })(reactSwipe, function(exports$12, _react, _propTypes) {
+      Object.defineProperty(exports$12, "__esModule", {
         value: true
       });
-      exports2.setHasSupportToCaptureOption = setHasSupportToCaptureOption;
+      exports$12.setHasSupportToCaptureOption = setHasSupportToCaptureOption;
       var _react2 = _interopRequireDefault(_react);
       var _propTypes2 = _interopRequireDefault(_propTypes);
       function _interopRequireDefault(obj) {
@@ -2454,8 +2482,8 @@ function requireReactSwipe() {
         }, {
           key: "_handleSwipeStart",
           value: function _handleSwipeStart(event) {
-            var _getPosition = getPosition(event), x = _getPosition.x, y = _getPosition.y;
-            this.moveStart = { x, y };
+            var _getPosition = getPosition(event), x2 = _getPosition.x, y2 = _getPosition.y;
+            this.moveStart = { x: x2, y: y2 };
             this.props.onSwipeStart(event);
           }
         }, {
@@ -2464,9 +2492,9 @@ function requireReactSwipe() {
             if (!this.moveStart) {
               return;
             }
-            var _getPosition2 = getPosition(event), x = _getPosition2.x, y = _getPosition2.y;
-            var deltaX = x - this.moveStart.x;
-            var deltaY = y - this.moveStart.y;
+            var _getPosition2 = getPosition(event), x2 = _getPosition2.x, y2 = _getPosition2.y;
+            var deltaX = x2 - this.moveStart.x;
+            var deltaY = y2 - this.moveStart.y;
             this.moving = true;
             var shouldPreventDefault = this.props.onSwipeMove({
               x: deltaX,
@@ -2575,7 +2603,7 @@ function requireReactSwipe() {
         },
         tolerance: 0
       };
-      exports2.default = ReactSwipe;
+      exports$12.default = ReactSwipe;
     });
   })(reactSwipe);
   return reactSwipe;
@@ -2584,13 +2612,13 @@ var hasRequiredLib;
 function requireLib() {
   if (hasRequiredLib) return lib;
   hasRequiredLib = 1;
-  (function(exports) {
+  (function(exports$1) {
     (function(global2, factory) {
       {
-        factory(exports, requireReactSwipe());
+        factory(exports$1, requireReactSwipe());
       }
-    })(lib, function(exports2, _reactSwipe) {
-      Object.defineProperty(exports2, "__esModule", {
+    })(lib, function(exports$12, _reactSwipe) {
+      Object.defineProperty(exports$12, "__esModule", {
         value: true
       });
       var _reactSwipe2 = _interopRequireDefault(_reactSwipe);
@@ -2599,7 +2627,7 @@ function requireLib() {
           default: obj
         };
       }
-      exports2.default = _reactSwipe2.default;
+      exports$12.default = _reactSwipe2.default;
     });
   })(lib);
   return lib;
@@ -2614,33 +2642,44 @@ function requireClassnames() {
     (function() {
       var hasOwn = {}.hasOwnProperty;
       function classNames() {
-        var classes = [];
+        var classes = "";
         for (var i = 0; i < arguments.length; i++) {
           var arg = arguments[i];
-          if (!arg) continue;
-          var argType = typeof arg;
-          if (argType === "string" || argType === "number") {
-            classes.push(arg);
-          } else if (Array.isArray(arg)) {
-            if (arg.length) {
-              var inner = classNames.apply(null, arg);
-              if (inner) {
-                classes.push(inner);
-              }
-            }
-          } else if (argType === "object") {
-            if (arg.toString === Object.prototype.toString) {
-              for (var key in arg) {
-                if (hasOwn.call(arg, key) && arg[key]) {
-                  classes.push(key);
-                }
-              }
-            } else {
-              classes.push(arg.toString());
-            }
+          if (arg) {
+            classes = appendClass(classes, parseValue(arg));
           }
         }
-        return classes.join(" ");
+        return classes;
+      }
+      function parseValue(arg) {
+        if (typeof arg === "string" || typeof arg === "number") {
+          return arg;
+        }
+        if (typeof arg !== "object") {
+          return "";
+        }
+        if (Array.isArray(arg)) {
+          return classNames.apply(null, arg);
+        }
+        if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes("[native code]")) {
+          return arg.toString();
+        }
+        var classes = "";
+        for (var key in arg) {
+          if (hasOwn.call(arg, key) && arg[key]) {
+            classes = appendClass(classes, key);
+          }
+        }
+        return classes;
+      }
+      function appendClass(value, newClass) {
+        if (!newClass) {
+          return value;
+        }
+        if (value) {
+          return value + " " + newClass;
+        }
+        return value + newClass;
       }
       if (module.exports) {
         classNames.default = classNames;
@@ -4297,23 +4336,23 @@ var hasRequiredJs;
 function requireJs() {
   if (hasRequiredJs) return js;
   hasRequiredJs = 1;
-  (function(exports) {
-    Object.defineProperty(exports, "__esModule", {
+  (function(exports$1) {
+    Object.defineProperty(exports$1, "__esModule", {
       value: true
     });
-    Object.defineProperty(exports, "Carousel", {
+    Object.defineProperty(exports$1, "Carousel", {
       enumerable: true,
       get: function get() {
         return _Carousel.default;
       }
     });
-    Object.defineProperty(exports, "CarouselProps", {
+    Object.defineProperty(exports$1, "CarouselProps", {
       enumerable: true,
       get: function get() {
         return _types.CarouselProps;
       }
     });
-    Object.defineProperty(exports, "Thumbs", {
+    Object.defineProperty(exports$1, "Thumbs", {
       enumerable: true,
       get: function get() {
         return _Thumbs.default;
@@ -4503,23 +4542,23 @@ function resolveEventTarget(target) {
   return target;
 }
 function useEventListener(eventName, handler, element, passive, t0) {
-  const $ = compilerRuntimeExports.c(8);
+  const $2 = compilerRuntimeExports.c(8);
   const capture = t0 === void 0 ? false : t0;
   const savedHandler = React.useRef(void 0);
   let t1;
-  if ($[0] !== handler) {
+  if ($2[0] !== handler) {
     t1 = () => {
       savedHandler.current = handler;
     };
-    $[0] = handler;
-    $[1] = t1;
+    $2[0] = handler;
+    $2[1] = t1;
   } else {
-    t1 = $[1];
+    t1 = $2[1];
   }
   React.useEffect(t1);
   let t2;
   let t3;
-  if ($[2] !== capture || $[3] !== element || $[4] !== eventName || $[5] !== passive) {
+  if ($2[2] !== capture || $2[3] !== element || $2[4] !== eventName || $2[5] !== passive) {
     t2 = () => {
       const resolved = resolveEventTarget(element);
       if (resolved === null || resolved.addEventListener === void 0) {
@@ -4541,15 +4580,15 @@ function useEventListener(eventName, handler, element, passive, t0) {
       };
     };
     t3 = [eventName, element, passive, capture];
-    $[2] = capture;
-    $[3] = element;
-    $[4] = eventName;
-    $[5] = passive;
-    $[6] = t2;
-    $[7] = t3;
+    $2[2] = capture;
+    $2[3] = element;
+    $2[4] = eventName;
+    $2[5] = passive;
+    $2[6] = t2;
+    $2[7] = t3;
   } else {
-    t2 = $[6];
-    t3 = $[7];
+    t2 = $2[6];
+    t3 = $2[7];
   }
   React.useEffect(t2, t3);
 }
@@ -4577,94 +4616,94 @@ const getSquareXPosFromAlign = (alignment, containerX, containerWidth, horizonta
   }
 };
 const getSquareWidth = (maxSize, containerHeight, verticalPadding) => Math.min(maxSize, containerHeight - verticalPadding * 2);
-const pointIsWithinBB = (x, y, bb) => bb.x1 <= x && x <= bb.x2 && bb.y1 <= y && y <= bb.y2;
+const pointIsWithinBB = (x2, y2, bb) => bb.x1 <= x2 && x2 <= bb.x2 && bb.y1 <= y2 && y2 <= bb.y2;
 const EditPencil = (props) => {
   var _props$fgColor;
-  const $ = compilerRuntimeExports.c(2);
+  const $2 = compilerRuntimeExports.c(2);
   const fg = (_props$fgColor = props.fgColor) !== null && _props$fgColor !== void 0 ? _props$fgColor : "currentColor";
   let t0;
-  if ($[0] !== fg) {
+  if ($2[0] !== fg) {
     t0 = /* @__PURE__ */ jsxs("svg", { viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: [
       /* @__PURE__ */ jsx("path", { d: "M12.7073 7.05029C7.87391 11.8837 10.4544 9.30322 6.03024 13.7273C5.77392 13.9836 5.58981 14.3071 5.50189 14.6587L4.52521 18.5655C4.38789 19.1148 4.88543 19.6123 5.43472 19.475L9.34146 18.4983C9.69313 18.4104 10.0143 18.2286 10.2706 17.9722L16.9499 11.2929", stroke: fg, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round", fill: "none", vectorEffect: "non-scaling-stroke" }),
       /* @__PURE__ */ jsx("path", { d: "M20.4854 4.92901L19.0712 3.5148C18.2901 2.73375 17.0238 2.73375 16.2428 3.5148L14.475 5.28257C15.5326 7.71912 16.4736 8.6278 18.7176 9.52521L20.4854 7.75744C21.2665 6.97639 21.2665 5.71006 20.4854 4.92901Z", stroke: fg, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round", fill: "none", vectorEffect: "non-scaling-stroke" })
     ] });
-    $[0] = fg;
-    $[1] = t0;
+    $2[0] = fg;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   return t0;
 };
 const Checkmark = (props) => {
   var _props$fgColor2;
-  const $ = compilerRuntimeExports.c(2);
+  const $2 = compilerRuntimeExports.c(2);
   const fg = (_props$fgColor2 = props.fgColor) !== null && _props$fgColor2 !== void 0 ? _props$fgColor2 : "currentColor";
   let t0;
-  if ($[0] !== fg) {
+  if ($2[0] !== fg) {
     t0 = /* @__PURE__ */ jsx("svg", { viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: /* @__PURE__ */ jsx("path", { d: "M19 6L10.3802 17L5.34071 11.8758", vectorEffect: "non-scaling-stroke", stroke: fg, strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round" }) });
-    $[0] = fg;
-    $[1] = t0;
+    $2[0] = fg;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   return t0;
 };
 function useDebouncedMemo(factory, deps, time) {
-  const $ = compilerRuntimeExports.c(8);
+  const $2 = compilerRuntimeExports.c(8);
   const [state, setState] = React.useState(factory);
   const factoryRef = React.useRef(factory);
   let t0;
-  if ($[0] !== factory) {
+  if ($2[0] !== factory) {
     t0 = () => {
       factoryRef.current = factory;
     };
-    $[0] = factory;
-    $[1] = t0;
+    $2[0] = factory;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   React.useEffect(t0);
   let t1;
-  if ($[2] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[2] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t1 = (fn) => {
       setState(() => fn());
     };
-    $[2] = t1;
+    $2[2] = t1;
   } else {
-    t1 = $[2];
+    t1 = $2[2];
   }
   let t2;
-  if ($[3] !== time) {
+  if ($2[3] !== time) {
     t2 = debounce(t1, time);
-    $[3] = time;
-    $[4] = t2;
+    $2[3] = time;
+    $2[4] = t2;
   } else {
-    t2 = $[4];
+    t2 = $2[4];
   }
   const debouncedSetState = React.useRef(t2);
   let t3;
-  if ($[5] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[5] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t3 = () => {
       debouncedSetState.current(() => factoryRef.current());
     };
-    $[5] = t3;
+    $2[5] = t3;
   } else {
-    t3 = $[5];
+    t3 = $2[5];
   }
   React.useLayoutEffect(t3, deps);
   let t4;
   let t5;
-  if ($[6] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[6] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t4 = () => () => {
       var _cancel, _ref;
       (_cancel = (_ref = debouncedSetState.current).cancel) === null || _cancel === void 0 || _cancel.call(_ref);
     };
     t5 = [];
-    $[6] = t4;
-    $[7] = t5;
+    $2[6] = t4;
+    $2[7] = t5;
   } else {
-    t4 = $[6];
-    t5 = $[7];
+    t4 = $2[6];
+    t5 = $2[7];
   }
   React.useEffect(t4, t5);
   return state;
@@ -4754,7 +4793,7 @@ function useDeepMemo(value) {
   return ref.current;
 }
 const ImageOverlayEditor = (p2) => {
-  const $ = compilerRuntimeExports.c(30);
+  const $2 = compilerRuntimeExports.c(30);
   const {
     urls,
     canWrite,
@@ -4771,7 +4810,7 @@ const ImageOverlayEditor = (p2) => {
   let t5;
   let t6;
   let t7;
-  if ($[0] !== renderImage || $[1] !== urls) {
+  if ($2[0] !== renderImage || $2[1] !== urls) {
     t7 = /* @__PURE__ */ Symbol.for("react.early_return_sentinel");
     bb0: {
       const filtered = urls.filter(_temp$b);
@@ -4789,2248 +4828,1182 @@ const ImageOverlayEditor = (p2) => {
       t3 = allowMove;
       t4 = allowMove;
       let t82;
-      if ($[12] !== renderImage) {
+      if ($2[12] !== renderImage) {
         t82 = (url) => {
           var _renderImage;
           const innerContent = (_renderImage = renderImage === null || renderImage === void 0 ? void 0 : renderImage(url)) !== null && _renderImage !== void 0 ? _renderImage : /* @__PURE__ */ jsx("img", { draggable: false, src: url });
           return /* @__PURE__ */ jsx("div", { className: "gdg-centering-container", children: innerContent }, url);
         };
-        $[12] = renderImage;
-        $[13] = t82;
+        $2[12] = renderImage;
+        $2[13] = t82;
       } else {
-        t82 = $[13];
+        t82 = $2[13];
       }
       t5 = filtered.map(t82);
     }
-    $[0] = renderImage;
-    $[1] = urls;
-    $[2] = T0;
-    $[3] = T1;
-    $[4] = t0;
-    $[5] = t1;
-    $[6] = t2;
-    $[7] = t3;
-    $[8] = t4;
-    $[9] = t5;
-    $[10] = t6;
-    $[11] = t7;
+    $2[0] = renderImage;
+    $2[1] = urls;
+    $2[2] = T0;
+    $2[3] = T1;
+    $2[4] = t0;
+    $2[5] = t1;
+    $2[6] = t2;
+    $2[7] = t3;
+    $2[8] = t4;
+    $2[9] = t5;
+    $2[10] = t6;
+    $2[11] = t7;
   } else {
-    T0 = $[2];
-    T1 = $[3];
-    t0 = $[4];
-    t1 = $[5];
-    t2 = $[6];
-    t3 = $[7];
-    t4 = $[8];
-    t5 = $[9];
-    t6 = $[10];
-    t7 = $[11];
+    T0 = $2[2];
+    T1 = $2[3];
+    t0 = $2[4];
+    t1 = $2[5];
+    t2 = $2[6];
+    t3 = $2[7];
+    t4 = $2[8];
+    t5 = $2[9];
+    t6 = $2[10];
+    t7 = $2[11];
   }
   if (t7 !== /* @__PURE__ */ Symbol.for("react.early_return_sentinel")) {
     return t7;
   }
   let t8;
-  if ($[14] !== T0 || $[15] !== t0 || $[16] !== t1 || $[17] !== t2 || $[18] !== t3 || $[19] !== t4 || $[20] !== t5) {
+  if ($2[14] !== T0 || $2[15] !== t0 || $2[16] !== t1 || $2[17] !== t2 || $2[18] !== t3 || $2[19] !== t4 || $2[20] !== t5) {
     t8 = /* @__PURE__ */ jsx(T0, { showArrows: t0, showThumbs: t1, swipeable: t2, emulateTouch: t3, infiniteLoop: t4, children: t5 });
-    $[14] = T0;
-    $[15] = t0;
-    $[16] = t1;
-    $[17] = t2;
-    $[18] = t3;
-    $[19] = t4;
-    $[20] = t5;
-    $[21] = t8;
+    $2[14] = T0;
+    $2[15] = t0;
+    $2[16] = t1;
+    $2[17] = t2;
+    $2[18] = t3;
+    $2[19] = t4;
+    $2[20] = t5;
+    $2[21] = t8;
   } else {
-    t8 = $[21];
+    t8 = $2[21];
   }
   let t9;
-  if ($[22] !== canWrite || $[23] !== onEditClick) {
+  if ($2[22] !== canWrite || $2[23] !== onEditClick) {
     t9 = canWrite && onEditClick && /* @__PURE__ */ jsx("button", { className: "gdg-edit-icon", onClick: onEditClick, children: /* @__PURE__ */ jsx(EditPencil, {}) });
-    $[22] = canWrite;
-    $[23] = onEditClick;
-    $[24] = t9;
+    $2[22] = canWrite;
+    $2[23] = onEditClick;
+    $2[24] = t9;
   } else {
-    t9 = $[24];
+    t9 = $2[24];
   }
   let t10;
-  if ($[25] !== T1 || $[26] !== t6 || $[27] !== t8 || $[28] !== t9) {
+  if ($2[25] !== T1 || $2[26] !== t6 || $2[27] !== t8 || $2[28] !== t9) {
     t10 = /* @__PURE__ */ jsxs(T1, { "data-testid": t6, children: [
       t8,
       t9
     ] });
-    $[25] = T1;
-    $[26] = t6;
-    $[27] = t8;
-    $[28] = t9;
-    $[29] = t10;
+    $2[25] = T1;
+    $2[26] = t6;
+    $2[27] = t8;
+    $2[28] = t9;
+    $2[29] = t10;
   } else {
-    t10 = $[29];
+    t10 = $2[29];
   }
   return t10;
 };
 function _temp$b(u) {
   return u !== "";
 }
-function getDefaults() {
-  return {
-    async: false,
-    baseUrl: null,
-    breaks: false,
-    extensions: null,
-    gfm: true,
-    headerIds: true,
-    headerPrefix: "",
-    highlight: null,
-    hooks: null,
-    langPrefix: "language-",
-    mangle: true,
-    pedantic: false,
-    renderer: null,
-    sanitize: false,
-    sanitizer: null,
-    silent: false,
-    smartypants: false,
-    tokenizer: null,
-    walkTokens: null,
-    xhtml: false
-  };
+function L() {
+  return { async: false, breaks: false, extensions: null, gfm: true, hooks: null, pedantic: false, renderer: null, silent: false, tokenizer: null, walkTokens: null };
 }
-let defaults = getDefaults();
-function changeDefaults(newDefaults) {
-  defaults = newDefaults;
+var T$1 = L();
+function G(l3) {
+  T$1 = l3;
 }
-const escapeTest = /[&<>"']/;
-const escapeReplace = new RegExp(escapeTest.source, "g");
-const escapeTestNoEncode = /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/;
-const escapeReplaceNoEncode = new RegExp(escapeTestNoEncode.source, "g");
-const escapeReplacements = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
-  "'": "&#39;"
-};
-const getEscapeReplacement = (ch) => escapeReplacements[ch];
-function escape(html, encode) {
-  if (encode) {
-    if (escapeTest.test(html)) {
-      return html.replace(escapeReplace, getEscapeReplacement);
-    }
-  } else {
-    if (escapeTestNoEncode.test(html)) {
-      return html.replace(escapeReplaceNoEncode, getEscapeReplacement);
-    }
-  }
-  return html;
+var E = { exec: () => null };
+function d$1(l3, e = "") {
+  let t = typeof l3 == "string" ? l3 : l3.source, n = { replace: (r, i) => {
+    let s = typeof i == "string" ? i : i.source;
+    return s = s.replace(m.caret, "$1"), t = t.replace(r, s), n;
+  }, getRegex: () => new RegExp(t, e) };
+  return n;
 }
-const unescapeTest = /&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig;
-function unescape(html) {
-  return html.replace(unescapeTest, (_2, n) => {
-    n = n.toLowerCase();
-    if (n === "colon") return ":";
-    if (n.charAt(0) === "#") {
-      return n.charAt(1) === "x" ? String.fromCharCode(parseInt(n.substring(2), 16)) : String.fromCharCode(+n.substring(1));
-    }
-    return "";
-  });
-}
-const caret = /(^|[^\[])\^/g;
-function edit(regex, opt) {
-  regex = typeof regex === "string" ? regex : regex.source;
-  opt = opt || "";
-  const obj = {
-    replace: (name, val) => {
-      val = val.source || val;
-      val = val.replace(caret, "$1");
-      regex = regex.replace(name, val);
-      return obj;
-    },
-    getRegex: () => {
-      return new RegExp(regex, opt);
-    }
-  };
-  return obj;
-}
-const nonWordAndColonTest = /[^\w:]/g;
-const originIndependentUrl = /^$|^[a-z][a-z0-9+.-]*:|^[?#]/i;
-function cleanUrl(sanitize, base, href) {
-  if (sanitize) {
-    let prot;
-    try {
-      prot = decodeURIComponent(unescape(href)).replace(nonWordAndColonTest, "").toLowerCase();
-    } catch (e) {
-      return null;
-    }
-    if (prot.indexOf("javascript:") === 0 || prot.indexOf("vbscript:") === 0 || prot.indexOf("data:") === 0) {
-      return null;
-    }
-  }
-  if (base && !originIndependentUrl.test(href)) {
-    href = resolveUrl(base, href);
-  }
+var be = (() => {
   try {
-    href = encodeURI(href).replace(/%25/g, "%");
-  } catch (e) {
+    return !!new RegExp("(?<=1)(?<!1)");
+  } catch {
+    return false;
+  }
+})(), m = { codeRemoveIndent: /^(?: {1,4}| {0,3}\t)/gm, outputLinkReplace: /\\([\[\]])/g, indentCodeCompensation: /^(\s+)(?:```)/, beginningSpace: /^\s+/, endingHash: /#$/, startingSpaceChar: /^ /, endingSpaceChar: / $/, nonSpaceChar: /[^ ]/, newLineCharGlobal: /\n/g, tabCharGlobal: /\t/g, multipleSpaceGlobal: /\s+/g, blankLine: /^[ \t]*$/, doubleBlankLine: /\n[ \t]*\n[ \t]*$/, blockquoteStart: /^ {0,3}>/, blockquoteSetextReplace: /\n {0,3}((?:=+|-+) *)(?=\n|$)/g, blockquoteSetextReplace2: /^ {0,3}>[ \t]?/gm, listReplaceTabs: /^\t+/, listReplaceNesting: /^ {1,4}(?=( {4})*[^ ])/g, listIsTask: /^\[[ xX]\] /, listReplaceTask: /^\[[ xX]\] +/, anyLine: /\n.*\n/, hrefBrackets: /^<(.*)>$/, tableDelimiter: /[:|]/, tableAlignChars: /^\||\| *$/g, tableRowBlankLine: /\n[ \t]*$/, tableAlignRight: /^ *-+: *$/, tableAlignCenter: /^ *:-+: *$/, tableAlignLeft: /^ *:-+ *$/, startATag: /^<a /i, endATag: /^<\/a>/i, startPreScriptTag: /^<(pre|code|kbd|script)(\s|>)/i, endPreScriptTag: /^<\/(pre|code|kbd|script)(\s|>)/i, startAngleBracket: /^</, endAngleBracket: />$/, pedanticHrefTitle: /^([^'"]*[^\s])\s+(['"])(.*)\2/, unicodeAlphaNumeric: /[\p{L}\p{N}]/u, escapeTest: /[&<>"']/, escapeReplace: /[&<>"']/g, escapeTestNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/, escapeReplaceNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/g, unescapeTest: /&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig, caret: /(^|[^\[])\^/g, percentDecode: /%25/g, findPipe: /\|/g, splitPipe: / \|/, slashPipe: /\\\|/g, carriageReturn: /\r\n|\r/g, spaceLine: /^ +$/gm, notSpaceStart: /^\S*/, endingNewline: /\n$/, listItemRegex: (l3) => new RegExp(`^( {0,3}${l3})((?:[	 ][^\\n]*)?(?:\\n|$))`), nextBulletRegex: (l3) => new RegExp(`^ {0,${Math.min(3, l3 - 1)}}(?:[*+-]|\\d{1,9}[.)])((?:[ 	][^\\n]*)?(?:\\n|$))`), hrRegex: (l3) => new RegExp(`^ {0,${Math.min(3, l3 - 1)}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)`), fencesBeginRegex: (l3) => new RegExp(`^ {0,${Math.min(3, l3 - 1)}}(?:\`\`\`|~~~)`), headingBeginRegex: (l3) => new RegExp(`^ {0,${Math.min(3, l3 - 1)}}#`), htmlBeginRegex: (l3) => new RegExp(`^ {0,${Math.min(3, l3 - 1)}}<(?:[a-z].*>|!--)`, "i") }, Re = /^(?:[ \t]*(?:\n|$))+/, Te = /^((?: {4}| {0,3}\t)[^\n]+(?:\n(?:[ \t]*(?:\n|$))*)?)+/, Oe = /^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}\1[~`]* *(?=\n|$)|$)/, I = /^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/, we = /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/, F = /(?:[*+-]|\d{1,9}[.)])/, ie = /^(?!bull |blockCode|fences|blockquote|heading|html|table)((?:.|\n(?!\s*?\n|bull |blockCode|fences|blockquote|heading|html|table))+?)\n {0,3}(=+|-+) *(?:\n+|$)/, oe = d$1(ie).replace(/bull/g, F).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/\|table/g, "").getRegex(), ye = d$1(ie).replace(/bull/g, F).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/table/g, / {0,3}\|?(?:[:\- ]*\|)+[\:\- ]*\n/).getRegex(), j = /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/, Pe = /^[^\n]+/, Q = /(?!\s*\])(?:\\[\s\S]|[^\[\]\\])+/, Se = d$1(/^ {0,3}\[(label)\]: *(?:\n[ \t]*)?([^<\s][^\s]*|<.*?>)(?:(?: +(?:\n[ \t]*)?| *\n[ \t]*)(title))? *(?:\n+|$)/).replace("label", Q).replace("title", /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/).getRegex(), $e = d$1(/^( {0,3}bull)([ \t][^\n]+?)?(?:\n|$)/).replace(/bull/g, F).getRegex(), v$1 = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul", U = /<!--(?:-?>|[\s\S]*?(?:-->|$))/, _e = d$1("^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$))", "i").replace("comment", U).replace("tag", v$1).replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex(), ae = d$1(j).replace("hr", I).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("|table", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", v$1).getRegex(), Le = d$1(/^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/).replace("paragraph", ae).getRegex(), K = { blockquote: Le, code: Te, def: Se, fences: Oe, heading: we, hr: I, html: _e, lheading: oe, list: $e, newline: Re, paragraph: ae, table: E, text: Pe }, re = d$1("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr", I).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("blockquote", " {0,3}>").replace("code", "(?: {4}| {0,3}	)[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", v$1).getRegex(), Me = { ...K, lheading: ye, table: re, paragraph: d$1(j).replace("hr", I).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("table", re).replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", v$1).getRegex() }, ze = { ...K, html: d$1(`^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`).replace("comment", U).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(), def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/, heading: /^(#{1,6})(.*)(?:\n+|$)/, fences: E, lheading: /^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/, paragraph: d$1(j).replace("hr", I).replace("heading", ` *#{1,6} *[^
+]`).replace("lheading", oe).replace("|table", "").replace("blockquote", " {0,3}>").replace("|fences", "").replace("|list", "").replace("|html", "").replace("|tag", "").getRegex() }, Ae = /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/, Ee = /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/, le = /^( {2,}|\\)\n(?!\s*$)/, Ie = /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/, D = /[\p{P}\p{S}]/u, W = /[\s\p{P}\p{S}]/u, ue = /[^\s\p{P}\p{S}]/u, Ce = d$1(/^((?![*_])punctSpace)/, "u").replace(/punctSpace/g, W).getRegex(), pe = /(?!~)[\p{P}\p{S}]/u, Be = /(?!~)[\s\p{P}\p{S}]/u, qe = /(?:[^\s\p{P}\p{S}]|~)/u, ve = d$1(/link|precode-code|html/, "g").replace("link", /\[(?:[^\[\]`]|(?<a>`+)[^`]+\k<a>(?!`))*?\]\((?:\\[\s\S]|[^\\\(\)]|\((?:\\[\s\S]|[^\\\(\)])*\))*\)/).replace("precode-", be ? "(?<!`)()" : "(^^|[^`])").replace("code", /(?<b>`+)[^`]+\k<b>(?!`)/).replace("html", /<(?! )[^<>]*?>/).getRegex(), ce = /^(?:\*+(?:((?!\*)punct)|[^\s*]))|^_+(?:((?!_)punct)|([^\s_]))/, De = d$1(ce, "u").replace(/punct/g, D).getRegex(), He = d$1(ce, "u").replace(/punct/g, pe).getRegex(), he = "^[^_*]*?__[^_*]*?\\*[^_*]*?(?=__)|[^*]+(?=[^*])|(?!\\*)punct(\\*+)(?=[\\s]|$)|notPunctSpace(\\*+)(?!\\*)(?=punctSpace|$)|(?!\\*)punctSpace(\\*+)(?=notPunctSpace)|[\\s](\\*+)(?!\\*)(?=punct)|(?!\\*)punct(\\*+)(?!\\*)(?=punct)|notPunctSpace(\\*+)(?=notPunctSpace)", Ze = d$1(he, "gu").replace(/notPunctSpace/g, ue).replace(/punctSpace/g, W).replace(/punct/g, D).getRegex(), Ge = d$1(he, "gu").replace(/notPunctSpace/g, qe).replace(/punctSpace/g, Be).replace(/punct/g, pe).getRegex(), Ne = d$1("^[^_*]*?\\*\\*[^_*]*?_[^_*]*?(?=\\*\\*)|[^_]+(?=[^_])|(?!_)punct(_+)(?=[\\s]|$)|notPunctSpace(_+)(?!_)(?=punctSpace|$)|(?!_)punctSpace(_+)(?=notPunctSpace)|[\\s](_+)(?!_)(?=punct)|(?!_)punct(_+)(?!_)(?=punct)", "gu").replace(/notPunctSpace/g, ue).replace(/punctSpace/g, W).replace(/punct/g, D).getRegex(), Fe = d$1(/\\(punct)/, "gu").replace(/punct/g, D).getRegex(), je = d$1(/^<(scheme:[^\s\x00-\x1f<>]*|email)>/).replace("scheme", /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/).replace("email", /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/).getRegex(), Qe = d$1(U).replace("(?:-->|$)", "-->").getRegex(), Ue = d$1("^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>").replace("comment", Qe).replace("attribute", /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/).getRegex(), q = /(?:\[(?:\\[\s\S]|[^\[\]\\])*\]|\\[\s\S]|`+[^`]*?`+(?!`)|[^\[\]\\`])*?/, Ke = d$1(/^!?\[(label)\]\(\s*(href)(?:(?:[ \t]*(?:\n[ \t]*)?)(title))?\s*\)/).replace("label", q).replace("href", /<(?:\\.|[^\n<>\\])+>|[^ \t\n\x00-\x1f]*/).replace("title", /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/).getRegex(), de = d$1(/^!?\[(label)\]\[(ref)\]/).replace("label", q).replace("ref", Q).getRegex(), ke = d$1(/^!?\[(ref)\](?:\[\])?/).replace("ref", Q).getRegex(), We = d$1("reflink|nolink(?!\\()", "g").replace("reflink", de).replace("nolink", ke).getRegex(), se = /[hH][tT][tT][pP][sS]?|[fF][tT][pP]/, X = { _backpedal: E, anyPunctuation: Fe, autolink: je, blockSkip: ve, br: le, code: Ee, del: E, emStrongLDelim: De, emStrongRDelimAst: Ze, emStrongRDelimUnd: Ne, escape: Ae, link: Ke, nolink: ke, punctuation: Ce, reflink: de, reflinkSearch: We, tag: Ue, text: Ie, url: E }, Xe = { ...X, link: d$1(/^!?\[(label)\]\((.*?)\)/).replace("label", q).getRegex(), reflink: d$1(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label", q).getRegex() }, N = { ...X, emStrongRDelimAst: Ge, emStrongLDelim: He, url: d$1(/^((?:protocol):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/).replace("protocol", se).replace("email", /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/).getRegex(), _backpedal: /(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/, del: /^(~~?)(?=[^\s~])((?:\\[\s\S]|[^\\])*?(?:\\[\s\S]|[^\s~\\]))\1(?=[^~]|$)/, text: d$1(/^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|protocol:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/).replace("protocol", se).getRegex() }, Je = { ...N, br: d$1(le).replace("{2,}", "*").getRegex(), text: d$1(N.text).replace("\\b_", "\\b_| {2,}\\n").replace(/\{2,\}/g, "*").getRegex() }, C = { normal: K, gfm: Me, pedantic: ze }, M = { normal: X, gfm: N, breaks: Je, pedantic: Xe };
+var Ve = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }, ge = (l3) => Ve[l3];
+function w$1(l3, e) {
+  if (e) {
+    if (m.escapeTest.test(l3)) return l3.replace(m.escapeReplace, ge);
+  } else if (m.escapeTestNoEncode.test(l3)) return l3.replace(m.escapeReplaceNoEncode, ge);
+  return l3;
+}
+function J(l3) {
+  try {
+    l3 = encodeURI(l3).replace(m.percentDecode, "%");
+  } catch {
     return null;
   }
-  return href;
+  return l3;
 }
-const baseUrls = {};
-const justDomain = /^[^:]+:\/*[^/]*$/;
-const protocol = /^([^:]+:)[\s\S]*$/;
-const domain = /^([^:]+:\/*[^/]*)[\s\S]*$/;
-function resolveUrl(base, href) {
-  if (!baseUrls[" " + base]) {
-    if (justDomain.test(base)) {
-      baseUrls[" " + base] = base + "/";
-    } else {
-      baseUrls[" " + base] = rtrim(base, "/", true);
-    }
-  }
-  base = baseUrls[" " + base];
-  const relativeBase = base.indexOf(":") === -1;
-  if (href.substring(0, 2) === "//") {
-    if (relativeBase) {
-      return href;
-    }
-    return base.replace(protocol, "$1") + href;
-  } else if (href.charAt(0) === "/") {
-    if (relativeBase) {
-      return href;
-    }
-    return base.replace(domain, "$1") + href;
-  } else {
-    return base + href;
-  }
+function V(l3, e) {
+  let t = l3.replace(m.findPipe, (i, s, a) => {
+    let o = false, p2 = s;
+    for (; --p2 >= 0 && a[p2] === "\\"; ) o = !o;
+    return o ? "|" : " |";
+  }), n = t.split(m.splitPipe), r = 0;
+  if (n[0].trim() || n.shift(), n.length > 0 && !n.at(-1)?.trim() && n.pop(), e) if (n.length > e) n.splice(e);
+  else for (; n.length < e; ) n.push("");
+  for (; r < n.length; r++) n[r] = n[r].trim().replace(m.slashPipe, "|");
+  return n;
 }
-const noopTest = { exec: function noopTest2() {
-} };
-function splitCells(tableRow, count) {
-  const row = tableRow.replace(/\|/g, (match, offset, str) => {
-    let escaped = false, curr = offset;
-    while (--curr >= 0 && str[curr] === "\\") escaped = !escaped;
-    if (escaped) {
-      return "|";
-    } else {
-      return " |";
-    }
-  }), cells = row.split(/ \|/);
-  let i = 0;
-  if (!cells[0].trim()) {
-    cells.shift();
+function z$1(l3, e, t) {
+  let n = l3.length;
+  if (n === 0) return "";
+  let r = 0;
+  for (; r < n; ) {
+    let i = l3.charAt(n - r - 1);
+    if (i === e && true) r++;
+    else break;
   }
-  if (cells.length > 0 && !cells[cells.length - 1].trim()) {
-    cells.pop();
-  }
-  if (cells.length > count) {
-    cells.splice(count);
-  } else {
-    while (cells.length < count) cells.push("");
-  }
-  for (; i < cells.length; i++) {
-    cells[i] = cells[i].trim().replace(/\\\|/g, "|");
-  }
-  return cells;
+  return l3.slice(0, n - r);
 }
-function rtrim(str, c, invert) {
-  const l = str.length;
-  if (l === 0) {
-    return "";
+function fe(l3, e) {
+  if (l3.indexOf(e[1]) === -1) return -1;
+  let t = 0;
+  for (let n = 0; n < l3.length; n++) if (l3[n] === "\\") n++;
+  else if (l3[n] === e[0]) t++;
+  else if (l3[n] === e[1] && (t--, t < 0)) return n;
+  return t > 0 ? -2 : -1;
+}
+function me(l3, e, t, n, r) {
+  let i = e.href, s = e.title || null, a = l3[1].replace(r.other.outputLinkReplace, "$1");
+  n.state.inLink = true;
+  let o = { type: l3[0].charAt(0) === "!" ? "image" : "link", raw: t, href: i, title: s, text: a, tokens: n.inlineTokens(a) };
+  return n.state.inLink = false, o;
+}
+function Ye(l3, e, t) {
+  let n = l3.match(t.other.indentCodeCompensation);
+  if (n === null) return e;
+  let r = n[1];
+  return e.split(`
+`).map((i) => {
+    let s = i.match(t.other.beginningSpace);
+    if (s === null) return i;
+    let [a] = s;
+    return a.length >= r.length ? i.slice(r.length) : i;
+  }).join(`
+`);
+}
+var y = class {
+  options;
+  rules;
+  lexer;
+  constructor(e) {
+    this.options = e || T$1;
   }
-  let suffLen = 0;
-  while (suffLen < l) {
-    const currChar = str.charAt(l - suffLen - 1);
-    if (currChar === c && !invert) {
-      suffLen++;
-    } else if (currChar !== c && invert) {
-      suffLen++;
-    } else {
-      break;
+  space(e) {
+    let t = this.rules.block.newline.exec(e);
+    if (t && t[0].length > 0) return { type: "space", raw: t[0] };
+  }
+  code(e) {
+    let t = this.rules.block.code.exec(e);
+    if (t) {
+      let n = t[0].replace(this.rules.other.codeRemoveIndent, "");
+      return { type: "code", raw: t[0], codeBlockStyle: "indented", text: this.options.pedantic ? n : z$1(n, `
+`) };
     }
   }
-  return str.slice(0, l - suffLen);
-}
-function findClosingBracket(str, b2) {
-  if (str.indexOf(b2[1]) === -1) {
-    return -1;
+  fences(e) {
+    let t = this.rules.block.fences.exec(e);
+    if (t) {
+      let n = t[0], r = Ye(n, t[3] || "", this.rules);
+      return { type: "code", raw: n, lang: t[2] ? t[2].trim().replace(this.rules.inline.anyPunctuation, "$1") : t[2], text: r };
+    }
   }
-  const l = str.length;
-  let level = 0, i = 0;
-  for (; i < l; i++) {
-    if (str[i] === "\\") {
-      i++;
-    } else if (str[i] === b2[0]) {
-      level++;
-    } else if (str[i] === b2[1]) {
-      level--;
-      if (level < 0) {
-        return i;
+  heading(e) {
+    let t = this.rules.block.heading.exec(e);
+    if (t) {
+      let n = t[2].trim();
+      if (this.rules.other.endingHash.test(n)) {
+        let r = z$1(n, "#");
+        (this.options.pedantic || !r || this.rules.other.endingSpaceChar.test(r)) && (n = r.trim());
       }
+      return { type: "heading", raw: t[0], depth: t[1].length, text: n, tokens: this.lexer.inline(n) };
     }
   }
-  return -1;
-}
-function checkSanitizeDeprecation(opt) {
-  if (opt && opt.sanitize && !opt.silent) {
-    console.warn("marked(): sanitize and sanitizer parameters are deprecated since version 0.7.0, should not be used and will be removed in the future. Read more here: https://marked.js.org/#/USING_ADVANCED.md#options");
+  hr(e) {
+    let t = this.rules.block.hr.exec(e);
+    if (t) return { type: "hr", raw: z$1(t[0], `
+`) };
   }
-}
-function repeatString(pattern, count) {
-  if (count < 1) {
-    return "";
-  }
-  let result = "";
-  while (count > 1) {
-    if (count & 1) {
-      result += pattern;
-    }
-    count >>= 1;
-    pattern += pattern;
-  }
-  return result + pattern;
-}
-function outputLink(cap, link, raw, lexer) {
-  const href = link.href;
-  const title = link.title ? escape(link.title) : null;
-  const text = cap[1].replace(/\\([\[\]])/g, "$1");
-  if (cap[0].charAt(0) !== "!") {
-    lexer.state.inLink = true;
-    const token = {
-      type: "link",
-      raw,
-      href,
-      title,
-      text,
-      tokens: lexer.inlineTokens(text)
-    };
-    lexer.state.inLink = false;
-    return token;
-  }
-  return {
-    type: "image",
-    raw,
-    href,
-    title,
-    text: escape(text)
-  };
-}
-function indentCodeCompensation(raw, text) {
-  const matchIndentToCode = raw.match(/^(\s+)(?:```)/);
-  if (matchIndentToCode === null) {
-    return text;
-  }
-  const indentToCode = matchIndentToCode[1];
-  return text.split("\n").map((node) => {
-    const matchIndentInNode = node.match(/^\s+/);
-    if (matchIndentInNode === null) {
-      return node;
-    }
-    const [indentInNode] = matchIndentInNode;
-    if (indentInNode.length >= indentToCode.length) {
-      return node.slice(indentToCode.length);
-    }
-    return node;
-  }).join("\n");
-}
-class Tokenizer {
-  constructor(options) {
-    this.options = options || defaults;
-  }
-  space(src) {
-    const cap = this.rules.block.newline.exec(src);
-    if (cap && cap[0].length > 0) {
-      return {
-        type: "space",
-        raw: cap[0]
-      };
-    }
-  }
-  code(src) {
-    const cap = this.rules.block.code.exec(src);
-    if (cap) {
-      const text = cap[0].replace(/^ {1,4}/gm, "");
-      return {
-        type: "code",
-        raw: cap[0],
-        codeBlockStyle: "indented",
-        text: !this.options.pedantic ? rtrim(text, "\n") : text
-      };
-    }
-  }
-  fences(src) {
-    const cap = this.rules.block.fences.exec(src);
-    if (cap) {
-      const raw = cap[0];
-      const text = indentCodeCompensation(raw, cap[3] || "");
-      return {
-        type: "code",
-        raw,
-        lang: cap[2] ? cap[2].trim().replace(this.rules.inline._escapes, "$1") : cap[2],
-        text
-      };
-    }
-  }
-  heading(src) {
-    const cap = this.rules.block.heading.exec(src);
-    if (cap) {
-      let text = cap[2].trim();
-      if (/#$/.test(text)) {
-        const trimmed = rtrim(text, "#");
-        if (this.options.pedantic) {
-          text = trimmed.trim();
-        } else if (!trimmed || / $/.test(trimmed)) {
-          text = trimmed.trim();
-        }
-      }
-      return {
-        type: "heading",
-        raw: cap[0],
-        depth: cap[1].length,
-        text,
-        tokens: this.lexer.inline(text)
-      };
-    }
-  }
-  hr(src) {
-    const cap = this.rules.block.hr.exec(src);
-    if (cap) {
-      return {
-        type: "hr",
-        raw: cap[0]
-      };
-    }
-  }
-  blockquote(src) {
-    const cap = this.rules.block.blockquote.exec(src);
-    if (cap) {
-      const text = cap[0].replace(/^ *>[ \t]?/gm, "");
-      const top = this.lexer.state.top;
-      this.lexer.state.top = true;
-      const tokens = this.lexer.blockTokens(text);
-      this.lexer.state.top = top;
-      return {
-        type: "blockquote",
-        raw: cap[0],
-        tokens,
-        text
-      };
-    }
-  }
-  list(src) {
-    let cap = this.rules.block.list.exec(src);
-    if (cap) {
-      let raw, istask, ischecked, indent, i, blankLine, endsWithBlankLine, line, nextLine, rawLine, itemContents, endEarly;
-      let bull = cap[1].trim();
-      const isordered = bull.length > 1;
-      const list = {
-        type: "list",
-        raw: "",
-        ordered: isordered,
-        start: isordered ? +bull.slice(0, -1) : "",
-        loose: false,
-        items: []
-      };
-      bull = isordered ? `\\d{1,9}\\${bull.slice(-1)}` : `\\${bull}`;
-      if (this.options.pedantic) {
-        bull = isordered ? bull : "[*+-]";
-      }
-      const itemRegex = new RegExp(`^( {0,3}${bull})((?:[	 ][^\\n]*)?(?:\\n|$))`);
-      while (src) {
-        endEarly = false;
-        if (!(cap = itemRegex.exec(src))) {
+  blockquote(e) {
+    let t = this.rules.block.blockquote.exec(e);
+    if (t) {
+      let n = z$1(t[0], `
+`).split(`
+`), r = "", i = "", s = [];
+      for (; n.length > 0; ) {
+        let a = false, o = [], p2;
+        for (p2 = 0; p2 < n.length; p2++) if (this.rules.other.blockquoteStart.test(n[p2])) o.push(n[p2]), a = true;
+        else if (!a) o.push(n[p2]);
+        else break;
+        n = n.slice(p2);
+        let u = o.join(`
+`), c = u.replace(this.rules.other.blockquoteSetextReplace, `
+    $1`).replace(this.rules.other.blockquoteSetextReplace2, "");
+        r = r ? `${r}
+${u}` : u, i = i ? `${i}
+${c}` : c;
+        let g = this.lexer.state.top;
+        if (this.lexer.state.top = true, this.lexer.blockTokens(c, s, true), this.lexer.state.top = g, n.length === 0) break;
+        let h = s.at(-1);
+        if (h?.type === "code") break;
+        if (h?.type === "blockquote") {
+          let R2 = h, f = R2.raw + `
+` + n.join(`
+`), O = this.blockquote(f);
+          s[s.length - 1] = O, r = r.substring(0, r.length - R2.raw.length) + O.raw, i = i.substring(0, i.length - R2.text.length) + O.text;
           break;
-        }
-        if (this.rules.block.hr.test(src)) {
-          break;
-        }
-        raw = cap[0];
-        src = src.substring(raw.length);
-        line = cap[2].split("\n", 1)[0].replace(/^\t+/, (t) => " ".repeat(3 * t.length));
-        nextLine = src.split("\n", 1)[0];
-        if (this.options.pedantic) {
-          indent = 2;
-          itemContents = line.trimLeft();
-        } else {
-          indent = cap[2].search(/[^ ]/);
-          indent = indent > 4 ? 1 : indent;
-          itemContents = line.slice(indent);
-          indent += cap[1].length;
-        }
-        blankLine = false;
-        if (!line && /^ *$/.test(nextLine)) {
-          raw += nextLine + "\n";
-          src = src.substring(nextLine.length + 1);
-          endEarly = true;
-        }
-        if (!endEarly) {
-          const nextBulletRegex = new RegExp(`^ {0,${Math.min(3, indent - 1)}}(?:[*+-]|\\d{1,9}[.)])((?:[ 	][^\\n]*)?(?:\\n|$))`);
-          const hrRegex = new RegExp(`^ {0,${Math.min(3, indent - 1)}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)`);
-          const fencesBeginRegex = new RegExp(`^ {0,${Math.min(3, indent - 1)}}(?:\`\`\`|~~~)`);
-          const headingBeginRegex = new RegExp(`^ {0,${Math.min(3, indent - 1)}}#`);
-          while (src) {
-            rawLine = src.split("\n", 1)[0];
-            nextLine = rawLine;
-            if (this.options.pedantic) {
-              nextLine = nextLine.replace(/^ {1,4}(?=( {4})*[^ ])/g, "  ");
-            }
-            if (fencesBeginRegex.test(nextLine)) {
-              break;
-            }
-            if (headingBeginRegex.test(nextLine)) {
-              break;
-            }
-            if (nextBulletRegex.test(nextLine)) {
-              break;
-            }
-            if (hrRegex.test(src)) {
-              break;
-            }
-            if (nextLine.search(/[^ ]/) >= indent || !nextLine.trim()) {
-              itemContents += "\n" + nextLine.slice(indent);
-            } else {
-              if (blankLine) {
-                break;
-              }
-              if (line.search(/[^ ]/) >= 4) {
-                break;
-              }
-              if (fencesBeginRegex.test(line)) {
-                break;
-              }
-              if (headingBeginRegex.test(line)) {
-                break;
-              }
-              if (hrRegex.test(line)) {
-                break;
-              }
-              itemContents += "\n" + nextLine;
-            }
-            if (!blankLine && !nextLine.trim()) {
-              blankLine = true;
-            }
-            raw += rawLine + "\n";
-            src = src.substring(rawLine.length + 1);
-            line = nextLine.slice(indent);
-          }
-        }
-        if (!list.loose) {
-          if (endsWithBlankLine) {
-            list.loose = true;
-          } else if (/\n *\n *$/.test(raw)) {
-            endsWithBlankLine = true;
-          }
-        }
-        if (this.options.gfm) {
-          istask = /^\[[ xX]\] /.exec(itemContents);
-          if (istask) {
-            ischecked = istask[0] !== "[ ] ";
-            itemContents = itemContents.replace(/^\[[ xX]\] +/, "");
-          }
-        }
-        list.items.push({
-          type: "list_item",
-          raw,
-          task: !!istask,
-          checked: ischecked,
-          loose: false,
-          text: itemContents
-        });
-        list.raw += raw;
-      }
-      list.items[list.items.length - 1].raw = raw.trimRight();
-      list.items[list.items.length - 1].text = itemContents.trimRight();
-      list.raw = list.raw.trimRight();
-      const l = list.items.length;
-      for (i = 0; i < l; i++) {
-        this.lexer.state.top = false;
-        list.items[i].tokens = this.lexer.blockTokens(list.items[i].text, []);
-        if (!list.loose) {
-          const spacers = list.items[i].tokens.filter((t) => t.type === "space");
-          const hasMultipleLineBreaks = spacers.length > 0 && spacers.some((t) => /\n.*\n/.test(t.raw));
-          list.loose = hasMultipleLineBreaks;
-        }
-      }
-      if (list.loose) {
-        for (i = 0; i < l; i++) {
-          list.items[i].loose = true;
-        }
-      }
-      return list;
-    }
-  }
-  html(src) {
-    const cap = this.rules.block.html.exec(src);
-    if (cap) {
-      const token = {
-        type: "html",
-        raw: cap[0],
-        pre: !this.options.sanitizer && (cap[1] === "pre" || cap[1] === "script" || cap[1] === "style"),
-        text: cap[0]
-      };
-      if (this.options.sanitize) {
-        const text = this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape(cap[0]);
-        token.type = "paragraph";
-        token.text = text;
-        token.tokens = this.lexer.inline(text);
-      }
-      return token;
-    }
-  }
-  def(src) {
-    const cap = this.rules.block.def.exec(src);
-    if (cap) {
-      const tag = cap[1].toLowerCase().replace(/\s+/g, " ");
-      const href = cap[2] ? cap[2].replace(/^<(.*)>$/, "$1").replace(this.rules.inline._escapes, "$1") : "";
-      const title = cap[3] ? cap[3].substring(1, cap[3].length - 1).replace(this.rules.inline._escapes, "$1") : cap[3];
-      return {
-        type: "def",
-        tag,
-        raw: cap[0],
-        href,
-        title
-      };
-    }
-  }
-  table(src) {
-    const cap = this.rules.block.table.exec(src);
-    if (cap) {
-      const item = {
-        type: "table",
-        header: splitCells(cap[1]).map((c) => {
-          return { text: c };
-        }),
-        align: cap[2].replace(/^ *|\| *$/g, "").split(/ *\| */),
-        rows: cap[3] && cap[3].trim() ? cap[3].replace(/\n[ \t]*$/, "").split("\n") : []
-      };
-      if (item.header.length === item.align.length) {
-        item.raw = cap[0];
-        let l = item.align.length;
-        let i, j, k, row;
-        for (i = 0; i < l; i++) {
-          if (/^ *-+: *$/.test(item.align[i])) {
-            item.align[i] = "right";
-          } else if (/^ *:-+: *$/.test(item.align[i])) {
-            item.align[i] = "center";
-          } else if (/^ *:-+ *$/.test(item.align[i])) {
-            item.align[i] = "left";
-          } else {
-            item.align[i] = null;
-          }
-        }
-        l = item.rows.length;
-        for (i = 0; i < l; i++) {
-          item.rows[i] = splitCells(item.rows[i], item.header.length).map((c) => {
-            return { text: c };
-          });
-        }
-        l = item.header.length;
-        for (j = 0; j < l; j++) {
-          item.header[j].tokens = this.lexer.inline(item.header[j].text);
-        }
-        l = item.rows.length;
-        for (j = 0; j < l; j++) {
-          row = item.rows[j];
-          for (k = 0; k < row.length; k++) {
-            row[k].tokens = this.lexer.inline(row[k].text);
-          }
-        }
-        return item;
-      }
-    }
-  }
-  lheading(src) {
-    const cap = this.rules.block.lheading.exec(src);
-    if (cap) {
-      return {
-        type: "heading",
-        raw: cap[0],
-        depth: cap[2].charAt(0) === "=" ? 1 : 2,
-        text: cap[1],
-        tokens: this.lexer.inline(cap[1])
-      };
-    }
-  }
-  paragraph(src) {
-    const cap = this.rules.block.paragraph.exec(src);
-    if (cap) {
-      const text = cap[1].charAt(cap[1].length - 1) === "\n" ? cap[1].slice(0, -1) : cap[1];
-      return {
-        type: "paragraph",
-        raw: cap[0],
-        text,
-        tokens: this.lexer.inline(text)
-      };
-    }
-  }
-  text(src) {
-    const cap = this.rules.block.text.exec(src);
-    if (cap) {
-      return {
-        type: "text",
-        raw: cap[0],
-        text: cap[0],
-        tokens: this.lexer.inline(cap[0])
-      };
-    }
-  }
-  escape(src) {
-    const cap = this.rules.inline.escape.exec(src);
-    if (cap) {
-      return {
-        type: "escape",
-        raw: cap[0],
-        text: escape(cap[1])
-      };
-    }
-  }
-  tag(src) {
-    const cap = this.rules.inline.tag.exec(src);
-    if (cap) {
-      if (!this.lexer.state.inLink && /^<a /i.test(cap[0])) {
-        this.lexer.state.inLink = true;
-      } else if (this.lexer.state.inLink && /^<\/a>/i.test(cap[0])) {
-        this.lexer.state.inLink = false;
-      }
-      if (!this.lexer.state.inRawBlock && /^<(pre|code|kbd|script)(\s|>)/i.test(cap[0])) {
-        this.lexer.state.inRawBlock = true;
-      } else if (this.lexer.state.inRawBlock && /^<\/(pre|code|kbd|script)(\s|>)/i.test(cap[0])) {
-        this.lexer.state.inRawBlock = false;
-      }
-      return {
-        type: this.options.sanitize ? "text" : "html",
-        raw: cap[0],
-        inLink: this.lexer.state.inLink,
-        inRawBlock: this.lexer.state.inRawBlock,
-        text: this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape(cap[0]) : cap[0]
-      };
-    }
-  }
-  link(src) {
-    const cap = this.rules.inline.link.exec(src);
-    if (cap) {
-      const trimmedUrl = cap[2].trim();
-      if (!this.options.pedantic && /^</.test(trimmedUrl)) {
-        if (!/>$/.test(trimmedUrl)) {
-          return;
-        }
-        const rtrimSlash = rtrim(trimmedUrl.slice(0, -1), "\\");
-        if ((trimmedUrl.length - rtrimSlash.length) % 2 === 0) {
-          return;
-        }
-      } else {
-        const lastParenIndex = findClosingBracket(cap[2], "()");
-        if (lastParenIndex > -1) {
-          const start = cap[0].indexOf("!") === 0 ? 5 : 4;
-          const linkLen = start + cap[1].length + lastParenIndex;
-          cap[2] = cap[2].substring(0, lastParenIndex);
-          cap[0] = cap[0].substring(0, linkLen).trim();
-          cap[3] = "";
-        }
-      }
-      let href = cap[2];
-      let title = "";
-      if (this.options.pedantic) {
-        const link = /^([^'"]*[^\s])\s+(['"])(.*)\2/.exec(href);
-        if (link) {
-          href = link[1];
-          title = link[3];
-        }
-      } else {
-        title = cap[3] ? cap[3].slice(1, -1) : "";
-      }
-      href = href.trim();
-      if (/^</.test(href)) {
-        if (this.options.pedantic && !/>$/.test(trimmedUrl)) {
-          href = href.slice(1);
-        } else {
-          href = href.slice(1, -1);
-        }
-      }
-      return outputLink(cap, {
-        href: href ? href.replace(this.rules.inline._escapes, "$1") : href,
-        title: title ? title.replace(this.rules.inline._escapes, "$1") : title
-      }, cap[0], this.lexer);
-    }
-  }
-  reflink(src, links) {
-    let cap;
-    if ((cap = this.rules.inline.reflink.exec(src)) || (cap = this.rules.inline.nolink.exec(src))) {
-      let link = (cap[2] || cap[1]).replace(/\s+/g, " ");
-      link = links[link.toLowerCase()];
-      if (!link) {
-        const text = cap[0].charAt(0);
-        return {
-          type: "text",
-          raw: text,
-          text
-        };
-      }
-      return outputLink(cap, link, cap[0], this.lexer);
-    }
-  }
-  emStrong(src, maskedSrc, prevChar = "") {
-    let match = this.rules.inline.emStrong.lDelim.exec(src);
-    if (!match) return;
-    if (match[3] && prevChar.match(/[\p{L}\p{N}]/u)) return;
-    const nextChar = match[1] || match[2] || "";
-    if (!nextChar || nextChar && (prevChar === "" || this.rules.inline.punctuation.exec(prevChar))) {
-      const lLength = match[0].length - 1;
-      let rDelim, rLength, delimTotal = lLength, midDelimTotal = 0;
-      const endReg = match[0][0] === "*" ? this.rules.inline.emStrong.rDelimAst : this.rules.inline.emStrong.rDelimUnd;
-      endReg.lastIndex = 0;
-      maskedSrc = maskedSrc.slice(-1 * src.length + lLength);
-      while ((match = endReg.exec(maskedSrc)) != null) {
-        rDelim = match[1] || match[2] || match[3] || match[4] || match[5] || match[6];
-        if (!rDelim) continue;
-        rLength = rDelim.length;
-        if (match[3] || match[4]) {
-          delimTotal += rLength;
+        } else if (h?.type === "list") {
+          let R2 = h, f = R2.raw + `
+` + n.join(`
+`), O = this.list(f);
+          s[s.length - 1] = O, r = r.substring(0, r.length - h.raw.length) + O.raw, i = i.substring(0, i.length - R2.raw.length) + O.raw, n = f.substring(s.at(-1).raw.length).split(`
+`);
           continue;
-        } else if (match[5] || match[6]) {
-          if (lLength % 3 && !((lLength + rLength) % 3)) {
-            midDelimTotal += rLength;
-            continue;
-          }
-        }
-        delimTotal -= rLength;
-        if (delimTotal > 0) continue;
-        rLength = Math.min(rLength, rLength + delimTotal + midDelimTotal);
-        const raw = src.slice(0, lLength + match.index + (match[0].length - rDelim.length) + rLength);
-        if (Math.min(lLength, rLength) % 2) {
-          const text2 = raw.slice(1, -1);
-          return {
-            type: "em",
-            raw,
-            text: text2,
-            tokens: this.lexer.inlineTokens(text2)
-          };
-        }
-        const text = raw.slice(2, -2);
-        return {
-          type: "strong",
-          raw,
-          text,
-          tokens: this.lexer.inlineTokens(text)
-        };
-      }
-    }
-  }
-  codespan(src) {
-    const cap = this.rules.inline.code.exec(src);
-    if (cap) {
-      let text = cap[2].replace(/\n/g, " ");
-      const hasNonSpaceChars = /[^ ]/.test(text);
-      const hasSpaceCharsOnBothEnds = /^ /.test(text) && / $/.test(text);
-      if (hasNonSpaceChars && hasSpaceCharsOnBothEnds) {
-        text = text.substring(1, text.length - 1);
-      }
-      text = escape(text, true);
-      return {
-        type: "codespan",
-        raw: cap[0],
-        text
-      };
-    }
-  }
-  br(src) {
-    const cap = this.rules.inline.br.exec(src);
-    if (cap) {
-      return {
-        type: "br",
-        raw: cap[0]
-      };
-    }
-  }
-  del(src) {
-    const cap = this.rules.inline.del.exec(src);
-    if (cap) {
-      return {
-        type: "del",
-        raw: cap[0],
-        text: cap[2],
-        tokens: this.lexer.inlineTokens(cap[2])
-      };
-    }
-  }
-  autolink(src, mangle2) {
-    const cap = this.rules.inline.autolink.exec(src);
-    if (cap) {
-      let text, href;
-      if (cap[2] === "@") {
-        text = escape(this.options.mangle ? mangle2(cap[1]) : cap[1]);
-        href = "mailto:" + text;
-      } else {
-        text = escape(cap[1]);
-        href = text;
-      }
-      return {
-        type: "link",
-        raw: cap[0],
-        text,
-        href,
-        tokens: [
-          {
-            type: "text",
-            raw: text,
-            text
-          }
-        ]
-      };
-    }
-  }
-  url(src, mangle2) {
-    let cap;
-    if (cap = this.rules.inline.url.exec(src)) {
-      let text, href;
-      if (cap[2] === "@") {
-        text = escape(this.options.mangle ? mangle2(cap[0]) : cap[0]);
-        href = "mailto:" + text;
-      } else {
-        let prevCapZero;
-        do {
-          prevCapZero = cap[0];
-          cap[0] = this.rules.inline._backpedal.exec(cap[0])[0];
-        } while (prevCapZero !== cap[0]);
-        text = escape(cap[0]);
-        if (cap[1] === "www.") {
-          href = "http://" + cap[0];
-        } else {
-          href = cap[0];
         }
       }
-      return {
-        type: "link",
-        raw: cap[0],
-        text,
-        href,
-        tokens: [
-          {
-            type: "text",
-            raw: text,
-            text
+      return { type: "blockquote", raw: r, tokens: s, text: i };
+    }
+  }
+  list(e) {
+    let t = this.rules.block.list.exec(e);
+    if (t) {
+      let n = t[1].trim(), r = n.length > 1, i = { type: "list", raw: "", ordered: r, start: r ? +n.slice(0, -1) : "", loose: false, items: [] };
+      n = r ? `\\d{1,9}\\${n.slice(-1)}` : `\\${n}`, this.options.pedantic && (n = r ? n : "[*+-]");
+      let s = this.rules.other.listItemRegex(n), a = false;
+      for (; e; ) {
+        let p2 = false, u = "", c = "";
+        if (!(t = s.exec(e)) || this.rules.block.hr.test(e)) break;
+        u = t[0], e = e.substring(u.length);
+        let g = t[2].split(`
+`, 1)[0].replace(this.rules.other.listReplaceTabs, (H) => " ".repeat(3 * H.length)), h = e.split(`
+`, 1)[0], R2 = !g.trim(), f = 0;
+        if (this.options.pedantic ? (f = 2, c = g.trimStart()) : R2 ? f = t[1].length + 1 : (f = t[2].search(this.rules.other.nonSpaceChar), f = f > 4 ? 1 : f, c = g.slice(f), f += t[1].length), R2 && this.rules.other.blankLine.test(h) && (u += h + `
+`, e = e.substring(h.length + 1), p2 = true), !p2) {
+          let H = this.rules.other.nextBulletRegex(f), ee = this.rules.other.hrRegex(f), te = this.rules.other.fencesBeginRegex(f), ne = this.rules.other.headingBeginRegex(f), xe = this.rules.other.htmlBeginRegex(f);
+          for (; e; ) {
+            let Z = e.split(`
+`, 1)[0], A;
+            if (h = Z, this.options.pedantic ? (h = h.replace(this.rules.other.listReplaceNesting, "  "), A = h) : A = h.replace(this.rules.other.tabCharGlobal, "    "), te.test(h) || ne.test(h) || xe.test(h) || H.test(h) || ee.test(h)) break;
+            if (A.search(this.rules.other.nonSpaceChar) >= f || !h.trim()) c += `
+` + A.slice(f);
+            else {
+              if (R2 || g.replace(this.rules.other.tabCharGlobal, "    ").search(this.rules.other.nonSpaceChar) >= 4 || te.test(g) || ne.test(g) || ee.test(g)) break;
+              c += `
+` + h;
+            }
+            !R2 && !h.trim() && (R2 = true), u += Z + `
+`, e = e.substring(Z.length + 1), g = A.slice(f);
           }
-        ]
-      };
-    }
-  }
-  inlineText(src, smartypants2) {
-    const cap = this.rules.inline.text.exec(src);
-    if (cap) {
-      let text;
-      if (this.lexer.state.inRawBlock) {
-        text = this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape(cap[0]) : cap[0];
-      } else {
-        text = escape(this.options.smartypants ? smartypants2(cap[0]) : cap[0]);
+        }
+        i.loose || (a ? i.loose = true : this.rules.other.doubleBlankLine.test(u) && (a = true));
+        let O = null, Y;
+        this.options.gfm && (O = this.rules.other.listIsTask.exec(c), O && (Y = O[0] !== "[ ] ", c = c.replace(this.rules.other.listReplaceTask, ""))), i.items.push({ type: "list_item", raw: u, task: !!O, checked: Y, loose: false, text: c, tokens: [] }), i.raw += u;
       }
-      return {
-        type: "text",
-        raw: cap[0],
-        text
-      };
+      let o = i.items.at(-1);
+      if (o) o.raw = o.raw.trimEnd(), o.text = o.text.trimEnd();
+      else return;
+      i.raw = i.raw.trimEnd();
+      for (let p2 = 0; p2 < i.items.length; p2++) if (this.lexer.state.top = false, i.items[p2].tokens = this.lexer.blockTokens(i.items[p2].text, []), !i.loose) {
+        let u = i.items[p2].tokens.filter((g) => g.type === "space"), c = u.length > 0 && u.some((g) => this.rules.other.anyLine.test(g.raw));
+        i.loose = c;
+      }
+      if (i.loose) for (let p2 = 0; p2 < i.items.length; p2++) i.items[p2].loose = true;
+      return i;
     }
   }
-}
-const block = {
-  newline: /^(?: *(?:\n|$))+/,
-  code: /^( {4}[^\n]+(?:\n(?: *(?:\n|$))*)?)+/,
-  fences: /^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}\1[~`]* *(?=\n|$)|$)/,
-  hr: /^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/,
-  heading: /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/,
-  blockquote: /^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/,
-  list: /^( {0,3}bull)([ \t][^\n]+?)?(?:\n|$)/,
-  html: "^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n *)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n *)+\\n|$))",
-  def: /^ {0,3}\[(label)\]: *(?:\n *)?([^<\s][^\s]*|<.*?>)(?:(?: +(?:\n *)?| *\n *)(title))? *(?:\n+|$)/,
-  table: noopTest,
-  lheading: /^((?:.|\n(?!\n))+?)\n {0,3}(=+|-+) *(?:\n+|$)/,
-  // regex template, placeholders will be replaced according to different paragraph
-  // interruption rules of commonmark and the original markdown spec:
-  _paragraph: /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/,
-  text: /^[^\n]+/
-};
-block._label = /(?!\s*\])(?:\\.|[^\[\]\\])+/;
-block._title = /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/;
-block.def = edit(block.def).replace("label", block._label).replace("title", block._title).getRegex();
-block.bullet = /(?:[*+-]|\d{1,9}[.)])/;
-block.listItemStart = edit(/^( *)(bull) */).replace("bull", block.bullet).getRegex();
-block.list = edit(block.list).replace(/bull/g, block.bullet).replace("hr", "\\n+(?=\\1?(?:(?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$))").replace("def", "\\n+(?=" + block.def.source + ")").getRegex();
-block._tag = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|section|source|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul";
-block._comment = /<!--(?!-?>)[\s\S]*?(?:-->|$)/;
-block.html = edit(block.html, "i").replace("comment", block._comment).replace("tag", block._tag).replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex();
-block.paragraph = edit(block._paragraph).replace("hr", block.hr).replace("heading", " {0,3}#{1,6} ").replace("|lheading", "").replace("|table", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", block._tag).getRegex();
-block.blockquote = edit(block.blockquote).replace("paragraph", block.paragraph).getRegex();
-block.normal = { ...block };
-block.gfm = {
-  ...block.normal,
-  table: "^ *([^\\n ].*\\|.*)\\n {0,3}(?:\\| *)?(:?-+:? *(?:\\| *:?-+:? *)*)(?:\\| *)?(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)"
-  // Cells
-};
-block.gfm.table = edit(block.gfm.table).replace("hr", block.hr).replace("heading", " {0,3}#{1,6} ").replace("blockquote", " {0,3}>").replace("code", " {4}[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", block._tag).getRegex();
-block.gfm.paragraph = edit(block._paragraph).replace("hr", block.hr).replace("heading", " {0,3}#{1,6} ").replace("|lheading", "").replace("table", block.gfm.table).replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", block._tag).getRegex();
-block.pedantic = {
-  ...block.normal,
-  html: edit(
-    `^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`
-  ).replace("comment", block._comment).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(),
-  def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/,
-  heading: /^(#{1,6})(.*)(?:\n+|$)/,
-  fences: noopTest,
-  // fences not supported
-  lheading: /^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/,
-  paragraph: edit(block.normal._paragraph).replace("hr", block.hr).replace("heading", " *#{1,6} *[^\n]").replace("lheading", block.lheading).replace("blockquote", " {0,3}>").replace("|fences", "").replace("|list", "").replace("|html", "").getRegex()
-};
-const inline = {
-  escape: /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,
-  autolink: /^<(scheme:[^\s\x00-\x1f<>]*|email)>/,
-  url: noopTest,
-  tag: "^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>",
-  // CDATA section
-  link: /^!?\[(label)\]\(\s*(href)(?:\s+(title))?\s*\)/,
-  reflink: /^!?\[(label)\]\[(ref)\]/,
-  nolink: /^!?\[(ref)\](?:\[\])?/,
-  reflinkSearch: "reflink|nolink(?!\\()",
-  emStrong: {
-    lDelim: /^(?:\*+(?:([punct_])|[^\s*]))|^_+(?:([punct*])|([^\s_]))/,
-    //        (1) and (2) can only be a Right Delimiter. (3) and (4) can only be Left.  (5) and (6) can be either Left or Right.
-    //          () Skip orphan inside strong                                      () Consume to delim     (1) #***                (2) a***#, a***                             (3) #***a, ***a                 (4) ***#              (5) #***#                 (6) a***a
-    rDelimAst: /^(?:[^_*\\]|\\.)*?\_\_(?:[^_*\\]|\\.)*?\*(?:[^_*\\]|\\.)*?(?=\_\_)|(?:[^*\\]|\\.)+(?=[^*])|[punct_](\*+)(?=[\s]|$)|(?:[^punct*_\s\\]|\\.)(\*+)(?=[punct_\s]|$)|[punct_\s](\*+)(?=[^punct*_\s])|[\s](\*+)(?=[punct_])|[punct_](\*+)(?=[punct_])|(?:[^punct*_\s\\]|\\.)(\*+)(?=[^punct*_\s])/,
-    rDelimUnd: /^(?:[^_*\\]|\\.)*?\*\*(?:[^_*\\]|\\.)*?\_(?:[^_*\\]|\\.)*?(?=\*\*)|(?:[^_\\]|\\.)+(?=[^_])|[punct*](\_+)(?=[\s]|$)|(?:[^punct*_\s\\]|\\.)(\_+)(?=[punct*\s]|$)|[punct*\s](\_+)(?=[^punct*_\s])|[\s](\_+)(?=[punct*])|[punct*](\_+)(?=[punct*])/
-    // ^- Not allowed for _
-  },
-  code: /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/,
-  br: /^( {2,}|\\)\n(?!\s*$)/,
-  del: noopTest,
-  text: /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/,
-  punctuation: /^([\spunctuation])/
-};
-inline._punctuation = "!\"#$%&'()+\\-.,/:;<=>?@\\[\\]`^{|}~";
-inline.punctuation = edit(inline.punctuation).replace(/punctuation/g, inline._punctuation).getRegex();
-inline.blockSkip = /\[[^\]]*?\]\([^\)]*?\)|`[^`]*?`|<[^>]*?>/g;
-inline.escapedEmSt = /(?:^|[^\\])(?:\\\\)*\\[*_]/g;
-inline._comment = edit(block._comment).replace("(?:-->|$)", "-->").getRegex();
-inline.emStrong.lDelim = edit(inline.emStrong.lDelim).replace(/punct/g, inline._punctuation).getRegex();
-inline.emStrong.rDelimAst = edit(inline.emStrong.rDelimAst, "g").replace(/punct/g, inline._punctuation).getRegex();
-inline.emStrong.rDelimUnd = edit(inline.emStrong.rDelimUnd, "g").replace(/punct/g, inline._punctuation).getRegex();
-inline._escapes = /\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/g;
-inline._scheme = /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/;
-inline._email = /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/;
-inline.autolink = edit(inline.autolink).replace("scheme", inline._scheme).replace("email", inline._email).getRegex();
-inline._attribute = /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/;
-inline.tag = edit(inline.tag).replace("comment", inline._comment).replace("attribute", inline._attribute).getRegex();
-inline._label = /(?:\[(?:\\.|[^\[\]\\])*\]|\\.|`[^`]*`|[^\[\]\\`])*?/;
-inline._href = /<(?:\\.|[^\n<>\\])+>|[^\s\x00-\x1f]*/;
-inline._title = /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/;
-inline.link = edit(inline.link).replace("label", inline._label).replace("href", inline._href).replace("title", inline._title).getRegex();
-inline.reflink = edit(inline.reflink).replace("label", inline._label).replace("ref", block._label).getRegex();
-inline.nolink = edit(inline.nolink).replace("ref", block._label).getRegex();
-inline.reflinkSearch = edit(inline.reflinkSearch, "g").replace("reflink", inline.reflink).replace("nolink", inline.nolink).getRegex();
-inline.normal = { ...inline };
-inline.pedantic = {
-  ...inline.normal,
-  strong: {
-    start: /^__|\*\*/,
-    middle: /^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,
-    endAst: /\*\*(?!\*)/g,
-    endUnd: /__(?!_)/g
-  },
-  em: {
-    start: /^_|\*/,
-    middle: /^()\*(?=\S)([\s\S]*?\S)\*(?!\*)|^_(?=\S)([\s\S]*?\S)_(?!_)/,
-    endAst: /\*(?!\*)/g,
-    endUnd: /_(?!_)/g
-  },
-  link: edit(/^!?\[(label)\]\((.*?)\)/).replace("label", inline._label).getRegex(),
-  reflink: edit(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label", inline._label).getRegex()
-};
-inline.gfm = {
-  ...inline.normal,
-  escape: edit(inline.escape).replace("])", "~|])").getRegex(),
-  _extended_email: /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/,
-  url: /^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/,
-  _backpedal: /(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/,
-  del: /^(~~?)(?=[^\s~])([\s\S]*?[^\s~])\1(?=[^~]|$)/,
-  text: /^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/
-};
-inline.gfm.url = edit(inline.gfm.url, "i").replace("email", inline.gfm._extended_email).getRegex();
-inline.breaks = {
-  ...inline.gfm,
-  br: edit(inline.br).replace("{2,}", "*").getRegex(),
-  text: edit(inline.gfm.text).replace("\\b_", "\\b_| {2,}\\n").replace(/\{2,\}/g, "*").getRegex()
-};
-function smartypants(text) {
-  return text.replace(/---/g, "—").replace(/--/g, "–").replace(/(^|[-\u2014/(\[{"\s])'/g, "$1‘").replace(/'/g, "’").replace(/(^|[-\u2014/(\[{\u2018\s])"/g, "$1“").replace(/"/g, "”").replace(/\.{3}/g, "…");
-}
-function mangle(text) {
-  let out = "", i, ch;
-  const l = text.length;
-  for (i = 0; i < l; i++) {
-    ch = text.charCodeAt(i);
-    if (Math.random() > 0.5) {
-      ch = "x" + ch.toString(16);
-    }
-    out += "&#" + ch + ";";
+  html(e) {
+    let t = this.rules.block.html.exec(e);
+    if (t) return { type: "html", block: true, raw: t[0], pre: t[1] === "pre" || t[1] === "script" || t[1] === "style", text: t[0] };
   }
-  return out;
-}
-class Lexer {
-  constructor(options) {
-    this.tokens = [];
-    this.tokens.links = /* @__PURE__ */ Object.create(null);
-    this.options = options || defaults;
-    this.options.tokenizer = this.options.tokenizer || new Tokenizer();
-    this.tokenizer = this.options.tokenizer;
-    this.tokenizer.options = this.options;
-    this.tokenizer.lexer = this;
-    this.inlineQueue = [];
-    this.state = {
-      inLink: false,
-      inRawBlock: false,
-      top: true
-    };
-    const rules = {
-      block: block.normal,
-      inline: inline.normal
-    };
-    if (this.options.pedantic) {
-      rules.block = block.pedantic;
-      rules.inline = inline.pedantic;
-    } else if (this.options.gfm) {
-      rules.block = block.gfm;
-      if (this.options.breaks) {
-        rules.inline = inline.breaks;
+  def(e) {
+    let t = this.rules.block.def.exec(e);
+    if (t) {
+      let n = t[1].toLowerCase().replace(this.rules.other.multipleSpaceGlobal, " "), r = t[2] ? t[2].replace(this.rules.other.hrefBrackets, "$1").replace(this.rules.inline.anyPunctuation, "$1") : "", i = t[3] ? t[3].substring(1, t[3].length - 1).replace(this.rules.inline.anyPunctuation, "$1") : t[3];
+      return { type: "def", tag: n, raw: t[0], href: r, title: i };
+    }
+  }
+  table(e) {
+    let t = this.rules.block.table.exec(e);
+    if (!t || !this.rules.other.tableDelimiter.test(t[2])) return;
+    let n = V(t[1]), r = t[2].replace(this.rules.other.tableAlignChars, "").split("|"), i = t[3]?.trim() ? t[3].replace(this.rules.other.tableRowBlankLine, "").split(`
+`) : [], s = { type: "table", raw: t[0], header: [], align: [], rows: [] };
+    if (n.length === r.length) {
+      for (let a of r) this.rules.other.tableAlignRight.test(a) ? s.align.push("right") : this.rules.other.tableAlignCenter.test(a) ? s.align.push("center") : this.rules.other.tableAlignLeft.test(a) ? s.align.push("left") : s.align.push(null);
+      for (let a = 0; a < n.length; a++) s.header.push({ text: n[a], tokens: this.lexer.inline(n[a]), header: true, align: s.align[a] });
+      for (let a of i) s.rows.push(V(a, s.header.length).map((o, p2) => ({ text: o, tokens: this.lexer.inline(o), header: false, align: s.align[p2] })));
+      return s;
+    }
+  }
+  lheading(e) {
+    let t = this.rules.block.lheading.exec(e);
+    if (t) return { type: "heading", raw: t[0], depth: t[2].charAt(0) === "=" ? 1 : 2, text: t[1], tokens: this.lexer.inline(t[1]) };
+  }
+  paragraph(e) {
+    let t = this.rules.block.paragraph.exec(e);
+    if (t) {
+      let n = t[1].charAt(t[1].length - 1) === `
+` ? t[1].slice(0, -1) : t[1];
+      return { type: "paragraph", raw: t[0], text: n, tokens: this.lexer.inline(n) };
+    }
+  }
+  text(e) {
+    let t = this.rules.block.text.exec(e);
+    if (t) return { type: "text", raw: t[0], text: t[0], tokens: this.lexer.inline(t[0]) };
+  }
+  escape(e) {
+    let t = this.rules.inline.escape.exec(e);
+    if (t) return { type: "escape", raw: t[0], text: t[1] };
+  }
+  tag(e) {
+    let t = this.rules.inline.tag.exec(e);
+    if (t) return !this.lexer.state.inLink && this.rules.other.startATag.test(t[0]) ? this.lexer.state.inLink = true : this.lexer.state.inLink && this.rules.other.endATag.test(t[0]) && (this.lexer.state.inLink = false), !this.lexer.state.inRawBlock && this.rules.other.startPreScriptTag.test(t[0]) ? this.lexer.state.inRawBlock = true : this.lexer.state.inRawBlock && this.rules.other.endPreScriptTag.test(t[0]) && (this.lexer.state.inRawBlock = false), { type: "html", raw: t[0], inLink: this.lexer.state.inLink, inRawBlock: this.lexer.state.inRawBlock, block: false, text: t[0] };
+  }
+  link(e) {
+    let t = this.rules.inline.link.exec(e);
+    if (t) {
+      let n = t[2].trim();
+      if (!this.options.pedantic && this.rules.other.startAngleBracket.test(n)) {
+        if (!this.rules.other.endAngleBracket.test(n)) return;
+        let s = z$1(n.slice(0, -1), "\\");
+        if ((n.length - s.length) % 2 === 0) return;
       } else {
-        rules.inline = inline.gfm;
+        let s = fe(t[2], "()");
+        if (s === -2) return;
+        if (s > -1) {
+          let o = (t[0].indexOf("!") === 0 ? 5 : 4) + t[1].length + s;
+          t[2] = t[2].substring(0, s), t[0] = t[0].substring(0, o).trim(), t[3] = "";
+        }
+      }
+      let r = t[2], i = "";
+      if (this.options.pedantic) {
+        let s = this.rules.other.pedanticHrefTitle.exec(r);
+        s && (r = s[1], i = s[3]);
+      } else i = t[3] ? t[3].slice(1, -1) : "";
+      return r = r.trim(), this.rules.other.startAngleBracket.test(r) && (this.options.pedantic && !this.rules.other.endAngleBracket.test(n) ? r = r.slice(1) : r = r.slice(1, -1)), me(t, { href: r && r.replace(this.rules.inline.anyPunctuation, "$1"), title: i && i.replace(this.rules.inline.anyPunctuation, "$1") }, t[0], this.lexer, this.rules);
+    }
+  }
+  reflink(e, t) {
+    let n;
+    if ((n = this.rules.inline.reflink.exec(e)) || (n = this.rules.inline.nolink.exec(e))) {
+      let r = (n[2] || n[1]).replace(this.rules.other.multipleSpaceGlobal, " "), i = t[r.toLowerCase()];
+      if (!i) {
+        let s = n[0].charAt(0);
+        return { type: "text", raw: s, text: s };
+      }
+      return me(n, i, n[0], this.lexer, this.rules);
+    }
+  }
+  emStrong(e, t, n = "") {
+    let r = this.rules.inline.emStrongLDelim.exec(e);
+    if (!r || r[3] && n.match(this.rules.other.unicodeAlphaNumeric)) return;
+    if (!(r[1] || r[2] || "") || !n || this.rules.inline.punctuation.exec(n)) {
+      let s = [...r[0]].length - 1, a, o, p2 = s, u = 0, c = r[0][0] === "*" ? this.rules.inline.emStrongRDelimAst : this.rules.inline.emStrongRDelimUnd;
+      for (c.lastIndex = 0, t = t.slice(-1 * e.length + s); (r = c.exec(t)) != null; ) {
+        if (a = r[1] || r[2] || r[3] || r[4] || r[5] || r[6], !a) continue;
+        if (o = [...a].length, r[3] || r[4]) {
+          p2 += o;
+          continue;
+        } else if ((r[5] || r[6]) && s % 3 && !((s + o) % 3)) {
+          u += o;
+          continue;
+        }
+        if (p2 -= o, p2 > 0) continue;
+        o = Math.min(o, o + p2 + u);
+        let g = [...r[0]][0].length, h = e.slice(0, s + r.index + g + o);
+        if (Math.min(s, o) % 2) {
+          let f = h.slice(1, -1);
+          return { type: "em", raw: h, text: f, tokens: this.lexer.inlineTokens(f) };
+        }
+        let R2 = h.slice(2, -2);
+        return { type: "strong", raw: h, text: R2, tokens: this.lexer.inlineTokens(R2) };
       }
     }
-    this.tokenizer.rules = rules;
   }
-  /**
-   * Expose Rules
-   */
+  codespan(e) {
+    let t = this.rules.inline.code.exec(e);
+    if (t) {
+      let n = t[2].replace(this.rules.other.newLineCharGlobal, " "), r = this.rules.other.nonSpaceChar.test(n), i = this.rules.other.startingSpaceChar.test(n) && this.rules.other.endingSpaceChar.test(n);
+      return r && i && (n = n.substring(1, n.length - 1)), { type: "codespan", raw: t[0], text: n };
+    }
+  }
+  br(e) {
+    let t = this.rules.inline.br.exec(e);
+    if (t) return { type: "br", raw: t[0] };
+  }
+  del(e) {
+    let t = this.rules.inline.del.exec(e);
+    if (t) return { type: "del", raw: t[0], text: t[2], tokens: this.lexer.inlineTokens(t[2]) };
+  }
+  autolink(e) {
+    let t = this.rules.inline.autolink.exec(e);
+    if (t) {
+      let n, r;
+      return t[2] === "@" ? (n = t[1], r = "mailto:" + n) : (n = t[1], r = n), { type: "link", raw: t[0], text: n, href: r, tokens: [{ type: "text", raw: n, text: n }] };
+    }
+  }
+  url(e) {
+    let t;
+    if (t = this.rules.inline.url.exec(e)) {
+      let n, r;
+      if (t[2] === "@") n = t[0], r = "mailto:" + n;
+      else {
+        let i;
+        do
+          i = t[0], t[0] = this.rules.inline._backpedal.exec(t[0])?.[0] ?? "";
+        while (i !== t[0]);
+        n = t[0], t[1] === "www." ? r = "http://" + t[0] : r = t[0];
+      }
+      return { type: "link", raw: t[0], text: n, href: r, tokens: [{ type: "text", raw: n, text: n }] };
+    }
+  }
+  inlineText(e) {
+    let t = this.rules.inline.text.exec(e);
+    if (t) {
+      let n = this.lexer.state.inRawBlock;
+      return { type: "text", raw: t[0], text: t[0], escaped: n };
+    }
+  }
+};
+var x = class l {
+  tokens;
+  options;
+  state;
+  tokenizer;
+  inlineQueue;
+  constructor(e) {
+    this.tokens = [], this.tokens.links = /* @__PURE__ */ Object.create(null), this.options = e || T$1, this.options.tokenizer = this.options.tokenizer || new y(), this.tokenizer = this.options.tokenizer, this.tokenizer.options = this.options, this.tokenizer.lexer = this, this.inlineQueue = [], this.state = { inLink: false, inRawBlock: false, top: true };
+    let t = { other: m, block: C.normal, inline: M.normal };
+    this.options.pedantic ? (t.block = C.pedantic, t.inline = M.pedantic) : this.options.gfm && (t.block = C.gfm, this.options.breaks ? t.inline = M.breaks : t.inline = M.gfm), this.tokenizer.rules = t;
+  }
   static get rules() {
-    return {
-      block,
-      inline
-    };
+    return { block: C, inline: M };
   }
-  /**
-   * Static Lex Method
-   */
-  static lex(src, options) {
-    const lexer = new Lexer(options);
-    return lexer.lex(src);
+  static lex(e, t) {
+    return new l(t).lex(e);
   }
-  /**
-   * Static Lex Inline Method
-   */
-  static lexInline(src, options) {
-    const lexer = new Lexer(options);
-    return lexer.inlineTokens(src);
+  static lexInline(e, t) {
+    return new l(t).inlineTokens(e);
   }
-  /**
-   * Preprocessing
-   */
-  lex(src) {
-    src = src.replace(/\r\n|\r/g, "\n");
-    this.blockTokens(src, this.tokens);
-    let next;
-    while (next = this.inlineQueue.shift()) {
-      this.inlineTokens(next.src, next.tokens);
+  lex(e) {
+    e = e.replace(m.carriageReturn, `
+`), this.blockTokens(e, this.tokens);
+    for (let t = 0; t < this.inlineQueue.length; t++) {
+      let n = this.inlineQueue[t];
+      this.inlineTokens(n.src, n.tokens);
     }
-    return this.tokens;
+    return this.inlineQueue = [], this.tokens;
   }
-  /**
-   * Lexing
-   */
-  blockTokens(src, tokens = []) {
-    if (this.options.pedantic) {
-      src = src.replace(/\t/g, "    ").replace(/^ +$/gm, "");
-    } else {
-      src = src.replace(/^( *)(\t+)/gm, (_2, leading, tabs) => {
-        return leading + "    ".repeat(tabs.length);
-      });
-    }
-    let token, lastToken, cutSrc, lastParagraphClipped;
-    while (src) {
-      if (this.options.extensions && this.options.extensions.block && this.options.extensions.block.some((extTokenizer) => {
-        if (token = extTokenizer.call({ lexer: this }, src, tokens)) {
-          src = src.substring(token.raw.length);
-          tokens.push(token);
-          return true;
-        }
-        return false;
-      })) {
+  blockTokens(e, t = [], n = false) {
+    for (this.options.pedantic && (e = e.replace(m.tabCharGlobal, "    ").replace(m.spaceLine, "")); e; ) {
+      let r;
+      if (this.options.extensions?.block?.some((s) => (r = s.call({ lexer: this }, e, t)) ? (e = e.substring(r.raw.length), t.push(r), true) : false)) continue;
+      if (r = this.tokenizer.space(e)) {
+        e = e.substring(r.raw.length);
+        let s = t.at(-1);
+        r.raw.length === 1 && s !== void 0 ? s.raw += `
+` : t.push(r);
         continue;
       }
-      if (token = this.tokenizer.space(src)) {
-        src = src.substring(token.raw.length);
-        if (token.raw.length === 1 && tokens.length > 0) {
-          tokens[tokens.length - 1].raw += "\n";
-        } else {
-          tokens.push(token);
-        }
+      if (r = this.tokenizer.code(e)) {
+        e = e.substring(r.raw.length);
+        let s = t.at(-1);
+        s?.type === "paragraph" || s?.type === "text" ? (s.raw += (s.raw.endsWith(`
+`) ? "" : `
+`) + r.raw, s.text += `
+` + r.text, this.inlineQueue.at(-1).src = s.text) : t.push(r);
         continue;
       }
-      if (token = this.tokenizer.code(src)) {
-        src = src.substring(token.raw.length);
-        lastToken = tokens[tokens.length - 1];
-        if (lastToken && (lastToken.type === "paragraph" || lastToken.type === "text")) {
-          lastToken.raw += "\n" + token.raw;
-          lastToken.text += "\n" + token.text;
-          this.inlineQueue[this.inlineQueue.length - 1].src = lastToken.text;
-        } else {
-          tokens.push(token);
-        }
+      if (r = this.tokenizer.fences(e)) {
+        e = e.substring(r.raw.length), t.push(r);
         continue;
       }
-      if (token = this.tokenizer.fences(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (r = this.tokenizer.heading(e)) {
+        e = e.substring(r.raw.length), t.push(r);
         continue;
       }
-      if (token = this.tokenizer.heading(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (r = this.tokenizer.hr(e)) {
+        e = e.substring(r.raw.length), t.push(r);
         continue;
       }
-      if (token = this.tokenizer.hr(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (r = this.tokenizer.blockquote(e)) {
+        e = e.substring(r.raw.length), t.push(r);
         continue;
       }
-      if (token = this.tokenizer.blockquote(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (r = this.tokenizer.list(e)) {
+        e = e.substring(r.raw.length), t.push(r);
         continue;
       }
-      if (token = this.tokenizer.list(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (r = this.tokenizer.html(e)) {
+        e = e.substring(r.raw.length), t.push(r);
         continue;
       }
-      if (token = this.tokenizer.html(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (r = this.tokenizer.def(e)) {
+        e = e.substring(r.raw.length);
+        let s = t.at(-1);
+        s?.type === "paragraph" || s?.type === "text" ? (s.raw += (s.raw.endsWith(`
+`) ? "" : `
+`) + r.raw, s.text += `
+` + r.raw, this.inlineQueue.at(-1).src = s.text) : this.tokens.links[r.tag] || (this.tokens.links[r.tag] = { href: r.href, title: r.title }, t.push(r));
         continue;
       }
-      if (token = this.tokenizer.def(src)) {
-        src = src.substring(token.raw.length);
-        lastToken = tokens[tokens.length - 1];
-        if (lastToken && (lastToken.type === "paragraph" || lastToken.type === "text")) {
-          lastToken.raw += "\n" + token.raw;
-          lastToken.text += "\n" + token.raw;
-          this.inlineQueue[this.inlineQueue.length - 1].src = lastToken.text;
-        } else if (!this.tokens.links[token.tag]) {
-          this.tokens.links[token.tag] = {
-            href: token.href,
-            title: token.title
-          };
-        }
+      if (r = this.tokenizer.table(e)) {
+        e = e.substring(r.raw.length), t.push(r);
         continue;
       }
-      if (token = this.tokenizer.table(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (r = this.tokenizer.lheading(e)) {
+        e = e.substring(r.raw.length), t.push(r);
         continue;
       }
-      if (token = this.tokenizer.lheading(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      let i = e;
+      if (this.options.extensions?.startBlock) {
+        let s = 1 / 0, a = e.slice(1), o;
+        this.options.extensions.startBlock.forEach((p2) => {
+          o = p2.call({ lexer: this }, a), typeof o == "number" && o >= 0 && (s = Math.min(s, o));
+        }), s < 1 / 0 && s >= 0 && (i = e.substring(0, s + 1));
+      }
+      if (this.state.top && (r = this.tokenizer.paragraph(i))) {
+        let s = t.at(-1);
+        n && s?.type === "paragraph" ? (s.raw += (s.raw.endsWith(`
+`) ? "" : `
+`) + r.raw, s.text += `
+` + r.text, this.inlineQueue.pop(), this.inlineQueue.at(-1).src = s.text) : t.push(r), n = i.length !== e.length, e = e.substring(r.raw.length);
         continue;
       }
-      cutSrc = src;
-      if (this.options.extensions && this.options.extensions.startBlock) {
-        let startIndex = Infinity;
-        const tempSrc = src.slice(1);
-        let tempStart;
-        this.options.extensions.startBlock.forEach(function(getStartIndex) {
-          tempStart = getStartIndex.call({ lexer: this }, tempSrc);
-          if (typeof tempStart === "number" && tempStart >= 0) {
-            startIndex = Math.min(startIndex, tempStart);
-          }
-        });
-        if (startIndex < Infinity && startIndex >= 0) {
-          cutSrc = src.substring(0, startIndex + 1);
-        }
-      }
-      if (this.state.top && (token = this.tokenizer.paragraph(cutSrc))) {
-        lastToken = tokens[tokens.length - 1];
-        if (lastParagraphClipped && lastToken.type === "paragraph") {
-          lastToken.raw += "\n" + token.raw;
-          lastToken.text += "\n" + token.text;
-          this.inlineQueue.pop();
-          this.inlineQueue[this.inlineQueue.length - 1].src = lastToken.text;
-        } else {
-          tokens.push(token);
-        }
-        lastParagraphClipped = cutSrc.length !== src.length;
-        src = src.substring(token.raw.length);
+      if (r = this.tokenizer.text(e)) {
+        e = e.substring(r.raw.length);
+        let s = t.at(-1);
+        s?.type === "text" ? (s.raw += (s.raw.endsWith(`
+`) ? "" : `
+`) + r.raw, s.text += `
+` + r.text, this.inlineQueue.pop(), this.inlineQueue.at(-1).src = s.text) : t.push(r);
         continue;
       }
-      if (token = this.tokenizer.text(src)) {
-        src = src.substring(token.raw.length);
-        lastToken = tokens[tokens.length - 1];
-        if (lastToken && lastToken.type === "text") {
-          lastToken.raw += "\n" + token.raw;
-          lastToken.text += "\n" + token.text;
-          this.inlineQueue.pop();
-          this.inlineQueue[this.inlineQueue.length - 1].src = lastToken.text;
-        } else {
-          tokens.push(token);
-        }
-        continue;
-      }
-      if (src) {
-        const errMsg = "Infinite loop on byte: " + src.charCodeAt(0);
+      if (e) {
+        let s = "Infinite loop on byte: " + e.charCodeAt(0);
         if (this.options.silent) {
-          console.error(errMsg);
+          console.error(s);
           break;
-        } else {
-          throw new Error(errMsg);
-        }
+        } else throw new Error(s);
       }
     }
-    this.state.top = true;
-    return tokens;
+    return this.state.top = true, t;
   }
-  inline(src, tokens = []) {
-    this.inlineQueue.push({ src, tokens });
-    return tokens;
+  inline(e, t = []) {
+    return this.inlineQueue.push({ src: e, tokens: t }), t;
   }
-  /**
-   * Lexing/Compiling
-   */
-  inlineTokens(src, tokens = []) {
-    let token, lastToken, cutSrc;
-    let maskedSrc = src;
-    let match;
-    let keepPrevChar, prevChar;
+  inlineTokens(e, t = []) {
+    let n = e, r = null;
     if (this.tokens.links) {
-      const links = Object.keys(this.tokens.links);
-      if (links.length > 0) {
-        while ((match = this.tokenizer.rules.inline.reflinkSearch.exec(maskedSrc)) != null) {
-          if (links.includes(match[0].slice(match[0].lastIndexOf("[") + 1, -1))) {
-            maskedSrc = maskedSrc.slice(0, match.index) + "[" + repeatString("a", match[0].length - 2) + "]" + maskedSrc.slice(this.tokenizer.rules.inline.reflinkSearch.lastIndex);
-          }
-        }
-      }
+      let o = Object.keys(this.tokens.links);
+      if (o.length > 0) for (; (r = this.tokenizer.rules.inline.reflinkSearch.exec(n)) != null; ) o.includes(r[0].slice(r[0].lastIndexOf("[") + 1, -1)) && (n = n.slice(0, r.index) + "[" + "a".repeat(r[0].length - 2) + "]" + n.slice(this.tokenizer.rules.inline.reflinkSearch.lastIndex));
     }
-    while ((match = this.tokenizer.rules.inline.blockSkip.exec(maskedSrc)) != null) {
-      maskedSrc = maskedSrc.slice(0, match.index) + "[" + repeatString("a", match[0].length - 2) + "]" + maskedSrc.slice(this.tokenizer.rules.inline.blockSkip.lastIndex);
-    }
-    while ((match = this.tokenizer.rules.inline.escapedEmSt.exec(maskedSrc)) != null) {
-      maskedSrc = maskedSrc.slice(0, match.index + match[0].length - 2) + "++" + maskedSrc.slice(this.tokenizer.rules.inline.escapedEmSt.lastIndex);
-      this.tokenizer.rules.inline.escapedEmSt.lastIndex--;
-    }
-    while (src) {
-      if (!keepPrevChar) {
-        prevChar = "";
-      }
-      keepPrevChar = false;
-      if (this.options.extensions && this.options.extensions.inline && this.options.extensions.inline.some((extTokenizer) => {
-        if (token = extTokenizer.call({ lexer: this }, src, tokens)) {
-          src = src.substring(token.raw.length);
-          tokens.push(token);
-          return true;
-        }
-        return false;
-      })) {
+    for (; (r = this.tokenizer.rules.inline.anyPunctuation.exec(n)) != null; ) n = n.slice(0, r.index) + "++" + n.slice(this.tokenizer.rules.inline.anyPunctuation.lastIndex);
+    let i;
+    for (; (r = this.tokenizer.rules.inline.blockSkip.exec(n)) != null; ) i = r[2] ? r[2].length : 0, n = n.slice(0, r.index + i) + "[" + "a".repeat(r[0].length - i - 2) + "]" + n.slice(this.tokenizer.rules.inline.blockSkip.lastIndex);
+    n = this.options.hooks?.emStrongMask?.call({ lexer: this }, n) ?? n;
+    let s = false, a = "";
+    for (; e; ) {
+      s || (a = ""), s = false;
+      let o;
+      if (this.options.extensions?.inline?.some((u) => (o = u.call({ lexer: this }, e, t)) ? (e = e.substring(o.raw.length), t.push(o), true) : false)) continue;
+      if (o = this.tokenizer.escape(e)) {
+        e = e.substring(o.raw.length), t.push(o);
         continue;
       }
-      if (token = this.tokenizer.escape(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (o = this.tokenizer.tag(e)) {
+        e = e.substring(o.raw.length), t.push(o);
         continue;
       }
-      if (token = this.tokenizer.tag(src)) {
-        src = src.substring(token.raw.length);
-        lastToken = tokens[tokens.length - 1];
-        if (lastToken && token.type === "text" && lastToken.type === "text") {
-          lastToken.raw += token.raw;
-          lastToken.text += token.text;
-        } else {
-          tokens.push(token);
-        }
+      if (o = this.tokenizer.link(e)) {
+        e = e.substring(o.raw.length), t.push(o);
         continue;
       }
-      if (token = this.tokenizer.link(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (o = this.tokenizer.reflink(e, this.tokens.links)) {
+        e = e.substring(o.raw.length);
+        let u = t.at(-1);
+        o.type === "text" && u?.type === "text" ? (u.raw += o.raw, u.text += o.text) : t.push(o);
         continue;
       }
-      if (token = this.tokenizer.reflink(src, this.tokens.links)) {
-        src = src.substring(token.raw.length);
-        lastToken = tokens[tokens.length - 1];
-        if (lastToken && token.type === "text" && lastToken.type === "text") {
-          lastToken.raw += token.raw;
-          lastToken.text += token.text;
-        } else {
-          tokens.push(token);
-        }
+      if (o = this.tokenizer.emStrong(e, n, a)) {
+        e = e.substring(o.raw.length), t.push(o);
         continue;
       }
-      if (token = this.tokenizer.emStrong(src, maskedSrc, prevChar)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (o = this.tokenizer.codespan(e)) {
+        e = e.substring(o.raw.length), t.push(o);
         continue;
       }
-      if (token = this.tokenizer.codespan(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (o = this.tokenizer.br(e)) {
+        e = e.substring(o.raw.length), t.push(o);
         continue;
       }
-      if (token = this.tokenizer.br(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (o = this.tokenizer.del(e)) {
+        e = e.substring(o.raw.length), t.push(o);
         continue;
       }
-      if (token = this.tokenizer.del(src)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (o = this.tokenizer.autolink(e)) {
+        e = e.substring(o.raw.length), t.push(o);
         continue;
       }
-      if (token = this.tokenizer.autolink(src, mangle)) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      if (!this.state.inLink && (o = this.tokenizer.url(e))) {
+        e = e.substring(o.raw.length), t.push(o);
         continue;
       }
-      if (!this.state.inLink && (token = this.tokenizer.url(src, mangle))) {
-        src = src.substring(token.raw.length);
-        tokens.push(token);
+      let p2 = e;
+      if (this.options.extensions?.startInline) {
+        let u = 1 / 0, c = e.slice(1), g;
+        this.options.extensions.startInline.forEach((h) => {
+          g = h.call({ lexer: this }, c), typeof g == "number" && g >= 0 && (u = Math.min(u, g));
+        }), u < 1 / 0 && u >= 0 && (p2 = e.substring(0, u + 1));
+      }
+      if (o = this.tokenizer.inlineText(p2)) {
+        e = e.substring(o.raw.length), o.raw.slice(-1) !== "_" && (a = o.raw.slice(-1)), s = true;
+        let u = t.at(-1);
+        u?.type === "text" ? (u.raw += o.raw, u.text += o.text) : t.push(o);
         continue;
       }
-      cutSrc = src;
-      if (this.options.extensions && this.options.extensions.startInline) {
-        let startIndex = Infinity;
-        const tempSrc = src.slice(1);
-        let tempStart;
-        this.options.extensions.startInline.forEach(function(getStartIndex) {
-          tempStart = getStartIndex.call({ lexer: this }, tempSrc);
-          if (typeof tempStart === "number" && tempStart >= 0) {
-            startIndex = Math.min(startIndex, tempStart);
-          }
-        });
-        if (startIndex < Infinity && startIndex >= 0) {
-          cutSrc = src.substring(0, startIndex + 1);
-        }
-      }
-      if (token = this.tokenizer.inlineText(cutSrc, smartypants)) {
-        src = src.substring(token.raw.length);
-        if (token.raw.slice(-1) !== "_") {
-          prevChar = token.raw.slice(-1);
-        }
-        keepPrevChar = true;
-        lastToken = tokens[tokens.length - 1];
-        if (lastToken && lastToken.type === "text") {
-          lastToken.raw += token.raw;
-          lastToken.text += token.text;
-        } else {
-          tokens.push(token);
-        }
-        continue;
-      }
-      if (src) {
-        const errMsg = "Infinite loop on byte: " + src.charCodeAt(0);
+      if (e) {
+        let u = "Infinite loop on byte: " + e.charCodeAt(0);
         if (this.options.silent) {
-          console.error(errMsg);
+          console.error(u);
           break;
-        } else {
-          throw new Error(errMsg);
-        }
+        } else throw new Error(u);
       }
     }
-    return tokens;
+    return t;
   }
-}
-class Renderer {
-  constructor(options) {
-    this.options = options || defaults;
+};
+var P = class {
+  options;
+  parser;
+  constructor(e) {
+    this.options = e || T$1;
   }
-  code(code, infostring, escaped) {
-    const lang = (infostring || "").match(/\S*/)[0];
-    if (this.options.highlight) {
-      const out = this.options.highlight(code, lang);
-      if (out != null && out !== code) {
-        escaped = true;
-        code = out;
-      }
-    }
-    code = code.replace(/\n$/, "") + "\n";
-    if (!lang) {
-      return "<pre><code>" + (escaped ? code : escape(code, true)) + "</code></pre>\n";
-    }
-    return '<pre><code class="' + this.options.langPrefix + escape(lang) + '">' + (escaped ? code : escape(code, true)) + "</code></pre>\n";
+  space(e) {
+    return "";
   }
-  /**
-   * @param {string} quote
-   */
-  blockquote(quote) {
+  code({ text: e, lang: t, escaped: n }) {
+    let r = (t || "").match(m.notSpaceStart)?.[0], i = e.replace(m.endingNewline, "") + `
+`;
+    return r ? '<pre><code class="language-' + w$1(r) + '">' + (n ? i : w$1(i, true)) + `</code></pre>
+` : "<pre><code>" + (n ? i : w$1(i, true)) + `</code></pre>
+`;
+  }
+  blockquote({ tokens: e }) {
     return `<blockquote>
-${quote}</blockquote>
+${this.parser.parse(e)}</blockquote>
 `;
   }
-  html(html) {
-    return html;
+  html({ text: e }) {
+    return e;
   }
-  /**
-   * @param {string} text
-   * @param {string} level
-   * @param {string} raw
-   * @param {any} slugger
-   */
-  heading(text, level, raw, slugger) {
-    if (this.options.headerIds) {
-      const id = this.options.headerPrefix + slugger.slug(raw);
-      return `<h${level} id="${id}">${text}</h${level}>
+  def(e) {
+    return "";
+  }
+  heading({ tokens: e, depth: t }) {
+    return `<h${t}>${this.parser.parseInline(e)}</h${t}>
 `;
+  }
+  hr(e) {
+    return `<hr>
+`;
+  }
+  list(e) {
+    let t = e.ordered, n = e.start, r = "";
+    for (let a = 0; a < e.items.length; a++) {
+      let o = e.items[a];
+      r += this.listitem(o);
     }
-    return `<h${level}>${text}</h${level}>
+    let i = t ? "ol" : "ul", s = t && n !== 1 ? ' start="' + n + '"' : "";
+    return "<" + i + s + `>
+` + r + "</" + i + `>
 `;
   }
-  hr() {
-    return this.options.xhtml ? "<hr/>\n" : "<hr>\n";
-  }
-  list(body, ordered, start) {
-    const type = ordered ? "ol" : "ul", startatt = ordered && start !== 1 ? ' start="' + start + '"' : "";
-    return "<" + type + startatt + ">\n" + body + "</" + type + ">\n";
-  }
-  /**
-   * @param {string} text
-   */
-  listitem(text) {
-    return `<li>${text}</li>
+  listitem(e) {
+    let t = "";
+    if (e.task) {
+      let n = this.checkbox({ checked: !!e.checked });
+      e.loose ? e.tokens[0]?.type === "paragraph" ? (e.tokens[0].text = n + " " + e.tokens[0].text, e.tokens[0].tokens && e.tokens[0].tokens.length > 0 && e.tokens[0].tokens[0].type === "text" && (e.tokens[0].tokens[0].text = n + " " + w$1(e.tokens[0].tokens[0].text), e.tokens[0].tokens[0].escaped = true)) : e.tokens.unshift({ type: "text", raw: n + " ", text: n + " ", escaped: true }) : t += n + " ";
+    }
+    return t += this.parser.parse(e.tokens, !!e.loose), `<li>${t}</li>
 `;
   }
-  checkbox(checked) {
-    return "<input " + (checked ? 'checked="" ' : "") + 'disabled="" type="checkbox"' + (this.options.xhtml ? " /" : "") + "> ";
+  checkbox({ checked: e }) {
+    return "<input " + (e ? 'checked="" ' : "") + 'disabled="" type="checkbox">';
   }
-  /**
-   * @param {string} text
-   */
-  paragraph(text) {
-    return `<p>${text}</p>
+  paragraph({ tokens: e }) {
+    return `<p>${this.parser.parseInline(e)}</p>
 `;
   }
-  /**
-   * @param {string} header
-   * @param {string} body
-   */
-  table(header, body) {
-    if (body) body = `<tbody>${body}</tbody>`;
-    return "<table>\n<thead>\n" + header + "</thead>\n" + body + "</table>\n";
+  table(e) {
+    let t = "", n = "";
+    for (let i = 0; i < e.header.length; i++) n += this.tablecell(e.header[i]);
+    t += this.tablerow({ text: n });
+    let r = "";
+    for (let i = 0; i < e.rows.length; i++) {
+      let s = e.rows[i];
+      n = "";
+      for (let a = 0; a < s.length; a++) n += this.tablecell(s[a]);
+      r += this.tablerow({ text: n });
+    }
+    return r && (r = `<tbody>${r}</tbody>`), `<table>
+<thead>
+` + t + `</thead>
+` + r + `</table>
+`;
   }
-  /**
-   * @param {string} content
-   */
-  tablerow(content) {
+  tablerow({ text: e }) {
     return `<tr>
-${content}</tr>
+${e}</tr>
 `;
   }
-  tablecell(content, flags) {
-    const type = flags.header ? "th" : "td";
-    const tag = flags.align ? `<${type} align="${flags.align}">` : `<${type}>`;
-    return tag + content + `</${type}>
+  tablecell(e) {
+    let t = this.parser.parseInline(e.tokens), n = e.header ? "th" : "td";
+    return (e.align ? `<${n} align="${e.align}">` : `<${n}>`) + t + `</${n}>
 `;
   }
-  /**
-   * span level renderer
-   * @param {string} text
-   */
-  strong(text) {
-    return `<strong>${text}</strong>`;
+  strong({ tokens: e }) {
+    return `<strong>${this.parser.parseInline(e)}</strong>`;
   }
-  /**
-   * @param {string} text
-   */
-  em(text) {
-    return `<em>${text}</em>`;
+  em({ tokens: e }) {
+    return `<em>${this.parser.parseInline(e)}</em>`;
   }
-  /**
-   * @param {string} text
-   */
-  codespan(text) {
-    return `<code>${text}</code>`;
+  codespan({ text: e }) {
+    return `<code>${w$1(e, true)}</code>`;
   }
-  br() {
-    return this.options.xhtml ? "<br/>" : "<br>";
+  br(e) {
+    return "<br>";
   }
-  /**
-   * @param {string} text
-   */
-  del(text) {
-    return `<del>${text}</del>`;
+  del({ tokens: e }) {
+    return `<del>${this.parser.parseInline(e)}</del>`;
   }
-  /**
-   * @param {string} href
-   * @param {string} title
-   * @param {string} text
-   */
-  link(href, title, text) {
-    href = cleanUrl(this.options.sanitize, this.options.baseUrl, href);
-    if (href === null) {
-      return text;
-    }
-    let out = '<a href="' + href + '"';
-    if (title) {
-      out += ' title="' + title + '"';
-    }
-    out += ">" + text + "</a>";
-    return out;
+  link({ href: e, title: t, tokens: n }) {
+    let r = this.parser.parseInline(n), i = J(e);
+    if (i === null) return r;
+    e = i;
+    let s = '<a href="' + e + '"';
+    return t && (s += ' title="' + w$1(t) + '"'), s += ">" + r + "</a>", s;
   }
-  /**
-   * @param {string} href
-   * @param {string} title
-   * @param {string} text
-   */
-  image(href, title, text) {
-    href = cleanUrl(this.options.sanitize, this.options.baseUrl, href);
-    if (href === null) {
-      return text;
-    }
-    let out = `<img src="${href}" alt="${text}"`;
-    if (title) {
-      out += ` title="${title}"`;
-    }
-    out += this.options.xhtml ? "/>" : ">";
-    return out;
+  image({ href: e, title: t, text: n, tokens: r }) {
+    r && (n = this.parser.parseInline(r, this.parser.textRenderer));
+    let i = J(e);
+    if (i === null) return w$1(n);
+    e = i;
+    let s = `<img src="${e}" alt="${n}"`;
+    return t && (s += ` title="${w$1(t)}"`), s += ">", s;
   }
-  text(text) {
-    return text;
+  text(e) {
+    return "tokens" in e && e.tokens ? this.parser.parseInline(e.tokens) : "escaped" in e && e.escaped ? e.text : w$1(e.text);
   }
-}
-class TextRenderer {
-  // no need for block level renderers
-  strong(text) {
-    return text;
+};
+var $ = class {
+  strong({ text: e }) {
+    return e;
   }
-  em(text) {
-    return text;
+  em({ text: e }) {
+    return e;
   }
-  codespan(text) {
-    return text;
+  codespan({ text: e }) {
+    return e;
   }
-  del(text) {
-    return text;
+  del({ text: e }) {
+    return e;
   }
-  html(text) {
-    return text;
+  html({ text: e }) {
+    return e;
   }
-  text(text) {
-    return text;
+  text({ text: e }) {
+    return e;
   }
-  link(href, title, text) {
-    return "" + text;
+  link({ text: e }) {
+    return "" + e;
   }
-  image(href, title, text) {
-    return "" + text;
+  image({ text: e }) {
+    return "" + e;
   }
   br() {
     return "";
   }
-}
-class Slugger {
-  constructor() {
-    this.seen = {};
+};
+var b$1 = class l2 {
+  options;
+  renderer;
+  textRenderer;
+  constructor(e) {
+    this.options = e || T$1, this.options.renderer = this.options.renderer || new P(), this.renderer = this.options.renderer, this.renderer.options = this.options, this.renderer.parser = this, this.textRenderer = new $();
   }
-  /**
-   * @param {string} value
-   */
-  serialize(value) {
-    return value.toLowerCase().trim().replace(/<[!\/a-z].*?>/ig, "").replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g, "").replace(/\s/g, "-");
+  static parse(e, t) {
+    return new l2(t).parse(e);
   }
-  /**
-   * Finds the next safe (unique) slug to use
-   * @param {string} originalSlug
-   * @param {boolean} isDryRun
-   */
-  getNextSafeSlug(originalSlug, isDryRun) {
-    let slug = originalSlug;
-    let occurenceAccumulator = 0;
-    if (this.seen.hasOwnProperty(slug)) {
-      occurenceAccumulator = this.seen[originalSlug];
-      do {
-        occurenceAccumulator++;
-        slug = originalSlug + "-" + occurenceAccumulator;
-      } while (this.seen.hasOwnProperty(slug));
-    }
-    if (!isDryRun) {
-      this.seen[originalSlug] = occurenceAccumulator;
-      this.seen[slug] = 0;
-    }
-    return slug;
+  static parseInline(e, t) {
+    return new l2(t).parseInline(e);
   }
-  /**
-   * Convert string to unique id
-   * @param {object} [options]
-   * @param {boolean} [options.dryrun] Generates the next unique slug without
-   * updating the internal accumulator.
-   */
-  slug(value, options = {}) {
-    const slug = this.serialize(value);
-    return this.getNextSafeSlug(slug, options.dryrun);
-  }
-}
-class Parser {
-  constructor(options) {
-    this.options = options || defaults;
-    this.options.renderer = this.options.renderer || new Renderer();
-    this.renderer = this.options.renderer;
-    this.renderer.options = this.options;
-    this.textRenderer = new TextRenderer();
-    this.slugger = new Slugger();
-  }
-  /**
-   * Static Parse Method
-   */
-  static parse(tokens, options) {
-    const parser = new Parser(options);
-    return parser.parse(tokens);
-  }
-  /**
-   * Static Parse Inline Method
-   */
-  static parseInline(tokens, options) {
-    const parser = new Parser(options);
-    return parser.parseInline(tokens);
-  }
-  /**
-   * Parse Loop
-   */
-  parse(tokens, top = true) {
-    let out = "", i, j, k, l2, l3, row, cell, header, body, token, ordered, start, loose, itemBody, item, checked, task, checkbox, ret;
-    const l = tokens.length;
-    for (i = 0; i < l; i++) {
-      token = tokens[i];
-      if (this.options.extensions && this.options.extensions.renderers && this.options.extensions.renderers[token.type]) {
-        ret = this.options.extensions.renderers[token.type].call({ parser: this }, token);
-        if (ret !== false || !["space", "hr", "heading", "code", "table", "blockquote", "list", "html", "paragraph", "text"].includes(token.type)) {
-          out += ret || "";
+  parse(e, t = true) {
+    let n = "";
+    for (let r = 0; r < e.length; r++) {
+      let i = e[r];
+      if (this.options.extensions?.renderers?.[i.type]) {
+        let a = i, o = this.options.extensions.renderers[a.type].call({ parser: this }, a);
+        if (o !== false || !["space", "hr", "heading", "code", "table", "blockquote", "list", "html", "def", "paragraph", "text"].includes(a.type)) {
+          n += o || "";
           continue;
         }
       }
-      switch (token.type) {
+      let s = i;
+      switch (s.type) {
         case "space": {
+          n += this.renderer.space(s);
           continue;
         }
         case "hr": {
-          out += this.renderer.hr();
+          n += this.renderer.hr(s);
           continue;
         }
         case "heading": {
-          out += this.renderer.heading(
-            this.parseInline(token.tokens),
-            token.depth,
-            unescape(this.parseInline(token.tokens, this.textRenderer)),
-            this.slugger
-          );
+          n += this.renderer.heading(s);
           continue;
         }
         case "code": {
-          out += this.renderer.code(
-            token.text,
-            token.lang,
-            token.escaped
-          );
+          n += this.renderer.code(s);
           continue;
         }
         case "table": {
-          header = "";
-          cell = "";
-          l2 = token.header.length;
-          for (j = 0; j < l2; j++) {
-            cell += this.renderer.tablecell(
-              this.parseInline(token.header[j].tokens),
-              { header: true, align: token.align[j] }
-            );
-          }
-          header += this.renderer.tablerow(cell);
-          body = "";
-          l2 = token.rows.length;
-          for (j = 0; j < l2; j++) {
-            row = token.rows[j];
-            cell = "";
-            l3 = row.length;
-            for (k = 0; k < l3; k++) {
-              cell += this.renderer.tablecell(
-                this.parseInline(row[k].tokens),
-                { header: false, align: token.align[k] }
-              );
-            }
-            body += this.renderer.tablerow(cell);
-          }
-          out += this.renderer.table(header, body);
+          n += this.renderer.table(s);
           continue;
         }
         case "blockquote": {
-          body = this.parse(token.tokens);
-          out += this.renderer.blockquote(body);
+          n += this.renderer.blockquote(s);
           continue;
         }
         case "list": {
-          ordered = token.ordered;
-          start = token.start;
-          loose = token.loose;
-          l2 = token.items.length;
-          body = "";
-          for (j = 0; j < l2; j++) {
-            item = token.items[j];
-            checked = item.checked;
-            task = item.task;
-            itemBody = "";
-            if (item.task) {
-              checkbox = this.renderer.checkbox(checked);
-              if (loose) {
-                if (item.tokens.length > 0 && item.tokens[0].type === "paragraph") {
-                  item.tokens[0].text = checkbox + " " + item.tokens[0].text;
-                  if (item.tokens[0].tokens && item.tokens[0].tokens.length > 0 && item.tokens[0].tokens[0].type === "text") {
-                    item.tokens[0].tokens[0].text = checkbox + " " + item.tokens[0].tokens[0].text;
-                  }
-                } else {
-                  item.tokens.unshift({
-                    type: "text",
-                    text: checkbox
-                  });
-                }
-              } else {
-                itemBody += checkbox;
-              }
-            }
-            itemBody += this.parse(item.tokens, loose);
-            body += this.renderer.listitem(itemBody, task, checked);
-          }
-          out += this.renderer.list(body, ordered, start);
+          n += this.renderer.list(s);
           continue;
         }
         case "html": {
-          out += this.renderer.html(token.text);
+          n += this.renderer.html(s);
+          continue;
+        }
+        case "def": {
+          n += this.renderer.def(s);
           continue;
         }
         case "paragraph": {
-          out += this.renderer.paragraph(this.parseInline(token.tokens));
+          n += this.renderer.paragraph(s);
           continue;
         }
         case "text": {
-          body = token.tokens ? this.parseInline(token.tokens) : token.text;
-          while (i + 1 < l && tokens[i + 1].type === "text") {
-            token = tokens[++i];
-            body += "\n" + (token.tokens ? this.parseInline(token.tokens) : token.text);
-          }
-          out += top ? this.renderer.paragraph(body) : body;
+          let a = s, o = this.renderer.text(a);
+          for (; r + 1 < e.length && e[r + 1].type === "text"; ) a = e[++r], o += `
+` + this.renderer.text(a);
+          t ? n += this.renderer.paragraph({ type: "paragraph", raw: o, text: o, tokens: [{ type: "text", raw: o, text: o, escaped: true }] }) : n += o;
           continue;
         }
         default: {
-          const errMsg = 'Token with "' + token.type + '" type was not found.';
-          if (this.options.silent) {
-            console.error(errMsg);
-            return;
-          } else {
-            throw new Error(errMsg);
-          }
+          let a = 'Token with "' + s.type + '" type was not found.';
+          if (this.options.silent) return console.error(a), "";
+          throw new Error(a);
         }
       }
     }
-    return out;
+    return n;
   }
-  /**
-   * Parse Inline Tokens
-   */
-  parseInline(tokens, renderer) {
-    renderer = renderer || this.renderer;
-    let out = "", i, token, ret;
-    const l = tokens.length;
-    for (i = 0; i < l; i++) {
-      token = tokens[i];
-      if (this.options.extensions && this.options.extensions.renderers && this.options.extensions.renderers[token.type]) {
-        ret = this.options.extensions.renderers[token.type].call({ parser: this }, token);
-        if (ret !== false || !["escape", "html", "link", "image", "strong", "em", "codespan", "br", "del", "text"].includes(token.type)) {
-          out += ret || "";
+  parseInline(e, t = this.renderer) {
+    let n = "";
+    for (let r = 0; r < e.length; r++) {
+      let i = e[r];
+      if (this.options.extensions?.renderers?.[i.type]) {
+        let a = this.options.extensions.renderers[i.type].call({ parser: this }, i);
+        if (a !== false || !["escape", "html", "link", "image", "strong", "em", "codespan", "br", "del", "text"].includes(i.type)) {
+          n += a || "";
           continue;
         }
       }
-      switch (token.type) {
+      let s = i;
+      switch (s.type) {
         case "escape": {
-          out += renderer.text(token.text);
+          n += t.text(s);
           break;
         }
         case "html": {
-          out += renderer.html(token.text);
+          n += t.html(s);
           break;
         }
         case "link": {
-          out += renderer.link(token.href, token.title, this.parseInline(token.tokens, renderer));
+          n += t.link(s);
           break;
         }
         case "image": {
-          out += renderer.image(token.href, token.title, token.text);
+          n += t.image(s);
           break;
         }
         case "strong": {
-          out += renderer.strong(this.parseInline(token.tokens, renderer));
+          n += t.strong(s);
           break;
         }
         case "em": {
-          out += renderer.em(this.parseInline(token.tokens, renderer));
+          n += t.em(s);
           break;
         }
         case "codespan": {
-          out += renderer.codespan(token.text);
+          n += t.codespan(s);
           break;
         }
         case "br": {
-          out += renderer.br();
+          n += t.br(s);
           break;
         }
         case "del": {
-          out += renderer.del(this.parseInline(token.tokens, renderer));
+          n += t.del(s);
           break;
         }
         case "text": {
-          out += renderer.text(token.text);
+          n += t.text(s);
           break;
         }
         default: {
-          const errMsg = 'Token with "' + token.type + '" type was not found.';
-          if (this.options.silent) {
-            console.error(errMsg);
-            return;
-          } else {
-            throw new Error(errMsg);
-          }
+          let a = 'Token with "' + s.type + '" type was not found.';
+          if (this.options.silent) return console.error(a), "";
+          throw new Error(a);
         }
       }
     }
-    return out;
+    return n;
   }
-}
-class Hooks {
-  constructor(options) {
-    this.options = options || defaults;
-  }
-  static passThroughHooks = /* @__PURE__ */ new Set([
-    "preprocess",
-    "postprocess"
-  ]);
-  /**
-   * Process markdown before marked
-   */
-  preprocess(markdown) {
-    return markdown;
-  }
-  /**
-   * Process HTML after marked is finished
-   */
-  postprocess(html) {
-    return html;
-  }
-}
-function onError(silent, async, callback) {
-  return (e) => {
-    e.message += "\nPlease report this to https://github.com/markedjs/marked.";
-    if (silent) {
-      const msg = "<p>An error occurred:</p><pre>" + escape(e.message + "", true) + "</pre>";
-      if (async) {
-        return Promise.resolve(msg);
-      }
-      if (callback) {
-        callback(null, msg);
-        return;
-      }
-      return msg;
-    }
-    if (async) {
-      return Promise.reject(e);
-    }
-    if (callback) {
-      callback(e);
-      return;
-    }
-    throw e;
-  };
-}
-function parseMarkdown(lexer, parser) {
-  return (src, opt, callback) => {
-    if (typeof opt === "function") {
-      callback = opt;
-      opt = null;
-    }
-    const origOpt = { ...opt };
-    opt = { ...marked.defaults, ...origOpt };
-    const throwError = onError(opt.silent, opt.async, callback);
-    if (typeof src === "undefined" || src === null) {
-      return throwError(new Error("marked(): input parameter is undefined or null"));
-    }
-    if (typeof src !== "string") {
-      return throwError(new Error("marked(): input parameter is of type " + Object.prototype.toString.call(src) + ", string expected"));
-    }
-    checkSanitizeDeprecation(opt);
-    if (opt.hooks) {
-      opt.hooks.options = opt;
-    }
-    if (callback) {
-      const highlight = opt.highlight;
-      let tokens;
-      try {
-        if (opt.hooks) {
-          src = opt.hooks.preprocess(src);
-        }
-        tokens = lexer(src, opt);
-      } catch (e) {
-        return throwError(e);
-      }
-      const done = function(err) {
-        let out;
-        if (!err) {
-          try {
-            if (opt.walkTokens) {
-              marked.walkTokens(tokens, opt.walkTokens);
-            }
-            out = parser(tokens, opt);
-            if (opt.hooks) {
-              out = opt.hooks.postprocess(out);
-            }
-          } catch (e) {
-            err = e;
-          }
-        }
-        opt.highlight = highlight;
-        return err ? throwError(err) : callback(null, out);
-      };
-      if (!highlight || highlight.length < 3) {
-        return done();
-      }
-      delete opt.highlight;
-      if (!tokens.length) return done();
-      let pending = 0;
-      marked.walkTokens(tokens, function(token) {
-        if (token.type === "code") {
-          pending++;
-          setTimeout(() => {
-            highlight(token.text, token.lang, function(err, code) {
-              if (err) {
-                return done(err);
-              }
-              if (code != null && code !== token.text) {
-                token.text = code;
-                token.escaped = true;
-              }
-              pending--;
-              if (pending === 0) {
-                done();
-              }
-            });
-          }, 0);
-        }
-      });
-      if (pending === 0) {
-        done();
-      }
-      return;
-    }
-    if (opt.async) {
-      return Promise.resolve(opt.hooks ? opt.hooks.preprocess(src) : src).then((src2) => lexer(src2, opt)).then((tokens) => opt.walkTokens ? Promise.all(marked.walkTokens(tokens, opt.walkTokens)).then(() => tokens) : tokens).then((tokens) => parser(tokens, opt)).then((html) => opt.hooks ? opt.hooks.postprocess(html) : html).catch(throwError);
-    }
-    try {
-      if (opt.hooks) {
-        src = opt.hooks.preprocess(src);
-      }
-      const tokens = lexer(src, opt);
-      if (opt.walkTokens) {
-        marked.walkTokens(tokens, opt.walkTokens);
-      }
-      let html = parser(tokens, opt);
-      if (opt.hooks) {
-        html = opt.hooks.postprocess(html);
-      }
-      return html;
-    } catch (e) {
-      return throwError(e);
-    }
-  };
-}
-function marked(src, opt, callback) {
-  return parseMarkdown(Lexer.lex, Parser.parse)(src, opt, callback);
-}
-marked.options = marked.setOptions = function(opt) {
-  marked.defaults = { ...marked.defaults, ...opt };
-  changeDefaults(marked.defaults);
-  return marked;
 };
-marked.getDefaults = getDefaults;
-marked.defaults = defaults;
-marked.use = function(...args) {
-  const extensions = marked.defaults.extensions || { renderers: {}, childTokens: {} };
-  args.forEach((pack) => {
-    const opts = { ...pack };
-    opts.async = marked.defaults.async || opts.async || false;
-    if (pack.extensions) {
-      pack.extensions.forEach((ext) => {
-        if (!ext.name) {
-          throw new Error("extension name required");
-        }
-        if (ext.renderer) {
-          const prevRenderer = extensions.renderers[ext.name];
-          if (prevRenderer) {
-            extensions.renderers[ext.name] = function(...args2) {
-              let ret = ext.renderer.apply(this, args2);
-              if (ret === false) {
-                ret = prevRenderer.apply(this, args2);
-              }
-              return ret;
-            };
-          } else {
-            extensions.renderers[ext.name] = ext.renderer;
-          }
-        }
-        if (ext.tokenizer) {
-          if (!ext.level || ext.level !== "block" && ext.level !== "inline") {
-            throw new Error("extension level must be 'block' or 'inline'");
-          }
-          if (extensions[ext.level]) {
-            extensions[ext.level].unshift(ext.tokenizer);
-          } else {
-            extensions[ext.level] = [ext.tokenizer];
-          }
-          if (ext.start) {
-            if (ext.level === "block") {
-              if (extensions.startBlock) {
-                extensions.startBlock.push(ext.start);
-              } else {
-                extensions.startBlock = [ext.start];
-              }
-            } else if (ext.level === "inline") {
-              if (extensions.startInline) {
-                extensions.startInline.push(ext.start);
-              } else {
-                extensions.startInline = [ext.start];
-              }
-            }
-          }
-        }
-        if (ext.childTokens) {
-          extensions.childTokens[ext.name] = ext.childTokens;
-        }
-      });
-      opts.extensions = extensions;
-    }
-    if (pack.renderer) {
-      const renderer = marked.defaults.renderer || new Renderer();
-      for (const prop in pack.renderer) {
-        const prevRenderer = renderer[prop];
-        renderer[prop] = (...args2) => {
-          let ret = pack.renderer[prop].apply(renderer, args2);
-          if (ret === false) {
-            ret = prevRenderer.apply(renderer, args2);
-          }
-          return ret;
-        };
-      }
-      opts.renderer = renderer;
-    }
-    if (pack.tokenizer) {
-      const tokenizer = marked.defaults.tokenizer || new Tokenizer();
-      for (const prop in pack.tokenizer) {
-        const prevTokenizer = tokenizer[prop];
-        tokenizer[prop] = (...args2) => {
-          let ret = pack.tokenizer[prop].apply(tokenizer, args2);
-          if (ret === false) {
-            ret = prevTokenizer.apply(tokenizer, args2);
-          }
-          return ret;
-        };
-      }
-      opts.tokenizer = tokenizer;
-    }
-    if (pack.hooks) {
-      const hooks = marked.defaults.hooks || new Hooks();
-      for (const prop in pack.hooks) {
-        const prevHook = hooks[prop];
-        if (Hooks.passThroughHooks.has(prop)) {
-          hooks[prop] = (arg) => {
-            if (marked.defaults.async) {
-              return Promise.resolve(pack.hooks[prop].call(hooks, arg)).then((ret2) => {
-                return prevHook.call(hooks, ret2);
-              });
-            }
-            const ret = pack.hooks[prop].call(hooks, arg);
-            return prevHook.call(hooks, ret);
-          };
-        } else {
-          hooks[prop] = (...args2) => {
-            let ret = pack.hooks[prop].apply(hooks, args2);
-            if (ret === false) {
-              ret = prevHook.apply(hooks, args2);
-            }
-            return ret;
-          };
-        }
-      }
-      opts.hooks = hooks;
-    }
-    if (pack.walkTokens) {
-      const walkTokens = marked.defaults.walkTokens;
-      opts.walkTokens = function(token) {
-        let values = [];
-        values.push(pack.walkTokens.call(this, token));
-        if (walkTokens) {
-          values = values.concat(walkTokens.call(this, token));
-        }
-        return values;
-      };
-    }
-    marked.setOptions(opts);
-  });
+var S = class {
+  options;
+  block;
+  constructor(e) {
+    this.options = e || T$1;
+  }
+  static passThroughHooks = /* @__PURE__ */ new Set(["preprocess", "postprocess", "processAllTokens", "emStrongMask"]);
+  static passThroughHooksRespectAsync = /* @__PURE__ */ new Set(["preprocess", "postprocess", "processAllTokens"]);
+  preprocess(e) {
+    return e;
+  }
+  postprocess(e) {
+    return e;
+  }
+  processAllTokens(e) {
+    return e;
+  }
+  emStrongMask(e) {
+    return e;
+  }
+  provideLexer() {
+    return this.block ? x.lex : x.lexInline;
+  }
+  provideParser() {
+    return this.block ? b$1.parse : b$1.parseInline;
+  }
 };
-marked.walkTokens = function(tokens, callback) {
-  let values = [];
-  for (const token of tokens) {
-    values = values.concat(callback.call(marked, token));
-    switch (token.type) {
+var B = class {
+  defaults = L();
+  options = this.setOptions;
+  parse = this.parseMarkdown(true);
+  parseInline = this.parseMarkdown(false);
+  Parser = b$1;
+  Renderer = P;
+  TextRenderer = $;
+  Lexer = x;
+  Tokenizer = y;
+  Hooks = S;
+  constructor(...e) {
+    this.use(...e);
+  }
+  walkTokens(e, t) {
+    let n = [];
+    for (let r of e) switch (n = n.concat(t.call(this, r)), r.type) {
       case "table": {
-        for (const cell of token.header) {
-          values = values.concat(marked.walkTokens(cell.tokens, callback));
-        }
-        for (const row of token.rows) {
-          for (const cell of row) {
-            values = values.concat(marked.walkTokens(cell.tokens, callback));
-          }
-        }
+        let i = r;
+        for (let s of i.header) n = n.concat(this.walkTokens(s.tokens, t));
+        for (let s of i.rows) for (let a of s) n = n.concat(this.walkTokens(a.tokens, t));
         break;
       }
       case "list": {
-        values = values.concat(marked.walkTokens(token.items, callback));
+        let i = r;
+        n = n.concat(this.walkTokens(i.items, t));
         break;
       }
       default: {
-        if (marked.defaults.extensions && marked.defaults.extensions.childTokens && marked.defaults.extensions.childTokens[token.type]) {
-          marked.defaults.extensions.childTokens[token.type].forEach(function(childTokens) {
-            values = values.concat(marked.walkTokens(token[childTokens], callback));
-          });
-        } else if (token.tokens) {
-          values = values.concat(marked.walkTokens(token.tokens, callback));
-        }
+        let i = r;
+        this.defaults.extensions?.childTokens?.[i.type] ? this.defaults.extensions.childTokens[i.type].forEach((s) => {
+          let a = i[s].flat(1 / 0);
+          n = n.concat(this.walkTokens(a, t));
+        }) : i.tokens && (n = n.concat(this.walkTokens(i.tokens, t)));
       }
     }
+    return n;
   }
-  return values;
+  use(...e) {
+    let t = this.defaults.extensions || { renderers: {}, childTokens: {} };
+    return e.forEach((n) => {
+      let r = { ...n };
+      if (r.async = this.defaults.async || r.async || false, n.extensions && (n.extensions.forEach((i) => {
+        if (!i.name) throw new Error("extension name required");
+        if ("renderer" in i) {
+          let s = t.renderers[i.name];
+          s ? t.renderers[i.name] = function(...a) {
+            let o = i.renderer.apply(this, a);
+            return o === false && (o = s.apply(this, a)), o;
+          } : t.renderers[i.name] = i.renderer;
+        }
+        if ("tokenizer" in i) {
+          if (!i.level || i.level !== "block" && i.level !== "inline") throw new Error("extension level must be 'block' or 'inline'");
+          let s = t[i.level];
+          s ? s.unshift(i.tokenizer) : t[i.level] = [i.tokenizer], i.start && (i.level === "block" ? t.startBlock ? t.startBlock.push(i.start) : t.startBlock = [i.start] : i.level === "inline" && (t.startInline ? t.startInline.push(i.start) : t.startInline = [i.start]));
+        }
+        "childTokens" in i && i.childTokens && (t.childTokens[i.name] = i.childTokens);
+      }), r.extensions = t), n.renderer) {
+        let i = this.defaults.renderer || new P(this.defaults);
+        for (let s in n.renderer) {
+          if (!(s in i)) throw new Error(`renderer '${s}' does not exist`);
+          if (["options", "parser"].includes(s)) continue;
+          let a = s, o = n.renderer[a], p2 = i[a];
+          i[a] = (...u) => {
+            let c = o.apply(i, u);
+            return c === false && (c = p2.apply(i, u)), c || "";
+          };
+        }
+        r.renderer = i;
+      }
+      if (n.tokenizer) {
+        let i = this.defaults.tokenizer || new y(this.defaults);
+        for (let s in n.tokenizer) {
+          if (!(s in i)) throw new Error(`tokenizer '${s}' does not exist`);
+          if (["options", "rules", "lexer"].includes(s)) continue;
+          let a = s, o = n.tokenizer[a], p2 = i[a];
+          i[a] = (...u) => {
+            let c = o.apply(i, u);
+            return c === false && (c = p2.apply(i, u)), c;
+          };
+        }
+        r.tokenizer = i;
+      }
+      if (n.hooks) {
+        let i = this.defaults.hooks || new S();
+        for (let s in n.hooks) {
+          if (!(s in i)) throw new Error(`hook '${s}' does not exist`);
+          if (["options", "block"].includes(s)) continue;
+          let a = s, o = n.hooks[a], p2 = i[a];
+          S.passThroughHooks.has(s) ? i[a] = (u) => {
+            if (this.defaults.async && S.passThroughHooksRespectAsync.has(s)) return (async () => {
+              let g = await o.call(i, u);
+              return p2.call(i, g);
+            })();
+            let c = o.call(i, u);
+            return p2.call(i, c);
+          } : i[a] = (...u) => {
+            if (this.defaults.async) return (async () => {
+              let g = await o.apply(i, u);
+              return g === false && (g = await p2.apply(i, u)), g;
+            })();
+            let c = o.apply(i, u);
+            return c === false && (c = p2.apply(i, u)), c;
+          };
+        }
+        r.hooks = i;
+      }
+      if (n.walkTokens) {
+        let i = this.defaults.walkTokens, s = n.walkTokens;
+        r.walkTokens = function(a) {
+          let o = [];
+          return o.push(s.call(this, a)), i && (o = o.concat(i.call(this, a))), o;
+        };
+      }
+      this.defaults = { ...this.defaults, ...r };
+    }), this;
+  }
+  setOptions(e) {
+    return this.defaults = { ...this.defaults, ...e }, this;
+  }
+  lexer(e, t) {
+    return x.lex(e, t ?? this.defaults);
+  }
+  parser(e, t) {
+    return b$1.parse(e, t ?? this.defaults);
+  }
+  parseMarkdown(e) {
+    return (n, r) => {
+      let i = { ...r }, s = { ...this.defaults, ...i }, a = this.onError(!!s.silent, !!s.async);
+      if (this.defaults.async === true && i.async === false) return a(new Error("marked(): The async option was set to true by an extension. Remove async: false from the parse options object to return a Promise."));
+      if (typeof n > "u" || n === null) return a(new Error("marked(): input parameter is undefined or null"));
+      if (typeof n != "string") return a(new Error("marked(): input parameter is of type " + Object.prototype.toString.call(n) + ", string expected"));
+      if (s.hooks && (s.hooks.options = s, s.hooks.block = e), s.async) return (async () => {
+        let o = s.hooks ? await s.hooks.preprocess(n) : n, u = await (s.hooks ? await s.hooks.provideLexer() : e ? x.lex : x.lexInline)(o, s), c = s.hooks ? await s.hooks.processAllTokens(u) : u;
+        s.walkTokens && await Promise.all(this.walkTokens(c, s.walkTokens));
+        let h = await (s.hooks ? await s.hooks.provideParser() : e ? b$1.parse : b$1.parseInline)(c, s);
+        return s.hooks ? await s.hooks.postprocess(h) : h;
+      })().catch(a);
+      try {
+        s.hooks && (n = s.hooks.preprocess(n));
+        let p2 = (s.hooks ? s.hooks.provideLexer() : e ? x.lex : x.lexInline)(n, s);
+        s.hooks && (p2 = s.hooks.processAllTokens(p2)), s.walkTokens && this.walkTokens(p2, s.walkTokens);
+        let c = (s.hooks ? s.hooks.provideParser() : e ? b$1.parse : b$1.parseInline)(p2, s);
+        return s.hooks && (c = s.hooks.postprocess(c)), c;
+      } catch (o) {
+        return a(o);
+      }
+    };
+  }
+  onError(e, t) {
+    return (n) => {
+      if (n.message += `
+Please report this to https://github.com/markedjs/marked.`, e) {
+        let r = "<p>An error occurred:</p><pre>" + w$1(n.message + "", true) + "</pre>";
+        return t ? Promise.resolve(r) : r;
+      }
+      if (t) return Promise.reject(n);
+      throw n;
+    };
+  }
 };
-marked.parseInline = parseMarkdown(Lexer.lexInline, Parser.parseInline);
-marked.Parser = Parser;
-marked.parser = Parser.parse;
-marked.Renderer = Renderer;
-marked.TextRenderer = TextRenderer;
-marked.Lexer = Lexer;
-marked.lexer = Lexer.lex;
-marked.Tokenizer = Tokenizer;
-marked.Slugger = Slugger;
-marked.Hooks = Hooks;
-marked.parse = marked;
-marked.options;
-marked.setOptions;
-marked.use;
-marked.walkTokens;
-marked.parseInline;
-Parser.parse;
-Lexer.lex;
+var _$1 = new B();
+function k(l3, e) {
+  return _$1.parse(l3, e);
+}
+k.options = k.setOptions = function(l3) {
+  return _$1.setOptions(l3), k.defaults = _$1.defaults, G(k.defaults), k;
+};
+k.getDefaults = L;
+k.defaults = T$1;
+k.use = function(...l3) {
+  return _$1.use(...l3), k.defaults = _$1.defaults, G(k.defaults), k;
+};
+k.walkTokens = function(l3, e) {
+  return _$1.walkTokens(l3, e);
+};
+k.parseInline = _$1.parseInline;
+k.Parser = b$1;
+k.parser = b$1.parse;
+k.Renderer = P;
+k.TextRenderer = $;
+k.Lexer = x;
+k.lexer = x.lex;
+k.Tokenizer = y;
+k.Hooks = S;
+k.parse = k;
+k.options;
+k.setOptions;
+k.use;
+k.walkTokens;
+k.parseInline;
+b$1.parse;
+x.lex;
 const MarkdownContainer = /* @__PURE__ */ styled_default("div")({
   name: "MarkdownContainer",
   class: "gdg-mtzwuwq",
@@ -7055,7 +6028,7 @@ class MarkdownDiv extends React__default.PureComponent {
       contents,
       createNode
     } = props;
-    const innerHTML = marked(contents);
+    const innerHTML = k(contents);
     const childRange = document.createRange();
     childRange.selectNodeContents(targetElement);
     childRange.deleteContents();
@@ -7159,12 +6132,12 @@ function parseToRgba(color) {
   if (result.length < 4) {
     result.push(1);
   }
-  result = result.map((x) => {
-    const isNaN2 = Number.isNaN(x);
+  result = result.map((x2) => {
+    const isNaN2 = Number.isNaN(x2);
     if (process.env.NODE_ENV !== "production" && isNaN2) {
       console.warn("Could not parse color", color);
     }
-    return isNaN2 ? 0 : x;
+    return isNaN2 ? 0 : x2;
   });
   cache[normalizedColor] = result;
   return result;
@@ -7215,8 +6188,8 @@ function interpolateColors(leftColor, rightColor, val) {
 }
 function getLuminance(color) {
   if (color === "transparent") return 0;
-  function f(x) {
-    const channel = x / 255;
+  function f(x2) {
+    const channel = x2 / 255;
     return channel <= 0.04045 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
   }
   const [r, g, b2] = parseToRgba(color);
@@ -7369,27 +6342,27 @@ const DataGridOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
   }
 });
 function useRefState() {
-  const $ = compilerRuntimeExports.c(2);
+  const $2 = compilerRuntimeExports.c(2);
   const [refState, setRefState] = React.useState();
   const t0 = refState !== null && refState !== void 0 ? refState : void 0;
   let t1;
-  if ($[0] !== t0) {
+  if ($2[0] !== t0) {
     t1 = [t0, setRefState];
-    $[0] = t0;
-    $[1] = t1;
+    $2[0] = t0;
+    $2[1] = t1;
   } else {
-    t1 = $[1];
+    t1 = $2[1];
   }
   return t1;
 }
 function useStayOnScreen() {
-  const $ = compilerRuntimeExports.c(12);
+  const $2 = compilerRuntimeExports.c(12);
   const [ref, setRef] = useRefState();
   const [xOffset, setXOffset] = React.useState(0);
   const [isIntersecting, setIsIntersecting] = React.useState(true);
   let t0;
   let t1;
-  if ($[0] !== ref) {
+  if ($2[0] !== ref) {
     t0 = () => {
       if (ref === void 0) {
         return;
@@ -7409,17 +6382,17 @@ function useStayOnScreen() {
       return () => observer.disconnect();
     };
     t1 = [ref];
-    $[0] = ref;
-    $[1] = t0;
-    $[2] = t1;
+    $2[0] = ref;
+    $2[1] = t0;
+    $2[2] = t1;
   } else {
-    t0 = $[1];
-    t1 = $[2];
+    t0 = $2[1];
+    t1 = $2[2];
   }
   React.useLayoutEffect(t0, t1);
   let t2;
   let t3;
-  if ($[3] !== isIntersecting || $[4] !== ref) {
+  if ($2[3] !== isIntersecting || $2[4] !== ref) {
     t2 = () => {
       if (isIntersecting || ref === void 0) {
         return;
@@ -7440,38 +6413,38 @@ function useStayOnScreen() {
       };
     };
     t3 = [ref, isIntersecting];
-    $[3] = isIntersecting;
-    $[4] = ref;
-    $[5] = t2;
-    $[6] = t3;
+    $2[3] = isIntersecting;
+    $2[4] = ref;
+    $2[5] = t2;
+    $2[6] = t3;
   } else {
-    t2 = $[5];
-    t3 = $[6];
+    t2 = $2[5];
+    t3 = $2[6];
   }
   React.useEffect(t2, t3);
   const t4 = `translateX(${xOffset}px)`;
   let t5;
-  if ($[7] !== t4) {
+  if ($2[7] !== t4) {
     t5 = {
       transform: t4
     };
-    $[7] = t4;
-    $[8] = t5;
+    $2[7] = t4;
+    $2[8] = t5;
   } else {
-    t5 = $[8];
+    t5 = $2[8];
   }
   const style = t5;
   let t6;
-  if ($[9] !== setRef || $[10] !== style) {
+  if ($2[9] !== setRef || $2[10] !== style) {
     t6 = {
       ref: setRef,
       style
     };
-    $[9] = setRef;
-    $[10] = style;
-    $[11] = t6;
+    $2[9] = setRef;
+    $2[10] = style;
+    $2[11] = t6;
   } else {
-    t6 = $[11];
+    t6 = $2[11];
   }
   return t6;
 }
@@ -7701,41 +6674,41 @@ var d = /* @__PURE__ */ new Map(), b = /* @__PURE__ */ new Map(), z = /* @__PURE
 function v() {
   d.clear(), z.clear(), b.clear();
 }
-function w(l, s, e, c, t) {
+function w(l3, s, e, c, t) {
   var n, r, o;
   let f = 0, a = {};
-  for (let i of l) f += (n = e.get(i)) != null ? n : t, a[i] = ((r = a[i]) != null ? r : 0) + 1;
+  for (let i of l3) f += (n = e.get(i)) != null ? n : t, a[i] = ((r = a[i]) != null ? r : 0) + 1;
   let g = s - f;
   for (let i of Object.keys(a)) {
-    let m = a[i], u = (o = e.get(i)) != null ? o : t, h = u * m / f, M = g * h * c / m, C = u + M;
-    e.set(i, C);
+    let m2 = a[i], u = (o = e.get(i)) != null ? o : t, h = u * m2 / f, M2 = g * h * c / m2, C2 = u + M2;
+    e.set(i, C2);
   }
 }
-function R(l, s) {
+function R(l3, s) {
   var n;
   let e = /* @__PURE__ */ new Map(), c = 0;
   for (let r of "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.-+=?") {
-    let o = l.measureText(r).width;
+    let o = l3.measureText(r).width;
     e.set(r, o), c += o;
   }
   let t = c / e.size, f = 3, a = (s / t + f) / (f + 1), g = e.keys();
   for (let r of g) e.set(r, ((n = e.get(r)) != null ? n : t) * a);
   return e;
 }
-function p(l, s, e, c) {
+function p(l3, s, e, c) {
   var g, n;
   let t = b.get(e);
   if (c && t !== void 0 && t.count > 2e4) {
     let r = z.get(e);
-    if (r === void 0 && (r = R(l, t.size), z.set(e, r)), t.count > 5e5) {
+    if (r === void 0 && (r = R(l3, t.size), z.set(e, r)), t.count > 5e5) {
       let i = 0;
-      for (let m of s) i += (g = r.get(m)) != null ? g : t.size;
+      for (let m2 of s) i += (g = r.get(m2)) != null ? g : t.size;
       return i * 1.01;
     }
-    let o = l.measureText(s);
+    let o = l3.measureText(s);
     return w(s, o.width, r, Math.max(0.05, 1 - t.count / 2e5), t.size), b.set(e, { count: t.count + s.length, size: t.size }), o.width;
   }
-  let f = l.measureText(s), a = f.width / s.length;
+  let f = l3.measureText(s), a = f.width / s.length;
   if (((n = t == null ? void 0 : t.count) != null ? n : 0) > 2e4) return f.width;
   if (t === void 0) b.set(e, { count: s.length, size: a });
   else {
@@ -7744,16 +6717,16 @@ function p(l, s, e, c) {
   }
   return f.width;
 }
-function T(l, s, e, c, t, f, a, g) {
+function T(l3, s, e, c, t, f, a, g) {
   if (s.length <= 1) return s.length;
   if (t < e) return -1;
-  let n = Math.floor(e / t * f), r = p(l, s.slice(0, Math.max(0, n)), c, a);
+  let n = Math.floor(e / t * f), r = p(l3, s.slice(0, Math.max(0, n)), c, a);
   if (r !== e) if (r < e) {
-    for (; r < e; ) n++, r = p(l, s.slice(0, Math.max(0, n)), c, a);
+    for (; r < e; ) n++, r = p(l3, s.slice(0, Math.max(0, n)), c, a);
     n--;
   } else for (; r > e; ) {
     let i = s.lastIndexOf(" ", n - 1);
-    i > 0 ? n = i : n--, r = p(l, s.slice(0, Math.max(0, n)), c, a);
+    i > 0 ? n = i : n--, r = p(l3, s.slice(0, Math.max(0, n)), c, a);
   }
   if (s[n] !== " ") {
     let i = 0;
@@ -7762,19 +6735,19 @@ function T(l, s, e, c, t, f, a, g) {
   }
   return n;
 }
-function _(l, s, e, c, t, f) {
+function _(l3, s, e, c, t, f) {
   let a = `${s}_${e}_${c}px`, g = d.get(a);
   if (g !== void 0) return g;
   if (c <= 0) return [];
   let n = [], r = s.split(`
-`), o = b.get(e), i = o === void 0 ? s.length : c / o.size * 1.5, m = t && o !== void 0 && o.count > 2e4;
+`), o = b.get(e), i = o === void 0 ? s.length : c / o.size * 1.5, m2 = t && o !== void 0 && o.count > 2e4;
   for (let u of r) {
-    let h = p(l, u.slice(0, Math.max(0, i)), e, m), M = Math.min(u.length, i);
+    let h = p(l3, u.slice(0, Math.max(0, i)), e, m2), M2 = Math.min(u.length, i);
     if (h <= c) n.push(u);
     else {
       for (; h > c; ) {
-        let C = T(l, u, c, e, h, M, m), k = u.slice(0, Math.max(0, C));
-        u = u.slice(k.length), n.push(k), h = p(l, u.slice(0, Math.max(0, i)), e, m), M = Math.min(u.length, i);
+        let C2 = T(l3, u, c, e, h, M2, m2), k2 = u.slice(0, Math.max(0, C2));
+        u = u.slice(k2.length), n.push(k2), h = p(l3, u.slice(0, Math.max(0, i)), e, m2), M2 = Math.min(u.length, i);
       }
       h > 0 && n.push(u);
     }
@@ -7782,11 +6755,11 @@ function _(l, s, e, c, t, f) {
   return n = n.map((u, h) => h === 0 ? u.trimEnd() : u.trim()), d.set(a, n), d.size > 500 && d.delete(d.keys().next().value), n;
 }
 function useMappedColumns(columns, freezeColumns) {
-  const $ = compilerRuntimeExports.c(5);
+  const $2 = compilerRuntimeExports.c(5);
   let t0;
-  if ($[0] !== columns || $[1] !== freezeColumns) {
+  if ($2[0] !== columns || $2[1] !== freezeColumns) {
     let t1;
-    if ($[3] !== freezeColumns) {
+    if ($2[3] !== freezeColumns) {
       t1 = (c, i) => ({
         group: c.group,
         grow: c.grow,
@@ -7812,17 +6785,17 @@ function useMappedColumns(columns, freezeColumns) {
         rowGroupBorder: c.rowGroupBorder,
         required: c.required
       });
-      $[3] = freezeColumns;
-      $[4] = t1;
+      $2[3] = freezeColumns;
+      $2[4] = t1;
     } else {
-      t1 = $[4];
+      t1 = $2[4];
     }
     t0 = columns.map(t1);
-    $[0] = columns;
-    $[1] = freezeColumns;
-    $[2] = t0;
+    $2[0] = columns;
+    $2[1] = freezeColumns;
+    $2[2] = t0;
   } else {
-    t0 = $[2];
+    t0 = $2[2];
   }
   return t0;
 }
@@ -7859,10 +6832,10 @@ function isGroupEqual(left, right) {
   return leftStr === rightStr;
 }
 function isGroupEqualAtLevel(left, right, level, totalLevels) {
-  for (let l = 0; l <= level; l++) {
+  for (let l3 = 0; l3 <= level; l3++) {
     var _getGroupAtLevel, _getGroupAtLevel2;
-    const leftStr = (_getGroupAtLevel = getGroupAtLevel(left, l, totalLevels)) !== null && _getGroupAtLevel !== void 0 ? _getGroupAtLevel : "";
-    const rightStr = (_getGroupAtLevel2 = getGroupAtLevel(right, l, totalLevels)) !== null && _getGroupAtLevel2 !== void 0 ? _getGroupAtLevel2 : "";
+    const leftStr = (_getGroupAtLevel = getGroupAtLevel(left, l3, totalLevels)) !== null && _getGroupAtLevel !== void 0 ? _getGroupAtLevel : "";
+    const rightStr = (_getGroupAtLevel2 = getGroupAtLevel(right, l3, totalLevels)) !== null && _getGroupAtLevel2 !== void 0 ? _getGroupAtLevel2 : "";
     if (leftStr !== rightStr) {
       return false;
     }
@@ -7878,8 +6851,8 @@ function cellIsSelected(location, cell, selection) {
   return selection.current.cell[0] >= cell.span[0] && selection.current.cell[0] <= cell.span[1];
 }
 function itemIsInRect(location, rect) {
-  const [x, y] = location;
-  return x >= rect.x && x < rect.x + rect.width && y >= rect.y && y < rect.y + rect.height;
+  const [x2, y2] = location;
+  return x2 >= rect.x && x2 < rect.x + rect.width && y2 >= rect.y && y2 < rect.y + rect.height;
 }
 function itemsAreEqual(a, b2) {
   return (a === null || a === void 0 ? void 0 : a[0]) === (b2 === null || b2 === void 0 ? void 0 : b2[0]) && (a === null || a === void 0 ? void 0 : a[1]) === (b2 === null || b2 === void 0 ? void 0 : b2[1]);
@@ -7985,13 +6958,13 @@ function getEffectiveColumns(columns, cellXOffset, width, dndState, tx) {
   return sticky;
 }
 function getColumnIndexForX(targetX, effectiveColumns, translateX) {
-  let x = 0;
+  let x2 = 0;
   for (const c of effectiveColumns) {
-    const cx3 = c.sticky ? x : x + (translateX !== null && translateX !== void 0 ? translateX : 0);
+    const cx3 = c.sticky ? x2 : x2 + (translateX !== null && translateX !== void 0 ? translateX : 0);
     if (targetX <= cx3 + c.width) {
       return c.sourceIndex;
     }
-    x += c.width;
+    x2 += c.width;
   }
   return -1;
 }
@@ -8011,12 +6984,12 @@ function getRowIndexForY(targetY, height, hasGroups, headerHeight, groupHeaderHe
     }
   }
   if (targetY <= totalHeaderHeight) return -1;
-  let y = height;
+  let y2 = height;
   for (let fr = 0; fr < freezeTrailingRows; fr++) {
     const row = rows - 1 - fr;
     const rh = typeof rowHeight === "number" ? rowHeight : rowHeight(row);
-    y -= rh;
-    if (targetY >= y) {
+    y2 -= rh;
+    if (targetY >= y2) {
       return row;
     }
   }
@@ -8086,8 +7059,8 @@ function loadMetric(ctx, baseline) {
 }
 const biasCache = [];
 function getMiddleCenterBiasInner(ctx, font) {
-  for (const x of biasCache) {
-    if (x.key === font) return x.val;
+  for (const x2 of biasCache) {
+    if (x2.key === font) return x2.val;
   }
   const alphabeticMetrics = loadMetric(ctx, "alphabetic");
   const middleMetrics = loadMetric(ctx, "middle");
@@ -8147,13 +7120,13 @@ function drawTextCellExternal(args, data, contentAlign, allowWrapping, hyperWrap
     theme
   }, data, contentAlign, allowWrapping, hyperWrapping);
 }
-function drawSingleTextLine(ctx, data, x, y, w2, h, bias, theme, contentAlign) {
+function drawSingleTextLine(ctx, data, x2, y2, w2, h, bias, theme, contentAlign) {
   if (contentAlign === "right") {
-    ctx.fillText(data, x + w2 - (theme.cellHorizontalPadding + 0.5), y + h / 2 + bias);
+    ctx.fillText(data, x2 + w2 - (theme.cellHorizontalPadding + 0.5), y2 + h / 2 + bias);
   } else if (contentAlign === "center") {
-    ctx.fillText(data, x + w2 / 2, y + h / 2 + bias);
+    ctx.fillText(data, x2 + w2 / 2, y2 + h / 2 + bias);
   } else {
-    ctx.fillText(data, x + theme.cellHorizontalPadding + 0.5, y + h / 2 + bias);
+    ctx.fillText(data, x2 + theme.cellHorizontalPadding + 0.5, y2 + h / 2 + bias);
   }
 }
 function getEmHeight(ctx, fontStyle) {
@@ -8171,7 +7144,7 @@ function truncateString(data, w2) {
   }
   return data;
 }
-function drawMultiLineText(ctx, data, x, y, w2, h, bias, theme, contentAlign, hyperWrapping) {
+function drawMultiLineText(ctx, data, x2, y2, w2, h, bias, theme, contentAlign, hyperWrapping) {
   const fontStyle = theme.baseFontFull;
   const split = _(ctx, data, fontStyle, w2 - theme.cellHorizontalPadding * 2, hyperWrapping !== null && hyperWrapping !== void 0 ? hyperWrapping : false);
   const emHeight = getEmHeight(ctx, fontStyle);
@@ -8180,15 +7153,15 @@ function drawMultiLineText(ctx, data, x, y, w2, h, bias, theme, contentAlign, hy
   const mustClip = actualHeight + theme.cellVerticalPadding > h;
   if (mustClip) {
     ctx.save();
-    ctx.rect(x, y, w2, h);
+    ctx.rect(x2, y2, w2, h);
     ctx.clip();
   }
-  const optimalY = y + h / 2 - actualHeight / 2;
-  let drawY = Math.max(y + theme.cellVerticalPadding, optimalY);
+  const optimalY = y2 + h / 2 - actualHeight / 2;
+  let drawY = Math.max(y2 + theme.cellVerticalPadding, optimalY);
   for (const line of split) {
-    drawSingleTextLine(ctx, line, x, drawY, w2, emHeight, bias, theme, contentAlign);
+    drawSingleTextLine(ctx, line, x2, drawY, w2, emHeight, bias, theme, contentAlign);
     drawY += lineHeight;
-    if (drawY > y + h) break;
+    if (drawY > y2 + h) break;
   }
   if (mustClip) {
     ctx.restore();
@@ -8201,8 +7174,8 @@ function drawTextCell(args, data, contentAlign, allowWrapping, hyperWrapping) {
     theme
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width: w2,
     height: h
   } = rect;
@@ -8228,9 +7201,9 @@ function drawTextCell(args, data, contentAlign, allowWrapping, hyperWrapping) {
       changed = true;
     }
     if (!allowWrapping) {
-      drawSingleTextLine(ctx, data, x, y, w2, h, bias, theme, contentAlign);
+      drawSingleTextLine(ctx, data, x2, y2, w2, h, bias, theme, contentAlign);
     } else {
-      drawMultiLineText(ctx, data, x, y, w2, h, bias, theme, contentAlign, hyperWrapping);
+      drawMultiLineText(ctx, data, x2, y2, w2, h, bias, theme, contentAlign, hyperWrapping);
     }
     if (changed) {
       ctx.textAlign = "start";
@@ -8240,7 +7213,7 @@ function drawTextCell(args, data, contentAlign, allowWrapping, hyperWrapping) {
     }
   }
 }
-function roundedRect(ctx, x, y, width, height, radius) {
+function roundedRect(ctx, x2, y2, width, height, radius) {
   if (typeof radius === "number") {
     radius = {
       tl: radius,
@@ -8255,11 +7228,11 @@ function roundedRect(ctx, x, y, width, height, radius) {
     bl: Math.max(0, Math.min(radius.bl, height / 2, width / 2)),
     br: Math.max(0, Math.min(radius.br, height / 2, width / 2))
   };
-  ctx.moveTo(x + radius.tl, y);
-  ctx.arcTo(x + width, y, x + width, y + radius.tr, radius.tr);
-  ctx.arcTo(x + width, y + height, x + width - radius.br, y + height, radius.br);
-  ctx.arcTo(x, y + height, x, y + height - radius.bl, radius.bl);
-  ctx.arcTo(x, y, x + radius.tl, y, radius.tl);
+  ctx.moveTo(x2 + radius.tl, y2);
+  ctx.arcTo(x2 + width, y2, x2 + width, y2 + radius.tr, radius.tr);
+  ctx.arcTo(x2 + width, y2 + height, x2 + width - radius.br, y2 + height, radius.br);
+  ctx.arcTo(x2, y2 + height, x2, y2 + height - radius.bl, radius.bl);
+  ctx.arcTo(x2, y2, x2 + radius.tl, y2, radius.tl);
 }
 function drawMenuDots(ctx, dotsX, dotsY) {
   const radius = 1.25;
@@ -8320,11 +7293,11 @@ function roundedPoly(ctx, points, radiusAll) {
     } else {
       cRadius = radius;
     }
-    let x = p2.x + v2.nx * lenOut;
-    let y = p2.y + v2.ny * lenOut;
-    x += -v2.ny * cRadius * radDirection;
-    y += v2.nx * cRadius * radDirection;
-    ctx.arc(x, y, cRadius, v1.ang + Math.PI / 2 * radDirection, v2.ang - Math.PI / 2 * radDirection, drawDirection);
+    let x2 = p2.x + v2.nx * lenOut;
+    let y2 = p2.y + v2.ny * lenOut;
+    x2 += -v2.ny * cRadius * radDirection;
+    y2 += v2.nx * cRadius * radDirection;
+    ctx.arc(x2, y2, cRadius, v1.ang + Math.PI / 2 * radDirection, v2.ang - Math.PI / 2 * radDirection, drawDirection);
     p1 = p2;
     p2 = p3;
   }
@@ -8487,7 +7460,7 @@ class CellSet {
   constructor() {
     let items = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : [];
     this.cells = void 0;
-    this.cells = new Set(items.map((x) => packColRowToNumber(x[0], x[1])));
+    this.cells = new Set(items.map((x2) => packColRowToNumber(x2[0], x2[1])));
   }
   add(cell) {
     this.cells.add(packColRowToNumber(cell[0], cell[1]));
@@ -9096,7 +8069,7 @@ class SpriteManager {
   setOnSettled(cb) {
     this.onSettled = cb;
   }
-  drawSprite(sprite, variant, ctx, x, y, size, theme) {
+  drawSprite(sprite, variant, ctx, x2, y2, size, theme) {
     let alpha = arguments.length > 7 && arguments[7] !== void 0 ? arguments[7] : 1;
     const [bgColor, fgColor] = getColors(variant, theme);
     const rSize = size * Math.ceil(window.devicePixelRatio);
@@ -9129,7 +8102,7 @@ class SpriteManager {
       if (alpha < 1) {
         ctx.globalAlpha = alpha;
       }
-      ctx.drawImage(spriteCanvas, 0, 0, rSize, rSize, x, y, size, size);
+      ctx.drawImage(spriteCanvas, 0, 0, rSize, rSize, x2, y2, size, size);
       if (alpha < 1) {
         ctx.globalAlpha = 1;
       }
@@ -9204,17 +8177,17 @@ function getClosestRect(rect, px, py, allowedDirections) {
 function intersectRect(x1, y1, w1, h1, x2, y2, w2, h2) {
   return x1 <= x2 + w2 && x2 <= x1 + w1 && y1 <= y2 + h2 && y2 <= y1 + h1;
 }
-function pointInRect(rect, x, y) {
-  return x >= rect.x && x <= rect.x + rect.width && y >= rect.y && y <= rect.y + rect.height;
+function pointInRect(rect, x2, y2) {
+  return x2 >= rect.x && x2 <= rect.x + rect.width && y2 >= rect.y && y2 <= rect.y + rect.height;
 }
 function combineRects(a, b2) {
-  const x = Math.min(a.x, b2.x);
-  const y = Math.min(a.y, b2.y);
-  const width = Math.max(a.x + a.width, b2.x + b2.width) - x;
-  const height = Math.max(a.y + a.height, b2.y + b2.height) - y;
+  const x2 = Math.min(a.x, b2.x);
+  const y2 = Math.min(a.y, b2.y);
+  const width = Math.max(a.x + a.width, b2.x + b2.width) - x2;
+  const height = Math.max(a.y + a.height, b2.y + b2.height) - y2;
   return {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width,
     height
   };
@@ -9269,16 +8242,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
   const isOverCenterHoriz = inY >= tSplit && inY < bSplit || inBottom > tSplit && inBottom <= bSplit || inY < tSplit && inBottom > bSplit;
   const isOverCenter = isOverCenterVert && isOverCenterHoriz;
   if (isOverCenter) {
-    const x = Math.max(inX, lSplit);
-    const y = Math.max(inY, tSplit);
+    const x2 = Math.max(inX, lSplit);
+    const y2 = Math.max(inY, tSplit);
     const right = Math.min(inRight, rSplit);
     const bottom = Math.min(inBottom, bSplit);
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: lClip,
@@ -9289,16 +8262,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverLeft && isOverTop) {
-    const x = inX;
-    const y = inY;
+    const x2 = inX;
+    const y2 = inY;
     const right = Math.min(inRight, lSplit);
     const bottom = Math.min(inBottom, tSplit);
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: 0,
@@ -9309,16 +8282,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverTop && isOverCenterVert) {
-    const x = Math.max(inX, lSplit);
-    const y = inY;
+    const x2 = Math.max(inX, lSplit);
+    const y2 = inY;
     const right = Math.min(inRight, rSplit);
     const bottom = Math.min(inBottom, tSplit);
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: lClip,
@@ -9329,16 +8302,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverTop && isOverRight) {
-    const x = Math.max(inX, rSplit);
-    const y = inY;
+    const x2 = Math.max(inX, rSplit);
+    const y2 = inY;
     const right = inRight;
     const bottom = Math.min(inBottom, tSplit);
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: rClip,
@@ -9349,16 +8322,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverLeft && isOverCenterHoriz) {
-    const x = inX;
-    const y = Math.max(inY, tSplit);
+    const x2 = inX;
+    const y2 = Math.max(inY, tSplit);
     const right = Math.min(inRight, lSplit);
     const bottom = Math.min(inBottom, bSplit);
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: 0,
@@ -9369,16 +8342,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverRight && isOverCenterHoriz) {
-    const x = Math.max(inX, rSplit);
-    const y = Math.max(inY, tSplit);
+    const x2 = Math.max(inX, rSplit);
+    const y2 = Math.max(inY, tSplit);
     const right = inRight;
     const bottom = Math.min(inBottom, bSplit);
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: rClip,
@@ -9389,16 +8362,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverLeft && isOverBottom) {
-    const x = inX;
-    const y = Math.max(inY, bSplit);
+    const x2 = inX;
+    const y2 = Math.max(inY, bSplit);
     const right = Math.min(inRight, lSplit);
     const bottom = inBottom;
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: 0,
@@ -9409,16 +8382,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverBottom && isOverCenterVert) {
-    const x = Math.max(inX, lSplit);
-    const y = Math.max(inY, bSplit);
+    const x2 = Math.max(inX, lSplit);
+    const y2 = Math.max(inY, bSplit);
     const right = Math.min(inRight, rSplit);
     const bottom = inBottom;
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: lClip,
@@ -9429,16 +8402,16 @@ function splitRectIntoRegions(rect, splitIndicies, width, height, splitLocations
     });
   }
   if (isOverRight && isOverBottom) {
-    const x = Math.max(inX, rSplit);
-    const y = Math.max(inY, bSplit);
+    const x2 = Math.max(inX, rSplit);
+    const y2 = Math.max(inY, bSplit);
     const right = inRight;
     const bottom = inBottom;
     result.push({
       rect: {
-        x,
-        y,
-        width: right - x,
-        height: bottom - y
+        x: x2,
+        y: y2,
+        width: right - x2,
+        height: bottom - y2
       },
       clip: {
         x: rClip,
@@ -9460,43 +8433,43 @@ function getSkipPoint(drawRegions) {
 }
 function walkRowsInCol(startRow, drawY, height, rows, getRowHeight, freezeTrailingRows, hasAppendRow, skipToY, cb) {
   skipToY = skipToY !== null && skipToY !== void 0 ? skipToY : drawY;
-  let y = drawY;
+  let y2 = drawY;
   let row = startRow;
   const rowEnd = rows - freezeTrailingRows;
   let didBreak = false;
-  while (y < height && row < rowEnd) {
+  while (y2 < height && row < rowEnd) {
     const rh = getRowHeight(row);
-    if (y + rh > skipToY && cb(y, row, rh, false, hasAppendRow && row === rows - 1) === true) {
+    if (y2 + rh > skipToY && cb(y2, row, rh, false, hasAppendRow && row === rows - 1) === true) {
       didBreak = true;
       break;
     }
-    y += rh;
+    y2 += rh;
     row++;
   }
   if (didBreak) return;
-  y = height;
+  y2 = height;
   for (let fr = 0; fr < freezeTrailingRows; fr++) {
     row = rows - 1 - fr;
     const rh = getRowHeight(row);
-    y -= rh;
-    cb(y, row, rh, true, hasAppendRow && row === rows - 1);
+    y2 -= rh;
+    cb(y2, row, rh, true, hasAppendRow && row === rows - 1);
   }
 }
 function walkColumns(effectiveCols, cellYOffset, translateX, translateY, totalHeaderHeight, cb) {
-  let x = 0;
+  let x2 = 0;
   let clipX = 0;
   const drawY = totalHeaderHeight + translateY;
   for (const c of effectiveCols) {
-    const drawX = c.sticky ? clipX : x + translateX;
+    const drawX = c.sticky ? clipX : x2 + translateX;
     if (cb(c, drawX, drawY, c.sticky ? 0 : clipX, cellYOffset) === true) {
       break;
     }
-    x += c.width;
+    x2 += c.width;
     clipX += c.sticky ? c.width : 0;
   }
 }
 function walkGroups(effectiveCols, width, translateX, groupHeaderHeight, cb) {
-  let x = 0;
+  let x2 = 0;
   let clipX = 0;
   for (let index = 0; index < effectiveCols.length; index++) {
     const startCol = effectiveCols[index];
@@ -9515,11 +8488,11 @@ function walkGroups(effectiveCols, width, translateX, groupHeaderHeight, cb) {
       }
     }
     const t = startCol.sticky ? 0 : translateX;
-    const localX = x + t;
+    const localX = x2 + t;
     const delta = startCol.sticky ? 0 : Math.max(0, clipX - localX);
     const w2 = Math.min(boxWidth - delta, width - (localX + delta));
     cb([startCol.sourceIndex, effectiveCols[end - 1].sourceIndex], getGroupName(startCol.group), localX + delta, 0, w2, groupHeaderHeight);
-    x += boxWidth;
+    x2 += boxWidth;
   }
 }
 function walkMultiLevelGroups(effectiveCols, width, translateX, groupHeaderHeights, groupLevels, cb) {
@@ -9588,17 +8561,17 @@ function getSpanBounds(span, cellX, cellY, cellW, cellH, column, allColumns) {
   const [startCol, endCol] = span;
   let frozenRect;
   let contentRect;
-  const firstNonSticky = (_allColumns$find$sour = (_allColumns$find = allColumns.find((x) => !x.sticky)) === null || _allColumns$find === void 0 ? void 0 : _allColumns$find.sourceIndex) !== null && _allColumns$find$sour !== void 0 ? _allColumns$find$sour : 0;
+  const firstNonSticky = (_allColumns$find$sour = (_allColumns$find = allColumns.find((x2) => !x2.sticky)) === null || _allColumns$find === void 0 ? void 0 : _allColumns$find.sourceIndex) !== null && _allColumns$find$sour !== void 0 ? _allColumns$find$sour : 0;
   if (endCol > firstNonSticky) {
     const renderFromCol = Math.max(startCol, firstNonSticky);
     let tempX = cellX;
     let tempW = cellW;
-    for (let x = column.sourceIndex - 1; x >= renderFromCol; x--) {
-      tempX -= allColumns[x].width;
-      tempW += allColumns[x].width;
+    for (let x2 = column.sourceIndex - 1; x2 >= renderFromCol; x2--) {
+      tempX -= allColumns[x2].width;
+      tempW += allColumns[x2].width;
     }
-    for (let x = column.sourceIndex + 1; x <= endCol; x++) {
-      tempW += allColumns[x].width;
+    for (let x2 = column.sourceIndex + 1; x2 <= endCol; x2++) {
+      tempW += allColumns[x2].width;
     }
     contentRect = {
       x: tempX,
@@ -9611,12 +8584,12 @@ function getSpanBounds(span, cellX, cellY, cellW, cellH, column, allColumns) {
     const renderToCol = Math.min(endCol, firstNonSticky - 1);
     let tempX = cellX;
     let tempW = cellW;
-    for (let x = column.sourceIndex - 1; x >= startCol; x--) {
-      tempX -= allColumns[x].width;
-      tempW += allColumns[x].width;
+    for (let x2 = column.sourceIndex - 1; x2 >= startCol; x2--) {
+      tempX -= allColumns[x2].width;
+      tempW += allColumns[x2].width;
     }
-    for (let x = column.sourceIndex + 1; x <= renderToCol; x++) {
-      tempW += allColumns[x].width;
+    for (let x2 = column.sourceIndex + 1; x2 <= renderToCol; x2++) {
+      tempW += allColumns[x2].width;
     }
     frozenRect = {
       x: tempX,
@@ -9929,7 +8902,7 @@ let animationFrameRequested = false;
 function animRequest() {
   animationFrameRequested = true;
 }
-function drawCell(ctx, cell, col, row, isLastCol, isLastRow, x, y, w2, h, highlighted, theme, finalCellFillColor, imageLoader, spriteManager, hoverAmount, hoverInfo, hyperWrapping, frameTime, drawCellCallback, lastPrep, enqueue, renderStateProvider, getCellRenderer, overrideCursor, vtrans) {
+function drawCell(ctx, cell, col, row, isLastCol, isLastRow, x2, y2, w2, h, highlighted, theme, finalCellFillColor, imageLoader, spriteManager, hoverAmount, hoverInfo, hyperWrapping, frameTime, drawCellCallback, lastPrep, enqueue, renderStateProvider, getCellRenderer, overrideCursor, vtrans) {
   let hoverX;
   let hoverY;
   if (hoverInfo !== void 0 && hoverInfo[0][0] === col && hoverInfo[0][1] === row) {
@@ -9939,8 +8912,8 @@ function drawCell(ctx, cell, col, row, isLastCol, isLastRow, x, y, w2, h, highli
   let result = void 0;
   allocatedItem[0] = col;
   allocatedItem[1] = row;
-  reusableRect.x = x;
-  reusableRect.y = y;
+  reusableRect.x = x2;
+  reusableRect.y = y2;
   reusableRect.width = w2;
   reusableRect.height = h;
   drawState[0] = renderStateProvider.getValue(allocatedItem);
@@ -9995,7 +8968,7 @@ function drawCell(ctx, cell, col, row, isLastCol, isLastRow, x, y, w2, h, highli
   return result;
 }
 function useGridGeometry(args) {
-  const $ = compilerRuntimeExports.c(50);
+  const $2 = compilerRuntimeExports.c(50);
   const {
     columns,
     freezeColumns,
@@ -10021,18 +8994,18 @@ function useGridGeometry(args) {
   } = args;
   const mappedColumns = useMappedColumns(columns, freezeColumns);
   let t0;
-  if ($[0] !== dragAndDropState || $[1] !== fixedShadowX || $[2] !== mappedColumns) {
+  if ($2[0] !== dragAndDropState || $2[1] !== fixedShadowX || $2[2] !== mappedColumns) {
     t0 = fixedShadowX ? getStickyWidth(mappedColumns, dragAndDropState) : 0;
-    $[0] = dragAndDropState;
-    $[1] = fixedShadowX;
-    $[2] = mappedColumns;
-    $[3] = t0;
+    $2[0] = dragAndDropState;
+    $2[1] = fixedShadowX;
+    $2[2] = mappedColumns;
+    $2[3] = t0;
   } else {
-    t0 = $[3];
+    t0 = $2[3];
   }
   const stickyX = t0;
   let t1;
-  if ($[4] !== cellXOffset || $[5] !== cellYOffset || $[6] !== freezeColumns || $[7] !== freezeTrailingRows || $[8] !== groupHeaderHeight || $[9] !== groupHeaderHeights || $[10] !== groupLevels || $[11] !== height || $[12] !== mappedColumns || $[13] !== rowHeight || $[14] !== rows || $[15] !== totalHeaderHeight || $[16] !== translateX || $[17] !== translateY || $[18] !== width) {
+  if ($2[4] !== cellXOffset || $2[5] !== cellYOffset || $2[6] !== freezeColumns || $2[7] !== freezeTrailingRows || $2[8] !== groupHeaderHeight || $2[9] !== groupHeaderHeights || $2[10] !== groupLevels || $2[11] !== height || $2[12] !== mappedColumns || $2[13] !== rowHeight || $2[14] !== rows || $2[15] !== totalHeaderHeight || $2[16] !== translateX || $2[17] !== translateY || $2[18] !== width) {
     t1 = (canvas, col, row) => {
       const rect = canvas.getBoundingClientRect();
       if (col >= mappedColumns.length || row >= rows) {
@@ -10050,33 +9023,33 @@ function useGridGeometry(args) {
       result.y = result.y + rect.y;
       return result;
     };
-    $[4] = cellXOffset;
-    $[5] = cellYOffset;
-    $[6] = freezeColumns;
-    $[7] = freezeTrailingRows;
-    $[8] = groupHeaderHeight;
-    $[9] = groupHeaderHeights;
-    $[10] = groupLevels;
-    $[11] = height;
-    $[12] = mappedColumns;
-    $[13] = rowHeight;
-    $[14] = rows;
-    $[15] = totalHeaderHeight;
-    $[16] = translateX;
-    $[17] = translateY;
-    $[18] = width;
-    $[19] = t1;
+    $2[4] = cellXOffset;
+    $2[5] = cellYOffset;
+    $2[6] = freezeColumns;
+    $2[7] = freezeTrailingRows;
+    $2[8] = groupHeaderHeight;
+    $2[9] = groupHeaderHeights;
+    $2[10] = groupLevels;
+    $2[11] = height;
+    $2[12] = mappedColumns;
+    $2[13] = rowHeight;
+    $2[14] = rows;
+    $2[15] = totalHeaderHeight;
+    $2[16] = translateX;
+    $2[17] = translateY;
+    $2[18] = width;
+    $2[19] = t1;
   } else {
-    t1 = $[19];
+    t1 = $2[19];
   }
   const getBoundsForItem = t1;
   let t2;
-  if ($[20] !== cellXOffset || $[21] !== cellYOffset || $[22] !== enableGroups || $[23] !== fillHandle || $[24] !== freezeTrailingRows || $[25] !== getBoundsForItem || $[26] !== groupHeaderHeight || $[27] !== groupHeaderHeights || $[28] !== groupLevels || $[29] !== headerHeight || $[30] !== height || $[31] !== mappedColumns || $[32] !== rowHeight || $[33] !== rows || $[34] !== selection || $[35] !== totalHeaderHeight || $[36] !== translateX || $[37] !== translateY || $[38] !== width) {
+  if ($2[20] !== cellXOffset || $2[21] !== cellYOffset || $2[22] !== enableGroups || $2[23] !== fillHandle || $2[24] !== freezeTrailingRows || $2[25] !== getBoundsForItem || $2[26] !== groupHeaderHeight || $2[27] !== groupHeaderHeights || $2[28] !== groupLevels || $2[29] !== headerHeight || $2[30] !== height || $2[31] !== mappedColumns || $2[32] !== rowHeight || $2[33] !== rows || $2[34] !== selection || $2[35] !== totalHeaderHeight || $2[36] !== translateX || $2[37] !== translateY || $2[38] !== width) {
     t2 = (canvas_0, posX, posY, ev) => {
       const rect_0 = canvas_0.getBoundingClientRect();
       const scale_0 = rect_0.width / width;
-      const x = (posX - rect_0.left) / scale_0;
-      const y = (posY - rect_0.top) / scale_0;
+      const x2 = (posX - rect_0.left) / scale_0;
+      const y2 = (posY - rect_0.top) / scale_0;
       const effectiveCols = getEffectiveColumns(mappedColumns, cellXOffset, width, void 0, translateX);
       let button = 0;
       let buttons = 0;
@@ -10086,16 +9059,16 @@ function useGridGeometry(args) {
         button = ev.button;
         buttons = ev.buttons;
       }
-      const col_0 = getColumnIndexForX(x, effectiveCols, translateX);
-      const row_0 = getRowIndexForY(y, height, enableGroups, headerHeight, groupHeaderHeight, rows, rowHeight, cellYOffset, translateY, freezeTrailingRows, groupLevels, groupHeaderHeights);
+      const col_0 = getColumnIndexForX(x2, effectiveCols, translateX);
+      const row_0 = getRowIndexForY(y2, height, enableGroups, headerHeight, groupHeaderHeight, rows, rowHeight, cellYOffset, translateY, freezeTrailingRows, groupLevels, groupHeaderHeights);
       const shiftKey = (ev === null || ev === void 0 ? void 0 : ev.shiftKey) === true;
       const ctrlKey = (ev === null || ev === void 0 ? void 0 : ev.ctrlKey) === true;
       const metaKey = (ev === null || ev === void 0 ? void 0 : ev.metaKey) === true;
-      const scrollEdge = [x < 0 ? -1 : width < x ? 1 : 0, y < totalHeaderHeight ? -1 : height < y ? 1 : 0];
+      const scrollEdge = [x2 < 0 ? -1 : width < x2 ? 1 : 0, y2 < totalHeaderHeight ? -1 : height < y2 ? 1 : 0];
       let result_0;
-      if (col_0 === -1 || y < 0 || x < 0 || row_0 === void 0 || x > width || y > height) {
-        const horizontal = x > width ? 1 : x < 0 ? -1 : 0;
-        const vertical = y > height ? 1 : y < 0 ? -1 : 0;
+      if (col_0 === -1 || y2 < 0 || x2 < 0 || row_0 === void 0 || x2 > width || y2 > height) {
+        const horizontal = x2 > width ? 1 : x2 < 0 ? -1 : 0;
+        const vertical = y2 > height ? 1 : y2 < 0 ? -1 : 0;
         let innerHorizontal = horizontal * 2;
         let innerVertical = vertical * 2;
         if (horizontal === 0) {
@@ -10110,10 +9083,10 @@ function useGridGeometry(args) {
           assert(b2 !== void 0);
           isEdge = posX < b2.x + b2.width + 5;
         }
-        const isMaybeScrollbar = x > width && x < width + getScrollBarWidth() || y > height && y < height + getScrollBarWidth();
+        const isMaybeScrollbar = x2 > width && x2 < width + getScrollBarWidth() || y2 > height && y2 < height + getScrollBarWidth();
         result_0 = {
           kind: outOfBoundsKind,
-          location: [col_0 !== -1 ? col_0 : x < 0 ? 0 : mappedColumns.length - 1, row_0 !== null && row_0 !== void 0 ? row_0 : rows - 1],
+          location: [col_0 !== -1 ? col_0 : x2 < 0 ? 0 : mappedColumns.length - 1, row_0 !== null && row_0 !== void 0 ? row_0 : rows - 1],
           region: [innerHorizontal, innerVertical],
           shiftKey,
           ctrlKey,
@@ -10211,42 +9184,42 @@ function useGridGeometry(args) {
       }
       return result_0;
     };
-    $[20] = cellXOffset;
-    $[21] = cellYOffset;
-    $[22] = enableGroups;
-    $[23] = fillHandle;
-    $[24] = freezeTrailingRows;
-    $[25] = getBoundsForItem;
-    $[26] = groupHeaderHeight;
-    $[27] = groupHeaderHeights;
-    $[28] = groupLevels;
-    $[29] = headerHeight;
-    $[30] = height;
-    $[31] = mappedColumns;
-    $[32] = rowHeight;
-    $[33] = rows;
-    $[34] = selection;
-    $[35] = totalHeaderHeight;
-    $[36] = translateX;
-    $[37] = translateY;
-    $[38] = width;
-    $[39] = t2;
+    $2[20] = cellXOffset;
+    $2[21] = cellYOffset;
+    $2[22] = enableGroups;
+    $2[23] = fillHandle;
+    $2[24] = freezeTrailingRows;
+    $2[25] = getBoundsForItem;
+    $2[26] = groupHeaderHeight;
+    $2[27] = groupHeaderHeights;
+    $2[28] = groupLevels;
+    $2[29] = headerHeight;
+    $2[30] = height;
+    $2[31] = mappedColumns;
+    $2[32] = rowHeight;
+    $2[33] = rows;
+    $2[34] = selection;
+    $2[35] = totalHeaderHeight;
+    $2[36] = translateX;
+    $2[37] = translateY;
+    $2[38] = width;
+    $2[39] = t2;
   } else {
-    t2 = $[39];
+    t2 = $2[39];
   }
   const getMouseArgsForPosition = t2;
   let t3;
-  if ($[40] !== enableGroups || $[41] !== groupHeaderHeights) {
+  if ($2[40] !== enableGroups || $2[41] !== groupHeaderHeights) {
     t3 = enableGroups ? groupHeaderHeights.reduce(_temp$a, 0) : 0;
-    $[40] = enableGroups;
-    $[41] = groupHeaderHeights;
-    $[42] = t3;
+    $2[40] = enableGroups;
+    $2[41] = groupHeaderHeights;
+    $2[42] = t3;
   } else {
-    t3 = $[42];
+    t3 = $2[42];
   }
   const totalGroupHeaderHeight = t3;
   let t4;
-  if ($[43] !== getBoundsForItem || $[44] !== getMouseArgsForPosition || $[45] !== mappedColumns || $[46] !== stickyX || $[47] !== totalGroupHeaderHeight || $[48] !== totalHeaderHeight) {
+  if ($2[43] !== getBoundsForItem || $2[44] !== getMouseArgsForPosition || $2[45] !== mappedColumns || $2[46] !== stickyX || $2[47] !== totalGroupHeaderHeight || $2[48] !== totalHeaderHeight) {
     t4 = {
       mappedColumns,
       totalGroupHeaderHeight,
@@ -10255,22 +9228,22 @@ function useGridGeometry(args) {
       getBoundsForItem,
       getMouseArgsForPosition
     };
-    $[43] = getBoundsForItem;
-    $[44] = getMouseArgsForPosition;
-    $[45] = mappedColumns;
-    $[46] = stickyX;
-    $[47] = totalGroupHeaderHeight;
-    $[48] = totalHeaderHeight;
-    $[49] = t4;
+    $2[43] = getBoundsForItem;
+    $2[44] = getMouseArgsForPosition;
+    $2[45] = mappedColumns;
+    $2[46] = stickyX;
+    $2[47] = totalGroupHeaderHeight;
+    $2[48] = totalHeaderHeight;
+    $2[49] = t4;
   } else {
-    t4 = $[49];
+    t4 = $2[49];
   }
   return t4;
 }
 function _temp$a(a, b_0) {
   return a + b_0;
 }
-function drawCheckbox(ctx, theme, checked, x, y, width, height, highlighted) {
+function drawCheckbox(ctx, theme, checked, x2, y2, width, height, highlighted) {
   var _theme$roundingRadius;
   let hoverX = arguments.length > 8 && arguments[8] !== void 0 ? arguments[8] : -20;
   let hoverY = arguments.length > 9 && arguments[9] !== void 0 ? arguments[9] : -20;
@@ -10278,13 +9251,13 @@ function drawCheckbox(ctx, theme, checked, x, y, width, height, highlighted) {
   let alignment = arguments.length > 11 && arguments[11] !== void 0 ? arguments[11] : "center";
   let style = arguments.length > 12 && arguments[12] !== void 0 ? arguments[12] : "square";
   let disabled = arguments.length > 13 && arguments[13] !== void 0 ? arguments[13] : false;
-  const centerY = Math.floor(y + height / 2);
+  const centerY = Math.floor(y2 + height / 2);
   const rectBordRadius = style === "circle" ? 1e4 : (_theme$roundingRadius = theme.roundingRadius) !== null && _theme$roundingRadius !== void 0 ? _theme$roundingRadius : 4;
   let checkBoxWidth = getSquareWidth(maxSize !== null && maxSize !== void 0 ? maxSize : theme.checkboxMaxSize, height, theme.cellVerticalPadding);
   let checkBoxHalfWidth = checkBoxWidth / 2;
-  const posX = getSquareXPosFromAlign(alignment, x, width, theme.cellHorizontalPadding, checkBoxWidth);
+  const posX = getSquareXPosFromAlign(alignment, x2, width, theme.cellHorizontalPadding, checkBoxWidth);
   const bb = getSquareBB(posX, centerY, checkBoxWidth);
-  const hovered = pointIsWithinBB(x + hoverX, y + hoverY, bb);
+  const hovered = pointIsWithinBB(x2 + hoverX, y2 + hoverY, bb);
   switch (checked) {
     case true: {
       ctx.beginPath();
@@ -10356,13 +9329,13 @@ function drawGridHeaders(ctx, effectiveCols, allColumns, enableGroups, hovered, 
   const hPosY = hovered === null || hovered === void 0 || (_hovered$4 = hovered[1]) === null || _hovered$4 === void 0 ? void 0 : _hovered$4[1];
   const font = outerTheme.headerFontFull;
   ctx.font = font;
-  walkColumns(effectiveCols, 0, translateX, 0, totalHeaderHeight, (c, x, _y, clipX) => {
+  walkColumns(effectiveCols, 0, translateX, 0, totalHeaderHeight, (c, x2, _y, clipX) => {
     var _hoverValues$find$hov, _hoverValues$find;
     if (damage !== void 0 && !damage.has([c.sourceIndex, -1])) return;
-    const diff = Math.max(0, clipX - x);
+    const diff = Math.max(0, clipX - x2);
     ctx.save();
     ctx.beginPath();
-    ctx.rect(x + diff, totalGroupHeaderHeight, c.width - diff, headerHeight);
+    ctx.rect(x2 + diff, totalGroupHeaderHeight, c.width - diff, headerHeight);
     ctx.clip();
     const groupTheme = getGroupDetails(getGroupName(c.group)).overrideTheme;
     const theme = c.themeOverride === void 0 && groupTheme === void 0 ? outerTheme : mergeAndRealizeTheme(outerTheme, groupTheme, c.themeOverride);
@@ -10379,14 +9352,14 @@ function drawGridHeaders(ctx, effectiveCols, allColumns, enableGroups, hovered, 
     const hover = noHover ? 0 : (_hoverValues$find$hov = (_hoverValues$find = hoverValues.find((s) => s.item[0] === c.sourceIndex && s.item[1] === -1)) === null || _hoverValues$find === void 0 ? void 0 : _hoverValues$find.hoverAmount) !== null && _hoverValues$find$hov !== void 0 ? _hoverValues$find$hov : 0;
     const hasSelectedCell = (selection === null || selection === void 0 ? void 0 : selection.current) !== void 0 && selection.current.cell[0] === c.sourceIndex;
     const bgFillStyle = selected ? theme.accentColor : hasSelectedCell ? theme.bgHeaderHasFocus : theme.bgHeader;
-    const y = enableGroups ? totalGroupHeaderHeight : 0;
+    const y2 = enableGroups ? totalGroupHeaderHeight : 0;
     const xOffset = c.sourceIndex === 0 ? 0 : 1;
     if (selected) {
       ctx.fillStyle = bgFillStyle;
-      ctx.fillRect(x + xOffset, y, c.width - xOffset, headerHeight);
+      ctx.fillRect(x2 + xOffset, y2, c.width - xOffset, headerHeight);
     } else if (hasSelectedCell || hover > 0) {
       ctx.beginPath();
-      ctx.rect(x + xOffset, y, c.width - xOffset, headerHeight);
+      ctx.rect(x2 + xOffset, y2, c.width - xOffset, headerHeight);
       if (hasSelectedCell) {
         ctx.fillStyle = theme.bgHeaderHasFocus;
         ctx.fill();
@@ -10398,7 +9371,7 @@ function drawGridHeaders(ctx, effectiveCols, allColumns, enableGroups, hovered, 
         ctx.globalAlpha = 1;
       }
     }
-    drawHeader(ctx, x, y, c.width, headerHeight, c, selected, theme, hoveredBoolean, hoveredBoolean ? hPosX : void 0, hoveredBoolean ? hPosY : void 0, hasSelectedCell, hover, spriteManager, drawHeaderCallback, touchMode);
+    drawHeader(ctx, x2, y2, c.width, headerHeight, c, selected, theme, hoveredBoolean, hoveredBoolean ? hPosX : void 0, hoveredBoolean ? hPosY : void 0, hasSelectedCell, hover, spriteManager, drawHeaderCallback, touchMode);
     ctx.restore();
   });
   if (enableGroups) {
@@ -10421,7 +9394,7 @@ function drawGroups(ctx, effectiveCols, width, translateX, groupHeaderHeight, ho
   var _hovered$5;
   const [hCol, hRow] = (_hovered$5 = hovered === null || hovered === void 0 ? void 0 : hovered[0]) !== null && _hovered$5 !== void 0 ? _hovered$5 : [];
   let finalX = 0;
-  walkGroups(effectiveCols, width, translateX, groupHeaderHeight, (span, groupName, x, y, w2, h) => {
+  walkGroups(effectiveCols, width, translateX, groupHeaderHeight, (span, groupName, x2, y2, w2, h) => {
     var _groupTheme$bgGroupHe, _groupTheme$bgGroupHe2, _groupTheme$textGroup;
     if (damage !== void 0 && !damage.hasItemInRectangle({
       x: span[0],
@@ -10431,7 +9404,7 @@ function drawGroups(ctx, effectiveCols, width, translateX, groupHeaderHeight, ho
     })) return;
     ctx.save();
     ctx.beginPath();
-    ctx.rect(x, y, w2, h);
+    ctx.rect(x2, y2, w2, h);
     ctx.clip();
     const group = getGroupDetails(groupName);
     const groupTheme = (group === null || group === void 0 ? void 0 : group.overrideTheme) === void 0 ? theme : mergeAndRealizeTheme(theme, group.overrideTheme);
@@ -10448,7 +9421,7 @@ function drawGroups(ctx, effectiveCols, width, translateX, groupHeaderHeight, ho
       const textWidth = textMetrics.width;
       const iconWidth = group.icon !== void 0 ? 26 : 0;
       const totalContentWidth = iconWidth + textWidth;
-      const centerX = x + (w2 - totalContentWidth) / 2;
+      const centerX = x2 + (w2 - totalContentWidth) / 2;
       if (group.icon !== void 0) {
         spriteManager.drawSprite(group.icon, "normal", ctx, centerX, (groupHeaderHeight - 20) / 2, 20, groupTheme);
       }
@@ -10456,14 +9429,14 @@ function drawGroups(ctx, effectiveCols, width, translateX, groupHeaderHeight, ho
       if (group.actions !== void 0 && isHovered) {
         var _hovered$6;
         const actionBoxes = getActionBoundsForGroup({
-          x,
-          y,
+          x: x2,
+          y: y2,
           width: w2,
           height: h
         }, group.actions);
         ctx.beginPath();
         const fadeStartX = actionBoxes[0].x - 10;
-        const fadeWidth = x + w2 - fadeStartX;
+        const fadeWidth = x2 + w2 - fadeStartX;
         ctx.rect(fadeStartX, 0, fadeWidth, groupHeaderHeight);
         const grad = ctx.createLinearGradient(fadeStartX, 0, fadeStartX + fadeWidth, 0);
         const trans = withAlpha(fillColor, 0);
@@ -10477,7 +9450,7 @@ function drawGroups(ctx, effectiveCols, width, translateX, groupHeaderHeight, ho
         for (let i = 0; i < group.actions.length; i++) {
           const action = group.actions[i];
           const box = actionBoxes[i];
-          const actionHovered = pointInRect(box, mouseX + x, mouseY);
+          const actionHovered = pointInRect(box, mouseX + x2, mouseY);
           if (actionHovered) {
             ctx.globalAlpha = 1;
           }
@@ -10489,16 +9462,16 @@ function drawGroups(ctx, effectiveCols, width, translateX, groupHeaderHeight, ho
         ctx.globalAlpha = 1;
       }
     }
-    if (x !== 0 && verticalBorder(span[0])) {
+    if (x2 !== 0 && verticalBorder(span[0])) {
       ctx.beginPath();
-      ctx.moveTo(x + 0.5, 0);
-      ctx.lineTo(x + 0.5, groupHeaderHeight);
+      ctx.moveTo(x2 + 0.5, 0);
+      ctx.lineTo(x2 + 0.5, groupHeaderHeight);
       ctx.strokeStyle = theme.borderColor;
       ctx.lineWidth = 1;
       ctx.stroke();
     }
     ctx.restore();
-    finalX = x + w2;
+    finalX = x2 + w2;
   });
   ctx.beginPath();
   ctx.moveTo(finalX + 0.5, 0);
@@ -10519,7 +9492,7 @@ function drawMultiLevelGroups(ctx, effectiveCols, width, translateX, groupHeader
     ctx.fillRect(0, 0, width, totalGroupHeaderHeight);
   }
   let finalX = 0;
-  walkMultiLevelGroups(effectiveCols, width, translateX, groupHeaderHeights, groupLevels, (span, groupName, x, y, w2, h, level) => {
+  walkMultiLevelGroups(effectiveCols, width, translateX, groupHeaderHeights, groupLevels, (span, groupName, x2, y2, w2, h, level) => {
     var _groupTheme$bgGroupHe3, _groupTheme$bgGroupHe4, _groupTheme$textGroup2, _group$name;
     const damageRow = -(level + 2);
     if (damage !== void 0 && !damage.hasItemInRectangle({
@@ -10530,37 +9503,37 @@ function drawMultiLevelGroups(ctx, effectiveCols, width, translateX, groupHeader
     })) return;
     ctx.save();
     ctx.beginPath();
-    ctx.rect(x, y, w2, h);
+    ctx.rect(x2, y2, w2, h);
     ctx.clip();
     const group = getGroupDetails(groupName);
     const groupTheme = (group === null || group === void 0 ? void 0 : group.overrideTheme) === void 0 ? theme : mergeAndRealizeTheme(theme, group.overrideTheme);
     const isHovered = hRow === damageRow && hCol !== void 0 && hCol >= span[0] && hCol <= span[1];
     const fillColor = isHovered ? (_groupTheme$bgGroupHe3 = groupTheme.bgGroupHeaderHovered) !== null && _groupTheme$bgGroupHe3 !== void 0 ? _groupTheme$bgGroupHe3 : groupTheme.bgHeaderHovered : (_groupTheme$bgGroupHe4 = groupTheme.bgGroupHeader) !== null && _groupTheme$bgGroupHe4 !== void 0 ? _groupTheme$bgGroupHe4 : groupTheme.bgHeader;
     ctx.fillStyle = fillColor;
-    ctx.fillRect(x, y, w2, h);
+    ctx.fillRect(x2, y2, w2, h);
     ctx.fillStyle = (_groupTheme$textGroup2 = groupTheme.textGroupHeader) !== null && _groupTheme$textGroup2 !== void 0 ? _groupTheme$textGroup2 : groupTheme.textHeader;
     const displayName = (_group$name = group === null || group === void 0 ? void 0 : group.name) !== null && _group$name !== void 0 ? _group$name : groupName;
     const textMetrics = ctx.measureText(displayName);
     const textWidth = textMetrics.width;
     const iconWidth = (group === null || group === void 0 ? void 0 : group.icon) !== void 0 ? 26 : 0;
     const totalContentWidth = iconWidth + textWidth;
-    const centerX = x + (w2 - totalContentWidth) / 2;
+    const centerX = x2 + (w2 - totalContentWidth) / 2;
     if ((group === null || group === void 0 ? void 0 : group.icon) !== void 0) {
-      spriteManager.drawSprite(group.icon, "normal", ctx, centerX, y + (h - 20) / 2, 20, groupTheme);
+      spriteManager.drawSprite(group.icon, "normal", ctx, centerX, y2 + (h - 20) / 2, 20, groupTheme);
     }
-    ctx.fillText(displayName, centerX + iconWidth, y + h / 2 + getMiddleCenterBias(ctx, theme.headerFontFull));
+    ctx.fillText(displayName, centerX + iconWidth, y2 + h / 2 + getMiddleCenterBias(ctx, theme.headerFontFull));
     if (group !== void 0 && group.actions !== void 0 && isHovered) {
       var _hovered$8;
       const actionBoxes = getActionBoundsForGroup({
-        x,
-        y,
+        x: x2,
+        y: y2,
         width: w2,
         height: h
       }, group.actions);
       ctx.beginPath();
       const fadeStartX = actionBoxes[0].x - 10;
-      const fadeWidth = x + w2 - fadeStartX;
-      ctx.rect(fadeStartX, y, fadeWidth, h);
+      const fadeWidth = x2 + w2 - fadeStartX;
+      ctx.rect(fadeStartX, y2, fadeWidth, h);
       const grad = ctx.createLinearGradient(fadeStartX, 0, fadeStartX + fadeWidth, 0);
       const trans = withAlpha(fillColor, 0);
       grad.addColorStop(0, trans);
@@ -10573,7 +9546,7 @@ function drawMultiLevelGroups(ctx, effectiveCols, width, translateX, groupHeader
       for (let i = 0; i < group.actions.length; i++) {
         const action = group.actions[i];
         const box = actionBoxes[i];
-        const actionHovered = pointInRect(box, mouseX + x, mouseY);
+        const actionHovered = pointInRect(box, mouseX + x2, mouseY);
         if (actionHovered) {
           ctx.globalAlpha = 1;
         }
@@ -10586,20 +9559,20 @@ function drawMultiLevelGroups(ctx, effectiveCols, width, translateX, groupHeader
     }
     ctx.strokeStyle = theme.borderColor;
     ctx.lineWidth = 1;
-    if (x !== 0 && verticalBorder(span[0])) {
+    if (x2 !== 0 && verticalBorder(span[0])) {
       ctx.beginPath();
-      ctx.moveTo(x + 0.5, y);
-      ctx.lineTo(x + 0.5, y + h);
+      ctx.moveTo(x2 + 0.5, y2);
+      ctx.lineTo(x2 + 0.5, y2 + h);
       ctx.stroke();
     }
     if (level < groupLevels - 1 || damage === void 0) {
       ctx.beginPath();
-      ctx.moveTo(x, y + h + 0.5);
-      ctx.lineTo(x + w2, y + h + 0.5);
+      ctx.moveTo(x2, y2 + h + 0.5);
+      ctx.lineTo(x2 + w2, y2 + h + 0.5);
       ctx.stroke();
     }
     ctx.restore();
-    finalX = Math.max(finalX, x + w2);
+    finalX = Math.max(finalX, x2 + w2);
   });
   if (damage === void 0) {
     ctx.beginPath();
@@ -10617,28 +9590,28 @@ function drawMultiLevelGroups(ctx, effectiveCols, width, translateX, groupHeader
   }
 }
 const menuButtonSize = 30;
-function getHeaderMenuBounds(x, y, width, height, isRtl) {
+function getHeaderMenuBounds(x2, y2, width, height, isRtl) {
   return {
-    x: x + width - menuButtonSize,
-    y: Math.max(y, y + height / 2 - menuButtonSize / 2),
+    x: x2 + width - menuButtonSize,
+    y: Math.max(y2, y2 + height / 2 - menuButtonSize / 2),
     width: menuButtonSize,
     height: Math.min(menuButtonSize, height)
   };
 }
 function getActionBoundsForGroup(box, actions) {
   const result = [];
-  let x = box.x + box.width - 26 * actions.length;
-  const y = box.y + box.height / 2 - 13;
+  let x2 = box.x + box.width - 26 * actions.length;
+  const y2 = box.y + box.height / 2 - 13;
   const height = 26;
   const width = 26;
   for (let i = 0; i < actions.length; i++) {
     result.push({
-      x,
-      y,
+      x: x2,
+      y: y2,
       width,
       height
     });
-    x += 26;
+    x2 += 26;
   }
   return result;
 }
@@ -10647,18 +9620,18 @@ function flipHorizontal(toFlip, mirrorX, isRTL) {
   toFlip.x = mirrorX - (toFlip.x - mirrorX) - toFlip.width;
   return toFlip;
 }
-function computeHeaderLayout(ctx, c, x, y, width, height, theme, isRTL) {
+function computeHeaderLayout(ctx, c, x2, y2, width, height, theme, isRTL) {
   var _getMeasuredTextCache, _getMeasuredTextCache2;
   const xPad = theme.cellHorizontalPadding;
   const headerIconSize = theme.headerIconSize;
-  const menuBounds = getHeaderMenuBounds(x, y, width, height);
+  const menuBounds = getHeaderMenuBounds(x2, y2, width, height);
   const textWidth = ctx === void 0 ? (_getMeasuredTextCache = (_getMeasuredTextCache2 = getMeasuredTextCache(c.title, theme.headerFontFull)) === null || _getMeasuredTextCache2 === void 0 ? void 0 : _getMeasuredTextCache2.width) !== null && _getMeasuredTextCache !== void 0 ? _getMeasuredTextCache : 0 : measureTextCached(c.title, ctx, theme.headerFontFull).width;
   const iconAreaWidth = c.icon !== void 0 ? Math.ceil(headerIconSize * 1.3) : 0;
   const coreContentWidth = iconAreaWidth + textWidth;
-  const centerStartX = x + Math.max(xPad, (width - coreContentWidth) / 2);
+  const centerStartX = x2 + Math.max(xPad, (width - coreContentWidth) / 2);
   const iconBounds = c.icon === void 0 ? void 0 : {
     x: centerStartX,
-    y: y + (height - headerIconSize) / 2,
+    y: y2 + (height - headerIconSize) / 2,
     width: headerIconSize,
     height: headerIconSize
   };
@@ -10670,7 +9643,7 @@ function computeHeaderLayout(ctx, c, x, y, width, height, theme, isRTL) {
   };
   const textBounds = {
     x: centerStartX + iconAreaWidth,
-    y,
+    y: y2,
     width: textWidth,
     height
   };
@@ -10678,12 +9651,12 @@ function computeHeaderLayout(ctx, c, x, y, width, height, theme, isRTL) {
   if (c.indicatorIcon !== void 0) {
     indicatorIconBounds = {
       x: textBounds.x + textWidth + xPad,
-      y: y + (height - headerIconSize) / 2,
+      y: y2 + (height - headerIconSize) / 2,
       width: headerIconSize,
       height: headerIconSize
     };
   }
-  const mirrorPoint = x + width / 2;
+  const mirrorPoint = x2 + width / 2;
   return {
     menuBounds: flipHorizontal(menuBounds, mirrorPoint, isRTL),
     iconBounds: flipHorizontal(iconBounds, mirrorPoint, isRTL),
@@ -10692,14 +9665,14 @@ function computeHeaderLayout(ctx, c, x, y, width, height, theme, isRTL) {
     indicatorIconBounds: flipHorizontal(indicatorIconBounds, mirrorPoint, isRTL)
   };
 }
-function drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered, posX, posY, hoverAmount, spriteManager, touchMode, isRtl, headerLayout) {
+function drawHeaderInner(ctx, x2, y2, width, height, c, selected, theme, isHovered, posX, posY, hoverAmount, spriteManager, touchMode, isRtl, headerLayout) {
   if (c.rowMarker !== void 0 && c.headerRowMarkerDisabled !== true) {
     const checked = c.rowMarkerChecked;
     if (checked !== true && c.headerRowMarkerAlwaysVisible !== true) {
       ctx.globalAlpha = hoverAmount;
     }
     const markerTheme = c.headerRowMarkerTheme !== void 0 ? mergeAndRealizeTheme(theme, c.headerRowMarkerTheme) : theme;
-    drawCheckbox(ctx, markerTheme, checked, x, y, width, height, false, void 0, void 0, theme.checkboxMaxSize, "center", c.rowMarker);
+    drawCheckbox(ctx, markerTheme, checked, x2, y2, width, height, false, void 0, void 0, theme.checkboxMaxSize, "center", c.rowMarker);
     if (checked !== true && c.headerRowMarkerAlwaysVisible !== true) {
       ctx.globalAlpha = 1;
     }
@@ -10723,7 +9696,7 @@ function drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered
     const fadeEnd = isRtl ? fadeWidth * 0.7 : width - fadeWidth * 0.7;
     const fadeStartPercent = fadeStart / width;
     const fadeEndPercent = fadeEnd / width;
-    const grad = ctx.createLinearGradient(x, 0, x + width, 0);
+    const grad = ctx.createLinearGradient(x2, 0, x2 + width, 0);
     const trans = withAlpha(fillStyle, 0);
     grad.addColorStop(isRtl ? 1 : 0, fillStyle);
     grad.addColorStop(fadeStartPercent, fillStyle);
@@ -10737,7 +9710,7 @@ function drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered
     ctx.textAlign = "right";
   }
   if (headerLayout.textBounds !== void 0) {
-    ctx.fillText(c.title, isRtl ? headerLayout.textBounds.x + headerLayout.textBounds.width : headerLayout.textBounds.x, y + height / 2 + getMiddleCenterBias(ctx, theme.headerFontFull));
+    ctx.fillText(c.title, isRtl ? headerLayout.textBounds.x + headerLayout.textBounds.width : headerLayout.textBounds.x, y2 + height / 2 + getMiddleCenterBias(ctx, theme.headerFontFull));
   }
   if (isRtl) {
     ctx.textAlign = "left";
@@ -10751,7 +9724,7 @@ function drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered
   }
   if (shouldDrawMenu && headerLayout.menuBounds !== void 0) {
     const menuBounds = headerLayout.menuBounds;
-    const hovered = posX !== void 0 && posY !== void 0 && pointInRect(menuBounds, posX + x, posY + y);
+    const hovered = posX !== void 0 && posY !== void 0 && pointInRect(menuBounds, posX + x2, posY + y2);
     if (!hovered) {
       ctx.globalAlpha = 0.7;
     }
@@ -10788,17 +9761,17 @@ function drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered
     }
   }
 }
-function drawHeader(ctx, x, y, width, height, c, selected, theme, isHovered, posX, posY, hasSelectedCell, hoverAmount, spriteManager, drawHeaderCallback, touchMode) {
+function drawHeader(ctx, x2, y2, width, height, c, selected, theme, isHovered, posX, posY, hasSelectedCell, hoverAmount, spriteManager, drawHeaderCallback, touchMode) {
   const isRtl = direction(c.title) === "rtl";
-  const headerLayout = computeHeaderLayout(ctx, c, x, y, width, height, theme, isRtl);
+  const headerLayout = computeHeaderLayout(ctx, c, x2, y2, width, height, theme, isRtl);
   if (drawHeaderCallback !== void 0) {
     var _headerLayout$menuBou;
     drawHeaderCallback({
       ctx,
       theme,
       rect: {
-        x,
-        y,
+        x: x2,
+        y: y2,
         width,
         height
       },
@@ -10817,9 +9790,9 @@ function drawHeader(ctx, x, y, width, height, c, selected, theme, isHovered, pos
       },
       hoverX: posX,
       hoverY: posY
-    }, () => drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered, posX, posY, hoverAmount, spriteManager, touchMode, isRtl, headerLayout));
+    }, () => drawHeaderInner(ctx, x2, y2, width, height, c, selected, theme, isHovered, posX, posY, hoverAmount, spriteManager, touchMode, isRtl, headerLayout));
   } else {
-    drawHeaderInner(ctx, x, y, width, height, c, selected, theme, isHovered, posX, posY, hoverAmount, spriteManager, touchMode, isRtl, headerLayout);
+    drawHeaderInner(ctx, x2, y2, width, height, c, selected, theme, isHovered, posX, posY, hoverAmount, spriteManager, touchMode, isRtl, headerLayout);
   }
 }
 var _defineProperty;
@@ -10938,9 +9911,9 @@ var hasRequiredIsBuffer;
 function requireIsBuffer() {
   if (hasRequiredIsBuffer) return isBuffer.exports;
   hasRequiredIsBuffer = 1;
-  (function(module, exports) {
+  (function(module, exports$1) {
     var root = require_root(), stubFalse = requireStubFalse();
-    var freeExports = exports && !exports.nodeType && exports;
+    var freeExports = exports$1 && !exports$1.nodeType && exports$1;
     var freeModule = freeExports && true && module && !module.nodeType && module;
     var moduleExports = freeModule && freeModule.exports === freeExports;
     var Buffer = moduleExports ? root.Buffer : void 0;
@@ -10986,9 +9959,9 @@ var hasRequired_nodeUtil;
 function require_nodeUtil() {
   if (hasRequired_nodeUtil) return _nodeUtil.exports;
   hasRequired_nodeUtil = 1;
-  (function(module, exports) {
+  (function(module, exports$1) {
     var freeGlobal = require_freeGlobal();
-    var freeExports = exports && !exports.nodeType && exports;
+    var freeExports = exports$1 && !exports$1.nodeType && exports$1;
     var freeModule = freeExports && true && module && !module.nodeType && module;
     var moduleExports = freeModule && freeModule.exports === freeExports;
     var freeProcess = moduleExports && freeGlobal.process;
@@ -12067,11 +11040,11 @@ function drawBlanks(ctx, effectiveColumns, allColumns, width, height, totalHeade
   walkColumns(effectiveColumns, cellYOffset, translateX, translateY, totalHeaderHeight, (c, drawX, colDrawY, clipX, startRow) => {
     if (c !== effectiveColumns[effectiveColumns.length - 1]) return;
     drawX += c.width;
-    const x = Math.max(drawX, clipX);
-    if (x > width) return;
+    const x2 = Math.max(drawX, clipX);
+    if (x2 > width) return;
     ctx.save();
     ctx.beginPath();
-    ctx.rect(x, totalHeaderHeight + 1, 1e4, height - totalHeaderHeight - 1);
+    ctx.rect(x2, totalHeaderHeight + 1, 1e4, height - totalHeaderHeight - 1);
     ctx.clip();
     walkRowsInCol(startRow, colDrawY, height, rows, getRowHeight, freezeTrailingRows, hasAppendRow, skipPoint, (drawY, row, rh, isSticky) => {
       if (!isSticky && drawRegions.length > 0 && !drawRegions.some((dr) => intersectRect(drawX, drawY, 1e4, rh, dr.x, dr.y, dr.width, dr.height))) {
@@ -12162,11 +11135,11 @@ function drawExtraRowThemes(ctx, effectiveCols, cellYOffset, translateX, transla
   } = getMinMaxXY(drawRegions, width, height);
   const toDraw = [];
   const freezeY = height - getFreezeTrailingHeight(rows, freezeTrailingRows, getRowHeight);
-  let y = totalHeaderHeight;
+  let y2 = totalHeaderHeight;
   let row = cellYOffset;
   let extraRowsStartY = 0;
-  while (y + translateY < freezeY) {
-    const ty = y + translateY;
+  while (y2 + translateY < freezeY) {
+    const ty = y2 + translateY;
     const rh = getRowHeight(row);
     if (ty >= minY && ty <= maxY - 1) {
       const rowTheme = getRowThemeOverride === null || getRowThemeOverride === void 0 ? void 0 : getRowThemeOverride(row);
@@ -12182,18 +11155,18 @@ function drawExtraRowThemes(ctx, effectiveCols, cellYOffset, translateX, transla
         });
       }
     }
-    y += rh;
-    if (row < rows - freezeTrailingRows) extraRowsStartY = y;
+    y2 += rh;
+    if (row < rows - freezeTrailingRows) extraRowsStartY = y2;
     row++;
   }
-  let x = 0;
+  let x2 = 0;
   const h = Math.min(freezeY, maxY) - extraRowsStartY;
   if (h > 0) {
     for (let index = 0; index < effectiveCols.length; index++) {
       var _c$themeOverride;
       const c = effectiveCols[index];
       if (c.width === 0) continue;
-      const tx = c.sticky ? x : x + translateX;
+      const tx = c.sticky ? x2 : x2 + translateX;
       const colThemeBgCell = (_c$themeOverride = c.themeOverride) === null || _c$themeOverride === void 0 ? void 0 : _c$themeOverride.bgCell;
       if (colThemeBgCell !== void 0 && colThemeBgCell !== bgCell && tx >= minX && tx <= maxX && verticalBorder(index + 1)) {
         toDraw.push({
@@ -12204,7 +11177,7 @@ function drawExtraRowThemes(ctx, effectiveCols, cellYOffset, translateX, transla
           color: colThemeBgCell
         });
       }
-      x += c.width;
+      x2 += c.width;
     }
   }
   if (toDraw.length === 0) return;
@@ -12250,12 +11223,12 @@ function drawGridLines(ctx, effectiveCols, cellYOffset, translateX, translateY, 
   } = getMinMaxXY(drawRegions, width, height);
   const toDraw = [];
   ctx.beginPath();
-  let x = 0.5;
+  let x2 = 0.5;
   for (let index = 0; index < effectiveCols.length; index++) {
     const c = effectiveCols[index];
     if (c.width === 0) continue;
-    x += c.width;
-    const tx = c.sticky ? x : x + translateX;
+    x2 += c.width;
+    const tx = c.sticky ? x2 : x2 + translateX;
     if (tx >= minX && tx <= maxX && verticalBorder(index + 1)) {
       toDraw.push({
         x1: tx,
@@ -12279,11 +11252,11 @@ function drawGridLines(ctx, effectiveCols, cellYOffset, translateX, translateY, 
     });
   }
   if (verticalOnly !== true) {
-    let y = totalHeaderHeight + 0.5;
+    let y2 = totalHeaderHeight + 0.5;
     let row = cellYOffset;
     const target = freezeY;
-    while (y + translateY < target) {
-      const ty = y + translateY;
+    while (y2 + translateY < target) {
+      const ty = y2 + translateY;
       if (ty >= minY && ty <= maxY - 1) {
         var _ref, _rowTheme$horizontalB;
         const rowTheme = getRowThemeOverride === null || getRowThemeOverride === void 0 ? void 0 : getRowThemeOverride(row);
@@ -12295,7 +11268,7 @@ function drawGridLines(ctx, effectiveCols, cellYOffset, translateX, translateY, 
           color: (_ref = (_rowTheme$horizontalB = rowTheme === null || rowTheme === void 0 ? void 0 : rowTheme.horizontalBorderColor) !== null && _rowTheme$horizontalB !== void 0 ? _rowTheme$horizontalB : rowTheme === null || rowTheme === void 0 ? void 0 : rowTheme.borderColor) !== null && _ref !== void 0 ? _ref : hColor
         });
       }
-      y += getRowHeight(row);
+      y2 += getRowHeight(row);
       row++;
     }
   }
@@ -12414,10 +11387,10 @@ function blitLastFrame(ctx, blitSource, blitSourceScroll, targetScroll, last, ce
         ctx.drawImage(blitSource, 0, 0, w2, h, 0, 0, w2, h);
       }
       if (freezeTrailingRowsHeight > 0 && deltaX === 0 && deltaY !== 0 && (targetScroll === void 0 || (blitSourceScroll === null || blitSourceScroll === void 0 ? void 0 : blitSourceScroll[0]) !== false)) {
-        const y = (height - freezeTrailingRowsHeight) * dpr;
+        const y2 = (height - freezeTrailingRowsHeight) * dpr;
         const w2 = width * dpr;
         const h = freezeTrailingRowsHeight * dpr;
-        ctx.drawImage(blitSource, 0, y, w2, h, 0, y, w2, h);
+        ctx.drawImage(blitSource, 0, y2, w2, h, 0, y2, w2, h);
       }
     }
     ctx.drawImage(blitSource, args.sx, args.sy, args.sw, args.sh, args.dx, args.dy, args.dw, args.dh);
@@ -12435,11 +11408,11 @@ function blitResizedCol(last, cellXOffset, cellYOffset, translateX, translateY, 
   }
   walkColumns(effectiveCols, cellYOffset, translateX, translateY, totalHeaderHeight, (c, drawX, _drawY, clipX) => {
     if (c.sourceIndex === resizedIndex) {
-      const x = Math.max(drawX, clipX) + 1;
+      const x2 = Math.max(drawX, clipX) + 1;
       drawRegions.push({
-        x,
+        x: x2,
         y: 0,
-        width: width - x,
+        width: width - x2,
         height
       });
       return true;
@@ -12482,7 +11455,7 @@ function computeCanBlit(current, last) {
   return true;
 }
 function drawHighlightRings(ctx, width, height, cellXOffset, cellYOffset, translateX, translateY, mappedColumns, freezeColumns, headerHeight, totalGroupHeaderHeight, rowHeight, freezeTrailingRows, rows, allHighlightRegions, theme, groupLevels, groupHeaderHeights) {
-  const highlightRegions = allHighlightRegions === null || allHighlightRegions === void 0 ? void 0 : allHighlightRegions.filter((x) => x.style !== "no-outline");
+  const highlightRegions = allHighlightRegions === null || allHighlightRegions === void 0 ? void 0 : allHighlightRegions.filter((x2) => x2.style !== "no-outline");
   if (highlightRegions === void 0 || highlightRegions.length === 0) return void 0;
   const freezeLeft = getStickyWidth(mappedColumns);
   const freezeBottom = getFreezeTrailingHeight(rows, freezeTrailingRows, rowHeight);
@@ -12920,13 +11893,13 @@ function drawGrid(arg, lastArg) {
   highlightRedraw === null || highlightRedraw === void 0 || highlightRedraw();
   focusRedraw === null || focusRedraw === void 0 || focusRedraw();
   if (isResizing && resizeIndicator !== "none") {
-    walkColumns(effectiveCols, 0, translateX, 0, totalHeaderHeight, (c, x) => {
+    walkColumns(effectiveCols, 0, translateX, 0, totalHeaderHeight, (c, x2) => {
       if (c.sourceIndex === resizeCol) {
         var _theme$resizeIndicato;
-        drawColumnResizeOutline(overlayCtx, x + c.width, 0, totalHeaderHeight + 1, blend((_theme$resizeIndicato = theme.resizeIndicatorColor) !== null && _theme$resizeIndicato !== void 0 ? _theme$resizeIndicato : theme.accentLight, theme.bgHeader));
+        drawColumnResizeOutline(overlayCtx, x2 + c.width, 0, totalHeaderHeight + 1, blend((_theme$resizeIndicato = theme.resizeIndicatorColor) !== null && _theme$resizeIndicato !== void 0 ? _theme$resizeIndicato : theme.accentLight, theme.bgHeader));
         if (resizeIndicator === "full") {
           var _theme$resizeIndicato2;
-          drawColumnResizeOutline(targetCtx, x + c.width, totalHeaderHeight, height, blend((_theme$resizeIndicato2 = theme.resizeIndicatorColor) !== null && _theme$resizeIndicato2 !== void 0 ? _theme$resizeIndicato2 : theme.accentLight, theme.bgCell));
+          drawColumnResizeOutline(targetCtx, x2 + c.width, totalHeaderHeight, height, blend((_theme$resizeIndicato2 = theme.resizeIndicatorColor) !== null && _theme$resizeIndicato2 !== void 0 ? _theme$resizeIndicato2 : theme.accentLight, theme.bgCell));
         }
         return true;
       }
@@ -12964,8 +11937,8 @@ function drawGrid(arg, lastArg) {
   overlayCtx.restore();
 }
 const hoverTime = 80;
-function easeOutCubic(x) {
-  const x1 = x - 1;
+function easeOutCubic(x2) {
+  const x1 = x2 - 1;
   return x1 * x1 * x1 + 1;
 }
 class AnimationManager {
@@ -13002,9 +11975,9 @@ class AnimationManager {
       if (this.currentHoveredItem !== void 0) {
         return [...this.leavingItems, this.currentHoveredItem];
       }
-      return this.leavingItems.map((x) => ({
-        ...x,
-        hoverAmount: easeOutCubic(x.hoverAmount)
+      return this.leavingItems.map((x2) => ({
+        ...x2,
+        hoverAmount: easeOutCubic(x2.hoverAmount)
       }));
     };
     this.step = (timestamp) => {
@@ -13326,7 +12299,7 @@ function useCanvasRenderer(args) {
     enqueueRef.current = enqueue;
   });
   const damage = React.useCallback((cells) => {
-    damageInternal(new CellSet(cells.map((x) => x.cell)));
+    damageInternal(new CellSet(cells.map((x2) => x2.cell)));
   }, [damageInternal]);
   React.useLayoutEffect(() => {
     imageLoader.setCallback(damageInternal);
@@ -13369,7 +12342,7 @@ function useCanvasRenderer(args) {
   };
 }
 function useGridPointerEvents(args) {
-  const $ = compilerRuntimeExports.c(61);
+  const $2 = compilerRuntimeExports.c(61);
   const {
     canvasRef,
     windowEventTarget,
@@ -13405,7 +12378,7 @@ function useGridPointerEvents(args) {
     damageInternal
   } = args;
   let t0;
-  if ($[0] !== getGroupDetails) {
+  if ($2[0] !== getGroupDetails) {
     t0 = (group, bounds, localEventX, localEventY) => {
       if (getGroupDetails === void 0) {
         return;
@@ -13420,14 +12393,14 @@ function useGridPointerEvents(args) {
         }
       }
     };
-    $[0] = getGroupDetails;
-    $[1] = t0;
+    $2[0] = getGroupDetails;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   const groupHeaderActionForEvent = t0;
   let t1;
-  if ($[2] !== getBoundsForItem || $[3] !== hoveredOnEdge || $[4] !== isDragging || $[5] !== isResizing || $[6] !== mappedColumns || $[7] !== theme) {
+  if ($2[2] !== getBoundsForItem || $2[3] !== hoveredOnEdge || $2[4] !== isDragging || $2[5] !== isResizing || $2[6] !== mappedColumns || $2[7] !== theme) {
     t1 = (canvas, col, clientX, clientY) => {
       const header = mappedColumns[col];
       if (!isDragging && !isResizing && !(hoveredOnEdge !== null && hoveredOnEdge !== void 0 ? hoveredOnEdge : false)) {
@@ -13449,22 +12422,22 @@ function useGridPointerEvents(args) {
         }
       }
     };
-    $[2] = getBoundsForItem;
-    $[3] = hoveredOnEdge;
-    $[4] = isDragging;
-    $[5] = isResizing;
-    $[6] = mappedColumns;
-    $[7] = theme;
-    $[8] = t1;
+    $2[2] = getBoundsForItem;
+    $2[3] = hoveredOnEdge;
+    $2[4] = isDragging;
+    $2[5] = isResizing;
+    $2[6] = mappedColumns;
+    $2[7] = theme;
+    $2[8] = t1;
   } else {
-    t1 = $[8];
+    t1 = $2[8];
   }
   const isOverHeaderElement = t1;
   const downTime = React.useRef(0);
   const downPosition = React.useRef(void 0);
   const mouseDown = React.useRef(false);
   let t2;
-  if ($[9] !== canvasRef || $[10] !== eventTargetRef || $[11] !== getMouseArgsForPosition || $[12] !== groupHeaderActionForEvent || $[13] !== isDraggable || $[14] !== isOverHeaderElement || $[15] !== lastWasTouchRef || $[16] !== onMouseDown || $[17] !== setLastWasTouch) {
+  if ($2[9] !== canvasRef || $2[10] !== eventTargetRef || $2[11] !== getMouseArgsForPosition || $2[12] !== groupHeaderActionForEvent || $2[13] !== isDraggable || $2[14] !== isOverHeaderElement || $2[15] !== lastWasTouchRef || $2[16] !== onMouseDown || $2[17] !== setLastWasTouch) {
     t2 = (ev) => {
       const canvas_0 = canvasRef.current;
       const eventTarget = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current;
@@ -13503,24 +12476,24 @@ function useGridPointerEvents(args) {
         ev.preventDefault();
       }
     };
-    $[9] = canvasRef;
-    $[10] = eventTargetRef;
-    $[11] = getMouseArgsForPosition;
-    $[12] = groupHeaderActionForEvent;
-    $[13] = isDraggable;
-    $[14] = isOverHeaderElement;
-    $[15] = lastWasTouchRef;
-    $[16] = onMouseDown;
-    $[17] = setLastWasTouch;
-    $[18] = t2;
+    $2[9] = canvasRef;
+    $2[10] = eventTargetRef;
+    $2[11] = getMouseArgsForPosition;
+    $2[12] = groupHeaderActionForEvent;
+    $2[13] = isDraggable;
+    $2[14] = isOverHeaderElement;
+    $2[15] = lastWasTouchRef;
+    $2[16] = onMouseDown;
+    $2[17] = setLastWasTouch;
+    $2[18] = t2;
   } else {
-    t2 = $[18];
+    t2 = $2[18];
   }
   const onPointerDown = t2;
   useEventListener("pointerdown", onPointerDown, windowEventTarget, false);
   const lastUpTime = React.useRef(0);
   let t3;
-  if ($[19] !== canvasRef || $[20] !== eventTargetRef || $[21] !== getMouseArgsForPosition || $[22] !== groupHeaderActionForEvent || $[23] !== isOverHeaderElement || $[24] !== lastWasTouchRef || $[25] !== onMouseUp || $[26] !== setLastWasTouch) {
+  if ($2[19] !== canvasRef || $2[20] !== eventTargetRef || $2[21] !== getMouseArgsForPosition || $2[22] !== groupHeaderActionForEvent || $2[23] !== isOverHeaderElement || $2[24] !== lastWasTouchRef || $2[25] !== onMouseUp || $2[26] !== setLastWasTouch) {
     t3 = (ev_0) => {
       const lastUpTimeValue = lastUpTime.current;
       lastUpTime.current = Date.now();
@@ -13574,22 +12547,22 @@ function useGridPointerEvents(args) {
       }
       onMouseUp(mouseArgs_0, isOutside);
     };
-    $[19] = canvasRef;
-    $[20] = eventTargetRef;
-    $[21] = getMouseArgsForPosition;
-    $[22] = groupHeaderActionForEvent;
-    $[23] = isOverHeaderElement;
-    $[24] = lastWasTouchRef;
-    $[25] = onMouseUp;
-    $[26] = setLastWasTouch;
-    $[27] = t3;
+    $2[19] = canvasRef;
+    $2[20] = eventTargetRef;
+    $2[21] = getMouseArgsForPosition;
+    $2[22] = groupHeaderActionForEvent;
+    $2[23] = isOverHeaderElement;
+    $2[24] = lastWasTouchRef;
+    $2[25] = onMouseUp;
+    $2[26] = setLastWasTouch;
+    $2[27] = t3;
   } else {
-    t3 = $[27];
+    t3 = $2[27];
   }
   const onPointerUp = t3;
   useEventListener("pointerup", onPointerUp, windowEventTarget, false);
   let t4;
-  if ($[28] !== canvasRef || $[29] !== eventTargetRef || $[30] !== getMouseArgsForPosition || $[31] !== isOverHeaderElement || $[32] !== lastWasTouchRef || $[33] !== onHeaderIndicatorClick || $[34] !== onHeaderMenuClick || $[35] !== setLastWasTouch) {
+  if ($2[28] !== canvasRef || $2[29] !== eventTargetRef || $2[30] !== getMouseArgsForPosition || $2[31] !== isOverHeaderElement || $2[32] !== lastWasTouchRef || $2[33] !== onHeaderIndicatorClick || $2[34] !== onHeaderMenuClick || $2[35] !== setLastWasTouch) {
     t4 = (ev_1) => {
       const canvas_2 = canvasRef.current;
       if (canvas_2 === null) {
@@ -13630,22 +12603,22 @@ function useGridPointerEvents(args) {
         }
       }
     };
-    $[28] = canvasRef;
-    $[29] = eventTargetRef;
-    $[30] = getMouseArgsForPosition;
-    $[31] = isOverHeaderElement;
-    $[32] = lastWasTouchRef;
-    $[33] = onHeaderIndicatorClick;
-    $[34] = onHeaderMenuClick;
-    $[35] = setLastWasTouch;
-    $[36] = t4;
+    $2[28] = canvasRef;
+    $2[29] = eventTargetRef;
+    $2[30] = getMouseArgsForPosition;
+    $2[31] = isOverHeaderElement;
+    $2[32] = lastWasTouchRef;
+    $2[33] = onHeaderIndicatorClick;
+    $2[34] = onHeaderMenuClick;
+    $2[35] = setLastWasTouch;
+    $2[36] = t4;
   } else {
-    t4 = $[36];
+    t4 = $2[36];
   }
   const onClickImpl = t4;
   useEventListener("click", onClickImpl, windowEventTarget, false);
   let t5;
-  if ($[37] !== canvasRef || $[38] !== eventTargetRef || $[39] !== getMouseArgsForPosition || $[40] !== onContextMenu) {
+  if ($2[37] !== canvasRef || $2[38] !== eventTargetRef || $2[39] !== getMouseArgsForPosition || $2[40] !== onContextMenu) {
     t5 = (ev_2) => {
       const canvas_3 = canvasRef.current;
       const eventTarget_2 = eventTargetRef === null || eventTargetRef === void 0 ? void 0 : eventTargetRef.current;
@@ -13659,18 +12632,18 @@ function useGridPointerEvents(args) {
         }
       });
     };
-    $[37] = canvasRef;
-    $[38] = eventTargetRef;
-    $[39] = getMouseArgsForPosition;
-    $[40] = onContextMenu;
-    $[41] = t5;
+    $2[37] = canvasRef;
+    $2[38] = eventTargetRef;
+    $2[39] = getMouseArgsForPosition;
+    $2[40] = onContextMenu;
+    $2[41] = t5;
   } else {
-    t5 = $[41];
+    t5 = $2[41];
   }
   const onContextMenuImpl = t5;
   useEventListener("contextmenu", onContextMenuImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false);
   let t6;
-  if ($[42] !== setHoveredItemInfo) {
+  if ($2[42] !== setHoveredItemInfo) {
     t6 = (newVal, needPosition) => {
       setHoveredItemInfo((cv) => {
         if (cv === newVal) {
@@ -13687,15 +12660,15 @@ function useGridPointerEvents(args) {
         return newVal;
       });
     };
-    $[42] = setHoveredItemInfo;
-    $[43] = t6;
+    $2[42] = setHoveredItemInfo;
+    $2[43] = t6;
   } else {
-    t6 = $[43];
+    t6 = $2[43];
   }
   const maybeSetHoveredInfo = t6;
   const hoveredRef = React.useRef(void 0);
   let t7;
-  if ($[44] !== allowResize || $[45] !== canvasRef || $[46] !== damageInternal || $[47] !== eventTargetRef || $[48] !== firstColAccessible || $[49] !== getCellContent || $[50] !== getCellRenderer || $[51] !== getMouseArgsForPosition || $[52] !== hoverInfoRef || $[53] !== maybeSetHoveredInfo || $[54] !== onItemHovered || $[55] !== onMouseMove || $[56] !== onMouseMoveRaw || $[57] !== setDrawCursorOverride || $[58] !== setHoveredOnEdge || $[59] !== setOverFill) {
+  if ($2[44] !== allowResize || $2[45] !== canvasRef || $2[46] !== damageInternal || $2[47] !== eventTargetRef || $2[48] !== firstColAccessible || $2[49] !== getCellContent || $2[50] !== getCellRenderer || $2[51] !== getMouseArgsForPosition || $2[52] !== hoverInfoRef || $2[53] !== maybeSetHoveredInfo || $2[54] !== onItemHovered || $2[55] !== onMouseMove || $2[56] !== onMouseMoveRaw || $2[57] !== setDrawCursorOverride || $2[58] !== setHoveredOnEdge || $2[59] !== setOverFill) {
     t7 = (ev_3) => {
       const canvas_4 = canvasRef.current;
       if (canvas_4 === null) {
@@ -13739,31 +12712,31 @@ function useGridPointerEvents(args) {
       onMouseMoveRaw === null || onMouseMoveRaw === void 0 || onMouseMoveRaw(ev_3);
       onMouseMove(mouseArgs_3);
     };
-    $[44] = allowResize;
-    $[45] = canvasRef;
-    $[46] = damageInternal;
-    $[47] = eventTargetRef;
-    $[48] = firstColAccessible;
-    $[49] = getCellContent;
-    $[50] = getCellRenderer;
-    $[51] = getMouseArgsForPosition;
-    $[52] = hoverInfoRef;
-    $[53] = maybeSetHoveredInfo;
-    $[54] = onItemHovered;
-    $[55] = onMouseMove;
-    $[56] = onMouseMoveRaw;
-    $[57] = setDrawCursorOverride;
-    $[58] = setHoveredOnEdge;
-    $[59] = setOverFill;
-    $[60] = t7;
+    $2[44] = allowResize;
+    $2[45] = canvasRef;
+    $2[46] = damageInternal;
+    $2[47] = eventTargetRef;
+    $2[48] = firstColAccessible;
+    $2[49] = getCellContent;
+    $2[50] = getCellRenderer;
+    $2[51] = getMouseArgsForPosition;
+    $2[52] = hoverInfoRef;
+    $2[53] = maybeSetHoveredInfo;
+    $2[54] = onItemHovered;
+    $2[55] = onMouseMove;
+    $2[56] = onMouseMoveRaw;
+    $2[57] = setDrawCursorOverride;
+    $2[58] = setHoveredOnEdge;
+    $2[59] = setOverFill;
+    $2[60] = t7;
   } else {
-    t7 = $[60];
+    t7 = $2[60];
   }
   const onPointerMove = t7;
   useEventListener("pointermove", onPointerMove, windowEventTarget, true);
 }
 function useGridDragAndDrop(args) {
-  const $ = compilerRuntimeExports.c(30);
+  const $2 = compilerRuntimeExports.c(30);
   const {
     canvasRef,
     eventTargetRef,
@@ -13787,7 +12760,7 @@ function useGridDragAndDrop(args) {
     onDragLeave
   } = args;
   let t0;
-  if ($[0] !== canvasRef || $[1] !== drawHeaderCallback || $[2] !== getBoundsForItem || $[3] !== getCellContent || $[4] !== getCellRenderer || $[5] !== getMouseArgsForPosition || $[6] !== imageLoader || $[7] !== isDraggable || $[8] !== isResizing || $[9] !== mappedColumns || $[10] !== onDragStart || $[11] !== renderStateProvider || $[12] !== spriteManager || $[13] !== theme) {
+  if ($2[0] !== canvasRef || $2[1] !== drawHeaderCallback || $2[2] !== getBoundsForItem || $2[3] !== getCellContent || $2[4] !== getCellRenderer || $2[5] !== getMouseArgsForPosition || $2[6] !== imageLoader || $2[7] !== isDraggable || $2[8] !== isResizing || $2[9] !== mappedColumns || $2[10] !== onDragStart || $2[11] !== renderStateProvider || $2[12] !== spriteManager || $2[13] !== theme) {
     t0 = (event) => {
       const canvas = canvasRef.current;
       if (canvas === null || isDraggable === false || isResizing) {
@@ -13808,10 +12781,10 @@ function useGridDragAndDrop(args) {
       let dragImage;
       let dragImageX;
       let dragImageY;
-      const setDragImage = (image, x, y) => {
+      const setDragImage = (image, x2, y2) => {
         dragImage = image;
-        dragImageX = x;
-        dragImageY = y;
+        dragImageX = x2;
+        dragImageY = y2;
       };
       let prevented = false;
       onDragStart === null || onDragStart === void 0 || onDragStart({
@@ -13867,29 +12840,29 @@ function useGridDragAndDrop(args) {
         event.preventDefault();
       }
     };
-    $[0] = canvasRef;
-    $[1] = drawHeaderCallback;
-    $[2] = getBoundsForItem;
-    $[3] = getCellContent;
-    $[4] = getCellRenderer;
-    $[5] = getMouseArgsForPosition;
-    $[6] = imageLoader;
-    $[7] = isDraggable;
-    $[8] = isResizing;
-    $[9] = mappedColumns;
-    $[10] = onDragStart;
-    $[11] = renderStateProvider;
-    $[12] = spriteManager;
-    $[13] = theme;
-    $[14] = t0;
+    $2[0] = canvasRef;
+    $2[1] = drawHeaderCallback;
+    $2[2] = getBoundsForItem;
+    $2[3] = getCellContent;
+    $2[4] = getCellRenderer;
+    $2[5] = getMouseArgsForPosition;
+    $2[6] = imageLoader;
+    $2[7] = isDraggable;
+    $2[8] = isResizing;
+    $2[9] = mappedColumns;
+    $2[10] = onDragStart;
+    $2[11] = renderStateProvider;
+    $2[12] = spriteManager;
+    $2[13] = theme;
+    $2[14] = t0;
   } else {
-    t0 = $[14];
+    t0 = $2[14];
   }
   const onDragStartImpl = t0;
   useEventListener("dragstart", onDragStartImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false, false);
   const activeDropTarget = React.useRef(void 0);
   let t1;
-  if ($[15] !== canvasRef || $[16] !== firstColAccessible || $[17] !== getMouseArgsForPosition || $[18] !== onDragOverCell || $[19] !== onDrop) {
+  if ($2[15] !== canvasRef || $2[16] !== firstColAccessible || $2[17] !== getMouseArgsForPosition || $2[18] !== onDragOverCell || $2[19] !== onDrop) {
     t1 = (event_0) => {
       var _activeDropTarget$cur;
       const canvas_0 = canvasRef.current;
@@ -13908,32 +12881,32 @@ function useGridDragAndDrop(args) {
         onDragOverCell([col_0, row_0], event_0.dataTransfer);
       }
     };
-    $[15] = canvasRef;
-    $[16] = firstColAccessible;
-    $[17] = getMouseArgsForPosition;
-    $[18] = onDragOverCell;
-    $[19] = onDrop;
-    $[20] = t1;
+    $2[15] = canvasRef;
+    $2[16] = firstColAccessible;
+    $2[17] = getMouseArgsForPosition;
+    $2[18] = onDragOverCell;
+    $2[19] = onDrop;
+    $2[20] = t1;
   } else {
-    t1 = $[20];
+    t1 = $2[20];
   }
   const onDragOverImpl = t1;
   useEventListener("dragover", onDragOverImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false, false);
   let t2;
-  if ($[21] !== onDragEnd) {
+  if ($2[21] !== onDragEnd) {
     t2 = () => {
       activeDropTarget.current = void 0;
       onDragEnd === null || onDragEnd === void 0 || onDragEnd();
     };
-    $[21] = onDragEnd;
-    $[22] = t2;
+    $2[21] = onDragEnd;
+    $2[22] = t2;
   } else {
-    t2 = $[22];
+    t2 = $2[22];
   }
   const onDragEndImpl = t2;
   useEventListener("dragend", onDragEndImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false, false);
   let t3;
-  if ($[23] !== canvasRef || $[24] !== firstColAccessible || $[25] !== getMouseArgsForPosition || $[26] !== onDrop) {
+  if ($2[23] !== canvasRef || $2[24] !== firstColAccessible || $2[25] !== getMouseArgsForPosition || $2[26] !== onDrop) {
     t3 = (event_1) => {
       const canvas_1 = canvasRef.current;
       if (canvas_1 === null || onDrop === void 0) {
@@ -13945,25 +12918,25 @@ function useGridDragAndDrop(args) {
       const col_1 = rawCol_0 - (firstColAccessible ? 0 : 1);
       onDrop([col_1, row_1], event_1.dataTransfer);
     };
-    $[23] = canvasRef;
-    $[24] = firstColAccessible;
-    $[25] = getMouseArgsForPosition;
-    $[26] = onDrop;
-    $[27] = t3;
+    $2[23] = canvasRef;
+    $2[24] = firstColAccessible;
+    $2[25] = getMouseArgsForPosition;
+    $2[26] = onDrop;
+    $2[27] = t3;
   } else {
-    t3 = $[27];
+    t3 = $2[27];
   }
   const onDropImpl = t3;
   useEventListener("drop", onDropImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false, false);
   let t4;
-  if ($[28] !== onDragLeave) {
+  if ($2[28] !== onDragLeave) {
     t4 = () => {
       onDragLeave === null || onDragLeave === void 0 || onDragLeave();
     };
-    $[28] = onDragLeave;
-    $[29] = t4;
+    $2[28] = onDragLeave;
+    $2[29] = t4;
   } else {
-    t4 = $[29];
+    t4 = $2[29];
   }
   const onDragLeaveImpl = t4;
   useEventListener("dragleave", onDragLeaveImpl, eventTargetRef !== null && eventTargetRef !== void 0 ? eventTargetRef : null, false, false);
@@ -14071,7 +13044,7 @@ const getRowData = (cell, getCellRenderer) => {
   return (_r$getAccessibilitySt = r === null || r === void 0 ? void 0 : r.getAccessibilityString(cell)) !== null && _r$getAccessibilitySt !== void 0 ? _r$getAccessibilitySt : "";
 };
 function useGridFocusAndAccessibility(args) {
-  const $ = compilerRuntimeExports.c(33);
+  const $2 = compilerRuntimeExports.c(33);
   const {
     canvasRef,
     canvasPropRef,
@@ -14097,7 +13070,7 @@ function useGridFocusAndAccessibility(args) {
   } = args;
   const focusRef = React.useRef(null);
   let t0;
-  if ($[0] !== canvasPropRef || $[1] !== canvasRef || $[2] !== selection) {
+  if ($2[0] !== canvasPropRef || $2[1] !== canvasRef || $2[2] !== selection) {
     t0 = (el) => {
       if (canvasRef.current === null || !canvasRef.current.contains(document.activeElement)) {
         return;
@@ -14116,17 +13089,17 @@ function useGridFocusAndAccessibility(args) {
       }
       focusRef.current = el;
     };
-    $[0] = canvasPropRef;
-    $[1] = canvasRef;
-    $[2] = selection;
-    $[3] = t0;
+    $2[0] = canvasPropRef;
+    $2[1] = canvasRef;
+    $2[2] = selection;
+    $2[3] = t0;
   } else {
-    t0 = $[3];
+    t0 = $2[3];
   }
   const focusElement = t0;
   let t1;
   let t2;
-  if ($[4] !== canvasPropRef || $[5] !== damage || $[6] !== getBoundsForItem || $[7] !== getMouseArgsForPosition) {
+  if ($2[4] !== canvasPropRef || $2[5] !== damage || $2[6] !== getBoundsForItem || $2[7] !== getMouseArgsForPosition) {
     t1 = () => ({
       focus: () => {
         const el_0 = focusRef.current;
@@ -14156,21 +13129,21 @@ function useGridFocusAndAccessibility(args) {
       }
     });
     t2 = [canvasPropRef, damage, getBoundsForItem, getMouseArgsForPosition];
-    $[4] = canvasPropRef;
-    $[5] = damage;
-    $[6] = getBoundsForItem;
-    $[7] = getMouseArgsForPosition;
-    $[8] = t1;
-    $[9] = t2;
+    $2[4] = canvasPropRef;
+    $2[5] = damage;
+    $2[6] = getBoundsForItem;
+    $2[7] = getMouseArgsForPosition;
+    $2[8] = t1;
+    $2[9] = t2;
   } else {
-    t1 = $[8];
-    t2 = $[9];
+    t1 = $2[8];
+    t2 = $2[9];
   }
   React.useImperativeHandle(forwardedRef, t1, t2);
   const lastFocusedSubdomNode = React.useRef(void 0);
   let t3;
   let t4;
-  if ($[10] !== accessibilityHeight || $[11] !== canvasPropRef || $[12] !== cellXOffset || $[13] !== cellYOffset || $[14] !== disableAccessibilityTree || $[15] !== dragAndDropState || $[16] !== firstColAccessible || $[17] !== focusElement || $[18] !== getBoundsForItem || $[19] !== getCellContent || $[20] !== getCellRenderer || $[21] !== mappedColumns || $[22] !== onCellFocused || $[23] !== onKeyDown || $[24] !== rows || $[25] !== selection || $[26] !== translateX || $[27] !== width) {
+  if ($2[10] !== accessibilityHeight || $2[11] !== canvasPropRef || $2[12] !== cellXOffset || $2[13] !== cellYOffset || $2[14] !== disableAccessibilityTree || $2[15] !== dragAndDropState || $2[16] !== firstColAccessible || $2[17] !== focusElement || $2[18] !== getBoundsForItem || $2[19] !== getCellContent || $2[20] !== getCellRenderer || $2[21] !== mappedColumns || $2[22] !== onCellFocused || $2[23] !== onKeyDown || $2[24] !== rows || $2[25] !== selection || $2[26] !== translateX || $2[27] !== width) {
     t3 = () => {
       var _effectiveCols$, _selection$current$ce, _selection$current, _selection$current2;
       if (width < 50 || disableAccessibilityTree) {
@@ -14234,42 +13207,42 @@ function useGridFocusAndAccessibility(args) {
       ] }, "access-tree");
     };
     t4 = [width, mappedColumns, cellXOffset, dragAndDropState, translateX, rows, cellYOffset, accessibilityHeight, selection, focusElement, getCellContent, canvasPropRef, onKeyDown, getBoundsForItem, onCellFocused, disableAccessibilityTree, firstColAccessible, getCellRenderer];
-    $[10] = accessibilityHeight;
-    $[11] = canvasPropRef;
-    $[12] = cellXOffset;
-    $[13] = cellYOffset;
-    $[14] = disableAccessibilityTree;
-    $[15] = dragAndDropState;
-    $[16] = firstColAccessible;
-    $[17] = focusElement;
-    $[18] = getBoundsForItem;
-    $[19] = getCellContent;
-    $[20] = getCellRenderer;
-    $[21] = mappedColumns;
-    $[22] = onCellFocused;
-    $[23] = onKeyDown;
-    $[24] = rows;
-    $[25] = selection;
-    $[26] = translateX;
-    $[27] = width;
-    $[28] = t3;
-    $[29] = t4;
+    $2[10] = accessibilityHeight;
+    $2[11] = canvasPropRef;
+    $2[12] = cellXOffset;
+    $2[13] = cellYOffset;
+    $2[14] = disableAccessibilityTree;
+    $2[15] = dragAndDropState;
+    $2[16] = firstColAccessible;
+    $2[17] = focusElement;
+    $2[18] = getBoundsForItem;
+    $2[19] = getCellContent;
+    $2[20] = getCellRenderer;
+    $2[21] = mappedColumns;
+    $2[22] = onCellFocused;
+    $2[23] = onKeyDown;
+    $2[24] = rows;
+    $2[25] = selection;
+    $2[26] = translateX;
+    $2[27] = width;
+    $2[28] = t3;
+    $2[29] = t4;
   } else {
-    t3 = $[28];
-    t4 = $[29];
+    t3 = $2[28];
+    t4 = $2[29];
   }
   const accessibilityTree = useDebouncedMemo(t3, t4, 200);
   let t5;
-  if ($[30] !== accessibilityTree || $[31] !== focusElement) {
+  if ($2[30] !== accessibilityTree || $2[31] !== focusElement) {
     t5 = {
       focusElement,
       accessibilityTree
     };
-    $[30] = accessibilityTree;
-    $[31] = focusElement;
-    $[32] = t5;
+    $2[30] = accessibilityTree;
+    $2[31] = focusElement;
+    $2[32] = t5;
   } else {
-    t5 = $[32];
+    t5 = $2[32];
   }
   return t5;
 }
@@ -14694,7 +13667,7 @@ function offsetColumnSize(column, width, min, max) {
 }
 const DataGridDnd = (p2) => {
   var _ref;
-  const $ = compilerRuntimeExports.c(137);
+  const $2 = compilerRuntimeExports.c(137);
   const [resizeColStartX, setResizeColStartX] = React.useState();
   const [resizeCol, setResizeCol] = React.useState();
   const [dragCol, setDragCol] = React.useState();
@@ -14732,7 +13705,7 @@ const DataGridDnd = (p2) => {
   } = p2;
   const selectedColumns = selection.columns;
   let t0;
-  if ($[0] !== dragCol || $[1] !== dragColActive || $[2] !== dragRow || $[3] !== dragRowActive || $[4] !== dropCol || $[5] !== lockColumns || $[6] !== onItemHovered || $[7] !== resizeCol) {
+  if ($2[0] !== dragCol || $2[1] !== dragColActive || $2[2] !== dragRow || $2[3] !== dragRowActive || $2[4] !== dropCol || $2[5] !== lockColumns || $2[6] !== onItemHovered || $2[7] !== resizeCol) {
     t0 = (args) => {
       const [col, row] = args.location;
       if (dragCol !== void 0 && dropCol !== col && col >= lockColumns) {
@@ -14749,22 +13722,22 @@ const DataGridDnd = (p2) => {
         }
       }
     };
-    $[0] = dragCol;
-    $[1] = dragColActive;
-    $[2] = dragRow;
-    $[3] = dragRowActive;
-    $[4] = dropCol;
-    $[5] = lockColumns;
-    $[6] = onItemHovered;
-    $[7] = resizeCol;
-    $[8] = t0;
+    $2[0] = dragCol;
+    $2[1] = dragColActive;
+    $2[2] = dragRow;
+    $2[3] = dragRowActive;
+    $2[4] = dropCol;
+    $2[5] = lockColumns;
+    $2[6] = onItemHovered;
+    $2[7] = resizeCol;
+    $2[8] = t0;
   } else {
-    t0 = $[8];
+    t0 = $2[8];
   }
   const onItemHoveredImpl = t0;
   const canDragCol = onColumnMoved !== void 0;
   let t1;
-  if ($[9] !== canDragCol || $[10] !== canResize || $[11] !== canvasRef || $[12] !== columns || $[13] !== gridRef || $[14] !== lockColumns || $[15] !== onColumnResizeStart || $[16] !== onMouseDown || $[17] !== onRowMoved) {
+  if ($2[9] !== canDragCol || $2[10] !== canResize || $2[11] !== canvasRef || $2[12] !== columns || $2[13] !== gridRef || $2[14] !== lockColumns || $2[15] !== onColumnResizeStart || $2[16] !== onMouseDown || $2[17] !== onRowMoved) {
     t1 = (args_0) => {
       if (args_0.button === 0) {
         const [col_0, row_0] = args_0.location;
@@ -14802,55 +13775,55 @@ const DataGridDnd = (p2) => {
       }
       onMouseDown === null || onMouseDown === void 0 || onMouseDown(args_0);
     };
-    $[9] = canDragCol;
-    $[10] = canResize;
-    $[11] = canvasRef;
-    $[12] = columns;
-    $[13] = gridRef;
-    $[14] = lockColumns;
-    $[15] = onColumnResizeStart;
-    $[16] = onMouseDown;
-    $[17] = onRowMoved;
-    $[18] = t1;
+    $2[9] = canDragCol;
+    $2[10] = canResize;
+    $2[11] = canvasRef;
+    $2[12] = columns;
+    $2[13] = gridRef;
+    $2[14] = lockColumns;
+    $2[15] = onColumnResizeStart;
+    $2[16] = onMouseDown;
+    $2[17] = onRowMoved;
+    $2[18] = t1;
   } else {
-    t1 = $[18];
+    t1 = $2[18];
   }
   const onMouseDownImpl = t1;
   let t2;
-  if ($[19] !== dragColActive || $[20] !== dragRowActive || $[21] !== onHeaderMenuClick) {
+  if ($2[19] !== dragColActive || $2[20] !== dragRowActive || $2[21] !== onHeaderMenuClick) {
     t2 = (col_1, screenPosition) => {
       if (dragColActive || dragRowActive) {
         return;
       }
       onHeaderMenuClick === null || onHeaderMenuClick === void 0 || onHeaderMenuClick(col_1, screenPosition);
     };
-    $[19] = dragColActive;
-    $[20] = dragRowActive;
-    $[21] = onHeaderMenuClick;
-    $[22] = t2;
+    $2[19] = dragColActive;
+    $2[20] = dragRowActive;
+    $2[21] = onHeaderMenuClick;
+    $2[22] = t2;
   } else {
-    t2 = $[22];
+    t2 = $2[22];
   }
   const onHeaderMenuClickMangled = t2;
   let t3;
-  if ($[23] !== dragColActive || $[24] !== dragRowActive || $[25] !== onHeaderIndicatorClick) {
+  if ($2[23] !== dragColActive || $2[24] !== dragRowActive || $2[25] !== onHeaderIndicatorClick) {
     t3 = (col_2, screenPosition_0) => {
       if (dragColActive || dragRowActive) {
         return;
       }
       onHeaderIndicatorClick === null || onHeaderIndicatorClick === void 0 || onHeaderIndicatorClick(col_2, screenPosition_0);
     };
-    $[23] = dragColActive;
-    $[24] = dragRowActive;
-    $[25] = onHeaderIndicatorClick;
-    $[26] = t3;
+    $2[23] = dragColActive;
+    $2[24] = dragRowActive;
+    $2[25] = onHeaderIndicatorClick;
+    $2[26] = t3;
   } else {
-    t3 = $[26];
+    t3 = $2[26];
   }
   const onHeaderIndicatorClickMangled = t3;
   const lastResizeWidthRef = React.useRef(-1);
   let t4;
-  if ($[27] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[27] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t4 = () => {
       lastResizeWidthRef.current = -1;
       setDragRow(void 0);
@@ -14864,13 +13837,13 @@ const DataGridDnd = (p2) => {
       setResizeCol(void 0);
       setResizeColStartX(void 0);
     };
-    $[27] = t4;
+    $2[27] = t4;
   } else {
-    t4 = $[27];
+    t4 = $2[27];
   }
   const clearAll = t4;
   let t5;
-  if ($[28] !== columns || $[29] !== dragCol || $[30] !== dragRow || $[31] !== dropCol || $[32] !== dropRow || $[33] !== maxColumnWidth || $[34] !== minColumnWidth || $[35] !== onColumnMoved || $[36] !== onColumnProposeMove || $[37] !== onColumnResize || $[38] !== onColumnResizeEnd || $[39] !== onMouseUp || $[40] !== onRowMoved || $[41] !== resizeCol || $[42] !== selectedColumns) {
+  if ($2[28] !== columns || $2[29] !== dragCol || $2[30] !== dragRow || $2[31] !== dropCol || $2[32] !== dropRow || $2[33] !== maxColumnWidth || $2[34] !== minColumnWidth || $2[35] !== onColumnMoved || $2[36] !== onColumnProposeMove || $2[37] !== onColumnResize || $2[38] !== onColumnResizeEnd || $2[39] !== onMouseUp || $2[40] !== onRowMoved || $2[41] !== resizeCol || $2[42] !== selectedColumns) {
     t5 = (args_1, isOutside) => {
       if (args_1.button === 0) {
         if (resizeCol !== void 0) {
@@ -14910,24 +13883,24 @@ const DataGridDnd = (p2) => {
       }
       onMouseUp === null || onMouseUp === void 0 || onMouseUp(args_1, isOutside);
     };
-    $[28] = columns;
-    $[29] = dragCol;
-    $[30] = dragRow;
-    $[31] = dropCol;
-    $[32] = dropRow;
-    $[33] = maxColumnWidth;
-    $[34] = minColumnWidth;
-    $[35] = onColumnMoved;
-    $[36] = onColumnProposeMove;
-    $[37] = onColumnResize;
-    $[38] = onColumnResizeEnd;
-    $[39] = onMouseUp;
-    $[40] = onRowMoved;
-    $[41] = resizeCol;
-    $[42] = selectedColumns;
-    $[43] = t5;
+    $2[28] = columns;
+    $2[29] = dragCol;
+    $2[30] = dragRow;
+    $2[31] = dropCol;
+    $2[32] = dropRow;
+    $2[33] = maxColumnWidth;
+    $2[34] = minColumnWidth;
+    $2[35] = onColumnMoved;
+    $2[36] = onColumnProposeMove;
+    $2[37] = onColumnResize;
+    $2[38] = onColumnResizeEnd;
+    $2[39] = onMouseUp;
+    $2[40] = onRowMoved;
+    $2[41] = resizeCol;
+    $2[42] = selectedColumns;
+    $2[43] = t5;
   } else {
-    t5 = $[43];
+    t5 = $2[43];
   }
   const onMouseUpImpl = t5;
   let t6;
@@ -14945,22 +13918,22 @@ const DataGridDnd = (p2) => {
       break bb0;
     }
     let t72;
-    if ($[44] !== dragCol || $[45] !== dropCol) {
+    if ($2[44] !== dragCol || $2[45] !== dropCol) {
       t72 = {
         src: dragCol,
         dest: dropCol
       };
-      $[44] = dragCol;
-      $[45] = dropCol;
-      $[46] = t72;
+      $2[44] = dragCol;
+      $2[45] = dropCol;
+      $2[46] = t72;
     } else {
-      t72 = $[46];
+      t72 = $2[46];
     }
     t6 = t72;
   }
   const dragOffset = t6;
   let t7;
-  if ($[47] !== canvasRef || $[48] !== columns || $[49] !== dragCol || $[50] !== dragRow || $[51] !== dragStartX || $[52] !== dragStartY || $[53] !== maxColumnWidth || $[54] !== minColumnWidth || $[55] !== onColumnResize || $[56] !== resizeCol || $[57] !== resizeColStartX || $[58] !== selectedColumns) {
+  if ($2[47] !== canvasRef || $2[48] !== columns || $2[49] !== dragCol || $2[50] !== dragRow || $2[51] !== dragStartX || $2[52] !== dragStartY || $2[53] !== maxColumnWidth || $2[54] !== minColumnWidth || $2[55] !== onColumnResize || $2[56] !== resizeCol || $2[57] !== resizeColStartX || $2[58] !== selectedColumns) {
     t7 = (event) => {
       const canvas_0 = canvasRef === null || canvasRef === void 0 ? void 0 : canvasRef.current;
       if (dragCol !== void 0 && dragStartX !== void 0) {
@@ -14999,25 +13972,25 @@ const DataGridDnd = (p2) => {
         }
       }
     };
-    $[47] = canvasRef;
-    $[48] = columns;
-    $[49] = dragCol;
-    $[50] = dragRow;
-    $[51] = dragStartX;
-    $[52] = dragStartY;
-    $[53] = maxColumnWidth;
-    $[54] = minColumnWidth;
-    $[55] = onColumnResize;
-    $[56] = resizeCol;
-    $[57] = resizeColStartX;
-    $[58] = selectedColumns;
-    $[59] = t7;
+    $2[47] = canvasRef;
+    $2[48] = columns;
+    $2[49] = dragCol;
+    $2[50] = dragRow;
+    $2[51] = dragStartX;
+    $2[52] = dragStartY;
+    $2[53] = maxColumnWidth;
+    $2[54] = minColumnWidth;
+    $2[55] = onColumnResize;
+    $2[56] = resizeCol;
+    $2[57] = resizeColStartX;
+    $2[58] = selectedColumns;
+    $2[59] = t7;
   } else {
-    t7 = $[59];
+    t7 = $2[59];
   }
   const onMouseMove = t7;
   let t8;
-  if ($[60] !== dragRow || $[61] !== dropRow || $[62] !== getCellContent) {
+  if ($2[60] !== dragRow || $2[61] !== dropRow || $2[62] !== getCellContent) {
     t8 = (cell, forceStrict) => {
       if (dragRow === void 0 || dropRow === void 0) {
         return getCellContent(cell, forceStrict);
@@ -15035,105 +14008,105 @@ const DataGridDnd = (p2) => {
       }
       return getCellContent([col_6, row_1], forceStrict);
     };
-    $[60] = dragRow;
-    $[61] = dropRow;
-    $[62] = getCellContent;
-    $[63] = t8;
+    $2[60] = dragRow;
+    $2[61] = dropRow;
+    $2[62] = getCellContent;
+    $2[63] = t8;
   } else {
-    t8 = $[63];
+    t8 = $2[63];
   }
   const getMangledCellContent = t8;
   let t9;
-  if ($[64] !== onDragStart) {
+  if ($2[64] !== onDragStart) {
     t9 = (args_2) => {
       onDragStart === null || onDragStart === void 0 || onDragStart(args_2);
       if (!args_2.defaultPrevented()) {
         clearAll();
       }
     };
-    $[64] = onDragStart;
-    $[65] = t9;
+    $2[64] = onDragStart;
+    $2[65] = t9;
   } else {
-    t9 = $[65];
+    t9 = $2[65];
   }
   const onDragStartImpl = t9;
   const t10 = resizeCol !== void 0;
   let t11;
-  if ($[66] !== canResize || $[67] !== dragColActive || $[68] !== dragOffset || $[69] !== getMangledCellContent || $[70] !== gridRef || $[71] !== onDragStartImpl || $[72] !== onHeaderIndicatorClickMangled || $[73] !== onHeaderMenuClickMangled || $[74] !== onItemHoveredImpl || $[75] !== onMouseDownImpl || $[76] !== onMouseMove || $[77] !== onMouseUpImpl || $[78] !== p2.accessibilityHeight || $[79] !== p2.canvasRef || $[80] !== p2.cellXOffset || $[81] !== p2.cellYOffset || $[82] !== p2.columns || $[83] !== p2.disabledRows || $[84] !== p2.drawCell || $[85] !== p2.drawFocusRing || $[86] !== p2.drawHeader || $[87] !== p2.enableGroups || $[88] !== p2.eventTargetRef || $[89] !== p2.experimental || $[90] !== p2.fillHandle || $[91] !== p2.firstColAccessible || $[92] !== p2.fixedShadowX || $[93] !== p2.fixedShadowY || $[94] !== p2.freezeColumns || $[95] !== p2.freezeTrailingRows || $[96] !== p2.getCellRenderer || $[97] !== p2.getGroupDetails || $[98] !== p2.getRowThemeOverride || $[99] !== p2.groupHeaderHeight || $[100] !== p2.groupHeaderHeights || $[101] !== p2.groupLevels || $[102] !== p2.hasAppendRow || $[103] !== p2.headerHeight || $[104] !== p2.headerIcons || $[105] !== p2.height || $[106] !== p2.highlightRegions || $[107] !== p2.imageWindowLoader || $[108] !== p2.isDraggable || $[109] !== p2.isFilling || $[110] !== p2.isFocused || $[111] !== p2.onCanvasBlur || $[112] !== p2.onCanvasFocused || $[113] !== p2.onCellFocused || $[114] !== p2.onContextMenu || $[115] !== p2.onDragEnd || $[116] !== p2.onDragLeave || $[117] !== p2.onDragOverCell || $[118] !== p2.onDrop || $[119] !== p2.onKeyDown || $[120] !== p2.onKeyUp || $[121] !== p2.onMouseMove || $[122] !== p2.prelightCells || $[123] !== p2.resizeIndicator || $[124] !== p2.rowHeight || $[125] !== p2.rows || $[126] !== p2.selection || $[127] !== p2.smoothScrollX || $[128] !== p2.smoothScrollY || $[129] !== p2.theme || $[130] !== p2.translateX || $[131] !== p2.translateY || $[132] !== p2.verticalBorder || $[133] !== p2.width || $[134] !== resizeCol || $[135] !== t10) {
+  if ($2[66] !== canResize || $2[67] !== dragColActive || $2[68] !== dragOffset || $2[69] !== getMangledCellContent || $2[70] !== gridRef || $2[71] !== onDragStartImpl || $2[72] !== onHeaderIndicatorClickMangled || $2[73] !== onHeaderMenuClickMangled || $2[74] !== onItemHoveredImpl || $2[75] !== onMouseDownImpl || $2[76] !== onMouseMove || $2[77] !== onMouseUpImpl || $2[78] !== p2.accessibilityHeight || $2[79] !== p2.canvasRef || $2[80] !== p2.cellXOffset || $2[81] !== p2.cellYOffset || $2[82] !== p2.columns || $2[83] !== p2.disabledRows || $2[84] !== p2.drawCell || $2[85] !== p2.drawFocusRing || $2[86] !== p2.drawHeader || $2[87] !== p2.enableGroups || $2[88] !== p2.eventTargetRef || $2[89] !== p2.experimental || $2[90] !== p2.fillHandle || $2[91] !== p2.firstColAccessible || $2[92] !== p2.fixedShadowX || $2[93] !== p2.fixedShadowY || $2[94] !== p2.freezeColumns || $2[95] !== p2.freezeTrailingRows || $2[96] !== p2.getCellRenderer || $2[97] !== p2.getGroupDetails || $2[98] !== p2.getRowThemeOverride || $2[99] !== p2.groupHeaderHeight || $2[100] !== p2.groupHeaderHeights || $2[101] !== p2.groupLevels || $2[102] !== p2.hasAppendRow || $2[103] !== p2.headerHeight || $2[104] !== p2.headerIcons || $2[105] !== p2.height || $2[106] !== p2.highlightRegions || $2[107] !== p2.imageWindowLoader || $2[108] !== p2.isDraggable || $2[109] !== p2.isFilling || $2[110] !== p2.isFocused || $2[111] !== p2.onCanvasBlur || $2[112] !== p2.onCanvasFocused || $2[113] !== p2.onCellFocused || $2[114] !== p2.onContextMenu || $2[115] !== p2.onDragEnd || $2[116] !== p2.onDragLeave || $2[117] !== p2.onDragOverCell || $2[118] !== p2.onDrop || $2[119] !== p2.onKeyDown || $2[120] !== p2.onKeyUp || $2[121] !== p2.onMouseMove || $2[122] !== p2.prelightCells || $2[123] !== p2.resizeIndicator || $2[124] !== p2.rowHeight || $2[125] !== p2.rows || $2[126] !== p2.selection || $2[127] !== p2.smoothScrollX || $2[128] !== p2.smoothScrollY || $2[129] !== p2.theme || $2[130] !== p2.translateX || $2[131] !== p2.translateY || $2[132] !== p2.verticalBorder || $2[133] !== p2.width || $2[134] !== resizeCol || $2[135] !== t10) {
     t11 = /* @__PURE__ */ jsx(DataGrid$1, { accessibilityHeight: p2.accessibilityHeight, canvasRef: p2.canvasRef, cellXOffset: p2.cellXOffset, cellYOffset: p2.cellYOffset, columns: p2.columns, disabledRows: p2.disabledRows, drawFocusRing: p2.drawFocusRing, drawHeader: p2.drawHeader, drawCell: p2.drawCell, enableGroups: p2.enableGroups, groupLevels: p2.groupLevels, groupHeaderHeights: p2.groupHeaderHeights, eventTargetRef: p2.eventTargetRef, experimental: p2.experimental, fillHandle: p2.fillHandle, firstColAccessible: p2.firstColAccessible, fixedShadowX: p2.fixedShadowX, fixedShadowY: p2.fixedShadowY, freezeColumns: p2.freezeColumns, getCellRenderer: p2.getCellRenderer, getGroupDetails: p2.getGroupDetails, getRowThemeOverride: p2.getRowThemeOverride, groupHeaderHeight: p2.groupHeaderHeight, headerHeight: p2.headerHeight, headerIcons: p2.headerIcons, height: p2.height, highlightRegions: p2.highlightRegions, imageWindowLoader: p2.imageWindowLoader, resizeColumn: resizeCol, isDraggable: p2.isDraggable, isFilling: p2.isFilling, isFocused: p2.isFocused, onCanvasBlur: p2.onCanvasBlur, onCanvasFocused: p2.onCanvasFocused, onCellFocused: p2.onCellFocused, onContextMenu: p2.onContextMenu, onDragEnd: p2.onDragEnd, onDragLeave: p2.onDragLeave, onDragOverCell: p2.onDragOverCell, onDrop: p2.onDrop, onKeyDown: p2.onKeyDown, onKeyUp: p2.onKeyUp, onMouseMove: p2.onMouseMove, prelightCells: p2.prelightCells, rowHeight: p2.rowHeight, rows: p2.rows, selection: p2.selection, smoothScrollX: p2.smoothScrollX, smoothScrollY: p2.smoothScrollY, theme: p2.theme, freezeTrailingRows: p2.freezeTrailingRows, hasAppendRow: p2.hasAppendRow, translateX: p2.translateX, translateY: p2.translateY, resizeIndicator: p2.resizeIndicator, verticalBorder: p2.verticalBorder, width: p2.width, getCellContent: getMangledCellContent, isResizing: t10, onHeaderMenuClick: onHeaderMenuClickMangled, onHeaderIndicatorClick: onHeaderIndicatorClickMangled, isDragging: dragColActive, onItemHovered: onItemHoveredImpl, onDragStart: onDragStartImpl, onMouseDown: onMouseDownImpl, allowResize: canResize, onMouseUp: onMouseUpImpl, dragAndDropState: dragOffset, onMouseMoveRaw: onMouseMove, ref: gridRef });
-    $[66] = canResize;
-    $[67] = dragColActive;
-    $[68] = dragOffset;
-    $[69] = getMangledCellContent;
-    $[70] = gridRef;
-    $[71] = onDragStartImpl;
-    $[72] = onHeaderIndicatorClickMangled;
-    $[73] = onHeaderMenuClickMangled;
-    $[74] = onItemHoveredImpl;
-    $[75] = onMouseDownImpl;
-    $[76] = onMouseMove;
-    $[77] = onMouseUpImpl;
-    $[78] = p2.accessibilityHeight;
-    $[79] = p2.canvasRef;
-    $[80] = p2.cellXOffset;
-    $[81] = p2.cellYOffset;
-    $[82] = p2.columns;
-    $[83] = p2.disabledRows;
-    $[84] = p2.drawCell;
-    $[85] = p2.drawFocusRing;
-    $[86] = p2.drawHeader;
-    $[87] = p2.enableGroups;
-    $[88] = p2.eventTargetRef;
-    $[89] = p2.experimental;
-    $[90] = p2.fillHandle;
-    $[91] = p2.firstColAccessible;
-    $[92] = p2.fixedShadowX;
-    $[93] = p2.fixedShadowY;
-    $[94] = p2.freezeColumns;
-    $[95] = p2.freezeTrailingRows;
-    $[96] = p2.getCellRenderer;
-    $[97] = p2.getGroupDetails;
-    $[98] = p2.getRowThemeOverride;
-    $[99] = p2.groupHeaderHeight;
-    $[100] = p2.groupHeaderHeights;
-    $[101] = p2.groupLevels;
-    $[102] = p2.hasAppendRow;
-    $[103] = p2.headerHeight;
-    $[104] = p2.headerIcons;
-    $[105] = p2.height;
-    $[106] = p2.highlightRegions;
-    $[107] = p2.imageWindowLoader;
-    $[108] = p2.isDraggable;
-    $[109] = p2.isFilling;
-    $[110] = p2.isFocused;
-    $[111] = p2.onCanvasBlur;
-    $[112] = p2.onCanvasFocused;
-    $[113] = p2.onCellFocused;
-    $[114] = p2.onContextMenu;
-    $[115] = p2.onDragEnd;
-    $[116] = p2.onDragLeave;
-    $[117] = p2.onDragOverCell;
-    $[118] = p2.onDrop;
-    $[119] = p2.onKeyDown;
-    $[120] = p2.onKeyUp;
-    $[121] = p2.onMouseMove;
-    $[122] = p2.prelightCells;
-    $[123] = p2.resizeIndicator;
-    $[124] = p2.rowHeight;
-    $[125] = p2.rows;
-    $[126] = p2.selection;
-    $[127] = p2.smoothScrollX;
-    $[128] = p2.smoothScrollY;
-    $[129] = p2.theme;
-    $[130] = p2.translateX;
-    $[131] = p2.translateY;
-    $[132] = p2.verticalBorder;
-    $[133] = p2.width;
-    $[134] = resizeCol;
-    $[135] = t10;
-    $[136] = t11;
+    $2[66] = canResize;
+    $2[67] = dragColActive;
+    $2[68] = dragOffset;
+    $2[69] = getMangledCellContent;
+    $2[70] = gridRef;
+    $2[71] = onDragStartImpl;
+    $2[72] = onHeaderIndicatorClickMangled;
+    $2[73] = onHeaderMenuClickMangled;
+    $2[74] = onItemHoveredImpl;
+    $2[75] = onMouseDownImpl;
+    $2[76] = onMouseMove;
+    $2[77] = onMouseUpImpl;
+    $2[78] = p2.accessibilityHeight;
+    $2[79] = p2.canvasRef;
+    $2[80] = p2.cellXOffset;
+    $2[81] = p2.cellYOffset;
+    $2[82] = p2.columns;
+    $2[83] = p2.disabledRows;
+    $2[84] = p2.drawCell;
+    $2[85] = p2.drawFocusRing;
+    $2[86] = p2.drawHeader;
+    $2[87] = p2.enableGroups;
+    $2[88] = p2.eventTargetRef;
+    $2[89] = p2.experimental;
+    $2[90] = p2.fillHandle;
+    $2[91] = p2.firstColAccessible;
+    $2[92] = p2.fixedShadowX;
+    $2[93] = p2.fixedShadowY;
+    $2[94] = p2.freezeColumns;
+    $2[95] = p2.freezeTrailingRows;
+    $2[96] = p2.getCellRenderer;
+    $2[97] = p2.getGroupDetails;
+    $2[98] = p2.getRowThemeOverride;
+    $2[99] = p2.groupHeaderHeight;
+    $2[100] = p2.groupHeaderHeights;
+    $2[101] = p2.groupLevels;
+    $2[102] = p2.hasAppendRow;
+    $2[103] = p2.headerHeight;
+    $2[104] = p2.headerIcons;
+    $2[105] = p2.height;
+    $2[106] = p2.highlightRegions;
+    $2[107] = p2.imageWindowLoader;
+    $2[108] = p2.isDraggable;
+    $2[109] = p2.isFilling;
+    $2[110] = p2.isFocused;
+    $2[111] = p2.onCanvasBlur;
+    $2[112] = p2.onCanvasFocused;
+    $2[113] = p2.onCellFocused;
+    $2[114] = p2.onContextMenu;
+    $2[115] = p2.onDragEnd;
+    $2[116] = p2.onDragLeave;
+    $2[117] = p2.onDragOverCell;
+    $2[118] = p2.onDrop;
+    $2[119] = p2.onKeyDown;
+    $2[120] = p2.onKeyUp;
+    $2[121] = p2.onMouseMove;
+    $2[122] = p2.prelightCells;
+    $2[123] = p2.resizeIndicator;
+    $2[124] = p2.rowHeight;
+    $2[125] = p2.rows;
+    $2[126] = p2.selection;
+    $2[127] = p2.smoothScrollX;
+    $2[128] = p2.smoothScrollY;
+    $2[129] = p2.theme;
+    $2[130] = p2.translateX;
+    $2[131] = p2.translateY;
+    $2[132] = p2.verticalBorder;
+    $2[133] = p2.width;
+    $2[134] = resizeCol;
+    $2[135] = t10;
+    $2[136] = t11;
   } else {
-    t11 = $[136];
+    t11 = $2[136];
   }
   return t11;
 };
@@ -15239,32 +14212,32 @@ const ScrollRegionStyle = /* @__PURE__ */ styled_default("div")({
 const BROWSER_MAX_DIV_HEIGHT = 33554400;
 const MAX_PADDER_SEGMENT_HEIGHT = 5e6;
 function useTouchUpDelayed(delay) {
-  const $ = compilerRuntimeExports.c(3);
+  const $2 = compilerRuntimeExports.c(3);
   const [hasTouches, setHasTouches] = React.useState(false);
   const safeWindow = typeof window === "undefined" ? null : window;
   const cbTimer = React.useRef(0);
   let t0;
-  if ($[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t0 = () => {
       window.clearTimeout(cbTimer.current);
       setHasTouches(true);
     };
-    $[0] = t0;
+    $2[0] = t0;
   } else {
-    t0 = $[0];
+    t0 = $2[0];
   }
   useEventListener("touchstart", t0, safeWindow, true, false);
   let t1;
-  if ($[1] !== delay) {
+  if ($2[1] !== delay) {
     t1 = (e) => {
       if (e.touches.length === 0) {
         cbTimer.current = window.setTimeout(() => setHasTouches(false), delay);
       }
     };
-    $[1] = delay;
-    $[2] = t1;
+    $2[1] = delay;
+    $2[2] = t1;
   } else {
-    t1 = $[2];
+    t1 = $2[2];
   }
   useEventListener("touchend", t1, safeWindow, true, false);
   return hasTouches;
@@ -15481,7 +14454,7 @@ const InfiniteScroller = (p2) => {
   });
 };
 const GridScroller = (p2) => {
-  const $ = compilerRuntimeExports.c(105);
+  const $2 = compilerRuntimeExports.c(105);
   const {
     columns,
     rows,
@@ -15509,12 +14482,12 @@ const GridScroller = (p2) => {
   const smoothScrollX = t0 === void 0 ? false : t0;
   const smoothScrollY = t1 === void 0 ? false : t1;
   let t2;
-  if ($[0] !== experimental) {
+  if ($2[0] !== experimental) {
     t2 = experimental !== null && experimental !== void 0 ? experimental : {};
-    $[0] = experimental;
-    $[1] = t2;
+    $2[0] = experimental;
+    $2[1] = t2;
   } else {
-    t2 = $[1];
+    t2 = $2[1];
   }
   const {
     paddingRight,
@@ -15539,7 +14512,7 @@ const GridScroller = (p2) => {
   }
   const lastArgs = React.useRef(void 0);
   let t3;
-  if ($[2] !== columns || $[3] !== freezeColumns || $[4] !== onVisibleRegionChanged || $[5] !== rowHeight || $[6] !== rows || $[7] !== smoothScrollX || $[8] !== smoothScrollY) {
+  if ($2[2] !== columns || $2[3] !== freezeColumns || $2[4] !== onVisibleRegionChanged || $2[5] !== rowHeight || $2[6] !== rows || $2[7] !== smoothScrollX || $2[8] !== smoothScrollY) {
     t3 = () => {
       var _lastSize$current, _lastSize$current2;
       if (lastArgs.current === void 0) {
@@ -15548,7 +14521,7 @@ const GridScroller = (p2) => {
       const args = {
         ...lastArgs.current
       };
-      let x = 0;
+      let x2 = 0;
       let tx = args.x < 0 ? -args.x : 0;
       let cellRight = 0;
       let cellX = 0;
@@ -15558,14 +14531,14 @@ const GridScroller = (p2) => {
         stickyColWidth = stickyColWidth + columns[i].width;
       }
       for (const c of columns) {
-        const cx3 = x - stickyColWidth;
+        const cx3 = x2 - stickyColWidth;
         if (args.x >= cx3 + c.width) {
-          x = x + c.width;
+          x2 = x2 + c.width;
           cellX++;
           cellRight++;
         } else {
           if (args.x > cx3) {
-            x = x + c.width;
+            x2 = x2 + c.width;
             if (smoothScrollX) {
               tx = tx + (cx3 - args.x);
             } else {
@@ -15574,7 +14547,7 @@ const GridScroller = (p2) => {
             cellRight++;
           } else {
             if (args.x + args.width > cx3) {
-              x = x + c.width;
+              x2 = x2 + c.width;
               cellRight++;
             } else {
               break;
@@ -15597,17 +14570,17 @@ const GridScroller = (p2) => {
           cellBottom++;
         }
       } else {
-        let y = 0;
+        let y2 = 0;
         for (let row = 0; row < rows; row++) {
           const rh = rowHeight(row);
-          const cy = y + (smoothScrollY ? 0 : rh / 2);
-          if (args.y >= y + rh) {
-            y = y + rh;
+          const cy = y2 + (smoothScrollY ? 0 : rh / 2);
+          if (args.y >= y2 + rh) {
+            y2 = y2 + rh;
             cellY++;
             cellBottom++;
           } else {
             if (args.y > cy) {
-              y = y + rh;
+              y2 = y2 + rh;
               if (smoothScrollY) {
                 ty = ty + (cy - args.y);
               } else {
@@ -15615,8 +14588,8 @@ const GridScroller = (p2) => {
               }
               cellBottom++;
             } else {
-              if (args.y + args.height > rh / 2 + y) {
-                y = y + rh;
+              if (args.y + args.height > rh / 2 + y2) {
+                y2 = y2 + rh;
                 cellBottom++;
               } else {
                 break;
@@ -15648,43 +14621,43 @@ const GridScroller = (p2) => {
         lastSize.current = [args.width, args.height];
       }
     };
-    $[2] = columns;
-    $[3] = freezeColumns;
-    $[4] = onVisibleRegionChanged;
-    $[5] = rowHeight;
-    $[6] = rows;
-    $[7] = smoothScrollX;
-    $[8] = smoothScrollY;
-    $[9] = t3;
+    $2[2] = columns;
+    $2[3] = freezeColumns;
+    $2[4] = onVisibleRegionChanged;
+    $2[5] = rowHeight;
+    $2[6] = rows;
+    $2[7] = smoothScrollX;
+    $2[8] = smoothScrollY;
+    $2[9] = t3;
   } else {
-    t3 = $[9];
+    t3 = $2[9];
   }
   const processArgs = t3;
   let t4;
-  if ($[10] !== processArgs) {
+  if ($2[10] !== processArgs) {
     t4 = (args_0) => {
       lastArgs.current = args_0;
       processArgs();
     };
-    $[10] = processArgs;
-    $[11] = t4;
+    $2[10] = processArgs;
+    $2[11] = t4;
   } else {
-    t4 = $[11];
+    t4 = $2[11];
   }
   const onScrollUpdate = t4;
   let t5;
   let t6;
-  if ($[12] !== processArgs) {
+  if ($2[12] !== processArgs) {
     t5 = () => {
       processArgs();
     };
     t6 = [processArgs];
-    $[12] = processArgs;
-    $[13] = t5;
-    $[14] = t6;
+    $2[12] = processArgs;
+    $2[13] = t5;
+    $2[14] = t6;
   } else {
-    t5 = $[13];
-    t6 = $[14];
+    t5 = $2[13];
+    t6 = $2[14];
   }
   React.useEffect(t5, t6);
   const t7 = experimental === null || experimental === void 0 ? void 0 : experimental.kineticScrollPerfHack;
@@ -15692,106 +14665,106 @@ const GridScroller = (p2) => {
   const t9 = width + (paddingRight !== null && paddingRight !== void 0 ? paddingRight : 0);
   const t10 = height + (paddingBottom !== null && paddingBottom !== void 0 ? paddingBottom : 0);
   let t11;
-  if ($[15] !== clientHeight || $[16] !== clientWidth || $[17] !== p2.accessibilityHeight || $[18] !== p2.canvasRef || $[19] !== p2.cellXOffset || $[20] !== p2.cellYOffset || $[21] !== p2.columns || $[22] !== p2.disabledRows || $[23] !== p2.drawCell || $[24] !== p2.drawFocusRing || $[25] !== p2.drawHeader || $[26] !== p2.enableGroups || $[27] !== p2.experimental || $[28] !== p2.fillHandle || $[29] !== p2.firstColAccessible || $[30] !== p2.fixedShadowX || $[31] !== p2.fixedShadowY || $[32] !== p2.freezeColumns || $[33] !== p2.freezeTrailingRows || $[34] !== p2.getCellContent || $[35] !== p2.getCellRenderer || $[36] !== p2.getGroupDetails || $[37] !== p2.getRowThemeOverride || $[38] !== p2.gridRef || $[39] !== p2.groupHeaderHeight || $[40] !== p2.groupHeaderHeights || $[41] !== p2.groupLevels || $[42] !== p2.hasAppendRow || $[43] !== p2.headerHeight || $[44] !== p2.headerIcons || $[45] !== p2.highlightRegions || $[46] !== p2.imageWindowLoader || $[47] !== p2.isDraggable || $[48] !== p2.isFilling || $[49] !== p2.isFocused || $[50] !== p2.lockColumns || $[51] !== p2.maxColumnWidth || $[52] !== p2.minColumnWidth || $[53] !== p2.onCanvasBlur || $[54] !== p2.onCanvasFocused || $[55] !== p2.onCellFocused || $[56] !== p2.onColumnMoved || $[57] !== p2.onColumnProposeMove || $[58] !== p2.onColumnResize || $[59] !== p2.onColumnResizeEnd || $[60] !== p2.onColumnResizeStart || $[61] !== p2.onContextMenu || $[62] !== p2.onDragEnd || $[63] !== p2.onDragLeave || $[64] !== p2.onDragOverCell || $[65] !== p2.onDragStart || $[66] !== p2.onDrop || $[67] !== p2.onHeaderIndicatorClick || $[68] !== p2.onHeaderMenuClick || $[69] !== p2.onItemHovered || $[70] !== p2.onKeyDown || $[71] !== p2.onKeyUp || $[72] !== p2.onMouseDown || $[73] !== p2.onMouseMove || $[74] !== p2.onMouseUp || $[75] !== p2.onRowMoved || $[76] !== p2.prelightCells || $[77] !== p2.resizeIndicator || $[78] !== p2.rowHeight || $[79] !== p2.rows || $[80] !== p2.selection || $[81] !== p2.smoothScrollX || $[82] !== p2.smoothScrollY || $[83] !== p2.theme || $[84] !== p2.translateX || $[85] !== p2.translateY || $[86] !== p2.verticalBorder || $[87] !== scrollRef) {
+  if ($2[15] !== clientHeight || $2[16] !== clientWidth || $2[17] !== p2.accessibilityHeight || $2[18] !== p2.canvasRef || $2[19] !== p2.cellXOffset || $2[20] !== p2.cellYOffset || $2[21] !== p2.columns || $2[22] !== p2.disabledRows || $2[23] !== p2.drawCell || $2[24] !== p2.drawFocusRing || $2[25] !== p2.drawHeader || $2[26] !== p2.enableGroups || $2[27] !== p2.experimental || $2[28] !== p2.fillHandle || $2[29] !== p2.firstColAccessible || $2[30] !== p2.fixedShadowX || $2[31] !== p2.fixedShadowY || $2[32] !== p2.freezeColumns || $2[33] !== p2.freezeTrailingRows || $2[34] !== p2.getCellContent || $2[35] !== p2.getCellRenderer || $2[36] !== p2.getGroupDetails || $2[37] !== p2.getRowThemeOverride || $2[38] !== p2.gridRef || $2[39] !== p2.groupHeaderHeight || $2[40] !== p2.groupHeaderHeights || $2[41] !== p2.groupLevels || $2[42] !== p2.hasAppendRow || $2[43] !== p2.headerHeight || $2[44] !== p2.headerIcons || $2[45] !== p2.highlightRegions || $2[46] !== p2.imageWindowLoader || $2[47] !== p2.isDraggable || $2[48] !== p2.isFilling || $2[49] !== p2.isFocused || $2[50] !== p2.lockColumns || $2[51] !== p2.maxColumnWidth || $2[52] !== p2.minColumnWidth || $2[53] !== p2.onCanvasBlur || $2[54] !== p2.onCanvasFocused || $2[55] !== p2.onCellFocused || $2[56] !== p2.onColumnMoved || $2[57] !== p2.onColumnProposeMove || $2[58] !== p2.onColumnResize || $2[59] !== p2.onColumnResizeEnd || $2[60] !== p2.onColumnResizeStart || $2[61] !== p2.onContextMenu || $2[62] !== p2.onDragEnd || $2[63] !== p2.onDragLeave || $2[64] !== p2.onDragOverCell || $2[65] !== p2.onDragStart || $2[66] !== p2.onDrop || $2[67] !== p2.onHeaderIndicatorClick || $2[68] !== p2.onHeaderMenuClick || $2[69] !== p2.onItemHovered || $2[70] !== p2.onKeyDown || $2[71] !== p2.onKeyUp || $2[72] !== p2.onMouseDown || $2[73] !== p2.onMouseMove || $2[74] !== p2.onMouseUp || $2[75] !== p2.onRowMoved || $2[76] !== p2.prelightCells || $2[77] !== p2.resizeIndicator || $2[78] !== p2.rowHeight || $2[79] !== p2.rows || $2[80] !== p2.selection || $2[81] !== p2.smoothScrollX || $2[82] !== p2.smoothScrollY || $2[83] !== p2.theme || $2[84] !== p2.translateX || $2[85] !== p2.translateY || $2[86] !== p2.verticalBorder || $2[87] !== scrollRef) {
     t11 = /* @__PURE__ */ jsx(DataGridDnd, { eventTargetRef: scrollRef, width: clientWidth, height: clientHeight, accessibilityHeight: p2.accessibilityHeight, canvasRef: p2.canvasRef, cellXOffset: p2.cellXOffset, cellYOffset: p2.cellYOffset, columns: p2.columns, disabledRows: p2.disabledRows, enableGroups: p2.enableGroups, groupLevels: p2.groupLevels, groupHeaderHeights: p2.groupHeaderHeights, fillHandle: p2.fillHandle, firstColAccessible: p2.firstColAccessible, fixedShadowX: p2.fixedShadowX, fixedShadowY: p2.fixedShadowY, freezeColumns: p2.freezeColumns, getCellContent: p2.getCellContent, getCellRenderer: p2.getCellRenderer, getGroupDetails: p2.getGroupDetails, getRowThemeOverride: p2.getRowThemeOverride, groupHeaderHeight: p2.groupHeaderHeight, headerHeight: p2.headerHeight, highlightRegions: p2.highlightRegions, imageWindowLoader: p2.imageWindowLoader, isFilling: p2.isFilling, isFocused: p2.isFocused, lockColumns: p2.lockColumns, maxColumnWidth: p2.maxColumnWidth, minColumnWidth: p2.minColumnWidth, onHeaderMenuClick: p2.onHeaderMenuClick, onHeaderIndicatorClick: p2.onHeaderIndicatorClick, onMouseMove: p2.onMouseMove, prelightCells: p2.prelightCells, rowHeight: p2.rowHeight, rows: p2.rows, selection: p2.selection, theme: p2.theme, freezeTrailingRows: p2.freezeTrailingRows, hasAppendRow: p2.hasAppendRow, translateX: p2.translateX, translateY: p2.translateY, onColumnProposeMove: p2.onColumnProposeMove, verticalBorder: p2.verticalBorder, drawFocusRing: p2.drawFocusRing, drawHeader: p2.drawHeader, drawCell: p2.drawCell, experimental: p2.experimental, gridRef: p2.gridRef, headerIcons: p2.headerIcons, isDraggable: p2.isDraggable, onCanvasBlur: p2.onCanvasBlur, onCanvasFocused: p2.onCanvasFocused, onCellFocused: p2.onCellFocused, onColumnMoved: p2.onColumnMoved, onColumnResize: p2.onColumnResize, onColumnResizeEnd: p2.onColumnResizeEnd, onColumnResizeStart: p2.onColumnResizeStart, onContextMenu: p2.onContextMenu, onDragEnd: p2.onDragEnd, onDragLeave: p2.onDragLeave, onDragOverCell: p2.onDragOverCell, onDragStart: p2.onDragStart, onDrop: p2.onDrop, onItemHovered: p2.onItemHovered, onKeyDown: p2.onKeyDown, onKeyUp: p2.onKeyUp, onMouseDown: p2.onMouseDown, onMouseUp: p2.onMouseUp, onRowMoved: p2.onRowMoved, smoothScrollX: p2.smoothScrollX, smoothScrollY: p2.smoothScrollY, resizeIndicator: p2.resizeIndicator });
-    $[15] = clientHeight;
-    $[16] = clientWidth;
-    $[17] = p2.accessibilityHeight;
-    $[18] = p2.canvasRef;
-    $[19] = p2.cellXOffset;
-    $[20] = p2.cellYOffset;
-    $[21] = p2.columns;
-    $[22] = p2.disabledRows;
-    $[23] = p2.drawCell;
-    $[24] = p2.drawFocusRing;
-    $[25] = p2.drawHeader;
-    $[26] = p2.enableGroups;
-    $[27] = p2.experimental;
-    $[28] = p2.fillHandle;
-    $[29] = p2.firstColAccessible;
-    $[30] = p2.fixedShadowX;
-    $[31] = p2.fixedShadowY;
-    $[32] = p2.freezeColumns;
-    $[33] = p2.freezeTrailingRows;
-    $[34] = p2.getCellContent;
-    $[35] = p2.getCellRenderer;
-    $[36] = p2.getGroupDetails;
-    $[37] = p2.getRowThemeOverride;
-    $[38] = p2.gridRef;
-    $[39] = p2.groupHeaderHeight;
-    $[40] = p2.groupHeaderHeights;
-    $[41] = p2.groupLevels;
-    $[42] = p2.hasAppendRow;
-    $[43] = p2.headerHeight;
-    $[44] = p2.headerIcons;
-    $[45] = p2.highlightRegions;
-    $[46] = p2.imageWindowLoader;
-    $[47] = p2.isDraggable;
-    $[48] = p2.isFilling;
-    $[49] = p2.isFocused;
-    $[50] = p2.lockColumns;
-    $[51] = p2.maxColumnWidth;
-    $[52] = p2.minColumnWidth;
-    $[53] = p2.onCanvasBlur;
-    $[54] = p2.onCanvasFocused;
-    $[55] = p2.onCellFocused;
-    $[56] = p2.onColumnMoved;
-    $[57] = p2.onColumnProposeMove;
-    $[58] = p2.onColumnResize;
-    $[59] = p2.onColumnResizeEnd;
-    $[60] = p2.onColumnResizeStart;
-    $[61] = p2.onContextMenu;
-    $[62] = p2.onDragEnd;
-    $[63] = p2.onDragLeave;
-    $[64] = p2.onDragOverCell;
-    $[65] = p2.onDragStart;
-    $[66] = p2.onDrop;
-    $[67] = p2.onHeaderIndicatorClick;
-    $[68] = p2.onHeaderMenuClick;
-    $[69] = p2.onItemHovered;
-    $[70] = p2.onKeyDown;
-    $[71] = p2.onKeyUp;
-    $[72] = p2.onMouseDown;
-    $[73] = p2.onMouseMove;
-    $[74] = p2.onMouseUp;
-    $[75] = p2.onRowMoved;
-    $[76] = p2.prelightCells;
-    $[77] = p2.resizeIndicator;
-    $[78] = p2.rowHeight;
-    $[79] = p2.rows;
-    $[80] = p2.selection;
-    $[81] = p2.smoothScrollX;
-    $[82] = p2.smoothScrollY;
-    $[83] = p2.theme;
-    $[84] = p2.translateX;
-    $[85] = p2.translateY;
-    $[86] = p2.verticalBorder;
-    $[87] = scrollRef;
-    $[88] = t11;
+    $2[15] = clientHeight;
+    $2[16] = clientWidth;
+    $2[17] = p2.accessibilityHeight;
+    $2[18] = p2.canvasRef;
+    $2[19] = p2.cellXOffset;
+    $2[20] = p2.cellYOffset;
+    $2[21] = p2.columns;
+    $2[22] = p2.disabledRows;
+    $2[23] = p2.drawCell;
+    $2[24] = p2.drawFocusRing;
+    $2[25] = p2.drawHeader;
+    $2[26] = p2.enableGroups;
+    $2[27] = p2.experimental;
+    $2[28] = p2.fillHandle;
+    $2[29] = p2.firstColAccessible;
+    $2[30] = p2.fixedShadowX;
+    $2[31] = p2.fixedShadowY;
+    $2[32] = p2.freezeColumns;
+    $2[33] = p2.freezeTrailingRows;
+    $2[34] = p2.getCellContent;
+    $2[35] = p2.getCellRenderer;
+    $2[36] = p2.getGroupDetails;
+    $2[37] = p2.getRowThemeOverride;
+    $2[38] = p2.gridRef;
+    $2[39] = p2.groupHeaderHeight;
+    $2[40] = p2.groupHeaderHeights;
+    $2[41] = p2.groupLevels;
+    $2[42] = p2.hasAppendRow;
+    $2[43] = p2.headerHeight;
+    $2[44] = p2.headerIcons;
+    $2[45] = p2.highlightRegions;
+    $2[46] = p2.imageWindowLoader;
+    $2[47] = p2.isDraggable;
+    $2[48] = p2.isFilling;
+    $2[49] = p2.isFocused;
+    $2[50] = p2.lockColumns;
+    $2[51] = p2.maxColumnWidth;
+    $2[52] = p2.minColumnWidth;
+    $2[53] = p2.onCanvasBlur;
+    $2[54] = p2.onCanvasFocused;
+    $2[55] = p2.onCellFocused;
+    $2[56] = p2.onColumnMoved;
+    $2[57] = p2.onColumnProposeMove;
+    $2[58] = p2.onColumnResize;
+    $2[59] = p2.onColumnResizeEnd;
+    $2[60] = p2.onColumnResizeStart;
+    $2[61] = p2.onContextMenu;
+    $2[62] = p2.onDragEnd;
+    $2[63] = p2.onDragLeave;
+    $2[64] = p2.onDragOverCell;
+    $2[65] = p2.onDragStart;
+    $2[66] = p2.onDrop;
+    $2[67] = p2.onHeaderIndicatorClick;
+    $2[68] = p2.onHeaderMenuClick;
+    $2[69] = p2.onItemHovered;
+    $2[70] = p2.onKeyDown;
+    $2[71] = p2.onKeyUp;
+    $2[72] = p2.onMouseDown;
+    $2[73] = p2.onMouseMove;
+    $2[74] = p2.onMouseUp;
+    $2[75] = p2.onRowMoved;
+    $2[76] = p2.prelightCells;
+    $2[77] = p2.resizeIndicator;
+    $2[78] = p2.rowHeight;
+    $2[79] = p2.rows;
+    $2[80] = p2.selection;
+    $2[81] = p2.smoothScrollX;
+    $2[82] = p2.smoothScrollY;
+    $2[83] = p2.theme;
+    $2[84] = p2.translateX;
+    $2[85] = p2.translateY;
+    $2[86] = p2.verticalBorder;
+    $2[87] = scrollRef;
+    $2[88] = t11;
   } else {
-    t11 = $[88];
+    t11 = $2[88];
   }
   let t12;
-  if ($[89] !== className || $[90] !== clientHeight || $[91] !== initialSize || $[92] !== onScrollUpdate || $[93] !== paddingBottom || $[94] !== paddingRight || $[95] !== preventDiagonalScrolling || $[96] !== rightElement || $[97] !== rightElementProps || $[98] !== scrollRef || $[99] !== t10 || $[100] !== t11 || $[101] !== t7 || $[102] !== t8 || $[103] !== t9) {
+  if ($2[89] !== className || $2[90] !== clientHeight || $2[91] !== initialSize || $2[92] !== onScrollUpdate || $2[93] !== paddingBottom || $2[94] !== paddingRight || $2[95] !== preventDiagonalScrolling || $2[96] !== rightElement || $2[97] !== rightElementProps || $2[98] !== scrollRef || $2[99] !== t10 || $2[100] !== t11 || $2[101] !== t7 || $2[102] !== t8 || $2[103] !== t9) {
     t12 = /* @__PURE__ */ jsx(InfiniteScroller, { scrollRef, className, kineticScrollPerfHack: t7, preventDiagonalScrolling, draggable: t8, scrollWidth: t9, scrollHeight: t10, clientHeight, rightElement, paddingBottom, paddingRight, rightElementProps, update: onScrollUpdate, initialSize, children: t11 });
-    $[89] = className;
-    $[90] = clientHeight;
-    $[91] = initialSize;
-    $[92] = onScrollUpdate;
-    $[93] = paddingBottom;
-    $[94] = paddingRight;
-    $[95] = preventDiagonalScrolling;
-    $[96] = rightElement;
-    $[97] = rightElementProps;
-    $[98] = scrollRef;
-    $[99] = t10;
-    $[100] = t11;
-    $[101] = t7;
-    $[102] = t8;
-    $[103] = t9;
-    $[104] = t12;
+    $2[89] = className;
+    $2[90] = clientHeight;
+    $2[91] = initialSize;
+    $2[92] = onScrollUpdate;
+    $2[93] = paddingBottom;
+    $2[94] = paddingRight;
+    $2[95] = preventDiagonalScrolling;
+    $2[96] = rightElement;
+    $2[97] = rightElementProps;
+    $2[98] = scrollRef;
+    $2[99] = t10;
+    $2[100] = t11;
+    $2[101] = t7;
+    $2[102] = t8;
+    $2[103] = t9;
+    $2[104] = t12;
   } else {
-    t12 = $[104];
+    t12 = $2[104];
   }
   return t12;
 };
@@ -16078,7 +15051,7 @@ const RenameInput = /* @__PURE__ */ styled_default("input")({
   }
 });
 const GroupRename = (p2) => {
-  const $ = compilerRuntimeExports.c(23);
+  const $2 = compilerRuntimeExports.c(23);
   const {
     bounds,
     group,
@@ -16091,7 +15064,7 @@ const GroupRename = (p2) => {
   const t1 = bounds.y - canvasBounds.top;
   const t2 = bounds.width - 2;
   let t3;
-  if ($[0] !== bounds.height || $[1] !== t0 || $[2] !== t1 || $[3] !== t2) {
+  if ($2[0] !== bounds.height || $2[1] !== t0 || $2[2] !== t1 || $2[3] !== t2) {
     t3 = {
       position: "absolute",
       left: t0,
@@ -16099,38 +15072,38 @@ const GroupRename = (p2) => {
       width: t2,
       height: bounds.height
     };
-    $[0] = bounds.height;
-    $[1] = t0;
-    $[2] = t1;
-    $[3] = t2;
-    $[4] = t3;
+    $2[0] = bounds.height;
+    $2[1] = t0;
+    $2[2] = t1;
+    $2[3] = t2;
+    $2[4] = t3;
   } else {
-    t3 = $[4];
+    t3 = $2[4];
   }
   let t4;
-  if ($[5] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[5] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t4 = "gdg-g1sqdbw3";
-    $[5] = t4;
+    $2[5] = t4;
   } else {
-    t4 = $[5];
+    t4 = $2[5];
   }
   let t5;
-  if ($[6] !== value.length) {
+  if ($2[6] !== value.length) {
     t5 = (e) => e.target.setSelectionRange(0, value.length);
-    $[6] = value.length;
-    $[7] = t5;
+    $2[6] = value.length;
+    $2[7] = t5;
   } else {
-    t5 = $[7];
+    t5 = $2[7];
   }
   let t6;
-  if ($[8] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[8] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t6 = (e_0) => setValue(e_0.target.value);
-    $[8] = t6;
+    $2[8] = t6;
   } else {
-    t6 = $[8];
+    t6 = $2[8];
   }
   let t7;
-  if ($[9] !== onClose || $[10] !== onFinish || $[11] !== value) {
+  if ($2[9] !== onClose || $2[10] !== onFinish || $2[11] !== value) {
     t7 = (e_1) => {
       if (e_1.key === "Enter") {
         onFinish(value);
@@ -16140,15 +15113,15 @@ const GroupRename = (p2) => {
         }
       }
     };
-    $[9] = onClose;
-    $[10] = onFinish;
-    $[11] = value;
-    $[12] = t7;
+    $2[9] = onClose;
+    $2[10] = onFinish;
+    $2[11] = value;
+    $2[12] = t7;
   } else {
-    t7 = $[12];
+    t7 = $2[12];
   }
   let t8;
-  if ($[13] !== bounds.height || $[14] !== onClose || $[15] !== t5 || $[16] !== t7 || $[17] !== value) {
+  if ($2[13] !== bounds.height || $2[14] !== onClose || $2[15] !== t5 || $2[16] !== t7 || $2[17] !== value) {
     t8 = /* @__PURE__ */ jsx(RenameInput, {
       targetHeight: bounds.height,
       "data-testid": "group-rename-input",
@@ -16159,29 +15132,29 @@ const GroupRename = (p2) => {
       onKeyDown: t7,
       autoFocus: true
     });
-    $[13] = bounds.height;
-    $[14] = onClose;
-    $[15] = t5;
-    $[16] = t7;
-    $[17] = value;
-    $[18] = t8;
+    $2[13] = bounds.height;
+    $2[14] = onClose;
+    $2[15] = t5;
+    $2[16] = t7;
+    $2[17] = value;
+    $2[18] = t8;
   } else {
-    t8 = $[18];
+    t8 = $2[18];
   }
   let t9;
-  if ($[19] !== onClose || $[20] !== t3 || $[21] !== t8) {
+  if ($2[19] !== onClose || $2[20] !== t3 || $2[21] !== t8) {
     t9 = /* @__PURE__ */ jsx(ClickOutsideContainer, {
       style: t3,
       className: t4,
       onClickOutside: onClose,
       children: t8
     });
-    $[19] = onClose;
-    $[20] = t3;
-    $[21] = t8;
-    $[22] = t9;
+    $2[19] = onClose;
+    $2[20] = t3;
+    $2[21] = t8;
+    $2[22] = t9;
   } else {
-    t9 = $[22];
+    t9 = $2[22];
   }
   return t9;
 };
@@ -16275,8 +15248,8 @@ function convertCellToBuffer(cell) {
       };
     case GridCellKind.Drilldown:
       return {
-        formatted: cell.data.map((x) => x.text),
-        rawValue: cell.data.map((x) => x.text),
+        formatted: cell.data.map((x2) => x2.text),
+        rawValue: cell.data.map((x2) => x2.text),
         format: "string-array"
       };
     case GridCellKind.Text:
@@ -16349,7 +15322,7 @@ function createTextBuffer(copyBuffer) {
         var _cell$rawValue$toStri, _cell$rawValue;
         line.push((_cell$rawValue$toStri = (_cell$rawValue = cell.rawValue) === null || _cell$rawValue === void 0 ? void 0 : _cell$rawValue.toString()) !== null && _cell$rawValue$toStri !== void 0 ? _cell$rawValue$toStri : "");
       } else if (cell.format === "string-array") {
-        line.push(cell.formatted.map((x) => escapeIfNeeded(x, true)).join(","));
+        line.push(cell.formatted.map((x2) => escapeIfNeeded(x2, true)).join(","));
       } else {
         line.push(cell.doNotEscape === true ? cell.formatted : escapeIfNeeded(cell.formatted, false));
       }
@@ -16378,7 +15351,7 @@ function createHtmlBuffer(copyBuffer) {
         lines.push(`<td ${formatStr}><a href="${cell.rawValue}">${formatHtmlTextContent(cell.formatted)}</a></td>`);
       } else {
         if (cell.format === "string-array") {
-          lines.push(`<td ${formatStr}><ol>${cell.formatted.map((x, ind) => `<li gdg-raw-value=${formatHtmlAttributeContent(cell.rawValue[ind])}>` + formatHtmlTextContent(x) + "</li>").join("")}</ol></td>`);
+          lines.push(`<td ${formatStr}><ol>${cell.formatted.map((x2, ind) => `<li gdg-raw-value=${formatHtmlAttributeContent(cell.rawValue[ind])}>` + formatHtmlTextContent(x2) + "</li>").join("")}</ol></td>`);
         } else {
           var _cell$rawValue$toStri2, _cell$rawValue2;
           lines.push(`<td gdg-raw-value=${formatHtmlAttributeContent((_cell$rawValue$toStri2 = (_cell$rawValue2 = cell.rawValue) === null || _cell$rawValue2 === void 0 ? void 0 : _cell$rawValue2.toString()) !== null && _cell$rawValue$toStri2 !== void 0 ? _cell$rawValue$toStri2 : "")} ${formatStr}>${formatHtmlTextContent(cell.formatted)}</td>`);
@@ -16441,13 +15414,13 @@ function decodeHTML(html) {
         var _current2;
         const rawValues = clone.querySelectorAll("li");
         (_current2 = current) === null || _current2 === void 0 || _current2.push({
-          rawValue: [...rawValues].map((x) => {
+          rawValue: [...rawValues].map((x2) => {
             var _x$getAttribute;
-            return (_x$getAttribute = x.getAttribute("gdg-raw-value")) !== null && _x$getAttribute !== void 0 ? _x$getAttribute : "";
+            return (_x$getAttribute = x2.getAttribute("gdg-raw-value")) !== null && _x$getAttribute !== void 0 ? _x$getAttribute : "";
           }),
-          formatted: [...rawValues].map((x) => {
+          formatted: [...rawValues].map((x2) => {
             var _x$textContent;
-            return (_x$textContent = x.textContent) !== null && _x$textContent !== void 0 ? _x$textContent : "";
+            return (_x$textContent = x2.textContent) !== null && _x$textContent !== void 0 ? _x$textContent : "";
           }),
           format: "string-array"
         });
@@ -17005,7 +15978,7 @@ function useKeyboardHandlers(args) {
     const [col_1, row_0] = gridSelection.current.cell;
     const vr = visibleRegionRef.current;
     const isIMEInput = event_0.keyCode === 229;
-    const isCharacterInput = editOnType && !event_0.metaKey && !event_0.ctrlKey && event_0.key.length === 1 && /[!-~\xA1-\xAC\xAE-\u0377\u037A-\u037F\u0384-\u038A\u038C\u038E-\u03A1\u03A3-\u052F\u0531-\u0556\u0559-\u058A\u058D-\u058F\u0591-\u05C7\u05D0-\u05EA\u05EF-\u05F4\u0606-\u061B\u061D-\u06DC\u06DE-\u070D\u0710-\u074A\u074D-\u07B1\u07C0-\u07FA\u07FD-\u082D\u0830-\u083E\u0840-\u085B\u085E\u0860-\u086A\u0870-\u088E\u0897-\u08E1\u08E3-\u0983\u0985-\u098C\u098F\u0990\u0993-\u09A8\u09AA-\u09B0\u09B2\u09B6-\u09B9\u09BC-\u09C4\u09C7\u09C8\u09CB-\u09CE\u09D7\u09DC\u09DD\u09DF-\u09E3\u09E6-\u09FE\u0A01-\u0A03\u0A05-\u0A0A\u0A0F\u0A10\u0A13-\u0A28\u0A2A-\u0A30\u0A32\u0A33\u0A35\u0A36\u0A38\u0A39\u0A3C\u0A3E-\u0A42\u0A47\u0A48\u0A4B-\u0A4D\u0A51\u0A59-\u0A5C\u0A5E\u0A66-\u0A76\u0A81-\u0A83\u0A85-\u0A8D\u0A8F-\u0A91\u0A93-\u0AA8\u0AAA-\u0AB0\u0AB2\u0AB3\u0AB5-\u0AB9\u0ABC-\u0AC5\u0AC7-\u0AC9\u0ACB-\u0ACD\u0AD0\u0AE0-\u0AE3\u0AE6-\u0AF1\u0AF9-\u0AFF\u0B01-\u0B03\u0B05-\u0B0C\u0B0F\u0B10\u0B13-\u0B28\u0B2A-\u0B30\u0B32\u0B33\u0B35-\u0B39\u0B3C-\u0B44\u0B47\u0B48\u0B4B-\u0B4D\u0B55-\u0B57\u0B5C\u0B5D\u0B5F-\u0B63\u0B66-\u0B77\u0B82\u0B83\u0B85-\u0B8A\u0B8E-\u0B90\u0B92-\u0B95\u0B99\u0B9A\u0B9C\u0B9E\u0B9F\u0BA3\u0BA4\u0BA8-\u0BAA\u0BAE-\u0BB9\u0BBE-\u0BC2\u0BC6-\u0BC8\u0BCA-\u0BCD\u0BD0\u0BD7\u0BE6-\u0BFA\u0C00-\u0C0C\u0C0E-\u0C10\u0C12-\u0C28\u0C2A-\u0C39\u0C3C-\u0C44\u0C46-\u0C48\u0C4A-\u0C4D\u0C55\u0C56\u0C58-\u0C5A\u0C5D\u0C60-\u0C63\u0C66-\u0C6F\u0C77-\u0C8C\u0C8E-\u0C90\u0C92-\u0CA8\u0CAA-\u0CB3\u0CB5-\u0CB9\u0CBC-\u0CC4\u0CC6-\u0CC8\u0CCA-\u0CCD\u0CD5\u0CD6\u0CDD\u0CDE\u0CE0-\u0CE3\u0CE6-\u0CEF\u0CF1-\u0CF3\u0D00-\u0D0C\u0D0E-\u0D10\u0D12-\u0D44\u0D46-\u0D48\u0D4A-\u0D4F\u0D54-\u0D63\u0D66-\u0D7F\u0D81-\u0D83\u0D85-\u0D96\u0D9A-\u0DB1\u0DB3-\u0DBB\u0DBD\u0DC0-\u0DC6\u0DCA\u0DCF-\u0DD4\u0DD6\u0DD8-\u0DDF\u0DE6-\u0DEF\u0DF2-\u0DF4\u0E01-\u0E3A\u0E3F-\u0E5B\u0E81\u0E82\u0E84\u0E86-\u0E8A\u0E8C-\u0EA3\u0EA5\u0EA7-\u0EBD\u0EC0-\u0EC4\u0EC6\u0EC8-\u0ECE\u0ED0-\u0ED9\u0EDC-\u0EDF\u0F00-\u0F47\u0F49-\u0F6C\u0F71-\u0F97\u0F99-\u0FBC\u0FBE-\u0FCC\u0FCE-\u0FDA\u1000-\u10C5\u10C7\u10CD\u10D0-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u135D-\u137C\u1380-\u1399\u13A0-\u13F5\u13F8-\u13FD\u1400-\u167F\u1681-\u169C\u16A0-\u16F8\u1700-\u1715\u171F-\u1736\u1740-\u1753\u1760-\u176C\u176E-\u1770\u1772\u1773\u1780-\u17DD\u17E0-\u17E9\u17F0-\u17F9\u1800-\u180D\u180F-\u1819\u1820-\u1878\u1880-\u18AA\u18B0-\u18F5\u1900-\u191E\u1920-\u192B\u1930-\u193B\u1940\u1944-\u196D\u1970-\u1974\u1980-\u19AB\u19B0-\u19C9\u19D0-\u19DA\u19DE-\u1A1B\u1A1E-\u1A5E\u1A60-\u1A7C\u1A7F-\u1A89\u1A90-\u1A99\u1AA0-\u1AAD\u1AB0-\u1ACE\u1B00-\u1B4C\u1B4E-\u1BF3\u1BFC-\u1C37\u1C3B-\u1C49\u1C4D-\u1C8A\u1C90-\u1CBA\u1CBD-\u1CC7\u1CD0-\u1CFA\u1D00-\u1F15\u1F18-\u1F1D\u1F20-\u1F45\u1F48-\u1F4D\u1F50-\u1F57\u1F59\u1F5B\u1F5D\u1F5F-\u1F7D\u1F80-\u1FB4\u1FB6-\u1FC4\u1FC6-\u1FD3\u1FD6-\u1FDB\u1FDD-\u1FEF\u1FF2-\u1FF4\u1FF6-\u1FFE\u2010-\u2027\u2030-\u205E\u2070\u2071\u2074-\u208E\u2090-\u209C\u20A0-\u20C0\u20D0-\u20F0\u2100-\u218B\u2190-\u2429\u2440-\u244A\u2460-\u2B73\u2B76-\u2B95\u2B97-\u2CF3\u2CF9-\u2D25\u2D27\u2D2D\u2D30-\u2D67\u2D6F\u2D70\u2D7F-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\u2DE0-\u2E5D\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFF\u3001-\u303F\u3041-\u3096\u3099-\u30FF\u3105-\u312F\u3131-\u318E\u3190-\u31E5\u31EF-\u321E\u3220-\uA48C\uA490-\uA4C6\uA4D0-\uA62B\uA640-\uA6F7\uA700-\uA7CD\uA7D0\uA7D1\uA7D3\uA7D5-\uA7DC\uA7F2-\uA82C\uA830-\uA839\uA840-\uA877\uA880-\uA8C5\uA8CE-\uA8D9\uA8E0-\uA953\uA95F-\uA97C\uA980-\uA9CD\uA9CF-\uA9D9\uA9DE-\uA9FE\uAA00-\uAA36\uAA40-\uAA4D\uAA50-\uAA59\uAA5C-\uAAC2\uAADB-\uAAF6\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E\uAB30-\uAB6B\uAB70-\uABED\uABF0-\uABF9\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFA6D\uFA70-\uFAD9\uFB00-\uFB06\uFB13-\uFB17\uFB1D-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFBC2\uFBD3-\uFD8F\uFD92-\uFDC7\uFDCF\uFDF0-\uFE19\uFE20-\uFE52\uFE54-\uFE66\uFE68-\uFE6B\uFE70-\uFE74\uFE76-\uFEFC\uFF01-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC\uFFE0-\uFFE6\uFFE8-\uFFEE\uFFFC\uFFFD\u{10000}-\u{1000B}\u{1000D}-\u{10026}\u{10028}-\u{1003A}\u{1003C}\u{1003D}\u{1003F}-\u{1004D}\u{10050}-\u{1005D}\u{10080}-\u{100FA}\u{10100}-\u{10102}\u{10107}-\u{10133}\u{10137}-\u{1018E}\u{10190}-\u{1019C}\u{101A0}\u{101D0}-\u{101FD}\u{10280}-\u{1029C}\u{102A0}-\u{102D0}\u{102E0}-\u{102FB}\u{10300}-\u{10323}\u{1032D}-\u{1034A}\u{10350}-\u{1037A}\u{10380}-\u{1039D}\u{1039F}-\u{103C3}\u{103C8}-\u{103D5}\u{10400}-\u{1049D}\u{104A0}-\u{104A9}\u{104B0}-\u{104D3}\u{104D8}-\u{104FB}\u{10500}-\u{10527}\u{10530}-\u{10563}\u{1056F}-\u{1057A}\u{1057C}-\u{1058A}\u{1058C}-\u{10592}\u{10594}\u{10595}\u{10597}-\u{105A1}\u{105A3}-\u{105B1}\u{105B3}-\u{105B9}\u{105BB}\u{105BC}\u{105C0}-\u{105F3}\u{10600}-\u{10736}\u{10740}-\u{10755}\u{10760}-\u{10767}\u{10780}-\u{10785}\u{10787}-\u{107B0}\u{107B2}-\u{107BA}\u{10800}-\u{10805}\u{10808}\u{1080A}-\u{10835}\u{10837}\u{10838}\u{1083C}\u{1083F}-\u{10855}\u{10857}-\u{1089E}\u{108A7}-\u{108AF}\u{108E0}-\u{108F2}\u{108F4}\u{108F5}\u{108FB}-\u{1091B}\u{1091F}-\u{10939}\u{1093F}\u{10980}-\u{109B7}\u{109BC}-\u{109CF}\u{109D2}-\u{10A03}\u{10A05}\u{10A06}\u{10A0C}-\u{10A13}\u{10A15}-\u{10A17}\u{10A19}-\u{10A35}\u{10A38}-\u{10A3A}\u{10A3F}-\u{10A48}\u{10A50}-\u{10A58}\u{10A60}-\u{10A9F}\u{10AC0}-\u{10AE6}\u{10AEB}-\u{10AF6}\u{10B00}-\u{10B35}\u{10B39}-\u{10B55}\u{10B58}-\u{10B72}\u{10B78}-\u{10B91}\u{10B99}-\u{10B9C}\u{10BA9}-\u{10BAF}\u{10C00}-\u{10C48}\u{10C80}-\u{10CB2}\u{10CC0}-\u{10CF2}\u{10CFA}-\u{10D27}\u{10D30}-\u{10D39}\u{10D40}-\u{10D65}\u{10D69}-\u{10D85}\u{10D8E}\u{10D8F}\u{10E60}-\u{10E7E}\u{10E80}-\u{10EA9}\u{10EAB}-\u{10EAD}\u{10EB0}\u{10EB1}\u{10EC2}-\u{10EC4}\u{10EFC}-\u{10F27}\u{10F30}-\u{10F59}\u{10F70}-\u{10F89}\u{10FB0}-\u{10FCB}\u{10FE0}-\u{10FF6}\u{11000}-\u{1104D}\u{11052}-\u{11075}\u{1107F}-\u{110BC}\u{110BE}-\u{110C2}\u{110D0}-\u{110E8}\u{110F0}-\u{110F9}\u{11100}-\u{11134}\u{11136}-\u{11147}\u{11150}-\u{11176}\u{11180}-\u{111DF}\u{111E1}-\u{111F4}\u{11200}-\u{11211}\u{11213}-\u{11241}\u{11280}-\u{11286}\u{11288}\u{1128A}-\u{1128D}\u{1128F}-\u{1129D}\u{1129F}-\u{112A9}\u{112B0}-\u{112EA}\u{112F0}-\u{112F9}\u{11300}-\u{11303}\u{11305}-\u{1130C}\u{1130F}\u{11310}\u{11313}-\u{11328}\u{1132A}-\u{11330}\u{11332}\u{11333}\u{11335}-\u{11339}\u{1133B}-\u{11344}\u{11347}\u{11348}\u{1134B}-\u{1134D}\u{11350}\u{11357}\u{1135D}-\u{11363}\u{11366}-\u{1136C}\u{11370}-\u{11374}\u{11380}-\u{11389}\u{1138B}\u{1138E}\u{11390}-\u{113B5}\u{113B7}-\u{113C0}\u{113C2}\u{113C5}\u{113C7}-\u{113CA}\u{113CC}-\u{113D5}\u{113D7}\u{113D8}\u{113E1}\u{113E2}\u{11400}-\u{1145B}\u{1145D}-\u{11461}\u{11480}-\u{114C7}\u{114D0}-\u{114D9}\u{11580}-\u{115B5}\u{115B8}-\u{115DD}\u{11600}-\u{11644}\u{11650}-\u{11659}\u{11660}-\u{1166C}\u{11680}-\u{116B9}\u{116C0}-\u{116C9}\u{116D0}-\u{116E3}\u{11700}-\u{1171A}\u{1171D}-\u{1172B}\u{11730}-\u{11746}\u{11800}-\u{1183B}\u{118A0}-\u{118F2}\u{118FF}-\u{11906}\u{11909}\u{1190C}-\u{11913}\u{11915}\u{11916}\u{11918}-\u{11935}\u{11937}\u{11938}\u{1193B}-\u{11946}\u{11950}-\u{11959}\u{119A0}-\u{119A7}\u{119AA}-\u{119D7}\u{119DA}-\u{119E4}\u{11A00}-\u{11A47}\u{11A50}-\u{11AA2}\u{11AB0}-\u{11AF8}\u{11B00}-\u{11B09}\u{11BC0}-\u{11BE1}\u{11BF0}-\u{11BF9}\u{11C00}-\u{11C08}\u{11C0A}-\u{11C36}\u{11C38}-\u{11C45}\u{11C50}-\u{11C6C}\u{11C70}-\u{11C8F}\u{11C92}-\u{11CA7}\u{11CA9}-\u{11CB6}\u{11D00}-\u{11D06}\u{11D08}\u{11D09}\u{11D0B}-\u{11D36}\u{11D3A}\u{11D3C}\u{11D3D}\u{11D3F}-\u{11D47}\u{11D50}-\u{11D59}\u{11D60}-\u{11D65}\u{11D67}\u{11D68}\u{11D6A}-\u{11D8E}\u{11D90}\u{11D91}\u{11D93}-\u{11D98}\u{11DA0}-\u{11DA9}\u{11EE0}-\u{11EF8}\u{11F00}-\u{11F10}\u{11F12}-\u{11F3A}\u{11F3E}-\u{11F5A}\u{11FB0}\u{11FC0}-\u{11FF1}\u{11FFF}-\u{12399}\u{12400}-\u{1246E}\u{12470}-\u{12474}\u{12480}-\u{12543}\u{12F90}-\u{12FF2}\u{13000}-\u{1342F}\u{13440}-\u{13455}\u{13460}-\u{143FA}\u{14400}-\u{14646}\u{16100}-\u{16139}\u{16800}-\u{16A38}\u{16A40}-\u{16A5E}\u{16A60}-\u{16A69}\u{16A6E}-\u{16ABE}\u{16AC0}-\u{16AC9}\u{16AD0}-\u{16AED}\u{16AF0}-\u{16AF5}\u{16B00}-\u{16B45}\u{16B50}-\u{16B59}\u{16B5B}-\u{16B61}\u{16B63}-\u{16B77}\u{16B7D}-\u{16B8F}\u{16D40}-\u{16D79}\u{16E40}-\u{16E9A}\u{16F00}-\u{16F4A}\u{16F4F}-\u{16F87}\u{16F8F}-\u{16F9F}\u{16FE0}-\u{16FE4}\u{16FF0}\u{16FF1}\u{17000}-\u{187F7}\u{18800}-\u{18CD5}\u{18CFF}-\u{18D08}\u{1AFF0}-\u{1AFF3}\u{1AFF5}-\u{1AFFB}\u{1AFFD}\u{1AFFE}\u{1B000}-\u{1B122}\u{1B132}\u{1B150}-\u{1B152}\u{1B155}\u{1B164}-\u{1B167}\u{1B170}-\u{1B2FB}\u{1BC00}-\u{1BC6A}\u{1BC70}-\u{1BC7C}\u{1BC80}-\u{1BC88}\u{1BC90}-\u{1BC99}\u{1BC9C}-\u{1BC9F}\u{1CC00}-\u{1CCF9}\u{1CD00}-\u{1CEB3}\u{1CF00}-\u{1CF2D}\u{1CF30}-\u{1CF46}\u{1CF50}-\u{1CFC3}\u{1D000}-\u{1D0F5}\u{1D100}-\u{1D126}\u{1D129}-\u{1D172}\u{1D17B}-\u{1D1EA}\u{1D200}-\u{1D245}\u{1D2C0}-\u{1D2D3}\u{1D2E0}-\u{1D2F3}\u{1D300}-\u{1D356}\u{1D360}-\u{1D378}\u{1D400}-\u{1D454}\u{1D456}-\u{1D49C}\u{1D49E}\u{1D49F}\u{1D4A2}\u{1D4A5}\u{1D4A6}\u{1D4A9}-\u{1D4AC}\u{1D4AE}-\u{1D4B9}\u{1D4BB}\u{1D4BD}-\u{1D4C3}\u{1D4C5}-\u{1D505}\u{1D507}-\u{1D50A}\u{1D50D}-\u{1D514}\u{1D516}-\u{1D51C}\u{1D51E}-\u{1D539}\u{1D53B}-\u{1D53E}\u{1D540}-\u{1D544}\u{1D546}\u{1D54A}-\u{1D550}\u{1D552}-\u{1D6A5}\u{1D6A8}-\u{1D7CB}\u{1D7CE}-\u{1DA8B}\u{1DA9B}-\u{1DA9F}\u{1DAA1}-\u{1DAAF}\u{1DF00}-\u{1DF1E}\u{1DF25}-\u{1DF2A}\u{1E000}-\u{1E006}\u{1E008}-\u{1E018}\u{1E01B}-\u{1E021}\u{1E023}\u{1E024}\u{1E026}-\u{1E02A}\u{1E030}-\u{1E06D}\u{1E08F}\u{1E100}-\u{1E12C}\u{1E130}-\u{1E13D}\u{1E140}-\u{1E149}\u{1E14E}\u{1E14F}\u{1E290}-\u{1E2AE}\u{1E2C0}-\u{1E2F9}\u{1E2FF}\u{1E4D0}-\u{1E4F9}\u{1E5D0}-\u{1E5FA}\u{1E5FF}\u{1E7E0}-\u{1E7E6}\u{1E7E8}-\u{1E7EB}\u{1E7ED}\u{1E7EE}\u{1E7F0}-\u{1E7FE}\u{1E800}-\u{1E8C4}\u{1E8C7}-\u{1E8D6}\u{1E900}-\u{1E94B}\u{1E950}-\u{1E959}\u{1E95E}\u{1E95F}\u{1EC71}-\u{1ECB4}\u{1ED01}-\u{1ED3D}\u{1EE00}-\u{1EE03}\u{1EE05}-\u{1EE1F}\u{1EE21}\u{1EE22}\u{1EE24}\u{1EE27}\u{1EE29}-\u{1EE32}\u{1EE34}-\u{1EE37}\u{1EE39}\u{1EE3B}\u{1EE42}\u{1EE47}\u{1EE49}\u{1EE4B}\u{1EE4D}-\u{1EE4F}\u{1EE51}\u{1EE52}\u{1EE54}\u{1EE57}\u{1EE59}\u{1EE5B}\u{1EE5D}\u{1EE5F}\u{1EE61}\u{1EE62}\u{1EE64}\u{1EE67}-\u{1EE6A}\u{1EE6C}-\u{1EE72}\u{1EE74}-\u{1EE77}\u{1EE79}-\u{1EE7C}\u{1EE7E}\u{1EE80}-\u{1EE89}\u{1EE8B}-\u{1EE9B}\u{1EEA1}-\u{1EEA3}\u{1EEA5}-\u{1EEA9}\u{1EEAB}-\u{1EEBB}\u{1EEF0}\u{1EEF1}\u{1F000}-\u{1F02B}\u{1F030}-\u{1F093}\u{1F0A0}-\u{1F0AE}\u{1F0B1}-\u{1F0BF}\u{1F0C1}-\u{1F0CF}\u{1F0D1}-\u{1F0F5}\u{1F100}-\u{1F1AD}\u{1F1E6}-\u{1F202}\u{1F210}-\u{1F23B}\u{1F240}-\u{1F248}\u{1F250}\u{1F251}\u{1F260}-\u{1F265}\u{1F300}-\u{1F6D7}\u{1F6DC}-\u{1F6EC}\u{1F6F0}-\u{1F6FC}\u{1F700}-\u{1F776}\u{1F77B}-\u{1F7D9}\u{1F7E0}-\u{1F7EB}\u{1F7F0}\u{1F800}-\u{1F80B}\u{1F810}-\u{1F847}\u{1F850}-\u{1F859}\u{1F860}-\u{1F887}\u{1F890}-\u{1F8AD}\u{1F8B0}-\u{1F8BB}\u{1F8C0}\u{1F8C1}\u{1F900}-\u{1FA53}\u{1FA60}-\u{1FA6D}\u{1FA70}-\u{1FA7C}\u{1FA80}-\u{1FA89}\u{1FA8F}-\u{1FAC6}\u{1FACE}-\u{1FADC}\u{1FADF}-\u{1FAE9}\u{1FAF0}-\u{1FAF8}\u{1FB00}-\u{1FB92}\u{1FB94}-\u{1FBF9}\u{20000}-\u{2A6DF}\u{2A700}-\u{2B739}\u{2B740}-\u{2B81D}\u{2B820}-\u{2CEA1}\u{2CEB0}-\u{2EBE0}\u{2EBF0}-\u{2EE5D}\u{2F800}-\u{2FA1D}\u{30000}-\u{3134A}\u{31350}-\u{323AF}\u{E0100}-\u{E01EF}]/u.test(event_0.key);
+    const isCharacterInput = editOnType && !event_0.metaKey && !event_0.ctrlKey && event_0.key.length === 1 && /[!-~\xA1-\xAC\xAE-\u0377\u037A-\u037F\u0384-\u038A\u038C\u038E-\u03A1\u03A3-\u052F\u0531-\u0556\u0559-\u058A\u058D-\u058F\u0591-\u05C7\u05D0-\u05EA\u05EF-\u05F4\u0606-\u061B\u061D-\u06DC\u06DE-\u070D\u0710-\u074A\u074D-\u07B1\u07C0-\u07FA\u07FD-\u082D\u0830-\u083E\u0840-\u085B\u085E\u0860-\u086A\u0870-\u088F\u0897-\u08E1\u08E3-\u0983\u0985-\u098C\u098F\u0990\u0993-\u09A8\u09AA-\u09B0\u09B2\u09B6-\u09B9\u09BC-\u09C4\u09C7\u09C8\u09CB-\u09CE\u09D7\u09DC\u09DD\u09DF-\u09E3\u09E6-\u09FE\u0A01-\u0A03\u0A05-\u0A0A\u0A0F\u0A10\u0A13-\u0A28\u0A2A-\u0A30\u0A32\u0A33\u0A35\u0A36\u0A38\u0A39\u0A3C\u0A3E-\u0A42\u0A47\u0A48\u0A4B-\u0A4D\u0A51\u0A59-\u0A5C\u0A5E\u0A66-\u0A76\u0A81-\u0A83\u0A85-\u0A8D\u0A8F-\u0A91\u0A93-\u0AA8\u0AAA-\u0AB0\u0AB2\u0AB3\u0AB5-\u0AB9\u0ABC-\u0AC5\u0AC7-\u0AC9\u0ACB-\u0ACD\u0AD0\u0AE0-\u0AE3\u0AE6-\u0AF1\u0AF9-\u0AFF\u0B01-\u0B03\u0B05-\u0B0C\u0B0F\u0B10\u0B13-\u0B28\u0B2A-\u0B30\u0B32\u0B33\u0B35-\u0B39\u0B3C-\u0B44\u0B47\u0B48\u0B4B-\u0B4D\u0B55-\u0B57\u0B5C\u0B5D\u0B5F-\u0B63\u0B66-\u0B77\u0B82\u0B83\u0B85-\u0B8A\u0B8E-\u0B90\u0B92-\u0B95\u0B99\u0B9A\u0B9C\u0B9E\u0B9F\u0BA3\u0BA4\u0BA8-\u0BAA\u0BAE-\u0BB9\u0BBE-\u0BC2\u0BC6-\u0BC8\u0BCA-\u0BCD\u0BD0\u0BD7\u0BE6-\u0BFA\u0C00-\u0C0C\u0C0E-\u0C10\u0C12-\u0C28\u0C2A-\u0C39\u0C3C-\u0C44\u0C46-\u0C48\u0C4A-\u0C4D\u0C55\u0C56\u0C58-\u0C5A\u0C5C\u0C5D\u0C60-\u0C63\u0C66-\u0C6F\u0C77-\u0C8C\u0C8E-\u0C90\u0C92-\u0CA8\u0CAA-\u0CB3\u0CB5-\u0CB9\u0CBC-\u0CC4\u0CC6-\u0CC8\u0CCA-\u0CCD\u0CD5\u0CD6\u0CDC-\u0CDE\u0CE0-\u0CE3\u0CE6-\u0CEF\u0CF1-\u0CF3\u0D00-\u0D0C\u0D0E-\u0D10\u0D12-\u0D44\u0D46-\u0D48\u0D4A-\u0D4F\u0D54-\u0D63\u0D66-\u0D7F\u0D81-\u0D83\u0D85-\u0D96\u0D9A-\u0DB1\u0DB3-\u0DBB\u0DBD\u0DC0-\u0DC6\u0DCA\u0DCF-\u0DD4\u0DD6\u0DD8-\u0DDF\u0DE6-\u0DEF\u0DF2-\u0DF4\u0E01-\u0E3A\u0E3F-\u0E5B\u0E81\u0E82\u0E84\u0E86-\u0E8A\u0E8C-\u0EA3\u0EA5\u0EA7-\u0EBD\u0EC0-\u0EC4\u0EC6\u0EC8-\u0ECE\u0ED0-\u0ED9\u0EDC-\u0EDF\u0F00-\u0F47\u0F49-\u0F6C\u0F71-\u0F97\u0F99-\u0FBC\u0FBE-\u0FCC\u0FCE-\u0FDA\u1000-\u10C5\u10C7\u10CD\u10D0-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u135D-\u137C\u1380-\u1399\u13A0-\u13F5\u13F8-\u13FD\u1400-\u167F\u1681-\u169C\u16A0-\u16F8\u1700-\u1715\u171F-\u1736\u1740-\u1753\u1760-\u176C\u176E-\u1770\u1772\u1773\u1780-\u17DD\u17E0-\u17E9\u17F0-\u17F9\u1800-\u180D\u180F-\u1819\u1820-\u1878\u1880-\u18AA\u18B0-\u18F5\u1900-\u191E\u1920-\u192B\u1930-\u193B\u1940\u1944-\u196D\u1970-\u1974\u1980-\u19AB\u19B0-\u19C9\u19D0-\u19DA\u19DE-\u1A1B\u1A1E-\u1A5E\u1A60-\u1A7C\u1A7F-\u1A89\u1A90-\u1A99\u1AA0-\u1AAD\u1AB0-\u1ADD\u1AE0-\u1AEB\u1B00-\u1B4C\u1B4E-\u1BF3\u1BFC-\u1C37\u1C3B-\u1C49\u1C4D-\u1C8A\u1C90-\u1CBA\u1CBD-\u1CC7\u1CD0-\u1CFA\u1D00-\u1F15\u1F18-\u1F1D\u1F20-\u1F45\u1F48-\u1F4D\u1F50-\u1F57\u1F59\u1F5B\u1F5D\u1F5F-\u1F7D\u1F80-\u1FB4\u1FB6-\u1FC4\u1FC6-\u1FD3\u1FD6-\u1FDB\u1FDD-\u1FEF\u1FF2-\u1FF4\u1FF6-\u1FFE\u2010-\u2027\u2030-\u205E\u2070\u2071\u2074-\u208E\u2090-\u209C\u20A0-\u20C1\u20D0-\u20F0\u2100-\u218B\u2190-\u2429\u2440-\u244A\u2460-\u2B73\u2B76-\u2CF3\u2CF9-\u2D25\u2D27\u2D2D\u2D30-\u2D67\u2D6F\u2D70\u2D7F-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\u2DE0-\u2E5D\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFF\u3001-\u303F\u3041-\u3096\u3099-\u30FF\u3105-\u312F\u3131-\u318E\u3190-\u31E5\u31EF-\u321E\u3220-\uA48C\uA490-\uA4C6\uA4D0-\uA62B\uA640-\uA6F7\uA700-\uA7DC\uA7F1-\uA82C\uA830-\uA839\uA840-\uA877\uA880-\uA8C5\uA8CE-\uA8D9\uA8E0-\uA953\uA95F-\uA97C\uA980-\uA9CD\uA9CF-\uA9D9\uA9DE-\uA9FE\uAA00-\uAA36\uAA40-\uAA4D\uAA50-\uAA59\uAA5C-\uAAC2\uAADB-\uAAF6\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E\uAB30-\uAB6B\uAB70-\uABED\uABF0-\uABF9\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFA6D\uFA70-\uFAD9\uFB00-\uFB06\uFB13-\uFB17\uFB1D-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFDCF\uFDF0-\uFE19\uFE20-\uFE52\uFE54-\uFE66\uFE68-\uFE6B\uFE70-\uFE74\uFE76-\uFEFC\uFF01-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC\uFFE0-\uFFE6\uFFE8-\uFFEE\uFFFC\uFFFD\u{10000}-\u{1000B}\u{1000D}-\u{10026}\u{10028}-\u{1003A}\u{1003C}\u{1003D}\u{1003F}-\u{1004D}\u{10050}-\u{1005D}\u{10080}-\u{100FA}\u{10100}-\u{10102}\u{10107}-\u{10133}\u{10137}-\u{1018E}\u{10190}-\u{1019C}\u{101A0}\u{101D0}-\u{101FD}\u{10280}-\u{1029C}\u{102A0}-\u{102D0}\u{102E0}-\u{102FB}\u{10300}-\u{10323}\u{1032D}-\u{1034A}\u{10350}-\u{1037A}\u{10380}-\u{1039D}\u{1039F}-\u{103C3}\u{103C8}-\u{103D5}\u{10400}-\u{1049D}\u{104A0}-\u{104A9}\u{104B0}-\u{104D3}\u{104D8}-\u{104FB}\u{10500}-\u{10527}\u{10530}-\u{10563}\u{1056F}-\u{1057A}\u{1057C}-\u{1058A}\u{1058C}-\u{10592}\u{10594}\u{10595}\u{10597}-\u{105A1}\u{105A3}-\u{105B1}\u{105B3}-\u{105B9}\u{105BB}\u{105BC}\u{105C0}-\u{105F3}\u{10600}-\u{10736}\u{10740}-\u{10755}\u{10760}-\u{10767}\u{10780}-\u{10785}\u{10787}-\u{107B0}\u{107B2}-\u{107BA}\u{10800}-\u{10805}\u{10808}\u{1080A}-\u{10835}\u{10837}\u{10838}\u{1083C}\u{1083F}-\u{10855}\u{10857}-\u{1089E}\u{108A7}-\u{108AF}\u{108E0}-\u{108F2}\u{108F4}\u{108F5}\u{108FB}-\u{1091B}\u{1091F}-\u{10939}\u{1093F}-\u{10959}\u{10980}-\u{109B7}\u{109BC}-\u{109CF}\u{109D2}-\u{10A03}\u{10A05}\u{10A06}\u{10A0C}-\u{10A13}\u{10A15}-\u{10A17}\u{10A19}-\u{10A35}\u{10A38}-\u{10A3A}\u{10A3F}-\u{10A48}\u{10A50}-\u{10A58}\u{10A60}-\u{10A9F}\u{10AC0}-\u{10AE6}\u{10AEB}-\u{10AF6}\u{10B00}-\u{10B35}\u{10B39}-\u{10B55}\u{10B58}-\u{10B72}\u{10B78}-\u{10B91}\u{10B99}-\u{10B9C}\u{10BA9}-\u{10BAF}\u{10C00}-\u{10C48}\u{10C80}-\u{10CB2}\u{10CC0}-\u{10CF2}\u{10CFA}-\u{10D27}\u{10D30}-\u{10D39}\u{10D40}-\u{10D65}\u{10D69}-\u{10D85}\u{10D8E}\u{10D8F}\u{10E60}-\u{10E7E}\u{10E80}-\u{10EA9}\u{10EAB}-\u{10EAD}\u{10EB0}\u{10EB1}\u{10EC2}-\u{10EC7}\u{10ED0}-\u{10ED8}\u{10EFA}-\u{10F27}\u{10F30}-\u{10F59}\u{10F70}-\u{10F89}\u{10FB0}-\u{10FCB}\u{10FE0}-\u{10FF6}\u{11000}-\u{1104D}\u{11052}-\u{11075}\u{1107F}-\u{110BC}\u{110BE}-\u{110C2}\u{110D0}-\u{110E8}\u{110F0}-\u{110F9}\u{11100}-\u{11134}\u{11136}-\u{11147}\u{11150}-\u{11176}\u{11180}-\u{111DF}\u{111E1}-\u{111F4}\u{11200}-\u{11211}\u{11213}-\u{11241}\u{11280}-\u{11286}\u{11288}\u{1128A}-\u{1128D}\u{1128F}-\u{1129D}\u{1129F}-\u{112A9}\u{112B0}-\u{112EA}\u{112F0}-\u{112F9}\u{11300}-\u{11303}\u{11305}-\u{1130C}\u{1130F}\u{11310}\u{11313}-\u{11328}\u{1132A}-\u{11330}\u{11332}\u{11333}\u{11335}-\u{11339}\u{1133B}-\u{11344}\u{11347}\u{11348}\u{1134B}-\u{1134D}\u{11350}\u{11357}\u{1135D}-\u{11363}\u{11366}-\u{1136C}\u{11370}-\u{11374}\u{11380}-\u{11389}\u{1138B}\u{1138E}\u{11390}-\u{113B5}\u{113B7}-\u{113C0}\u{113C2}\u{113C5}\u{113C7}-\u{113CA}\u{113CC}-\u{113D5}\u{113D7}\u{113D8}\u{113E1}\u{113E2}\u{11400}-\u{1145B}\u{1145D}-\u{11461}\u{11480}-\u{114C7}\u{114D0}-\u{114D9}\u{11580}-\u{115B5}\u{115B8}-\u{115DD}\u{11600}-\u{11644}\u{11650}-\u{11659}\u{11660}-\u{1166C}\u{11680}-\u{116B9}\u{116C0}-\u{116C9}\u{116D0}-\u{116E3}\u{11700}-\u{1171A}\u{1171D}-\u{1172B}\u{11730}-\u{11746}\u{11800}-\u{1183B}\u{118A0}-\u{118F2}\u{118FF}-\u{11906}\u{11909}\u{1190C}-\u{11913}\u{11915}\u{11916}\u{11918}-\u{11935}\u{11937}\u{11938}\u{1193B}-\u{11946}\u{11950}-\u{11959}\u{119A0}-\u{119A7}\u{119AA}-\u{119D7}\u{119DA}-\u{119E4}\u{11A00}-\u{11A47}\u{11A50}-\u{11AA2}\u{11AB0}-\u{11AF8}\u{11B00}-\u{11B09}\u{11B60}-\u{11B67}\u{11BC0}-\u{11BE1}\u{11BF0}-\u{11BF9}\u{11C00}-\u{11C08}\u{11C0A}-\u{11C36}\u{11C38}-\u{11C45}\u{11C50}-\u{11C6C}\u{11C70}-\u{11C8F}\u{11C92}-\u{11CA7}\u{11CA9}-\u{11CB6}\u{11D00}-\u{11D06}\u{11D08}\u{11D09}\u{11D0B}-\u{11D36}\u{11D3A}\u{11D3C}\u{11D3D}\u{11D3F}-\u{11D47}\u{11D50}-\u{11D59}\u{11D60}-\u{11D65}\u{11D67}\u{11D68}\u{11D6A}-\u{11D8E}\u{11D90}\u{11D91}\u{11D93}-\u{11D98}\u{11DA0}-\u{11DA9}\u{11DB0}-\u{11DDB}\u{11DE0}-\u{11DE9}\u{11EE0}-\u{11EF8}\u{11F00}-\u{11F10}\u{11F12}-\u{11F3A}\u{11F3E}-\u{11F5A}\u{11FB0}\u{11FC0}-\u{11FF1}\u{11FFF}-\u{12399}\u{12400}-\u{1246E}\u{12470}-\u{12474}\u{12480}-\u{12543}\u{12F90}-\u{12FF2}\u{13000}-\u{1342F}\u{13440}-\u{13455}\u{13460}-\u{143FA}\u{14400}-\u{14646}\u{16100}-\u{16139}\u{16800}-\u{16A38}\u{16A40}-\u{16A5E}\u{16A60}-\u{16A69}\u{16A6E}-\u{16ABE}\u{16AC0}-\u{16AC9}\u{16AD0}-\u{16AED}\u{16AF0}-\u{16AF5}\u{16B00}-\u{16B45}\u{16B50}-\u{16B59}\u{16B5B}-\u{16B61}\u{16B63}-\u{16B77}\u{16B7D}-\u{16B8F}\u{16D40}-\u{16D79}\u{16E40}-\u{16E9A}\u{16EA0}-\u{16EB8}\u{16EBB}-\u{16ED3}\u{16F00}-\u{16F4A}\u{16F4F}-\u{16F87}\u{16F8F}-\u{16F9F}\u{16FE0}-\u{16FE4}\u{16FF0}-\u{16FF6}\u{17000}-\u{18CD5}\u{18CFF}-\u{18D1E}\u{18D80}-\u{18DF2}\u{1AFF0}-\u{1AFF3}\u{1AFF5}-\u{1AFFB}\u{1AFFD}\u{1AFFE}\u{1B000}-\u{1B122}\u{1B132}\u{1B150}-\u{1B152}\u{1B155}\u{1B164}-\u{1B167}\u{1B170}-\u{1B2FB}\u{1BC00}-\u{1BC6A}\u{1BC70}-\u{1BC7C}\u{1BC80}-\u{1BC88}\u{1BC90}-\u{1BC99}\u{1BC9C}-\u{1BC9F}\u{1CC00}-\u{1CCFC}\u{1CD00}-\u{1CEB3}\u{1CEBA}-\u{1CED0}\u{1CEE0}-\u{1CEF0}\u{1CF00}-\u{1CF2D}\u{1CF30}-\u{1CF46}\u{1CF50}-\u{1CFC3}\u{1D000}-\u{1D0F5}\u{1D100}-\u{1D126}\u{1D129}-\u{1D172}\u{1D17B}-\u{1D1EA}\u{1D200}-\u{1D245}\u{1D2C0}-\u{1D2D3}\u{1D2E0}-\u{1D2F3}\u{1D300}-\u{1D356}\u{1D360}-\u{1D378}\u{1D400}-\u{1D454}\u{1D456}-\u{1D49C}\u{1D49E}\u{1D49F}\u{1D4A2}\u{1D4A5}\u{1D4A6}\u{1D4A9}-\u{1D4AC}\u{1D4AE}-\u{1D4B9}\u{1D4BB}\u{1D4BD}-\u{1D4C3}\u{1D4C5}-\u{1D505}\u{1D507}-\u{1D50A}\u{1D50D}-\u{1D514}\u{1D516}-\u{1D51C}\u{1D51E}-\u{1D539}\u{1D53B}-\u{1D53E}\u{1D540}-\u{1D544}\u{1D546}\u{1D54A}-\u{1D550}\u{1D552}-\u{1D6A5}\u{1D6A8}-\u{1D7CB}\u{1D7CE}-\u{1DA8B}\u{1DA9B}-\u{1DA9F}\u{1DAA1}-\u{1DAAF}\u{1DF00}-\u{1DF1E}\u{1DF25}-\u{1DF2A}\u{1E000}-\u{1E006}\u{1E008}-\u{1E018}\u{1E01B}-\u{1E021}\u{1E023}\u{1E024}\u{1E026}-\u{1E02A}\u{1E030}-\u{1E06D}\u{1E08F}\u{1E100}-\u{1E12C}\u{1E130}-\u{1E13D}\u{1E140}-\u{1E149}\u{1E14E}\u{1E14F}\u{1E290}-\u{1E2AE}\u{1E2C0}-\u{1E2F9}\u{1E2FF}\u{1E4D0}-\u{1E4F9}\u{1E5D0}-\u{1E5FA}\u{1E5FF}\u{1E6C0}-\u{1E6DE}\u{1E6E0}-\u{1E6F5}\u{1E6FE}\u{1E6FF}\u{1E7E0}-\u{1E7E6}\u{1E7E8}-\u{1E7EB}\u{1E7ED}\u{1E7EE}\u{1E7F0}-\u{1E7FE}\u{1E800}-\u{1E8C4}\u{1E8C7}-\u{1E8D6}\u{1E900}-\u{1E94B}\u{1E950}-\u{1E959}\u{1E95E}\u{1E95F}\u{1EC71}-\u{1ECB4}\u{1ED01}-\u{1ED3D}\u{1EE00}-\u{1EE03}\u{1EE05}-\u{1EE1F}\u{1EE21}\u{1EE22}\u{1EE24}\u{1EE27}\u{1EE29}-\u{1EE32}\u{1EE34}-\u{1EE37}\u{1EE39}\u{1EE3B}\u{1EE42}\u{1EE47}\u{1EE49}\u{1EE4B}\u{1EE4D}-\u{1EE4F}\u{1EE51}\u{1EE52}\u{1EE54}\u{1EE57}\u{1EE59}\u{1EE5B}\u{1EE5D}\u{1EE5F}\u{1EE61}\u{1EE62}\u{1EE64}\u{1EE67}-\u{1EE6A}\u{1EE6C}-\u{1EE72}\u{1EE74}-\u{1EE77}\u{1EE79}-\u{1EE7C}\u{1EE7E}\u{1EE80}-\u{1EE89}\u{1EE8B}-\u{1EE9B}\u{1EEA1}-\u{1EEA3}\u{1EEA5}-\u{1EEA9}\u{1EEAB}-\u{1EEBB}\u{1EEF0}\u{1EEF1}\u{1F000}-\u{1F02B}\u{1F030}-\u{1F093}\u{1F0A0}-\u{1F0AE}\u{1F0B1}-\u{1F0BF}\u{1F0C1}-\u{1F0CF}\u{1F0D1}-\u{1F0F5}\u{1F100}-\u{1F1AD}\u{1F1E6}-\u{1F202}\u{1F210}-\u{1F23B}\u{1F240}-\u{1F248}\u{1F250}\u{1F251}\u{1F260}-\u{1F265}\u{1F300}-\u{1F6D8}\u{1F6DC}-\u{1F6EC}\u{1F6F0}-\u{1F6FC}\u{1F700}-\u{1F7D9}\u{1F7E0}-\u{1F7EB}\u{1F7F0}\u{1F800}-\u{1F80B}\u{1F810}-\u{1F847}\u{1F850}-\u{1F859}\u{1F860}-\u{1F887}\u{1F890}-\u{1F8AD}\u{1F8B0}-\u{1F8BB}\u{1F8C0}\u{1F8C1}\u{1F8D0}-\u{1F8D8}\u{1F900}-\u{1FA57}\u{1FA60}-\u{1FA6D}\u{1FA70}-\u{1FA7C}\u{1FA80}-\u{1FA8A}\u{1FA8E}-\u{1FAC6}\u{1FAC8}\u{1FACD}-\u{1FADC}\u{1FADF}-\u{1FAEA}\u{1FAEF}-\u{1FAF8}\u{1FB00}-\u{1FB92}\u{1FB94}-\u{1FBFA}\u{20000}-\u{2A6DF}\u{2A700}-\u{2B81D}\u{2B820}-\u{2CEAD}\u{2CEB0}-\u{2EBE0}\u{2EBF0}-\u{2EE5D}\u{2F800}-\u{2FA1D}\u{30000}-\u{3134A}\u{31350}-\u{33479}\u{E0100}-\u{E01EF}]/u.test(event_0.key);
     if ((isIMEInput || isCharacterInput) && event_0.bounds !== void 0 && isReadWriteCell(getCellContent([col_1 - rowMarkerOffset, Math.max(0, Math.min(row_0, rows - 1))]))) {
       if ((!showTrailingBlankRow || row_0 !== rows) && (vr.y > row_0 || row_0 > vr.y + vr.height || vr.x > col_1 || col_1 > vr.x + vr.width)) {
         return;
@@ -17035,23 +16008,23 @@ function useKeyboardHandlers(args) {
   };
 }
 function useCellsForSelection(getCellsForSelectionIn, getCellContent, rowMarkerOffset, abortController, rows) {
-  const $ = compilerRuntimeExports.c(12);
+  const $2 = compilerRuntimeExports.c(12);
   let t0;
-  if ($[0] !== abortController.signal || $[1] !== getCellContent || $[2] !== getCellsForSelectionIn || $[3] !== rows) {
+  if ($2[0] !== abortController.signal || $2[1] !== getCellContent || $2[2] !== getCellsForSelectionIn || $2[3] !== rows) {
     t0 = (rect) => {
       var _getCellsForSelection;
       if (getCellsForSelectionIn === true) {
         const result = [];
-        for (let y = rect.y; y < rect.y + rect.height; y++) {
+        for (let y2 = rect.y; y2 < rect.y + rect.height; y2++) {
           const row = [];
-          for (let x = rect.x; x < rect.x + rect.width; x++) {
-            if (x < 0 || y >= rows) {
+          for (let x2 = rect.x; x2 < rect.x + rect.width; x2++) {
+            if (x2 < 0 || y2 >= rows) {
               row.push({
                 kind: GridCellKind.Loading,
                 allowOverlay: false
               });
             } else {
-              row.push(getCellContent([x, y]));
+              row.push(getCellContent([x2, y2]));
             }
           }
           result.push(row);
@@ -17060,18 +16033,18 @@ function useCellsForSelection(getCellsForSelectionIn, getCellContent, rowMarkerO
       }
       return (_getCellsForSelection = getCellsForSelectionIn === null || getCellsForSelectionIn === void 0 ? void 0 : getCellsForSelectionIn(rect, abortController.signal)) !== null && _getCellsForSelection !== void 0 ? _getCellsForSelection : [];
     };
-    $[0] = abortController.signal;
-    $[1] = getCellContent;
-    $[2] = getCellsForSelectionIn;
-    $[3] = rows;
-    $[4] = t0;
+    $2[0] = abortController.signal;
+    $2[1] = getCellContent;
+    $2[2] = getCellsForSelectionIn;
+    $2[3] = rows;
+    $2[4] = t0;
   } else {
-    t0 = $[4];
+    t0 = $2[4];
   }
   const getCellsForSelectionDirectWhenValid = t0;
   const getCellsForSelectionDirect = getCellsForSelectionIn !== void 0 ? getCellsForSelectionDirectWhenValid : void 0;
   let t1;
-  if ($[5] !== abortController.signal || $[6] !== getCellsForSelectionDirect || $[7] !== rowMarkerOffset) {
+  if ($2[5] !== abortController.signal || $2[6] !== getCellsForSelectionDirect || $2[7] !== rowMarkerOffset) {
     t1 = (rect_0) => {
       if (getCellsForSelectionDirect === void 0) {
         return [];
@@ -17091,23 +16064,23 @@ function useCellsForSelection(getCellsForSelectionIn, getCellContent, rowMarkerO
       }
       return getCellsForSelectionDirect(newRect, abortController.signal);
     };
-    $[5] = abortController.signal;
-    $[6] = getCellsForSelectionDirect;
-    $[7] = rowMarkerOffset;
-    $[8] = t1;
+    $2[5] = abortController.signal;
+    $2[6] = getCellsForSelectionDirect;
+    $2[7] = rowMarkerOffset;
+    $2[8] = t1;
   } else {
-    t1 = $[8];
+    t1 = $2[8];
   }
   const getCellsForSelectionMangled = t1;
   const getCellsForSelection = getCellsForSelectionIn !== void 0 ? getCellsForSelectionMangled : void 0;
   let t2;
-  if ($[9] !== getCellsForSelection || $[10] !== getCellsForSelectionDirect) {
+  if ($2[9] !== getCellsForSelection || $2[10] !== getCellsForSelectionDirect) {
     t2 = [getCellsForSelection, getCellsForSelectionDirect];
-    $[9] = getCellsForSelection;
-    $[10] = getCellsForSelectionDirect;
-    $[11] = t2;
+    $2[9] = getCellsForSelection;
+    $2[10] = getCellsForSelectionDirect;
+    $2[11] = t2;
   } else {
-    t2 = $[11];
+    t2 = $2[11];
   }
   return t2;
 }
@@ -17123,9 +16096,9 @@ function _temp$7(row_0) {
     allowOverlay: false
   }, ...row_0];
 }
-function toCss(x) {
-  if (typeof x === "string") return x;
-  return `${x}px`;
+function toCss(x2) {
+  if (typeof x2 === "string") return x2;
+  return `${x2}px`;
 }
 const _exp$1 = () => (p2) => p2.innerWidth;
 const _exp2 = () => (p2) => p2.innerHeight;
@@ -17139,80 +16112,80 @@ const Wrapper = /* @__PURE__ */ styled_default("div")({
   }
 });
 const DataEditorContainer = (p2) => {
-  const $ = compilerRuntimeExports.c(14);
+  const $2 = compilerRuntimeExports.c(14);
   let children;
   let inHeight;
   let inWidth;
   let rest;
-  if ($[0] !== p2) {
+  if ($2[0] !== p2) {
     ({
       inWidth,
       inHeight,
       children,
       ...rest
     } = p2);
-    $[0] = p2;
-    $[1] = children;
-    $[2] = inHeight;
-    $[3] = inWidth;
-    $[4] = rest;
+    $2[0] = p2;
+    $2[1] = children;
+    $2[2] = inHeight;
+    $2[3] = inWidth;
+    $2[4] = rest;
   } else {
-    children = $[1];
-    inHeight = $[2];
-    inWidth = $[3];
-    rest = $[4];
+    children = $2[1];
+    inHeight = $2[2];
+    inWidth = $2[3];
+    rest = $2[4];
   }
   let t0;
-  if ($[5] !== inHeight) {
+  if ($2[5] !== inHeight) {
     t0 = toCss(inHeight);
-    $[5] = inHeight;
-    $[6] = t0;
+    $2[5] = inHeight;
+    $2[6] = t0;
   } else {
-    t0 = $[6];
+    t0 = $2[6];
   }
   let t1;
-  if ($[7] !== inWidth) {
+  if ($2[7] !== inWidth) {
     t1 = toCss(inWidth);
-    $[7] = inWidth;
-    $[8] = t1;
+    $2[7] = inWidth;
+    $2[8] = t1;
   } else {
-    t1 = $[8];
+    t1 = $2[8];
   }
   let t2;
-  if ($[9] !== children || $[10] !== rest || $[11] !== t0 || $[12] !== t1) {
+  if ($2[9] !== children || $2[10] !== rest || $2[11] !== t0 || $2[12] !== t1) {
     t2 = /* @__PURE__ */ jsx(Wrapper, {
       innerHeight: t0,
       innerWidth: t1,
       ...rest,
       children
     });
-    $[9] = children;
-    $[10] = rest;
-    $[11] = t0;
-    $[12] = t1;
-    $[13] = t2;
+    $2[9] = children;
+    $2[10] = rest;
+    $2[11] = t0;
+    $2[12] = t1;
+    $2[13] = t2;
   } else {
-    t2 = $[13];
+    t2 = $2[13];
   }
   return t2;
 };
 const maxPxPerMs = 2;
 const msToFullSpeed = 1300;
 function useAutoscroll(scrollDirection, scrollRef, onScroll) {
-  const $ = compilerRuntimeExports.c(8);
+  const $2 = compilerRuntimeExports.c(8);
   const speedScalar = React__default.useRef(0);
   let t0;
-  if ($[0] !== scrollDirection) {
+  if ($2[0] !== scrollDirection) {
     t0 = scrollDirection !== null && scrollDirection !== void 0 ? scrollDirection : [0, 0];
-    $[0] = scrollDirection;
-    $[1] = t0;
+    $2[0] = scrollDirection;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   const [xDir, yDir] = t0;
   let t1;
   let t2;
-  if ($[2] !== onScroll || $[3] !== scrollRef || $[4] !== xDir || $[5] !== yDir) {
+  if ($2[2] !== onScroll || $2[3] !== scrollRef || $2[4] !== xDir || $2[5] !== yDir) {
     t1 = () => {
       if (xDir === 0 && yDir === 0) {
         speedScalar.current = 0;
@@ -17243,20 +16216,20 @@ function useAutoscroll(scrollDirection, scrollRef, onScroll) {
       };
     };
     t2 = [scrollRef, xDir, yDir, onScroll];
-    $[2] = onScroll;
-    $[3] = scrollRef;
-    $[4] = xDir;
-    $[5] = yDir;
-    $[6] = t1;
-    $[7] = t2;
+    $2[2] = onScroll;
+    $2[3] = scrollRef;
+    $2[4] = xDir;
+    $2[5] = yDir;
+    $2[6] = t1;
+    $2[7] = t2;
   } else {
-    t1 = $[6];
-    t2 = $[7];
+    t1 = $2[6];
+    t2 = $2[7];
   }
   React__default.useEffect(t1, t2);
 }
 function useClipboard(args) {
-  const $ = compilerRuntimeExports.c(41);
+  const $2 = compilerRuntimeExports.c(41);
   const {
     state,
     keybindings,
@@ -17285,7 +16258,7 @@ function useClipboard(args) {
     getCellRenderer
   } = state;
   let t0;
-  if ($[0] !== canvasRef || $[1] !== coercePasteValue || $[2] !== getCellRenderer || $[3] !== getMangledCellContent || $[4] !== ghostInputRef || $[5] !== gridRef || $[6] !== gridSelection || $[7] !== keybindings.paste || $[8] !== mangledCols.length || $[9] !== mangledOnCellsEdited || $[10] !== mangledRows || $[11] !== onPaste || $[12] !== rowMarkerOffset || $[13] !== rows || $[14] !== scrollRef) {
+  if ($2[0] !== canvasRef || $2[1] !== coercePasteValue || $2[2] !== getCellRenderer || $2[3] !== getMangledCellContent || $2[4] !== ghostInputRef || $2[5] !== gridRef || $2[6] !== gridSelection || $2[7] !== keybindings.paste || $2[8] !== mangledCols.length || $2[9] !== mangledOnCellsEdited || $2[10] !== mangledRows || $2[11] !== onPaste || $2[12] !== rowMarkerOffset || $2[13] !== rows || $2[14] !== scrollRef) {
     t0 = async (e) => {
       var _scrollRef$current, _canvasRef$current, _ghostInputRef$curren, _ghostInputRef$curren2;
       if (!keybindings.paste) {
@@ -17439,29 +16412,29 @@ function useClipboard(args) {
         (_gridRef$current = gridRef.current) === null || _gridRef$current === void 0 || _gridRef$current.damage(editList.map(_temp5$1));
       }
     };
-    $[0] = canvasRef;
-    $[1] = coercePasteValue;
-    $[2] = getCellRenderer;
-    $[3] = getMangledCellContent;
-    $[4] = ghostInputRef;
-    $[5] = gridRef;
-    $[6] = gridSelection;
-    $[7] = keybindings.paste;
-    $[8] = mangledCols.length;
-    $[9] = mangledOnCellsEdited;
-    $[10] = mangledRows;
-    $[11] = onPaste;
-    $[12] = rowMarkerOffset;
-    $[13] = rows;
-    $[14] = scrollRef;
-    $[15] = t0;
+    $2[0] = canvasRef;
+    $2[1] = coercePasteValue;
+    $2[2] = getCellRenderer;
+    $2[3] = getMangledCellContent;
+    $2[4] = ghostInputRef;
+    $2[5] = gridRef;
+    $2[6] = gridSelection;
+    $2[7] = keybindings.paste;
+    $2[8] = mangledCols.length;
+    $2[9] = mangledOnCellsEdited;
+    $2[10] = mangledRows;
+    $2[11] = onPaste;
+    $2[12] = rowMarkerOffset;
+    $2[13] = rows;
+    $2[14] = scrollRef;
+    $2[15] = t0;
   } else {
-    t0 = $[15];
+    t0 = $2[15];
   }
   const onPasteInternal = t0;
   useEventListener("paste", onPasteInternal, safeWindow, false, true);
   let t1;
-  if ($[16] !== abortControllerRef || $[17] !== canvasRef || $[18] !== columnsIn || $[19] !== copyHeaders || $[20] !== getCellsForSelection || $[21] !== ghostInputRef || $[22] !== gridSelection || $[23] !== keybindings.copy || $[24] !== rowMarkerOffset || $[25] !== rows || $[26] !== scrollRef) {
+  if ($2[16] !== abortControllerRef || $2[17] !== canvasRef || $2[18] !== columnsIn || $2[19] !== copyHeaders || $2[20] !== getCellsForSelection || $2[21] !== ghostInputRef || $2[22] !== gridSelection || $2[23] !== keybindings.copy || $2[24] !== rowMarkerOffset || $2[25] !== rows || $2[26] !== scrollRef) {
     t1 = async (e_0, ignoreFocus) => {
       var _scrollRef$current2, _canvasRef$current2, _ghostInputRef$curren3, _ghostInputRef$curren4;
       if (!keybindings.copy) {
@@ -17539,25 +16512,25 @@ function useClipboard(args) {
         }
       }
     };
-    $[16] = abortControllerRef;
-    $[17] = canvasRef;
-    $[18] = columnsIn;
-    $[19] = copyHeaders;
-    $[20] = getCellsForSelection;
-    $[21] = ghostInputRef;
-    $[22] = gridSelection;
-    $[23] = keybindings.copy;
-    $[24] = rowMarkerOffset;
-    $[25] = rows;
-    $[26] = scrollRef;
-    $[27] = t1;
+    $2[16] = abortControllerRef;
+    $2[17] = canvasRef;
+    $2[18] = columnsIn;
+    $2[19] = copyHeaders;
+    $2[20] = getCellsForSelection;
+    $2[21] = ghostInputRef;
+    $2[22] = gridSelection;
+    $2[23] = keybindings.copy;
+    $2[24] = rowMarkerOffset;
+    $2[25] = rows;
+    $2[26] = scrollRef;
+    $2[27] = t1;
   } else {
-    t1 = $[27];
+    t1 = $2[27];
   }
   const onCopy = t1;
   useEventListener("copy", onCopy, safeWindow, false, false);
   let t2;
-  if ($[28] !== canvasRef || $[29] !== deleteRange || $[30] !== ghostInputRef || $[31] !== gridSelection || $[32] !== keybindings.cut || $[33] !== onCopy || $[34] !== onDelete || $[35] !== scrollRef) {
+  if ($2[28] !== canvasRef || $2[29] !== deleteRange || $2[30] !== ghostInputRef || $2[31] !== gridSelection || $2[32] !== keybindings.cut || $2[33] !== onCopy || $2[34] !== onDelete || $2[35] !== scrollRef) {
     t2 = async (e_1) => {
       var _scrollRef$current3, _canvasRef$current3, _ghostInputRef$curren5, _ghostInputRef$curren6;
       if (!keybindings.cut) {
@@ -17589,41 +16562,41 @@ function useClipboard(args) {
         deleteRange(effectiveSelection.current.range);
       }
     };
-    $[28] = canvasRef;
-    $[29] = deleteRange;
-    $[30] = ghostInputRef;
-    $[31] = gridSelection;
-    $[32] = keybindings.cut;
-    $[33] = onCopy;
-    $[34] = onDelete;
-    $[35] = scrollRef;
-    $[36] = t2;
+    $2[28] = canvasRef;
+    $2[29] = deleteRange;
+    $2[30] = ghostInputRef;
+    $2[31] = gridSelection;
+    $2[32] = keybindings.cut;
+    $2[33] = onCopy;
+    $2[34] = onDelete;
+    $2[35] = scrollRef;
+    $2[36] = t2;
   } else {
-    t2 = $[36];
+    t2 = $2[36];
   }
   const onCut = t2;
   useEventListener("cut", onCut, safeWindow, false, false);
   let t3;
-  if ($[37] !== onCopy || $[38] !== onCut || $[39] !== onPasteInternal) {
+  if ($2[37] !== onCopy || $2[38] !== onCut || $2[39] !== onPasteInternal) {
     t3 = {
       onCopy,
       onCut,
       onPasteInternal
     };
-    $[37] = onCopy;
-    $[38] = onCut;
-    $[39] = onPasteInternal;
-    $[40] = t3;
+    $2[37] = onCopy;
+    $2[38] = onCut;
+    $2[39] = onPasteInternal;
+    $2[40] = t3;
   } else {
-    t3 = $[40];
+    t3 = $2[40];
   }
   return t3;
 }
 function _temp8$1(pv, cv) {
   return pv.map((row_0, index_1) => [...row_0, ...cv[index_1]]);
 }
-function _temp7$1(x) {
-  return x instanceof Promise;
+function _temp7$1(x2) {
+  return x2 instanceof Promise;
 }
 function _temp6$1(v2) {
   return v2[0];
@@ -17647,7 +16620,7 @@ function _temp$6(cb) {
   return cb.rawValue;
 }
 function useRemAdjuster(t0) {
-  const $ = compilerRuntimeExports.c(30);
+  const $2 = compilerRuntimeExports.c(30);
   const {
     rowHeight: rowHeightIn,
     headerHeight: headerHeightIn,
@@ -17663,17 +16636,17 @@ function useRemAdjuster(t0) {
     var _themeIn$headerIconSi, _themeIn$cellHorizont, _themeIn$cellVertical;
     if (!scaleToRem || remSize === 16) {
       let t23;
-      if ($[0] !== groupHeaderHeightIn || $[1] !== headerHeightIn || $[2] !== overscrollXIn || $[3] !== overscrollYIn || $[4] !== rowHeightIn || $[5] !== themeIn) {
+      if ($2[0] !== groupHeaderHeightIn || $2[1] !== headerHeightIn || $2[2] !== overscrollXIn || $2[3] !== overscrollYIn || $2[4] !== rowHeightIn || $2[5] !== themeIn) {
         t23 = [rowHeightIn, headerHeightIn, groupHeaderHeightIn, themeIn, overscrollXIn, overscrollYIn];
-        $[0] = groupHeaderHeightIn;
-        $[1] = headerHeightIn;
-        $[2] = overscrollXIn;
-        $[3] = overscrollYIn;
-        $[4] = rowHeightIn;
-        $[5] = themeIn;
-        $[6] = t23;
+        $2[0] = groupHeaderHeightIn;
+        $2[1] = headerHeightIn;
+        $2[2] = overscrollXIn;
+        $2[3] = overscrollYIn;
+        $2[4] = rowHeightIn;
+        $2[5] = themeIn;
+        $2[6] = t23;
       } else {
-        t23 = $[6];
+        t23 = $2[6];
       }
       t1 = t23;
       break bb0;
@@ -17681,21 +16654,21 @@ function useRemAdjuster(t0) {
     const scaler = remSize / 16;
     const rh = rowHeightIn;
     let t22;
-    if ($[7] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    if ($2[7] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
       t22 = getDataEditorTheme();
-      $[7] = t22;
+      $2[7] = t22;
     } else {
-      t22 = $[7];
+      t22 = $2[7];
     }
     const bt = t22;
     let t3;
-    if ($[8] !== rh || $[9] !== scaler) {
+    if ($2[8] !== rh || $2[9] !== scaler) {
       t3 = typeof rh === "number" ? rh * scaler : (n) => Math.ceil(rh(n) * scaler);
-      $[8] = rh;
-      $[9] = scaler;
-      $[10] = t3;
+      $2[8] = rh;
+      $2[9] = scaler;
+      $2[10] = t3;
     } else {
-      t3 = $[10];
+      t3 = $2[10];
     }
     const t4 = Math.ceil(headerHeightIn * scaler);
     const t5 = Math.ceil(groupHeaderHeightIn * scaler);
@@ -17703,41 +16676,41 @@ function useRemAdjuster(t0) {
     const t7 = ((_themeIn$cellHorizont = themeIn === null || themeIn === void 0 ? void 0 : themeIn.cellHorizontalPadding) !== null && _themeIn$cellHorizont !== void 0 ? _themeIn$cellHorizont : bt.cellHorizontalPadding) * scaler;
     const t8 = ((_themeIn$cellVertical = themeIn === null || themeIn === void 0 ? void 0 : themeIn.cellVerticalPadding) !== null && _themeIn$cellVertical !== void 0 ? _themeIn$cellVertical : bt.cellVerticalPadding) * scaler;
     let t9;
-    if ($[11] !== t6 || $[12] !== t7 || $[13] !== t8 || $[14] !== themeIn) {
+    if ($2[11] !== t6 || $2[12] !== t7 || $2[13] !== t8 || $2[14] !== themeIn) {
       t9 = {
         ...themeIn,
         headerIconSize: t6,
         cellHorizontalPadding: t7,
         cellVerticalPadding: t8
       };
-      $[11] = t6;
-      $[12] = t7;
-      $[13] = t8;
-      $[14] = themeIn;
-      $[15] = t9;
+      $2[11] = t6;
+      $2[12] = t7;
+      $2[13] = t8;
+      $2[14] = themeIn;
+      $2[15] = t9;
     } else {
-      t9 = $[15];
+      t9 = $2[15];
     }
     const t10 = Math.ceil((overscrollXIn !== null && overscrollXIn !== void 0 ? overscrollXIn : 0) * scaler);
     const t11 = Math.ceil((overscrollYIn !== null && overscrollYIn !== void 0 ? overscrollYIn : 0) * scaler);
     let t12;
-    if ($[16] !== t10 || $[17] !== t11 || $[18] !== t3 || $[19] !== t4 || $[20] !== t5 || $[21] !== t9) {
+    if ($2[16] !== t10 || $2[17] !== t11 || $2[18] !== t3 || $2[19] !== t4 || $2[20] !== t5 || $2[21] !== t9) {
       t12 = [t3, t4, t5, t9, t10, t11];
-      $[16] = t10;
-      $[17] = t11;
-      $[18] = t3;
-      $[19] = t4;
-      $[20] = t5;
-      $[21] = t9;
-      $[22] = t12;
+      $2[16] = t10;
+      $2[17] = t11;
+      $2[18] = t3;
+      $2[19] = t4;
+      $2[20] = t5;
+      $2[21] = t9;
+      $2[22] = t12;
     } else {
-      t12 = $[22];
+      t12 = $2[22];
     }
     t1 = t12;
   }
   const [rowHeight, headerHeight, groupHeaderHeight, theme, overscrollX, overscrollY] = t1;
   let t2;
-  if ($[23] !== groupHeaderHeight || $[24] !== headerHeight || $[25] !== overscrollX || $[26] !== overscrollY || $[27] !== rowHeight || $[28] !== theme) {
+  if ($2[23] !== groupHeaderHeight || $2[24] !== headerHeight || $2[25] !== overscrollX || $2[26] !== overscrollY || $2[27] !== rowHeight || $2[28] !== theme) {
     t2 = {
       rowHeight,
       headerHeight,
@@ -17746,15 +16719,15 @@ function useRemAdjuster(t0) {
       overscrollX,
       overscrollY
     };
-    $[23] = groupHeaderHeight;
-    $[24] = headerHeight;
-    $[25] = overscrollX;
-    $[26] = overscrollY;
-    $[27] = rowHeight;
-    $[28] = theme;
-    $[29] = t2;
+    $2[23] = groupHeaderHeight;
+    $2[24] = headerHeight;
+    $2[25] = overscrollX;
+    $2[26] = overscrollY;
+    $2[27] = rowHeight;
+    $2[28] = theme;
+    $2[29] = t2;
   } else {
-    t2 = $[29];
+    t2 = $2[29];
   }
   return t2;
 }
@@ -17859,18 +16832,18 @@ function realizeKeybinds(keybinds) {
   };
 }
 function useKeybindingsWithDefaults(keybindingsIn) {
-  const $ = compilerRuntimeExports.c(9);
+  const $2 = compilerRuntimeExports.c(9);
   const keys = useDeepMemo(keybindingsIn);
   let t0;
   bb0: {
     var _ref, _keys$goToNextPage, _ref2, _keys$goToPreviousPag, _ref3, _keys$goToFirstCell, _ref4, _keys$goToLastCell, _ref5, _keys$selectToFirstCe, _ref6, _keys$selectToLastCel;
     if (keys === void 0) {
       let t12;
-      if ($[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+      if ($2[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
         t12 = realizeKeybinds(keybindingDefaults);
-        $[0] = t12;
+        $2[0] = t12;
       } else {
-        t12 = $[0];
+        t12 = $2[0];
       }
       t0 = t12;
       break bb0;
@@ -17882,7 +16855,7 @@ function useKeybindingsWithDefaults(keybindingsIn) {
     const t5 = (_ref5 = (_keys$selectToFirstCe = keys === null || keys === void 0 ? void 0 : keys.selectToFirstCell) !== null && _keys$selectToFirstCe !== void 0 ? _keys$selectToFirstCe : keys === null || keys === void 0 ? void 0 : keys.first) !== null && _ref5 !== void 0 ? _ref5 : keybindingDefaults.selectToFirstCell;
     const t6 = (_ref6 = (_keys$selectToLastCel = keys === null || keys === void 0 ? void 0 : keys.selectToLastCell) !== null && _keys$selectToLastCel !== void 0 ? _keys$selectToLastCel : keys === null || keys === void 0 ? void 0 : keys.last) !== null && _ref6 !== void 0 ? _ref6 : keybindingDefaults.selectToLastCell;
     let t7;
-    if ($[1] !== keys || $[2] !== t1 || $[3] !== t2 || $[4] !== t3 || $[5] !== t4 || $[6] !== t5 || $[7] !== t6) {
+    if ($2[1] !== keys || $2[2] !== t1 || $2[3] !== t2 || $2[4] !== t3 || $2[5] !== t4 || $2[6] !== t5 || $2[7] !== t6) {
       const withBackCompatApplied = {
         ...keys,
         goToNextPage: t1,
@@ -17896,16 +16869,16 @@ function useKeybindingsWithDefaults(keybindingsIn) {
         ...keybindingDefaults,
         ...withBackCompatApplied
       });
-      $[1] = keys;
-      $[2] = t1;
-      $[3] = t2;
-      $[4] = t3;
-      $[5] = t4;
-      $[6] = t5;
-      $[7] = t6;
-      $[8] = t7;
+      $2[1] = keys;
+      $2[2] = t1;
+      $2[3] = t2;
+      $2[4] = t3;
+      $2[5] = t4;
+      $2[6] = t5;
+      $2[7] = t6;
+      $2[8] = t7;
     } else {
-      t7 = $[8];
+      t7 = $2[8];
     }
     t0 = t7;
   }
@@ -17928,7 +16901,7 @@ function expandRowGroups(groups) {
       path
     };
     if (group.subGroups !== void 0) {
-      expandedGroup.subGroups = group.subGroups.map((x, ind) => processGroup(x, depth + 1, [...path, ind])).sort((a, b2) => a.headerIndex - b2.headerIndex);
+      expandedGroup.subGroups = group.subGroups.map((x2, ind) => processGroup(x2, depth + 1, [...path, ind])).sort((a, b2) => a.headerIndex - b2.headerIndex);
     }
     return expandedGroup;
   }
@@ -17974,11 +16947,11 @@ function flattenRowGroups(rowGrouping, rows) {
     g.rowIndex = rowIndex;
     rowIndex += g.isCollapsed ? 1 : g.rows + 1;
   }
-  return flattened.filter((x) => x.skip === false).map((x) => {
+  return flattened.filter((x2) => x2.skip === false).map((x2) => {
     const {
       skip,
       ...rest
-    } = x;
+    } = x2;
     return rest;
   });
 }
@@ -18025,24 +16998,24 @@ function mapRowIndexToPath(row, flattenedRowGroups) {
   };
 }
 function useRowGroupingInner(options, rows, rowHeightIn, getRowThemeOverrideIn) {
-  const $ = compilerRuntimeExports.c(30);
+  const $2 = compilerRuntimeExports.c(30);
   let t0;
-  if ($[0] !== options || $[1] !== rows) {
+  if ($2[0] !== options || $2[1] !== rows) {
     t0 = options === void 0 ? void 0 : flattenRowGroups(options, rows);
-    $[0] = options;
-    $[1] = rows;
-    $[2] = t0;
+    $2[0] = options;
+    $2[1] = rows;
+    $2[2] = t0;
   } else {
-    t0 = $[2];
+    t0 = $2[2];
   }
   const flattenedRowGroups = t0;
   let t1;
-  if ($[3] !== flattenedRowGroups) {
+  if ($2[3] !== flattenedRowGroups) {
     t1 = flattenedRowGroups === null || flattenedRowGroups === void 0 ? void 0 : flattenedRowGroups.reduce(_temp$5, {});
-    $[3] = flattenedRowGroups;
-    $[4] = t1;
+    $2[3] = flattenedRowGroups;
+    $2[4] = t1;
   } else {
-    t1 = $[4];
+    t1 = $2[4];
   }
   const flattenedRowGroupsMap = t1;
   let t2;
@@ -18052,12 +17025,12 @@ function useRowGroupingInner(options, rows, rowHeightIn, getRowThemeOverrideIn) 
       break bb0;
     }
     let t32;
-    if ($[5] !== flattenedRowGroups) {
+    if ($2[5] !== flattenedRowGroups) {
       t32 = flattenedRowGroups.reduce(_temp2$3, 0);
-      $[5] = flattenedRowGroups;
-      $[6] = t32;
+      $2[5] = flattenedRowGroups;
+      $2[6] = t32;
     } else {
-      t32 = $[6];
+      t32 = $2[6];
     }
     t2 = t32;
   }
@@ -18073,25 +17046,25 @@ function useRowGroupingInner(options, rows, rowHeightIn, getRowThemeOverrideIn) 
       break bb1;
     }
     let t42;
-    if ($[7] !== flattenedRowGroupsMap || $[8] !== options || $[9] !== rowHeightIn) {
+    if ($2[7] !== flattenedRowGroupsMap || $2[8] !== options || $2[9] !== rowHeightIn) {
       t42 = (rowIndex) => {
         if (flattenedRowGroupsMap !== null && flattenedRowGroupsMap !== void 0 && flattenedRowGroupsMap[rowIndex]) {
           return options.height;
         }
         return typeof rowHeightIn === "number" ? rowHeightIn : rowHeightIn(rowIndex);
       };
-      $[7] = flattenedRowGroupsMap;
-      $[8] = options;
-      $[9] = rowHeightIn;
-      $[10] = t42;
+      $2[7] = flattenedRowGroupsMap;
+      $2[8] = options;
+      $2[9] = rowHeightIn;
+      $2[10] = t42;
     } else {
-      t42 = $[10];
+      t42 = $2[10];
     }
     t3 = t42;
   }
   const rowHeight = t3;
   let t4;
-  if ($[11] !== flattenedRowGroups) {
+  if ($2[11] !== flattenedRowGroups) {
     t4 = (row) => {
       if (flattenedRowGroups === void 0) {
         return row;
@@ -18111,15 +17084,15 @@ function useRowGroupingInner(options, rows, rowHeightIn, getRowThemeOverrideIn) 
       }
       return row;
     };
-    $[11] = flattenedRowGroups;
-    $[12] = t4;
+    $2[11] = flattenedRowGroups;
+    $2[12] = t4;
   } else {
-    t4 = $[12];
+    t4 = $2[12];
   }
   const rowNumberMapperOut = t4;
   const t5 = getRowThemeOverrideIn !== null && getRowThemeOverrideIn !== void 0 ? getRowThemeOverrideIn : options === null || options === void 0 ? void 0 : options.themeOverride;
   let t6;
-  if ($[13] !== flattenedRowGroups || $[14] !== getRowThemeOverrideIn || $[15] !== options) {
+  if ($2[13] !== flattenedRowGroups || $2[14] !== getRowThemeOverrideIn || $2[15] !== options) {
     t6 = (row_0) => {
       if (options === void 0) {
         return getRowThemeOverrideIn === null || getRowThemeOverrideIn === void 0 ? void 0 : getRowThemeOverrideIn(row_0, row_0, row_0);
@@ -18137,58 +17110,58 @@ function useRowGroupingInner(options, rows, rowHeightIn, getRowThemeOverrideIn) 
       }
       return getRowThemeOverrideIn === null || getRowThemeOverrideIn === void 0 ? void 0 : getRowThemeOverrideIn(row_0, groupIndex, contentIndex);
     };
-    $[13] = flattenedRowGroups;
-    $[14] = getRowThemeOverrideIn;
-    $[15] = options;
-    $[16] = t6;
+    $2[13] = flattenedRowGroups;
+    $2[14] = getRowThemeOverrideIn;
+    $2[15] = options;
+    $2[16] = t6;
   } else {
-    t6 = $[16];
+    t6 = $2[16];
   }
   const t7 = t6;
   let t8;
-  if ($[17] !== t5 || $[18] !== t7) {
+  if ($2[17] !== t5 || $2[18] !== t7) {
     t8 = whenDefined(t5, t7);
-    $[17] = t5;
-    $[18] = t7;
-    $[19] = t8;
+    $2[17] = t5;
+    $2[18] = t7;
+    $2[19] = t8;
   } else {
-    t8 = $[19];
+    t8 = $2[19];
   }
   const getRowThemeOverride = t8;
   if (options === void 0) {
     let t92;
-    if ($[20] !== getRowThemeOverride || $[21] !== rowHeight || $[22] !== rowNumberMapperOut || $[23] !== rows) {
+    if ($2[20] !== getRowThemeOverride || $2[21] !== rowHeight || $2[22] !== rowNumberMapperOut || $2[23] !== rows) {
       t92 = {
         rowHeight,
         rows,
         rowNumberMapper: rowNumberMapperOut,
         getRowThemeOverride
       };
-      $[20] = getRowThemeOverride;
-      $[21] = rowHeight;
-      $[22] = rowNumberMapperOut;
-      $[23] = rows;
-      $[24] = t92;
+      $2[20] = getRowThemeOverride;
+      $2[21] = rowHeight;
+      $2[22] = rowNumberMapperOut;
+      $2[23] = rows;
+      $2[24] = t92;
     } else {
-      t92 = $[24];
+      t92 = $2[24];
     }
     return t92;
   }
   let t9;
-  if ($[25] !== effectiveRows || $[26] !== getRowThemeOverride || $[27] !== rowHeight || $[28] !== rowNumberMapperOut) {
+  if ($2[25] !== effectiveRows || $2[26] !== getRowThemeOverride || $2[27] !== rowHeight || $2[28] !== rowNumberMapperOut) {
     t9 = {
       rowHeight,
       rows: effectiveRows,
       rowNumberMapper: rowNumberMapperOut,
       getRowThemeOverride
     };
-    $[25] = effectiveRows;
-    $[26] = getRowThemeOverride;
-    $[27] = rowHeight;
-    $[28] = rowNumberMapperOut;
-    $[29] = t9;
+    $2[25] = effectiveRows;
+    $2[26] = getRowThemeOverride;
+    $2[27] = rowHeight;
+    $2[28] = rowNumberMapperOut;
+    $2[29] = t9;
   } else {
-    t9 = $[29];
+    t9 = $2[29];
   }
   return t9;
 }
@@ -18200,19 +17173,19 @@ function _temp$5(acc, group) {
   return acc;
 }
 function useRowGrouping(options, rows) {
-  const $ = compilerRuntimeExports.c(7);
+  const $2 = compilerRuntimeExports.c(7);
   let t0;
-  if ($[0] !== options || $[1] !== rows) {
+  if ($2[0] !== options || $2[1] !== rows) {
     t0 = options === void 0 ? void 0 : flattenRowGroups(options, rows);
-    $[0] = options;
-    $[1] = rows;
-    $[2] = t0;
+    $2[0] = options;
+    $2[1] = rows;
+    $2[2] = t0;
   } else {
-    t0 = $[2];
+    t0 = $2[2];
   }
   const flattenedRowGroups = t0;
   let t1;
-  if ($[3] !== flattenedRowGroups) {
+  if ($2[3] !== flattenedRowGroups) {
     t1 = (itemOrRow) => {
       if (typeof itemOrRow === "number") {
         return mapRowIndexToPath(itemOrRow, flattenedRowGroups);
@@ -18223,23 +17196,23 @@ function useRowGrouping(options, rows) {
         originalIndex: [itemOrRow[0], r.originalIndex]
       };
     };
-    $[3] = flattenedRowGroups;
-    $[4] = t1;
+    $2[3] = flattenedRowGroups;
+    $2[4] = t1;
   } else {
-    t1 = $[4];
+    t1 = $2[4];
   }
   const t2 = t1;
   let t3;
-  if ($[5] !== t2) {
+  if ($2[5] !== t2) {
     t3 = {
       getRowGroupingForPath,
       updateRowGroupingByPath,
       mapper: t2
     };
-    $[5] = t2;
-    $[6] = t3;
+    $2[5] = t2;
+    $2[6] = t3;
   } else {
-    t3 = $[6];
+    t3 = $2[6];
   }
   return t3;
 }
@@ -18357,7 +17330,7 @@ const GhostInputBox = /* @__PURE__ */ styled_default("textarea")({
   propsAsIs: false
 });
 const GhostInputImpl = (props, ref) => {
-  const $ = compilerRuntimeExports.c(23);
+  const $2 = compilerRuntimeExports.c(23);
   const {
     onInput,
     onCompositionStart,
@@ -18372,18 +17345,18 @@ const GhostInputImpl = (props, ref) => {
   const textareaRef = React.useRef(null);
   const isComposingRef = React.useRef(false);
   let t1;
-  if ($[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t1 = {
       width: 0,
       height: 0
     };
-    $[0] = t1;
+    $2[0] = t1;
   } else {
-    t1 = $[0];
+    t1 = $2[0];
   }
   const minDimensionsRef = React.useRef(t1);
   let t2;
-  if ($[1] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[1] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t2 = () => {
       const el = textareaRef.current;
       if (!el || el.style.opacity === "0") {
@@ -18398,13 +17371,13 @@ const GhostInputImpl = (props, ref) => {
       el.style.width = `${newWidth}px`;
       el.style.height = `${newHeight}px`;
     };
-    $[1] = t2;
+    $2[1] = t2;
   } else {
-    t2 = $[1];
+    t2 = $2[1];
   }
   const autoResize = t2;
   let t3;
-  if ($[2] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[2] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t3 = () => ({
       focus: () => {
         var _textareaRef$current;
@@ -18433,15 +17406,15 @@ const GhostInputImpl = (props, ref) => {
           textareaRef.current.setSelectionRange(len, len);
         }
       },
-      setPosition: (x, y, width, height) => {
+      setPosition: (x2, y2, width, height) => {
         const el_0 = textareaRef.current;
         if (el_0) {
           minDimensionsRef.current = {
             width,
             height
           };
-          el_0.style.left = `${x}px`;
-          el_0.style.top = `${y}px`;
+          el_0.style.left = `${x2}px`;
+          el_0.style.top = `${y2}px`;
           el_0.style.width = `${width}px`;
           el_0.style.height = `${height}px`;
         }
@@ -18466,13 +17439,13 @@ const GhostInputImpl = (props, ref) => {
         }
       }
     });
-    $[2] = t3;
+    $2[2] = t3;
   } else {
-    t3 = $[2];
+    t3 = $2[2];
   }
   React.useImperativeHandle(ref, t3);
   let t4;
-  if ($[3] !== onInput) {
+  if ($2[3] !== onInput) {
     t4 = (e) => {
       const inputType = e.nativeEvent.inputType;
       if (inputType === "insertFromPaste" || inputType === "insertFromDrop") {
@@ -18483,80 +17456,80 @@ const GhostInputImpl = (props, ref) => {
       onInput(target.value, isComposingRef.current);
       autoResize();
     };
-    $[3] = onInput;
-    $[4] = t4;
+    $2[3] = onInput;
+    $2[4] = t4;
   } else {
-    t4 = $[4];
+    t4 = $2[4];
   }
   const handleInput = t4;
   let t5;
-  if ($[5] !== onCompositionStart) {
+  if ($2[5] !== onCompositionStart) {
     t5 = () => {
       isComposingRef.current = true;
       onCompositionStart();
     };
-    $[5] = onCompositionStart;
-    $[6] = t5;
+    $2[5] = onCompositionStart;
+    $2[6] = t5;
   } else {
-    t5 = $[6];
+    t5 = $2[6];
   }
   const handleCompositionStart = t5;
   let t6;
-  if ($[7] !== onCompositionEnd) {
+  if ($2[7] !== onCompositionEnd) {
     t6 = (e_0) => {
       isComposingRef.current = false;
       onCompositionEnd(e_0.currentTarget.value);
     };
-    $[7] = onCompositionEnd;
-    $[8] = t6;
+    $2[7] = onCompositionEnd;
+    $2[8] = t6;
   } else {
-    t6 = $[8];
+    t6 = $2[8];
   }
   const handleCompositionEnd = t6;
   let t7;
-  if ($[9] !== onKeyDown) {
+  if ($2[9] !== onKeyDown) {
     t7 = (e_1) => {
       onKeyDown(e_1);
     };
-    $[9] = onKeyDown;
-    $[10] = t7;
+    $2[9] = onKeyDown;
+    $2[10] = t7;
   } else {
-    t7 = $[10];
+    t7 = $2[10];
   }
   const handleKeyDown = t7;
   let t8;
-  if ($[11] !== onKeyUp) {
+  if ($2[11] !== onKeyUp) {
     t8 = (e_2) => {
       onKeyUp === null || onKeyUp === void 0 || onKeyUp(e_2);
     };
-    $[11] = onKeyUp;
-    $[12] = t8;
+    $2[11] = onKeyUp;
+    $2[12] = t8;
   } else {
-    t8 = $[12];
+    t8 = $2[12];
   }
   const handleKeyUp = t8;
   const t9 = disabled ? -1 : 0;
   let t10;
-  if ($[13] !== disabled || $[14] !== handleCompositionEnd || $[15] !== handleCompositionStart || $[16] !== handleInput || $[17] !== handleKeyDown || $[18] !== handleKeyUp || $[19] !== onBlur || $[20] !== onFocus || $[21] !== t9) {
+  if ($2[13] !== disabled || $2[14] !== handleCompositionEnd || $2[15] !== handleCompositionStart || $2[16] !== handleInput || $2[17] !== handleKeyDown || $2[18] !== handleKeyUp || $2[19] !== onBlur || $2[20] !== onFocus || $2[21] !== t9) {
     t10 = /* @__PURE__ */ jsx(GhostInputBox, { ref: textareaRef, defaultValue: "", tabIndex: t9, disabled, onInput: handleInput, onCompositionStart: handleCompositionStart, onCompositionEnd: handleCompositionEnd, onKeyDown: handleKeyDown, onKeyUp: handleKeyUp, onFocus, onBlur, "aria-label": "Grid input", wrap: "off", rows: 1, autoComplete: "off", autoCorrect: "off", autoCapitalize: "off", spellCheck: false });
-    $[13] = disabled;
-    $[14] = handleCompositionEnd;
-    $[15] = handleCompositionStart;
-    $[16] = handleInput;
-    $[17] = handleKeyDown;
-    $[18] = handleKeyUp;
-    $[19] = onBlur;
-    $[20] = onFocus;
-    $[21] = t9;
-    $[22] = t10;
+    $2[13] = disabled;
+    $2[14] = handleCompositionEnd;
+    $2[15] = handleCompositionStart;
+    $2[16] = handleInput;
+    $2[17] = handleKeyDown;
+    $2[18] = handleKeyUp;
+    $2[19] = onBlur;
+    $2[20] = onFocus;
+    $2[21] = t9;
+    $2[22] = t10;
   } else {
-    t10 = $[22];
+    t10 = $2[22];
   }
   return t10;
 };
 const GhostInput = React.memo(React.forwardRef(GhostInputImpl));
 function useGhostInput(args) {
-  const $ = compilerRuntimeExports.c(41);
+  const $2 = compilerRuntimeExports.c(41);
   const {
     state,
     onKeyDown,
@@ -18576,7 +17549,7 @@ function useGhostInput(args) {
     reselect
   } = state;
   let t0;
-  if ($[0] !== getMangledCellContent || $[1] !== gridRef || $[2] !== gridSelection || $[3] !== onCellActivated || $[4] !== overlayRef || $[5] !== reselect || $[6] !== rowMarkerOffset) {
+  if ($2[0] !== getMangledCellContent || $2[1] !== gridRef || $2[2] !== gridSelection || $2[3] !== onCellActivated || $2[4] !== overlayRef || $2[5] !== reselect || $2[6] !== rowMarkerOffset) {
     t0 = (value, composing) => {
       if (overlayRef.current !== void 0) {
         return;
@@ -18605,20 +17578,20 @@ function useGhostInput(args) {
         }
       }
     };
-    $[0] = getMangledCellContent;
-    $[1] = gridRef;
-    $[2] = gridSelection;
-    $[3] = onCellActivated;
-    $[4] = overlayRef;
-    $[5] = reselect;
-    $[6] = rowMarkerOffset;
-    $[7] = t0;
+    $2[0] = getMangledCellContent;
+    $2[1] = gridRef;
+    $2[2] = gridSelection;
+    $2[3] = onCellActivated;
+    $2[4] = overlayRef;
+    $2[5] = reselect;
+    $2[6] = rowMarkerOffset;
+    $2[7] = t0;
   } else {
-    t0 = $[7];
+    t0 = $2[7];
   }
   const onGhostInput = t0;
   let t1;
-  if ($[8] !== getMangledCellContent || $[9] !== ghostInputRef || $[10] !== gridRef || $[11] !== gridSelection || $[12] !== onCellActivated || $[13] !== overlayRef || $[14] !== reselect || $[15] !== rowMarkerOffset || $[16] !== state) {
+  if ($2[8] !== getMangledCellContent || $2[9] !== ghostInputRef || $2[10] !== gridRef || $2[11] !== gridSelection || $2[12] !== onCellActivated || $2[13] !== overlayRef || $2[14] !== reselect || $2[15] !== rowMarkerOffset || $2[16] !== state) {
     t1 = () => {
       var _overlayRef$current;
       if (gridSelection.current === void 0) {
@@ -18659,23 +17632,23 @@ function useGhostInput(args) {
         }
       }
     };
-    $[8] = getMangledCellContent;
-    $[9] = ghostInputRef;
-    $[10] = gridRef;
-    $[11] = gridSelection;
-    $[12] = onCellActivated;
-    $[13] = overlayRef;
-    $[14] = reselect;
-    $[15] = rowMarkerOffset;
-    $[16] = state;
-    $[17] = t1;
+    $2[8] = getMangledCellContent;
+    $2[9] = ghostInputRef;
+    $2[10] = gridRef;
+    $2[11] = gridSelection;
+    $2[12] = onCellActivated;
+    $2[13] = overlayRef;
+    $2[14] = reselect;
+    $2[15] = rowMarkerOffset;
+    $2[16] = state;
+    $2[17] = t1;
   } else {
-    t1 = $[17];
+    t1 = $2[17];
   }
   const onGhostCompositionStart = t1;
   const onGhostCompositionEnd = _temp$4;
   let t2;
-  if ($[18] !== getMangledCellContent || $[19] !== ghostInputVisibleRef || $[20] !== gridRef || $[21] !== gridSelection || $[22] !== onFinishEditing || $[23] !== onKeyDown || $[24] !== overlayRef) {
+  if ($2[18] !== getMangledCellContent || $2[19] !== ghostInputVisibleRef || $2[20] !== gridRef || $2[21] !== gridSelection || $2[22] !== onFinishEditing || $2[23] !== onKeyDown || $2[24] !== overlayRef) {
     t2 = (event) => {
       var _gridSelection$curren, _gridRef$current3;
       if (event.nativeEvent.isComposing) {
@@ -18757,20 +17730,20 @@ function useGhostInput(args) {
         event.stopPropagation();
       }
     };
-    $[18] = getMangledCellContent;
-    $[19] = ghostInputVisibleRef;
-    $[20] = gridRef;
-    $[21] = gridSelection;
-    $[22] = onFinishEditing;
-    $[23] = onKeyDown;
-    $[24] = overlayRef;
-    $[25] = t2;
+    $2[18] = getMangledCellContent;
+    $2[19] = ghostInputVisibleRef;
+    $2[20] = gridRef;
+    $2[21] = gridSelection;
+    $2[22] = onFinishEditing;
+    $2[23] = onKeyDown;
+    $2[24] = overlayRef;
+    $2[25] = t2;
   } else {
-    t2 = $[25];
+    t2 = $2[25];
   }
   const onGhostKeyDown = t2;
   let t3;
-  if ($[26] !== gridRef || $[27] !== gridSelection || $[28] !== onKeyUpIn) {
+  if ($2[26] !== gridRef || $2[27] !== gridSelection || $2[28] !== onKeyUpIn) {
     t3 = (event_0) => {
       var _gridSelection$curren2, _gridRef$current4;
       const cell_3 = (_gridSelection$curren2 = gridSelection.current) === null || _gridSelection$curren2 === void 0 ? void 0 : _gridSelection$curren2.cell;
@@ -18791,38 +17764,38 @@ function useGhostInput(args) {
       };
       onKeyUpIn === null || onKeyUpIn === void 0 || onKeyUpIn(gridArgs_0);
     };
-    $[26] = gridRef;
-    $[27] = gridSelection;
-    $[28] = onKeyUpIn;
-    $[29] = t3;
+    $2[26] = gridRef;
+    $2[27] = gridSelection;
+    $2[28] = onKeyUpIn;
+    $2[29] = t3;
   } else {
-    t3 = $[29];
+    t3 = $2[29];
   }
   const onGhostKeyUp = t3;
   let t4;
-  if ($[30] !== setIsFocused) {
+  if ($2[30] !== setIsFocused) {
     t4 = () => {
       setIsFocused(true);
     };
-    $[30] = setIsFocused;
-    $[31] = t4;
+    $2[30] = setIsFocused;
+    $2[31] = t4;
   } else {
-    t4 = $[31];
+    t4 = $2[31];
   }
   const onGhostFocus = t4;
   let t5;
-  if ($[32] !== setIsFocused) {
+  if ($2[32] !== setIsFocused) {
     t5 = () => {
       setIsFocused(false);
     };
-    $[32] = setIsFocused;
-    $[33] = t5;
+    $2[32] = setIsFocused;
+    $2[33] = t5;
   } else {
-    t5 = $[33];
+    t5 = $2[33];
   }
   const onGhostBlur = t5;
   let t6;
-  if ($[34] !== onGhostBlur || $[35] !== onGhostCompositionStart || $[36] !== onGhostFocus || $[37] !== onGhostInput || $[38] !== onGhostKeyDown || $[39] !== onGhostKeyUp) {
+  if ($2[34] !== onGhostBlur || $2[35] !== onGhostCompositionStart || $2[36] !== onGhostFocus || $2[37] !== onGhostInput || $2[38] !== onGhostKeyDown || $2[39] !== onGhostKeyUp) {
     t6 = {
       onGhostInput,
       onGhostCompositionStart,
@@ -18832,15 +17805,15 @@ function useGhostInput(args) {
       onGhostFocus,
       onGhostBlur
     };
-    $[34] = onGhostBlur;
-    $[35] = onGhostCompositionStart;
-    $[36] = onGhostFocus;
-    $[37] = onGhostInput;
-    $[38] = onGhostKeyDown;
-    $[39] = onGhostKeyUp;
-    $[40] = t6;
+    $2[34] = onGhostBlur;
+    $2[35] = onGhostCompositionStart;
+    $2[36] = onGhostFocus;
+    $2[37] = onGhostInput;
+    $2[38] = onGhostKeyDown;
+    $2[39] = onGhostKeyUp;
+    $2[40] = t6;
   } else {
-    t6 = $[40];
+    t6 = $2[40];
   }
   return t6;
 }
@@ -19021,11 +17994,11 @@ function useMouseHandlers(args) {
     if (typeof cells_0 !== "object") cells_0 = await cells_0();
     const pattern = cells_0;
     const editItemList = [];
-    for (let x = 0; x < currentRange.width; x++) {
-      for (let y = 0; y < currentRange.height; y++) {
-        const cell = [currentRange.x + x, currentRange.y + y];
+    for (let x2 = 0; x2 < currentRange.width; x2++) {
+      for (let y2 = 0; y2 < currentRange.height; y2++) {
+        const cell = [currentRange.x + x2, currentRange.y + y2];
         if (itemIsInRect(cell, patternRange)) continue;
-        const patternCell = pattern[y % patternRange.height][x % patternRange.width];
+        const patternCell = pattern[y2 % patternRange.height][x2 % patternRange.width];
         if (isInnerOnlyCell(patternCell) || !isReadWriteCell(patternCell)) continue;
         editItemList.push({
           location: cell,
@@ -19279,10 +18252,10 @@ function useMouseHandlers(args) {
   };
 }
 function useOverlayEditor(mangledCols, mangledGetGroupDetails, getRowThemeOverride, mergedTheme) {
-  const $ = compilerRuntimeExports.c(8);
+  const $2 = compilerRuntimeExports.c(8);
   const [overlay, setOverlay] = React.useState();
   let t0;
-  if ($[0] !== getRowThemeOverride || $[1] !== mangledCols || $[2] !== mangledGetGroupDetails || $[3] !== mergedTheme) {
+  if ($2[0] !== getRowThemeOverride || $2[1] !== mangledCols || $2[2] !== mangledGetGroupDetails || $2[3] !== mergedTheme) {
     t0 = (val) => {
       var _mangledGetGroupDetai;
       const [col, row] = val.cell;
@@ -19295,32 +18268,32 @@ function useOverlayEditor(mangledCols, mangledGetGroupDetails, getRowThemeOverri
         theme: mergeAndRealizeTheme(mergedTheme, groupTheme, colTheme, rowTheme, val.content.themeOverride)
       });
     };
-    $[0] = getRowThemeOverride;
-    $[1] = mangledCols;
-    $[2] = mangledGetGroupDetails;
-    $[3] = mergedTheme;
-    $[4] = t0;
+    $2[0] = getRowThemeOverride;
+    $2[1] = mangledCols;
+    $2[2] = mangledGetGroupDetails;
+    $2[3] = mergedTheme;
+    $2[4] = t0;
   } else {
-    t0 = $[4];
+    t0 = $2[4];
   }
   const setOverlaySimple = t0;
   let t1;
-  if ($[5] !== overlay || $[6] !== setOverlaySimple) {
+  if ($2[5] !== overlay || $2[6] !== setOverlaySimple) {
     t1 = {
       overlay,
       setOverlay,
       setOverlaySimple
     };
-    $[5] = overlay;
-    $[6] = setOverlaySimple;
-    $[7] = t1;
+    $2[5] = overlay;
+    $2[6] = setOverlaySimple;
+    $2[7] = t1;
   } else {
-    t1 = $[7];
+    t1 = $2[7];
   }
   return t1;
 }
 function useDataEditorRef(forwardedRef, props) {
-  const $ = compilerRuntimeExports.c(13);
+  const $2 = compilerRuntimeExports.c(13);
   const {
     appendRowRef,
     appendColumnRef,
@@ -19336,15 +18309,15 @@ function useDataEditorRef(forwardedRef, props) {
   } = props;
   let t0;
   let t1;
-  if ($[0] !== appendColumnRef || $[1] !== appendRowRef || $[2] !== canvasRef || $[3] !== gridRef || $[4] !== normalSizeColumn || $[5] !== onCopy || $[6] !== onKeyDown || $[7] !== onPasteInternal || $[8] !== rowMarkerOffset || $[9] !== scrollRef || $[10] !== scrollToRef) {
+  if ($2[0] !== appendColumnRef || $2[1] !== appendRowRef || $2[2] !== canvasRef || $2[3] !== gridRef || $2[4] !== normalSizeColumn || $2[5] !== onCopy || $2[6] !== onKeyDown || $2[7] !== onPasteInternal || $2[8] !== rowMarkerOffset || $2[9] !== scrollRef || $2[10] !== scrollToRef) {
     t0 = () => ({
       appendRow: (col, openOverlay) => appendRowRef.current(col + rowMarkerOffset, openOverlay),
       appendColumn: (row, openOverlay_0) => appendColumnRef.current(row, openOverlay_0),
       updateCells: (damageList) => {
         var _gridRef$current;
         if (rowMarkerOffset !== 0) {
-          damageList = damageList.map((x) => ({
-            cell: [x.cell[0] + rowMarkerOffset, x.cell[1]]
+          damageList = damageList.map((x2) => ({
+            cell: [x2.cell[0] + rowMarkerOffset, x2.cell[1]]
           }));
         }
         return (_gridRef$current = gridRef.current) === null || _gridRef$current === void 0 ? void 0 : _gridRef$current.damage(damageList);
@@ -19453,22 +18426,22 @@ function useDataEditorRef(forwardedRef, props) {
       }
     });
     t1 = [appendColumnRef, appendRowRef, canvasRef, gridRef, normalSizeColumn, onCopy, onKeyDown, onPasteInternal, rowMarkerOffset, scrollRef, scrollToRef];
-    $[0] = appendColumnRef;
-    $[1] = appendRowRef;
-    $[2] = canvasRef;
-    $[3] = gridRef;
-    $[4] = normalSizeColumn;
-    $[5] = onCopy;
-    $[6] = onKeyDown;
-    $[7] = onPasteInternal;
-    $[8] = rowMarkerOffset;
-    $[9] = scrollRef;
-    $[10] = scrollToRef;
-    $[11] = t0;
-    $[12] = t1;
+    $2[0] = appendColumnRef;
+    $2[1] = appendRowRef;
+    $2[2] = canvasRef;
+    $2[3] = gridRef;
+    $2[4] = normalSizeColumn;
+    $2[5] = onCopy;
+    $2[6] = onKeyDown;
+    $2[7] = onPasteInternal;
+    $2[8] = rowMarkerOffset;
+    $2[9] = scrollRef;
+    $2[10] = scrollToRef;
+    $2[11] = t0;
+    $2[12] = t1;
   } else {
-    t0 = $[11];
-    t1 = $[12];
+    t0 = $2[11];
+    t1 = $2[12];
   }
   React.useImperativeHandle(forwardedRef, t0, t1);
 }
@@ -19491,9 +18464,9 @@ function _temp2$1() {
 function _temp$3() {
 }
 function useSelectionBehavior(gridSelection, setGridSelection, rangeBehavior, columnBehavior, rowBehavior, rangeSelect, rangeSelectionColumnSpanning) {
-  const $ = compilerRuntimeExports.c(24);
+  const $2 = compilerRuntimeExports.c(24);
   let t0;
-  if ($[0] !== columnBehavior || $[1] !== gridSelection || $[2] !== rangeBehavior || $[3] !== rangeSelect || $[4] !== rangeSelectionColumnSpanning || $[5] !== rowBehavior || $[6] !== setGridSelection) {
+  if ($2[0] !== columnBehavior || $2[1] !== gridSelection || $2[2] !== rangeBehavior || $2[3] !== rangeSelect || $2[4] !== rangeSelectionColumnSpanning || $2[5] !== rowBehavior || $2[6] !== setGridSelection) {
     t0 = (value, expand, append, trigger) => {
       var _gridSelection$curren, _gridSelection$curren2;
       if ((rangeSelect === "cell" || rangeSelect === "multi-cell") && value !== void 0) {
@@ -19540,20 +18513,20 @@ function useSelectionBehavior(gridSelection, setGridSelection, rangeBehavior, co
       }
       setGridSelection(newVal, expand);
     };
-    $[0] = columnBehavior;
-    $[1] = gridSelection;
-    $[2] = rangeBehavior;
-    $[3] = rangeSelect;
-    $[4] = rangeSelectionColumnSpanning;
-    $[5] = rowBehavior;
-    $[6] = setGridSelection;
-    $[7] = t0;
+    $2[0] = columnBehavior;
+    $2[1] = gridSelection;
+    $2[2] = rangeBehavior;
+    $2[3] = rangeSelect;
+    $2[4] = rangeSelectionColumnSpanning;
+    $2[5] = rowBehavior;
+    $2[6] = setGridSelection;
+    $2[7] = t0;
   } else {
-    t0 = $[7];
+    t0 = $2[7];
   }
   const setCurrent = t0;
   let t1;
-  if ($[8] !== columnBehavior || $[9] !== gridSelection || $[10] !== rangeBehavior || $[11] !== rowBehavior || $[12] !== setGridSelection) {
+  if ($2[8] !== columnBehavior || $2[9] !== gridSelection || $2[10] !== rangeBehavior || $2[11] !== rowBehavior || $2[12] !== setGridSelection) {
     t1 = (newRows, append_0, allowMixed) => {
       newRows = newRows !== null && newRows !== void 0 ? newRows : gridSelection.rows;
       if (append_0 !== void 0) {
@@ -19578,18 +18551,18 @@ function useSelectionBehavior(gridSelection, setGridSelection, rangeBehavior, co
       }
       setGridSelection(newVal_0, false);
     };
-    $[8] = columnBehavior;
-    $[9] = gridSelection;
-    $[10] = rangeBehavior;
-    $[11] = rowBehavior;
-    $[12] = setGridSelection;
-    $[13] = t1;
+    $2[8] = columnBehavior;
+    $2[9] = gridSelection;
+    $2[10] = rangeBehavior;
+    $2[11] = rowBehavior;
+    $2[12] = setGridSelection;
+    $2[13] = t1;
   } else {
-    t1 = $[13];
+    t1 = $2[13];
   }
   const setSelectedRows = t1;
   let t2;
-  if ($[14] !== columnBehavior || $[15] !== gridSelection || $[16] !== rangeBehavior || $[17] !== rowBehavior || $[18] !== setGridSelection) {
+  if ($2[14] !== columnBehavior || $2[15] !== gridSelection || $2[16] !== rangeBehavior || $2[17] !== rowBehavior || $2[18] !== setGridSelection) {
     t2 = (newCols, append_1, allowMixed_0) => {
       newCols = newCols !== null && newCols !== void 0 ? newCols : gridSelection.columns;
       if (append_1 !== void 0) {
@@ -19614,25 +18587,25 @@ function useSelectionBehavior(gridSelection, setGridSelection, rangeBehavior, co
       }
       setGridSelection(newVal_1, false);
     };
-    $[14] = columnBehavior;
-    $[15] = gridSelection;
-    $[16] = rangeBehavior;
-    $[17] = rowBehavior;
-    $[18] = setGridSelection;
-    $[19] = t2;
+    $2[14] = columnBehavior;
+    $2[15] = gridSelection;
+    $2[16] = rangeBehavior;
+    $2[17] = rowBehavior;
+    $2[18] = setGridSelection;
+    $2[19] = t2;
   } else {
-    t2 = $[19];
+    t2 = $2[19];
   }
   const setSelectedColumns = t2;
   let t3;
-  if ($[20] !== setCurrent || $[21] !== setSelectedColumns || $[22] !== setSelectedRows) {
+  if ($2[20] !== setCurrent || $2[21] !== setSelectedColumns || $2[22] !== setSelectedRows) {
     t3 = [setCurrent, setSelectedRows, setSelectedColumns];
-    $[20] = setCurrent;
-    $[21] = setSelectedColumns;
-    $[22] = setSelectedRows;
-    $[23] = t3;
+    $2[20] = setCurrent;
+    $2[21] = setSelectedColumns;
+    $2[22] = setSelectedRows;
+    $2[23] = t3;
   } else {
-    t3 = $[23];
+    t3 = $2[23];
   }
   return t3;
 }
@@ -19642,7 +18615,7 @@ const emptyGridSelection = {
   current: void 0
 };
 function useSelection(props) {
-  const $ = compilerRuntimeExports.c(15);
+  const $2 = compilerRuntimeExports.c(15);
   const {
     gridSelectionOuter,
     onGridSelectionChange,
@@ -19658,19 +18631,19 @@ function useSelection(props) {
   } = props;
   const [gridSelectionInner, setGridSelectionInner] = React.useState(emptyGridSelection);
   let t0;
-  if ($[0] !== gridSelectionOuter || $[1] !== rowMarkerOffset) {
+  if ($2[0] !== gridSelectionOuter || $2[1] !== rowMarkerOffset) {
     t0 = gridSelectionOuter === void 0 ? void 0 : shiftSelection(gridSelectionOuter, rowMarkerOffset);
-    $[0] = gridSelectionOuter;
-    $[1] = rowMarkerOffset;
-    $[2] = t0;
+    $2[0] = gridSelectionOuter;
+    $2[1] = rowMarkerOffset;
+    $2[2] = t0;
   } else {
-    t0 = $[2];
+    t0 = $2[2];
   }
   const gridSelectionOuterMangled = t0;
   const gridSelection = gridSelectionOuterMangled !== null && gridSelectionOuterMangled !== void 0 ? gridSelectionOuterMangled : gridSelectionInner;
   const expectedExternalGridSelection = React.useRef(gridSelectionOuter);
   let t1;
-  if ($[3] !== abortControllerRef || $[4] !== getCellsForSelection || $[5] !== onGridSelectionChange || $[6] !== rowMarkerOffset || $[7] !== spanRangeBehavior) {
+  if ($2[3] !== abortControllerRef || $2[4] !== getCellsForSelection || $2[5] !== onGridSelectionChange || $2[6] !== rowMarkerOffset || $2[7] !== spanRangeBehavior) {
     t1 = (newVal, expand) => {
       if (expand && getCellsForSelection !== void 0) {
         newVal = expandSelection(newVal, getCellsForSelection, rowMarkerOffset, spanRangeBehavior, abortControllerRef.current);
@@ -19682,19 +18655,19 @@ function useSelection(props) {
         setGridSelectionInner(newVal);
       }
     };
-    $[3] = abortControllerRef;
-    $[4] = getCellsForSelection;
-    $[5] = onGridSelectionChange;
-    $[6] = rowMarkerOffset;
-    $[7] = spanRangeBehavior;
-    $[8] = t1;
+    $2[3] = abortControllerRef;
+    $2[4] = getCellsForSelection;
+    $2[5] = onGridSelectionChange;
+    $2[6] = rowMarkerOffset;
+    $2[7] = spanRangeBehavior;
+    $2[8] = t1;
   } else {
-    t1 = $[8];
+    t1 = $2[8];
   }
   const setGridSelection = t1;
   const [setCurrent, setSelectedRows, setSelectedColumns] = useSelectionBehavior(gridSelection, setGridSelection, rangeSelectionBlending, columnSelectionBlending, rowSelectionBlending, rangeSelect, rangeSelectionColumnSpanning);
   let t2;
-  if ($[9] !== gridSelection || $[10] !== setCurrent || $[11] !== setGridSelection || $[12] !== setSelectedColumns || $[13] !== setSelectedRows) {
+  if ($2[9] !== gridSelection || $2[10] !== setCurrent || $2[11] !== setGridSelection || $2[12] !== setSelectedColumns || $2[13] !== setSelectedRows) {
     t2 = {
       gridSelection,
       setGridSelection,
@@ -19703,19 +18676,19 @@ function useSelection(props) {
       setSelectedColumns,
       expectedExternalGridSelection
     };
-    $[9] = gridSelection;
-    $[10] = setCurrent;
-    $[11] = setGridSelection;
-    $[12] = setSelectedColumns;
-    $[13] = setSelectedRows;
-    $[14] = t2;
+    $2[9] = gridSelection;
+    $2[10] = setCurrent;
+    $2[11] = setGridSelection;
+    $2[12] = setSelectedColumns;
+    $2[13] = setSelectedRows;
+    $2[14] = t2;
   } else {
-    t2 = $[14];
+    t2 = $2[14];
   }
   return t2;
 }
 function useMangledProps(args) {
-  const $ = compilerRuntimeExports.c(39);
+  const $2 = compilerRuntimeExports.c(39);
   const {
     onColumnResize: onColumnResizeIn,
     onColumnResizeEnd: onColumnResizeEndIn,
@@ -19726,76 +18699,76 @@ function useMangledProps(args) {
     columnsIn
   } = args;
   let t0;
-  if ($[0] !== columnsIn || $[1] !== onColumnResizeIn || $[2] !== rowMarkerOffset) {
+  if ($2[0] !== columnsIn || $2[1] !== onColumnResizeIn || $2[2] !== rowMarkerOffset) {
     t0 = (_2, w2, ind, wg) => {
       onColumnResizeIn === null || onColumnResizeIn === void 0 || onColumnResizeIn(columnsIn[ind - rowMarkerOffset], w2, ind - rowMarkerOffset, wg);
     };
-    $[0] = columnsIn;
-    $[1] = onColumnResizeIn;
-    $[2] = rowMarkerOffset;
-    $[3] = t0;
+    $2[0] = columnsIn;
+    $2[1] = onColumnResizeIn;
+    $2[2] = rowMarkerOffset;
+    $2[3] = t0;
   } else {
-    t0 = $[3];
+    t0 = $2[3];
   }
   const t1 = t0;
   let t2;
-  if ($[4] !== onColumnResizeIn || $[5] !== t1) {
+  if ($2[4] !== onColumnResizeIn || $2[5] !== t1) {
     t2 = whenDefined(onColumnResizeIn, t1);
-    $[4] = onColumnResizeIn;
-    $[5] = t1;
-    $[6] = t2;
+    $2[4] = onColumnResizeIn;
+    $2[5] = t1;
+    $2[6] = t2;
   } else {
-    t2 = $[6];
+    t2 = $2[6];
   }
   const onColumnResize = t2;
   let t3;
-  if ($[7] !== columnsIn || $[8] !== onColumnResizeEndIn || $[9] !== rowMarkerOffset) {
+  if ($2[7] !== columnsIn || $2[8] !== onColumnResizeEndIn || $2[9] !== rowMarkerOffset) {
     t3 = (__0, w_0, ind_0, wg_0) => {
       onColumnResizeEndIn === null || onColumnResizeEndIn === void 0 || onColumnResizeEndIn(columnsIn[ind_0 - rowMarkerOffset], w_0, ind_0 - rowMarkerOffset, wg_0);
     };
-    $[7] = columnsIn;
-    $[8] = onColumnResizeEndIn;
-    $[9] = rowMarkerOffset;
-    $[10] = t3;
+    $2[7] = columnsIn;
+    $2[8] = onColumnResizeEndIn;
+    $2[9] = rowMarkerOffset;
+    $2[10] = t3;
   } else {
-    t3 = $[10];
+    t3 = $2[10];
   }
   const t4 = t3;
   let t5;
-  if ($[11] !== onColumnResizeEndIn || $[12] !== t4) {
+  if ($2[11] !== onColumnResizeEndIn || $2[12] !== t4) {
     t5 = whenDefined(onColumnResizeEndIn, t4);
-    $[11] = onColumnResizeEndIn;
-    $[12] = t4;
-    $[13] = t5;
+    $2[11] = onColumnResizeEndIn;
+    $2[12] = t4;
+    $2[13] = t5;
   } else {
-    t5 = $[13];
+    t5 = $2[13];
   }
   const onColumnResizeEnd = t5;
   let t6;
-  if ($[14] !== columnsIn || $[15] !== onColumnResizeStartIn || $[16] !== rowMarkerOffset) {
+  if ($2[14] !== columnsIn || $2[15] !== onColumnResizeStartIn || $2[16] !== rowMarkerOffset) {
     t6 = (__1, w_1, ind_1, wg_1) => {
       onColumnResizeStartIn === null || onColumnResizeStartIn === void 0 || onColumnResizeStartIn(columnsIn[ind_1 - rowMarkerOffset], w_1, ind_1 - rowMarkerOffset, wg_1);
     };
-    $[14] = columnsIn;
-    $[15] = onColumnResizeStartIn;
-    $[16] = rowMarkerOffset;
-    $[17] = t6;
+    $2[14] = columnsIn;
+    $2[15] = onColumnResizeStartIn;
+    $2[16] = rowMarkerOffset;
+    $2[17] = t6;
   } else {
-    t6 = $[17];
+    t6 = $2[17];
   }
   const t7 = t6;
   let t8;
-  if ($[18] !== onColumnResizeStartIn || $[19] !== t7) {
+  if ($2[18] !== onColumnResizeStartIn || $2[19] !== t7) {
     t8 = whenDefined(onColumnResizeStartIn, t7);
-    $[18] = onColumnResizeStartIn;
-    $[19] = t7;
-    $[20] = t8;
+    $2[18] = onColumnResizeStartIn;
+    $2[19] = t7;
+    $2[20] = t8;
   } else {
-    t8 = $[20];
+    t8 = $2[20];
   }
   const onColumnResizeStart = t8;
   let t9;
-  if ($[21] !== drawHeaderIn || $[22] !== rowMarkerOffset) {
+  if ($2[21] !== drawHeaderIn || $2[22] !== rowMarkerOffset) {
     t9 = (drawArgs, draw) => {
       var _drawHeaderIn;
       return (_drawHeaderIn = drawHeaderIn === null || drawHeaderIn === void 0 ? void 0 : drawHeaderIn({
@@ -19803,25 +18776,25 @@ function useMangledProps(args) {
         columnIndex: drawArgs.columnIndex - rowMarkerOffset
       }, draw)) !== null && _drawHeaderIn !== void 0 ? _drawHeaderIn : false;
     };
-    $[21] = drawHeaderIn;
-    $[22] = rowMarkerOffset;
-    $[23] = t9;
+    $2[21] = drawHeaderIn;
+    $2[22] = rowMarkerOffset;
+    $2[23] = t9;
   } else {
-    t9 = $[23];
+    t9 = $2[23];
   }
   const t10 = t9;
   let t11;
-  if ($[24] !== drawHeaderIn || $[25] !== t10) {
+  if ($2[24] !== drawHeaderIn || $2[25] !== t10) {
     t11 = whenDefined(drawHeaderIn, t10);
-    $[24] = drawHeaderIn;
-    $[25] = t10;
-    $[26] = t11;
+    $2[24] = drawHeaderIn;
+    $2[25] = t10;
+    $2[26] = t11;
   } else {
-    t11 = $[26];
+    t11 = $2[26];
   }
   const drawHeader2 = t11;
   let t12;
-  if ($[27] !== drawCellIn || $[28] !== rowMarkerOffset) {
+  if ($2[27] !== drawCellIn || $2[28] !== rowMarkerOffset) {
     t12 = (drawArgs_0, draw_0) => {
       var _drawCellIn;
       return (_drawCellIn = drawCellIn === null || drawCellIn === void 0 ? void 0 : drawCellIn({
@@ -19829,25 +18802,25 @@ function useMangledProps(args) {
         col: drawArgs_0.col - rowMarkerOffset
       }, draw_0)) !== null && _drawCellIn !== void 0 ? _drawCellIn : false;
     };
-    $[27] = drawCellIn;
-    $[28] = rowMarkerOffset;
-    $[29] = t12;
+    $2[27] = drawCellIn;
+    $2[28] = rowMarkerOffset;
+    $2[29] = t12;
   } else {
-    t12 = $[29];
+    t12 = $2[29];
   }
   const t13 = t12;
   let t14;
-  if ($[30] !== drawCellIn || $[31] !== t13) {
+  if ($2[30] !== drawCellIn || $2[31] !== t13) {
     t14 = whenDefined(drawCellIn, t13);
-    $[30] = drawCellIn;
-    $[31] = t13;
-    $[32] = t14;
+    $2[30] = drawCellIn;
+    $2[31] = t13;
+    $2[32] = t14;
   } else {
-    t14 = $[32];
+    t14 = $2[32];
   }
   const drawCell2 = t14;
   let t15;
-  if ($[33] !== drawCell2 || $[34] !== drawHeader2 || $[35] !== onColumnResize || $[36] !== onColumnResizeEnd || $[37] !== onColumnResizeStart) {
+  if ($2[33] !== drawCell2 || $2[34] !== drawHeader2 || $2[35] !== onColumnResize || $2[36] !== onColumnResizeEnd || $2[37] !== onColumnResizeStart) {
     t15 = {
       onColumnResize,
       onColumnResizeEnd,
@@ -19855,14 +18828,14 @@ function useMangledProps(args) {
       drawHeader: drawHeader2,
       drawCell: drawCell2
     };
-    $[33] = drawCell2;
-    $[34] = drawHeader2;
-    $[35] = onColumnResize;
-    $[36] = onColumnResizeEnd;
-    $[37] = onColumnResizeStart;
-    $[38] = t15;
+    $2[33] = drawCell2;
+    $2[34] = drawHeader2;
+    $2[35] = onColumnResize;
+    $2[36] = onColumnResizeEnd;
+    $2[37] = onColumnResizeStart;
+    $2[38] = t15;
   } else {
-    t15 = $[38];
+    t15 = $2[38];
   }
   return t15;
 }
@@ -20002,7 +18975,7 @@ function useScrollTo(props) {
   }, [scrollRef, gridRef, canvasRef, rowMarkerOffset, freezeTrailingRows, totalMarkerWidth, totalHeaderHeight, freezeColumns, columns, mangledRows, lastRowSticky, rowHeight]);
 }
 function useSearch(props) {
-  const $ = compilerRuntimeExports.c(5);
+  const $2 = compilerRuntimeExports.c(5);
   const {
     showSearchIn,
     onSearchCloseIn
@@ -20010,7 +18983,7 @@ function useSearch(props) {
   const [showSearchInner, setShowSearchInner] = React.useState(false);
   const showSearch = showSearchIn !== null && showSearchIn !== void 0 ? showSearchIn : showSearchInner;
   let t0;
-  if ($[0] !== onSearchCloseIn) {
+  if ($2[0] !== onSearchCloseIn) {
     t0 = () => {
       if (onSearchCloseIn !== void 0) {
         onSearchCloseIn();
@@ -20018,29 +18991,29 @@ function useSearch(props) {
         setShowSearchInner(false);
       }
     };
-    $[0] = onSearchCloseIn;
-    $[1] = t0;
+    $2[0] = onSearchCloseIn;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   const onSearchClose = t0;
   let t1;
-  if ($[2] !== onSearchClose || $[3] !== showSearch) {
+  if ($2[2] !== onSearchClose || $2[3] !== showSearch) {
     t1 = {
       showSearch,
       setShowSearch: setShowSearchInner,
       onSearchClose
     };
-    $[2] = onSearchClose;
-    $[3] = showSearch;
-    $[4] = t1;
+    $2[2] = onSearchClose;
+    $2[3] = showSearch;
+    $2[4] = t1;
   } else {
-    t1 = $[4];
+    t1 = $2[4];
   }
   return t1;
 }
 function useCellRenderer(args) {
-  const $ = compilerRuntimeExports.c(9);
+  const $2 = compilerRuntimeExports.c(9);
   const {
     renderers,
     additionalRenderers
@@ -20049,60 +19022,60 @@ function useCellRenderer(args) {
   bb0: {
     if (renderers === void 0) {
       let t12;
-      if ($[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+      if ($2[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
         t12 = {};
-        $[0] = t12;
+        $2[0] = t12;
       } else {
-        t12 = $[0];
+        t12 = $2[0];
       }
       t0 = t12;
       break bb0;
     }
     let result;
-    if ($[1] !== renderers) {
+    if ($2[1] !== renderers) {
       result = {};
       for (const r of renderers) {
         result[r.kind] = r;
       }
-      $[1] = renderers;
-      $[2] = result;
+      $2[1] = renderers;
+      $2[2] = result;
     } else {
-      result = $[2];
+      result = $2[2];
     }
     t0 = result;
   }
   const rendererMap = t0;
   let t1;
-  if ($[3] !== additionalRenderers || $[4] !== rendererMap) {
+  if ($2[3] !== additionalRenderers || $2[4] !== rendererMap) {
     t1 = (cell) => {
       if (cell.kind !== GridCellKind.Custom) {
         return rendererMap[cell.kind];
       }
-      return additionalRenderers === null || additionalRenderers === void 0 ? void 0 : additionalRenderers.find((x) => x.isMatch(cell));
+      return additionalRenderers === null || additionalRenderers === void 0 ? void 0 : additionalRenderers.find((x2) => x2.isMatch(cell));
     };
-    $[3] = additionalRenderers;
-    $[4] = rendererMap;
-    $[5] = t1;
+    $2[3] = additionalRenderers;
+    $2[4] = rendererMap;
+    $2[5] = t1;
   } else {
-    t1 = $[5];
+    t1 = $2[5];
   }
   const getCellRendererInternal = t1;
   let t2;
-  if ($[6] !== getCellRendererInternal || $[7] !== rendererMap) {
+  if ($2[6] !== getCellRendererInternal || $2[7] !== rendererMap) {
     t2 = {
       rendererMap,
       getCellRenderer: getCellRendererInternal
     };
-    $[6] = getCellRendererInternal;
-    $[7] = rendererMap;
-    $[8] = t2;
+    $2[6] = getCellRendererInternal;
+    $2[7] = rendererMap;
+    $2[8] = t2;
   } else {
-    t2 = $[8];
+    t2 = $2[8];
   }
   return t2;
 }
 function useAppendHandlers(args) {
-  const $ = compilerRuntimeExports.c(28);
+  const $2 = compilerRuntimeExports.c(28);
   const {
     mangledCols,
     onRowAppended,
@@ -20121,7 +19094,7 @@ function useAppendHandlers(args) {
     trailingRowOptions
   } = args;
   let t0;
-  if ($[0] !== focusCallback || $[1] !== getCellContentRef || $[2] !== mangledCols || $[3] !== onRowAppended || $[4] !== rowMarkerOffset || $[5] !== rows || $[6] !== rowsRef || $[7] !== scrollToRef || $[8] !== setCurrent) {
+  if ($2[0] !== focusCallback || $2[1] !== getCellContentRef || $2[2] !== mangledCols || $2[3] !== onRowAppended || $2[4] !== rowMarkerOffset || $2[5] !== rows || $2[6] !== rowsRef || $2[7] !== scrollToRef || $2[8] !== setCurrent) {
     t0 = async (col, t12, behavior) => {
       var _ref, _onRowAppended, _c$trailingRowOptions;
       const openOverlay = t12 === void 0 ? true : t12;
@@ -20171,22 +19144,22 @@ function useAppendHandlers(args) {
       };
       doFocus();
     };
-    $[0] = focusCallback;
-    $[1] = getCellContentRef;
-    $[2] = mangledCols;
-    $[3] = onRowAppended;
-    $[4] = rowMarkerOffset;
-    $[5] = rows;
-    $[6] = rowsRef;
-    $[7] = scrollToRef;
-    $[8] = setCurrent;
-    $[9] = t0;
+    $2[0] = focusCallback;
+    $2[1] = getCellContentRef;
+    $2[2] = mangledCols;
+    $2[3] = onRowAppended;
+    $2[4] = rowMarkerOffset;
+    $2[5] = rows;
+    $2[6] = rowsRef;
+    $2[7] = scrollToRef;
+    $2[8] = setCurrent;
+    $2[9] = t0;
   } else {
-    t0 = $[9];
+    t0 = $2[9];
   }
   const appendRow = t0;
   let t1;
-  if ($[10] !== colsRef || $[11] !== focusCallback || $[12] !== getCellContentRef || $[13] !== mangledCols || $[14] !== onColumnAppended || $[15] !== rowMarkerOffset || $[16] !== scrollToRef || $[17] !== setCurrent) {
+  if ($2[10] !== colsRef || $2[11] !== focusCallback || $2[12] !== getCellContentRef || $2[13] !== mangledCols || $2[14] !== onColumnAppended || $2[15] !== rowMarkerOffset || $2[16] !== scrollToRef || $2[17] !== setCurrent) {
     t1 = async (row_0, t22) => {
       const openOverlay_0 = t22 === void 0 ? true : t22;
       const appendResult_0 = onColumnAppended === null || onColumnAppended === void 0 ? void 0 : onColumnAppended();
@@ -20232,21 +19205,21 @@ function useAppendHandlers(args) {
       };
       doFocus_0();
     };
-    $[10] = colsRef;
-    $[11] = focusCallback;
-    $[12] = getCellContentRef;
-    $[13] = mangledCols;
-    $[14] = onColumnAppended;
-    $[15] = rowMarkerOffset;
-    $[16] = scrollToRef;
-    $[17] = setCurrent;
-    $[18] = t1;
+    $2[10] = colsRef;
+    $2[11] = focusCallback;
+    $2[12] = getCellContentRef;
+    $2[13] = mangledCols;
+    $2[14] = onColumnAppended;
+    $2[15] = rowMarkerOffset;
+    $2[16] = scrollToRef;
+    $2[17] = setCurrent;
+    $2[18] = t1;
   } else {
-    t1 = $[18];
+    t1 = $2[18];
   }
   const appendColumn = t1;
   let t2;
-  if ($[19] !== columns || $[20] !== columnsIn || $[21] !== hasRowMarkers || $[22] !== (trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.targetColumn)) {
+  if ($2[19] !== columns || $2[20] !== columnsIn || $2[21] !== hasRowMarkers || $2[22] !== (trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.targetColumn)) {
     t2 = (col_1) => {
       var _columns$col_1$traili, _columns$col_;
       const customTargetColumn = (_columns$col_1$traili = (_columns$col_ = columns[col_1]) === null || _columns$col_ === void 0 || (_columns$col_ = _columns$col_.trailingRowOptions) === null || _columns$col_ === void 0 ? void 0 : _columns$col_.targetColumn) !== null && _columns$col_1$traili !== void 0 ? _columns$col_1$traili : trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.targetColumn;
@@ -20262,29 +19235,29 @@ function useAppendHandlers(args) {
         }
       }
     };
-    $[19] = columns;
-    $[20] = columnsIn;
-    $[21] = hasRowMarkers;
-    $[22] = trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.targetColumn;
-    $[23] = t2;
+    $2[19] = columns;
+    $2[20] = columnsIn;
+    $2[21] = hasRowMarkers;
+    $2[22] = trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.targetColumn;
+    $2[23] = t2;
   } else {
-    t2 = $[23];
+    t2 = $2[23];
   }
   trailingRowOptions === null || trailingRowOptions === void 0 || trailingRowOptions.targetColumn;
   const getCustomNewRowTargetColumn = t2;
   let t3;
-  if ($[24] !== appendColumn || $[25] !== appendRow || $[26] !== getCustomNewRowTargetColumn) {
+  if ($2[24] !== appendColumn || $2[25] !== appendRow || $2[26] !== getCustomNewRowTargetColumn) {
     t3 = {
       appendRow,
       appendColumn,
       getCustomNewRowTargetColumn
     };
-    $[24] = appendColumn;
-    $[25] = appendRow;
-    $[26] = getCustomNewRowTargetColumn;
-    $[27] = t3;
+    $2[24] = appendColumn;
+    $2[25] = appendRow;
+    $2[26] = getCustomNewRowTargetColumn;
+    $2[27] = t3;
   } else {
-    t3 = $[27];
+    t3 = $2[27];
   }
   return t3;
 }
@@ -20296,7 +19269,7 @@ function getSpanStops(cells) {
   })) !== null && _cells$0$filter$flatM !== void 0 ? _cells$0$filter$flatM : [];
 }
 function useSelectionNavigation(args) {
-  const $ = compilerRuntimeExports.c(28);
+  const $2 = compilerRuntimeExports.c(28);
   const {
     gridSelection,
     rows,
@@ -20314,7 +19287,7 @@ function useSelectionNavigation(args) {
     scrollToActiveCell
   } = args;
   let t0;
-  if ($[0] !== mapper || $[1] !== rowGroupingSelectionBehavior) {
+  if ($2[0] !== mapper || $2[1] !== rowGroupingSelectionBehavior) {
     t0 = (selectedRow) => {
       if (rowGroupingSelectionBehavior !== "block-spanning") {
         return;
@@ -20332,21 +19305,21 @@ function useSelectionNavigation(args) {
       const upperBounds = selectedRow + groupRows - groupRowIndex - 1;
       return [lowerBounds, upperBounds];
     };
-    $[0] = mapper;
-    $[1] = rowGroupingSelectionBehavior;
-    $[2] = t0;
+    $2[0] = mapper;
+    $2[1] = rowGroupingSelectionBehavior;
+    $2[2] = t0;
   } else {
-    t0 = $[2];
+    t0 = $2[2];
   }
   const getSelectionRowLimits = t0;
   let t1;
-  if ($[3] !== abortControllerRef || $[4] !== getCellsForSelection || $[5] !== getSelectionRowLimits || $[6] !== gridSelection || $[7] !== mangledCols.length || $[8] !== rowMarkerOffset || $[9] !== rows || $[10] !== scrollTo || $[11] !== setCurrent) {
+  if ($2[3] !== abortControllerRef || $2[4] !== getCellsForSelection || $2[5] !== getSelectionRowLimits || $2[6] !== gridSelection || $2[7] !== mangledCols.length || $2[8] !== rowMarkerOffset || $2[9] !== rows || $2[10] !== scrollTo || $2[11] !== setCurrent) {
     t1 = (direction2) => {
       var _getSelectionRowLimit;
       if (gridSelection.current === void 0) {
         return;
       }
-      const [x, y] = direction2;
+      const [x2, y2] = direction2;
       const [col, row] = gridSelection.current.cell;
       const old = gridSelection.current.range;
       let left = old.x;
@@ -20355,8 +19328,8 @@ function useSelectionNavigation(args) {
       let bottom = old.y + old.height;
       const [minRow, maxRowRaw] = (_getSelectionRowLimit = getSelectionRowLimits(row)) !== null && _getSelectionRowLimit !== void 0 ? _getSelectionRowLimit : [0, rows - 1];
       const maxRow = maxRowRaw + 1;
-      if (y !== 0) {
-        bb19: switch (y) {
+      if (y2 !== 0) {
+        bb19: switch (y2) {
           case 2: {
             bottom = maxRow;
             top = row;
@@ -20394,13 +19367,13 @@ function useSelectionNavigation(args) {
           }
         }
       }
-      if (x !== 0) {
-        if (x === 2) {
+      if (x2 !== 0) {
+        if (x2 === 2) {
           right = mangledCols.length;
           left = col;
           scrollTo(right - 1 - rowMarkerOffset, 0, "horizontal");
         } else {
-          if (x === -2) {
+          if (x2 === -2) {
             left = rowMarkerOffset;
             right = col + 1;
             scrollTo(left - rowMarkerOffset, 0, "horizontal");
@@ -20417,7 +19390,7 @@ function useSelectionNavigation(args) {
                 disallowed = getSpanStops(cells);
               }
             }
-            if (x === 1) {
+            if (x2 === 1) {
               let done = false;
               if (left < col) {
                 if (disallowed.length > 0) {
@@ -20439,7 +19412,7 @@ function useSelectionNavigation(args) {
                 scrollTo(right - 1 - rowMarkerOffset, 0, "horizontal");
               }
             } else {
-              if (x === -1) {
+              if (x2 === -1) {
                 let done_0 = false;
                 if (right > col + 1) {
                   if (disallowed.length > 0) {
@@ -20477,22 +19450,22 @@ function useSelectionNavigation(args) {
         }
       }, true, false, "keyboard-select");
     };
-    $[3] = abortControllerRef;
-    $[4] = getCellsForSelection;
-    $[5] = getSelectionRowLimits;
-    $[6] = gridSelection;
-    $[7] = mangledCols.length;
-    $[8] = rowMarkerOffset;
-    $[9] = rows;
-    $[10] = scrollTo;
-    $[11] = setCurrent;
-    $[12] = t1;
+    $2[3] = abortControllerRef;
+    $2[4] = getCellsForSelection;
+    $2[5] = getSelectionRowLimits;
+    $2[6] = gridSelection;
+    $2[7] = mangledCols.length;
+    $2[8] = rowMarkerOffset;
+    $2[9] = rows;
+    $2[10] = scrollTo;
+    $2[11] = setCurrent;
+    $2[12] = t1;
   } else {
-    t1 = $[12];
+    t1 = $2[12];
   }
   const adjustSelection = t1;
   let t2;
-  if ($[13] !== (currentCell === null || currentCell === void 0 ? void 0 : currentCell[0]) || $[14] !== (currentCell === null || currentCell === void 0 ? void 0 : currentCell[1]) || $[15] !== gridSelection || $[16] !== mangledCols.length || $[17] !== mangledRows || $[18] !== rowMarkerOffset || $[19] !== scrollTo || $[20] !== scrollToActiveCell || $[21] !== setCurrent || $[22] !== setGridSelection) {
+  if ($2[13] !== (currentCell === null || currentCell === void 0 ? void 0 : currentCell[0]) || $2[14] !== (currentCell === null || currentCell === void 0 ? void 0 : currentCell[1]) || $2[15] !== gridSelection || $2[16] !== mangledCols.length || $2[17] !== mangledRows || $2[18] !== rowMarkerOffset || $2[19] !== scrollTo || $2[20] !== scrollToActiveCell || $2[21] !== setCurrent || $2[22] !== setGridSelection) {
     t2 = (col_0, row_0, fromEditingTrailingRow, freeMove) => {
       const rowMax = mangledRows - (fromEditingTrailingRow ? 0 : 1);
       col_0 = clamp$1(col_0, rowMarkerOffset, mangledCols.length - 1);
@@ -20536,34 +19509,34 @@ function useSelectionNavigation(args) {
       }
       return true;
     };
-    $[13] = currentCell === null || currentCell === void 0 ? void 0 : currentCell[0];
-    $[14] = currentCell === null || currentCell === void 0 ? void 0 : currentCell[1];
-    $[15] = gridSelection;
-    $[16] = mangledCols.length;
-    $[17] = mangledRows;
-    $[18] = rowMarkerOffset;
-    $[19] = scrollTo;
-    $[20] = scrollToActiveCell;
-    $[21] = setCurrent;
-    $[22] = setGridSelection;
-    $[23] = t2;
+    $2[13] = currentCell === null || currentCell === void 0 ? void 0 : currentCell[0];
+    $2[14] = currentCell === null || currentCell === void 0 ? void 0 : currentCell[1];
+    $2[15] = gridSelection;
+    $2[16] = mangledCols.length;
+    $2[17] = mangledRows;
+    $2[18] = rowMarkerOffset;
+    $2[19] = scrollTo;
+    $2[20] = scrollToActiveCell;
+    $2[21] = setCurrent;
+    $2[22] = setGridSelection;
+    $2[23] = t2;
   } else {
-    t2 = $[23];
+    t2 = $2[23];
   }
   const updateSelectedCell = t2;
   let t3;
-  if ($[24] !== adjustSelection || $[25] !== getSelectionRowLimits || $[26] !== updateSelectedCell) {
+  if ($2[24] !== adjustSelection || $2[25] !== getSelectionRowLimits || $2[26] !== updateSelectedCell) {
     t3 = {
       getSelectionRowLimits,
       adjustSelection,
       updateSelectedCell
     };
-    $[24] = adjustSelection;
-    $[25] = getSelectionRowLimits;
-    $[26] = updateSelectedCell;
-    $[27] = t3;
+    $2[24] = adjustSelection;
+    $2[25] = getSelectionRowLimits;
+    $2[26] = updateSelectedCell;
+    $2[27] = t3;
   } else {
-    t3 = $[27];
+    t3 = $2[27];
   }
   return t3;
 }
@@ -20623,7 +19596,7 @@ function getRowMarkerConfig(p2, rowSelect, rowsIn) {
   };
 }
 function useMangledCols(config, columns, rows, gridSelectionRows) {
-  const $ = compilerRuntimeExports.c(38);
+  const $2 = compilerRuntimeExports.c(38);
   const {
     rowMarkers,
     showRowNumber,
@@ -20643,12 +19616,12 @@ function useMangledCols(config, columns, rows, gridSelectionRows) {
   const numSelectedRows = gridSelectionRows.length;
   const rowMarkerChecked = rowMarkers === "none" ? void 0 : numSelectedRows === 0 ? false : numSelectedRows === rows ? true : void 0;
   let markerColumns;
-  if ($[0] !== hasRowId || $[1] !== hasRowStatus || $[2] !== headerRowMarkerAlwaysVisible || $[3] !== headerRowMarkerDisabled || $[4] !== headerRowMarkerTheme || $[5] !== rowIdTheme || $[6] !== rowIdWidth || $[7] !== rowMarkerCheckboxStyle || $[8] !== rowMarkerChecked || $[9] !== rowMarkerTheme || $[10] !== rowMarkerWidth || $[11] !== rowMarkers || $[12] !== rowStatusTheme || $[13] !== rowStatusWidth || $[14] !== showRowNumber) {
+  if ($2[0] !== hasRowId || $2[1] !== hasRowStatus || $2[2] !== headerRowMarkerAlwaysVisible || $2[3] !== headerRowMarkerDisabled || $2[4] !== headerRowMarkerTheme || $2[5] !== rowIdTheme || $2[6] !== rowIdWidth || $2[7] !== rowMarkerCheckboxStyle || $2[8] !== rowMarkerChecked || $2[9] !== rowMarkerTheme || $2[10] !== rowMarkerWidth || $2[11] !== rowMarkers || $2[12] !== rowStatusTheme || $2[13] !== rowStatusWidth || $2[14] !== showRowNumber) {
     markerColumns = [];
     if (rowMarkers !== "none") {
       if (showRowNumber) {
         let t03;
-        if ($[16] !== headerRowMarkerTheme || $[17] !== rowMarkerCheckboxStyle || $[18] !== rowMarkerTheme || $[19] !== rowMarkerWidth) {
+        if ($2[16] !== headerRowMarkerTheme || $2[17] !== rowMarkerCheckboxStyle || $2[18] !== rowMarkerTheme || $2[19] !== rowMarkerWidth) {
           t03 = {
             title: "",
             width: rowMarkerWidth,
@@ -20662,18 +19635,18 @@ function useMangledCols(config, columns, rows, gridSelectionRows) {
             headerRowMarkerAlwaysVisible: false,
             headerRowMarkerDisabled: true
           };
-          $[16] = headerRowMarkerTheme;
-          $[17] = rowMarkerCheckboxStyle;
-          $[18] = rowMarkerTheme;
-          $[19] = rowMarkerWidth;
-          $[20] = t03;
+          $2[16] = headerRowMarkerTheme;
+          $2[17] = rowMarkerCheckboxStyle;
+          $2[18] = rowMarkerTheme;
+          $2[19] = rowMarkerWidth;
+          $2[20] = t03;
         } else {
-          t03 = $[20];
+          t03 = $2[20];
         }
         markerColumns.push(t03);
       }
       let t02;
-      if ($[21] !== headerRowMarkerAlwaysVisible || $[22] !== headerRowMarkerDisabled || $[23] !== headerRowMarkerTheme || $[24] !== rowMarkerCheckboxStyle || $[25] !== rowMarkerChecked || $[26] !== rowMarkerTheme || $[27] !== rowMarkerWidth) {
+      if ($2[21] !== headerRowMarkerAlwaysVisible || $2[22] !== headerRowMarkerDisabled || $2[23] !== headerRowMarkerTheme || $2[24] !== rowMarkerCheckboxStyle || $2[25] !== rowMarkerChecked || $2[26] !== rowMarkerTheme || $2[27] !== rowMarkerWidth) {
         t02 = {
           title: "",
           width: rowMarkerWidth,
@@ -20687,22 +19660,22 @@ function useMangledCols(config, columns, rows, gridSelectionRows) {
           headerRowMarkerAlwaysVisible,
           headerRowMarkerDisabled
         };
-        $[21] = headerRowMarkerAlwaysVisible;
-        $[22] = headerRowMarkerDisabled;
-        $[23] = headerRowMarkerTheme;
-        $[24] = rowMarkerCheckboxStyle;
-        $[25] = rowMarkerChecked;
-        $[26] = rowMarkerTheme;
-        $[27] = rowMarkerWidth;
-        $[28] = t02;
+        $2[21] = headerRowMarkerAlwaysVisible;
+        $2[22] = headerRowMarkerDisabled;
+        $2[23] = headerRowMarkerTheme;
+        $2[24] = rowMarkerCheckboxStyle;
+        $2[25] = rowMarkerChecked;
+        $2[26] = rowMarkerTheme;
+        $2[27] = rowMarkerWidth;
+        $2[28] = t02;
       } else {
-        t02 = $[28];
+        t02 = $2[28];
       }
       markerColumns.push(t02);
     }
     if (hasRowStatus) {
       let t02;
-      if ($[29] !== rowStatusTheme || $[30] !== rowStatusWidth) {
+      if ($2[29] !== rowStatusTheme || $2[30] !== rowStatusWidth) {
         t02 = {
           title: "",
           width: rowStatusWidth,
@@ -20711,17 +19684,17 @@ function useMangledCols(config, columns, rows, gridSelectionRows) {
           style: "normal",
           themeOverride: rowStatusTheme
         };
-        $[29] = rowStatusTheme;
-        $[30] = rowStatusWidth;
-        $[31] = t02;
+        $2[29] = rowStatusTheme;
+        $2[30] = rowStatusWidth;
+        $2[31] = t02;
       } else {
-        t02 = $[31];
+        t02 = $2[31];
       }
       markerColumns.push(t02);
     }
     if (hasRowId) {
       let t02;
-      if ($[32] !== rowIdTheme || $[33] !== rowIdWidth) {
+      if ($2[32] !== rowIdTheme || $2[33] !== rowIdWidth) {
         t02 = {
           title: "ID",
           width: rowIdWidth,
@@ -20730,41 +19703,41 @@ function useMangledCols(config, columns, rows, gridSelectionRows) {
           style: "normal",
           themeOverride: rowIdTheme
         };
-        $[32] = rowIdTheme;
-        $[33] = rowIdWidth;
-        $[34] = t02;
+        $2[32] = rowIdTheme;
+        $2[33] = rowIdWidth;
+        $2[34] = t02;
       } else {
-        t02 = $[34];
+        t02 = $2[34];
       }
       markerColumns.push(t02);
     }
-    $[0] = hasRowId;
-    $[1] = hasRowStatus;
-    $[2] = headerRowMarkerAlwaysVisible;
-    $[3] = headerRowMarkerDisabled;
-    $[4] = headerRowMarkerTheme;
-    $[5] = rowIdTheme;
-    $[6] = rowIdWidth;
-    $[7] = rowMarkerCheckboxStyle;
-    $[8] = rowMarkerChecked;
-    $[9] = rowMarkerTheme;
-    $[10] = rowMarkerWidth;
-    $[11] = rowMarkers;
-    $[12] = rowStatusTheme;
-    $[13] = rowStatusWidth;
-    $[14] = showRowNumber;
-    $[15] = markerColumns;
+    $2[0] = hasRowId;
+    $2[1] = hasRowStatus;
+    $2[2] = headerRowMarkerAlwaysVisible;
+    $2[3] = headerRowMarkerDisabled;
+    $2[4] = headerRowMarkerTheme;
+    $2[5] = rowIdTheme;
+    $2[6] = rowIdWidth;
+    $2[7] = rowMarkerCheckboxStyle;
+    $2[8] = rowMarkerChecked;
+    $2[9] = rowMarkerTheme;
+    $2[10] = rowMarkerWidth;
+    $2[11] = rowMarkers;
+    $2[12] = rowStatusTheme;
+    $2[13] = rowStatusWidth;
+    $2[14] = showRowNumber;
+    $2[15] = markerColumns;
   } else {
-    markerColumns = $[15];
+    markerColumns = $2[15];
   }
   let t0;
-  if ($[35] !== columns || $[36] !== markerColumns) {
+  if ($2[35] !== columns || $2[36] !== markerColumns) {
     t0 = [...markerColumns, ...columns];
-    $[35] = columns;
-    $[36] = markerColumns;
-    $[37] = t0;
+    $2[35] = columns;
+    $2[36] = markerColumns;
+    $2[37] = t0;
   } else {
-    t0 = $[37];
+    t0 = $2[37];
   }
   return t0;
 }
@@ -20939,13 +19912,13 @@ function useGetMangledCellContent(params) {
   }, [showTrailingBlankRow, mangledRows, hasRowStatus, onRowStatus, rowStatusTheme, hasRowId, onRowId, rowIdTheme, hasRowMarkers, rowNumberMapper, rowMarkerCheckboxStyle, gridSelectionRows, rowMarkers, rowMarkerStartIndex, onRowMoved, rowMarkerOffset, trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.hint, trailingRowOptions === null || trailingRowOptions === void 0 ? void 0 : trailingRowOptions.addIcon, experimental === null || experimental === void 0 ? void 0 : experimental.strict, getCellContent, showRowNumber, disabledRows]);
 }
 function useMangledOnCellsEdited(onCellsEdited, onCellEdited, rowMarkerOffset) {
-  const $ = compilerRuntimeExports.c(4);
+  const $2 = compilerRuntimeExports.c(4);
   let t0;
-  if ($[0] !== onCellEdited || $[1] !== onCellsEdited || $[2] !== rowMarkerOffset) {
+  if ($2[0] !== onCellEdited || $2[1] !== onCellsEdited || $2[2] !== rowMarkerOffset) {
     t0 = (items) => {
-      const mangledItems = rowMarkerOffset === 0 ? items : items.map((x) => ({
-        ...x,
-        location: [x.location[0] - rowMarkerOffset, x.location[1]]
+      const mangledItems = rowMarkerOffset === 0 ? items : items.map((x2) => ({
+        ...x2,
+        location: [x2.location[0] - rowMarkerOffset, x2.location[1]]
       }));
       const r = onCellsEdited === null || onCellsEdited === void 0 ? void 0 : onCellsEdited(mangledItems);
       if (r !== true) {
@@ -20955,12 +19928,12 @@ function useMangledOnCellsEdited(onCellsEdited, onCellEdited, rowMarkerOffset) {
       }
       return r;
     };
-    $[0] = onCellEdited;
-    $[1] = onCellsEdited;
-    $[2] = rowMarkerOffset;
-    $[3] = t0;
+    $2[0] = onCellEdited;
+    $2[1] = onCellsEdited;
+    $2[2] = rowMarkerOffset;
+    $2[3] = t0;
   } else {
-    t0 = $[3];
+    t0 = $2[3];
   }
   return t0;
 }
@@ -22364,9 +21337,9 @@ const DataEditorImpl = (p2, forwardedRef) => {
     var _gridRef$current3;
     focus();
     const editList = [];
-    for (let x = r.x; x < r.x + r.width; x++) {
-      for (let y = r.y; y < r.y + r.height; y++) {
-        const cellValue = getCellContent([x - rowMarkerOffset, y]);
+    for (let x2 = r.x; x2 < r.x + r.width; x2++) {
+      for (let y2 = r.y; y2 < r.y + r.height; y2++) {
+        const cellValue = getCellContent([x2 - rowMarkerOffset, y2]);
         if (!cellValue.allowOverlay && cellValue.kind !== GridCellKind.Boolean) continue;
         let newVal = void 0;
         if (cellValue.kind === GridCellKind.Custom) {
@@ -22374,7 +21347,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
           const toDelete = getCellRenderer(cellValue);
           const editor = toDelete === null || toDelete === void 0 || (_toDelete$provideEdit = toDelete.provideEditor) === null || _toDelete$provideEdit === void 0 ? void 0 : _toDelete$provideEdit.call(toDelete, {
             ...cellValue,
-            location: [x - rowMarkerOffset, y]
+            location: [x2 - rowMarkerOffset, y2]
           });
           if ((toDelete === null || toDelete === void 0 ? void 0 : toDelete.onDelete) !== void 0) {
             newVal = toDelete.onDelete(cellValue);
@@ -22389,15 +21362,15 @@ const DataEditorImpl = (p2, forwardedRef) => {
         }
         if (newVal !== void 0 && !isInnerOnlyCell(newVal) && isEditableGridCell(newVal)) {
           editList.push({
-            location: [x, y],
+            location: [x2, y2],
             value: newVal
           });
         }
       }
     }
     mangledOnCellsEdited(editList);
-    (_gridRef$current3 = gridRef.current) === null || _gridRef$current3 === void 0 || _gridRef$current3.damage(editList.map((x) => ({
-      cell: x.location
+    (_gridRef$current3 = gridRef.current) === null || _gridRef$current3 === void 0 || _gridRef$current3.damage(editList.map((x2) => ({
+      cell: x2.location
     })));
   }, [focus, getCellContent, getCellRenderer, mangledOnCellsEdited, rowMarkerOffset]);
   const overlayOpen = overlay !== void 0;
@@ -22619,7 +21592,7 @@ const DataEditorImpl = (p2, forwardedRef) => {
       h = totalHeaderHeight + rowsCountWithTrailingRow * avg;
     }
     h += scrollbarWidth;
-    const w2 = mangledCols.reduce((acc, x) => x.width + acc, 0) + scrollbarWidth;
+    const w2 = mangledCols.reduce((acc, x2) => x2.width + acc, 0) + scrollbarWidth;
     return [`${Math.min(1e5, w2)}px`, `${Math.min(1e5, h)}px`];
   }, [mangledCols, experimental === null || experimental === void 0 ? void 0 : experimental.scrollbarWidthOverride, rowHeight, rows, showTrailingBlankRow, totalHeaderHeight]);
   const cssStyle = React.useMemo(() => {
@@ -22726,8 +21699,8 @@ function drawBoolean(args, data, canEdit, maxSize, hoverEffectIntensity) {
     }
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width: w2,
     height: h
   } = rect;
@@ -22745,7 +21718,7 @@ function drawBoolean(args, data, canEdit, maxSize, hoverEffectIntensity) {
       ctx.globalAlpha = alpha;
     }
   }
-  drawCheckbox(ctx, theme, data, x, y, w2, h, highlighted, hoverX, hoverY, maxSize, contentAlign);
+  drawCheckbox(ctx, theme, data, x2, y2, w2, h, highlighted, hoverX, hoverY, maxSize, contentAlign);
   if (shouldRestoreAlpha) {
     ctx.globalAlpha = 1;
   }
@@ -22756,7 +21729,7 @@ const BubblesOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
   propsAsIs: false
 });
 const BubblesOverlayEditor = (p2) => {
-  const $ = compilerRuntimeExports.c(7);
+  const $2 = compilerRuntimeExports.c(7);
   const {
     bubbles
   } = p2;
@@ -22764,33 +21737,33 @@ const BubblesOverlayEditor = (p2) => {
     isGhostMode
   } = React.useContext(GhostModeContext);
   let t0;
-  if ($[0] !== bubbles) {
+  if ($2[0] !== bubbles) {
     t0 = bubbles.map(_temp$2);
-    $[0] = bubbles;
-    $[1] = t0;
+    $2[0] = bubbles;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   const t1 = !isGhostMode;
   let t2;
-  if ($[2] !== t1) {
+  if ($2[2] !== t1) {
     t2 = /* @__PURE__ */ jsx("textarea", { className: "gdg-input", autoFocus: t1 });
-    $[2] = t1;
-    $[3] = t2;
+    $2[2] = t1;
+    $2[3] = t2;
   } else {
-    t2 = $[3];
+    t2 = $2[3];
   }
   let t3;
-  if ($[4] !== t0 || $[5] !== t2) {
+  if ($2[4] !== t0 || $2[5] !== t2) {
     t3 = /* @__PURE__ */ jsxs(BubblesOverlayEditorStyle, { children: [
       t0,
       t2
     ] });
-    $[4] = t0;
-    $[5] = t2;
-    $[6] = t3;
+    $2[4] = t0;
+    $2[5] = t2;
+    $2[6] = t3;
   } else {
-    t3 = $[6];
+    t3 = $2[6];
   }
   return t3;
 };
@@ -22825,15 +21798,15 @@ function drawBubbles(args, data) {
     highlighted
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width: w2,
     height: h
   } = rect;
-  let renderX = x + theme.cellHorizontalPadding;
+  let renderX = x2 + theme.cellHorizontalPadding;
   const renderBoxes = [];
   for (const s of data) {
-    if (renderX > x + w2) break;
+    if (renderX > x2 + w2) break;
     const textWidth = measureTextCached(s, ctx, theme.baseFontFull).width;
     renderBoxes.push({
       x: renderX,
@@ -22844,14 +21817,14 @@ function drawBubbles(args, data) {
   ctx.beginPath();
   for (const rectInfo of renderBoxes) {
     var _theme$roundingRadius;
-    roundedRect(ctx, rectInfo.x, y + (h - theme.bubbleHeight) / 2, rectInfo.width + theme.bubblePadding * 2, theme.bubbleHeight, (_theme$roundingRadius = theme.roundingRadius) !== null && _theme$roundingRadius !== void 0 ? _theme$roundingRadius : theme.bubbleHeight / 2);
+    roundedRect(ctx, rectInfo.x, y2 + (h - theme.bubbleHeight) / 2, rectInfo.width + theme.bubblePadding * 2, theme.bubbleHeight, (_theme$roundingRadius = theme.roundingRadius) !== null && _theme$roundingRadius !== void 0 ? _theme$roundingRadius : theme.bubbleHeight / 2);
   }
   ctx.fillStyle = highlighted ? theme.bgBubbleSelected : theme.bgBubble;
   ctx.fill();
   for (const [i, rectInfo] of renderBoxes.entries()) {
     ctx.beginPath();
     ctx.fillStyle = theme.textBubble;
-    ctx.fillText(data[i], rectInfo.x + theme.bubblePadding, y + h / 2 + getMiddleCenterBias(ctx, theme));
+    ctx.fillText(data[i], rectInfo.x + theme.bubblePadding, y2 + h / 2 + getMiddleCenterBias(ctx, theme));
   }
 }
 const DrilldownOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
@@ -22860,27 +21833,27 @@ const DrilldownOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
   propsAsIs: false
 });
 const DrilldownOverlayEditor = (p2) => {
-  const $ = compilerRuntimeExports.c(4);
+  const $2 = compilerRuntimeExports.c(4);
   const {
     drilldowns
   } = p2;
   let t0;
-  if ($[0] !== drilldowns) {
+  if ($2[0] !== drilldowns) {
     t0 = drilldowns.map(_temp$1);
-    $[0] = drilldowns;
-    $[1] = t0;
+    $2[0] = drilldowns;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   let t1;
-  if ($[2] !== t0) {
+  if ($2[2] !== t0) {
     t1 = /* @__PURE__ */ jsx(DrilldownOverlayEditorStyle, {
       children: t0
     });
-    $[2] = t0;
-    $[3] = t1;
+    $2[2] = t0;
+    $2[3] = t1;
   } else {
-    t1 = $[3];
+    t1 = $2[3];
   }
   return t1;
 };
@@ -22979,22 +21952,22 @@ function drawDrilldownCell(args, data) {
     row
   } = args;
   const {
-    x,
+    x: x2,
     width: w2
   } = rect;
   const font = theme.baseFontFull;
   const emHeight = getEmHeight(ctx, font);
   const h = Math.min(rect.height, Math.max(16, Math.ceil(emHeight * theme.lineHeight) * 2));
-  const y = Math.floor(rect.y + (rect.height - h) / 2);
+  const y2 = Math.floor(rect.y + (rect.height - h) / 2);
   const bubbleHeight = h - 10;
   const bubblePad = theme.bubblePadding;
   const bubbleMargin = theme.bubbleMargin;
-  let renderX = x + theme.cellHorizontalPadding;
+  let renderX = x2 + theme.cellHorizontalPadding;
   const rounding = (_theme$roundingRadius = theme.roundingRadius) !== null && _theme$roundingRadius !== void 0 ? _theme$roundingRadius : 6;
   const tileMap = getAndCacheDrilldownBorder(theme.bgCell, theme.drilldownBorder, h, rounding);
   const renderBoxes = [];
   for (const el of data) {
-    if (renderX > x + w2) break;
+    if (renderX > x2 + w2) break;
     const textMetrics = measureTextCached(el.text, ctx, font);
     const textWidth = textMetrics.width;
     let imgWidth = 0;
@@ -23028,9 +22001,9 @@ function drawDrilldownCell(args, data) {
       const rw = Math.floor(rectInfo.width);
       const outerMiddleWidth = rw - (outerSideWidth - outerPadding) * 2;
       ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(el, 0, 0, sideWidth, height, rx - outerPadding, y, outerSideWidth, h);
-      if (outerMiddleWidth > 0) ctx.drawImage(el, sideWidth, 0, middleWidth, height, rx + (outerSideWidth - outerPadding), y, outerMiddleWidth, h);
-      ctx.drawImage(el, width - sideWidth, 0, sideWidth, height, rx + rw - (outerSideWidth - outerPadding), y, outerSideWidth, h);
+      ctx.drawImage(el, 0, 0, sideWidth, height, rx - outerPadding, y2, outerSideWidth, h);
+      if (outerMiddleWidth > 0) ctx.drawImage(el, sideWidth, 0, middleWidth, height, rx + (outerSideWidth - outerPadding), y2, outerMiddleWidth, h);
+      ctx.drawImage(el, width - sideWidth, 0, sideWidth, height, rx + rw - (outerSideWidth - outerPadding), y2, outerSideWidth, h);
       ctx.imageSmoothingEnabled = true;
     }
   }
@@ -23055,17 +22028,17 @@ function drawDrilldownCell(args, data) {
           srcHeight = srcWidth;
         }
         ctx.beginPath();
-        roundedRect(ctx, drawX, y + h / 2 - imgSize / 2, imgSize, imgSize, (_theme$roundingRadius2 = theme.roundingRadius) !== null && _theme$roundingRadius2 !== void 0 ? _theme$roundingRadius2 : 3);
+        roundedRect(ctx, drawX, y2 + h / 2 - imgSize / 2, imgSize, imgSize, (_theme$roundingRadius2 = theme.roundingRadius) !== null && _theme$roundingRadius2 !== void 0 ? _theme$roundingRadius2 : 3);
         ctx.save();
         ctx.clip();
-        ctx.drawImage(img, srcX, srcY, srcWidth, srcHeight, drawX, y + h / 2 - imgSize / 2, imgSize, imgSize);
+        ctx.drawImage(img, srcX, srcY, srcWidth, srcHeight, drawX, y2 + h / 2 - imgSize / 2, imgSize, imgSize);
         ctx.restore();
         drawX += imgSize + 4;
       }
     }
     ctx.beginPath();
     ctx.fillStyle = theme.textBubble;
-    ctx.fillText(d2.text, drawX, y + h / 2 + getMiddleCenterBias(ctx, theme));
+    ctx.fillText(d2.text, drawX, y2 + h / 2 + getMiddleCenterBias(ctx, theme));
   }
 }
 const imageCellRenderer = {
@@ -23107,7 +22080,7 @@ const imageCellRenderer = {
       } catch {
         return void 0;
       }
-    }).filter((x) => x !== void 0);
+    }).filter((x2) => x2 !== void 0);
     if (uris.length === cell.data.length && uris.every((u, i) => u === cell.data[i])) return void 0;
     return {
       ...cell,
@@ -23126,8 +22099,8 @@ function drawImage(args, data, rounding, contentAlign) {
     imageLoader
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     height: h,
     width: w2
   } = rect;
@@ -23146,27 +22119,27 @@ function drawImage(args, data, rounding, contentAlign) {
   }
   if (totalWidth === 0) return;
   totalWidth -= itemMargin;
-  let drawX = x + theme.cellHorizontalPadding;
-  if (contentAlign === "right") drawX = Math.floor(x + w2 - theme.cellHorizontalPadding - totalWidth);
-  else if (contentAlign === "center") drawX = Math.floor(x + w2 / 2 - totalWidth / 2);
+  let drawX = x2 + theme.cellHorizontalPadding;
+  if (contentAlign === "right") drawX = Math.floor(x2 + w2 - theme.cellHorizontalPadding - totalWidth);
+  else if (contentAlign === "center") drawX = Math.floor(x2 + w2 / 2 - totalWidth / 2);
   for (const img of images) {
     if (img === void 0) continue;
     const imgWidth = img.width * (imgHeight / img.height);
     if (rounding > 0) {
       ctx.beginPath();
-      roundedRect(ctx, drawX, y + theme.cellVerticalPadding, imgWidth, imgHeight, rounding);
+      roundedRect(ctx, drawX, y2 + theme.cellVerticalPadding, imgWidth, imgHeight, rounding);
       ctx.save();
       ctx.clip();
     }
-    ctx.drawImage(img, drawX, y + theme.cellVerticalPadding, imgWidth, imgHeight);
+    ctx.drawImage(img, drawX, y2 + theme.cellVerticalPadding, imgWidth, imgHeight);
     if (rounding > 0) {
       ctx.restore();
     }
     drawX += imgWidth + itemMargin;
   }
 }
-function getRandomNumber(x, y) {
-  let seed = x * 49632 + y * 325176;
+function getRandomNumber(x2, y2) {
+  let seed = x2 * 49632 + y2 * 325176;
   seed ^= seed << 13;
   seed ^= seed >> 17;
   seed ^= seed << 5;
@@ -23217,7 +22190,7 @@ const MarkdownOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
   }
 });
 const MarkdownOverlayEditor = (p2) => {
-  const $ = compilerRuntimeExports.c(30);
+  const $2 = compilerRuntimeExports.c(30);
   const {
     value,
     onChange,
@@ -23234,13 +22207,13 @@ const MarkdownOverlayEditor = (p2) => {
   const readonly = value.readonly === true;
   const [editMode, setEditMode] = React.useState(markdown === "" || forceEditMode);
   let t0;
-  if ($[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t0 = () => {
       setEditMode(_temp);
     };
-    $[0] = t0;
+    $2[0] = t0;
   } else {
-    t0 = $[0];
+    t0 = $2[0];
   }
   const onEditClick = t0;
   const addLeftPad = markdown ? "gdg-ml-6" : "";
@@ -23248,101 +22221,101 @@ const MarkdownOverlayEditor = (p2) => {
     const t12 = targetRect.width - 20;
     const t22 = !isGhostMode;
     let t32;
-    if ($[1] !== markdown || $[2] !== onChange || $[3] !== t22 || $[4] !== validatedSelection) {
+    if ($2[1] !== markdown || $2[2] !== onChange || $2[3] !== t22 || $2[4] !== validatedSelection) {
       t32 = /* @__PURE__ */ jsx(GrowingEntry, { autoFocus: t22, highlight: false, validatedSelection, value: markdown, onKeyDown: _temp2, onChange });
-      $[1] = markdown;
-      $[2] = onChange;
-      $[3] = t22;
-      $[4] = validatedSelection;
-      $[5] = t32;
+      $2[1] = markdown;
+      $2[2] = onChange;
+      $2[3] = t22;
+      $2[4] = validatedSelection;
+      $2[5] = t32;
     } else {
-      t32 = $[5];
+      t32 = $2[5];
     }
     const t42 = `gdg-edit-icon gdg-checkmark-hover ${addLeftPad}`;
     let t52;
-    if ($[6] !== onFinish || $[7] !== value) {
+    if ($2[6] !== onFinish || $2[7] !== value) {
       t52 = () => onFinish(value);
-      $[6] = onFinish;
-      $[7] = value;
-      $[8] = t52;
+      $2[6] = onFinish;
+      $2[7] = value;
+      $2[8] = t52;
     } else {
-      t52 = $[8];
+      t52 = $2[8];
     }
     let t6;
-    if ($[9] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+    if ($2[9] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
       t6 = /* @__PURE__ */ jsx(Checkmark, {});
-      $[9] = t6;
+      $2[9] = t6;
     } else {
-      t6 = $[9];
+      t6 = $2[9];
     }
     let t7;
-    if ($[10] !== t42 || $[11] !== t52) {
+    if ($2[10] !== t42 || $2[11] !== t52) {
       t7 = /* @__PURE__ */ jsx("div", { className: t42, onClick: t52, children: t6 });
-      $[10] = t42;
-      $[11] = t52;
-      $[12] = t7;
+      $2[10] = t42;
+      $2[11] = t52;
+      $2[12] = t7;
     } else {
-      t7 = $[12];
+      t7 = $2[12];
     }
     let t8;
-    if ($[13] !== t12 || $[14] !== t32 || $[15] !== t7) {
+    if ($2[13] !== t12 || $2[14] !== t32 || $2[15] !== t7) {
       t8 = /* @__PURE__ */ jsxs(MarkdownOverlayEditorStyle, { targetWidth: t12, children: [
         t32,
         t7
       ] });
-      $[13] = t12;
-      $[14] = t32;
-      $[15] = t7;
-      $[16] = t8;
+      $2[13] = t12;
+      $2[14] = t32;
+      $2[15] = t7;
+      $2[16] = t8;
     } else {
-      t8 = $[16];
+      t8 = $2[16];
     }
     return t8;
   }
   let t1;
-  if ($[17] !== createNode || $[18] !== markdown) {
+  if ($2[17] !== createNode || $2[18] !== markdown) {
     t1 = /* @__PURE__ */ jsx(MarkdownDiv, { contents: markdown, createNode });
-    $[17] = createNode;
-    $[18] = markdown;
-    $[19] = t1;
+    $2[17] = createNode;
+    $2[18] = markdown;
+    $2[19] = t1;
   } else {
-    t1 = $[19];
+    t1 = $2[19];
   }
   let t2;
-  if ($[20] !== addLeftPad || $[21] !== readonly) {
+  if ($2[20] !== addLeftPad || $2[21] !== readonly) {
     t2 = !readonly && /* @__PURE__ */ jsxs(Fragment, { children: [
       /* @__PURE__ */ jsx("div", { className: "spacer" }),
       /* @__PURE__ */ jsx("div", { className: `gdg-edit-icon gdg-edit-hover ${addLeftPad}`, onClick: onEditClick, children: /* @__PURE__ */ jsx(EditPencil, {}) })
     ] });
-    $[20] = addLeftPad;
-    $[21] = readonly;
-    $[22] = t2;
+    $2[20] = addLeftPad;
+    $2[21] = readonly;
+    $2[22] = t2;
   } else {
-    t2 = $[22];
+    t2 = $2[22];
   }
   const t3 = !isGhostMode;
   let t4;
-  if ($[23] !== t3) {
+  if ($2[23] !== t3) {
     t4 = /* @__PURE__ */ jsx("textarea", { className: "gdg-md-edit-textarea gdg-input", autoFocus: t3 });
-    $[23] = t3;
-    $[24] = t4;
+    $2[23] = t3;
+    $2[24] = t4;
   } else {
-    t4 = $[24];
+    t4 = $2[24];
   }
   let t5;
-  if ($[25] !== t1 || $[26] !== t2 || $[27] !== t4 || $[28] !== targetRect.width) {
+  if ($2[25] !== t1 || $2[26] !== t2 || $2[27] !== t4 || $2[28] !== targetRect.width) {
     t5 = /* @__PURE__ */ jsxs(MarkdownOverlayEditorStyle, { targetWidth: targetRect.width, children: [
       t1,
       t2,
       t4
     ] });
-    $[25] = t1;
-    $[26] = t2;
-    $[27] = t4;
-    $[28] = targetRect.width;
-    $[29] = t5;
+    $2[25] = t1;
+    $2[26] = t2;
+    $2[27] = t4;
+    $2[28] = targetRect.width;
+    $2[29] = t5;
   } else {
-    t5 = $[29];
+    t5 = $2[29];
   }
   return t5;
 };
@@ -23404,8 +22377,8 @@ const markerCellRenderer = {
     const {
       bounds,
       cell,
-      posX: x,
-      posY: y
+      posX: x2,
+      posY: y2
     } = e;
     if (cell.disabled === true) return;
     const {
@@ -23414,7 +22387,7 @@ const markerCellRenderer = {
     } = bounds;
     const centerX = cell.drawHandle ? 7 + (width - 7) / 2 : width / 2;
     const centerY = height / 2;
-    if (Math.abs(x - centerX) <= 10 && Math.abs(y - centerY) <= 10) {
+    if (Math.abs(x2 - centerX) <= 10 && Math.abs(y2 - centerY) <= 10) {
       return {
         ...cell,
         checked: !cell.checked
@@ -23453,31 +22426,31 @@ function drawMarkerRowCell(args, index, checked, markerKind, drawHandle, style, 
       theme: theme2
     } = args;
     const {
-      x: x2,
-      y: y2,
+      x: x22,
+      y: y22,
       width: width2,
       height: height2
     } = rect2;
     const mKind = markerKind === "checkbox" ? "checkbox-visible" : markerKind;
     if (mKind !== "number") {
       ctx2.globalAlpha = checked ? 1 : 0.4;
-      drawCheckbox(ctx2, theme2, checked, drawHandle ? x2 + 7 : x2, y2, drawHandle ? width2 - 7 : width2, height2, false, -20, -20, theme2.checkboxMaxSize, "center", style, true);
+      drawCheckbox(ctx2, theme2, checked, drawHandle ? x22 + 7 : x22, y22, drawHandle ? width2 - 7 : width2, height2, false, -20, -20, theme2.checkboxMaxSize, "center", style, true);
       ctx2.globalAlpha = 1;
     }
     if (mKind === "number" || mKind === "both" && !checked) {
       const text = index.toString();
       const fontStyle = theme2.markerFontFull;
-      const start = x2 + width2 / 2;
+      const start = x22 + width2 / 2;
       ctx2.fillStyle = "#cccccc";
       ctx2.font = fontStyle;
-      ctx2.fillText(text, start, y2 + height2 / 2 + getMiddleCenterBias(ctx2, fontStyle));
+      ctx2.fillText(text, start, y22 + height2 / 2 + getMiddleCenterBias(ctx2, fontStyle));
     }
     if (drawHandle) {
       ctx2.globalAlpha = 0.4;
       ctx2.beginPath();
       for (const xOffset of [3, 6]) {
         for (const yOffset of [-5, -1, 3]) {
-          ctx2.rect(x2 + xOffset, y2 + height2 / 2 + yOffset, 2, 2);
+          ctx2.rect(x22 + xOffset, y22 + height2 / 2 + yOffset, 2, 2);
         }
       }
       ctx2.fillStyle = "#cccccc";
@@ -23494,8 +22467,8 @@ function drawMarkerRowCell(args, index, checked, markerKind, drawHandle, style, 
     theme
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width,
     height
   } = rect;
@@ -23503,13 +22476,13 @@ function drawMarkerRowCell(args, index, checked, markerKind, drawHandle, style, 
   if (markerKind !== "number" && checkedboxAlpha > 0) {
     ctx.globalAlpha = checkedboxAlpha;
     const offsetAmount = 7 * (checked ? hoverAmount : 1);
-    drawCheckbox(ctx, theme, checked, drawHandle ? x + offsetAmount : x, y, drawHandle ? width - offsetAmount : width, height, true, void 0, void 0, theme.checkboxMaxSize, "center", style, disabled);
+    drawCheckbox(ctx, theme, checked, drawHandle ? x2 + offsetAmount : x2, y2, drawHandle ? width - offsetAmount : width, height, true, void 0, void 0, theme.checkboxMaxSize, "center", style, disabled);
     if (drawHandle) {
       ctx.globalAlpha = hoverAmount;
       ctx.beginPath();
       for (const xOffset of [3, 6]) {
         for (const yOffset of [-5, -1, 3]) {
-          ctx.rect(x + xOffset, y + height / 2 + yOffset, 2, 2);
+          ctx.rect(x2 + xOffset, y2 + height / 2 + yOffset, 2, 2);
         }
       }
       ctx.fillStyle = theme.textLight;
@@ -23521,13 +22494,13 @@ function drawMarkerRowCell(args, index, checked, markerKind, drawHandle, style, 
   if (markerKind === "number" || markerKind === "both" && !checked) {
     const text = index.toString();
     const fontStyle = theme.markerFontFull;
-    const start = x + width / 2;
+    const start = x2 + width / 2;
     if (markerKind === "both" && hoverAmount !== 0) {
       ctx.globalAlpha = 1 - hoverAmount;
     }
     ctx.fillStyle = theme.textLight;
     ctx.font = fontStyle;
-    ctx.fillText(text, start, y + height / 2 + getMiddleCenterBias(ctx, fontStyle));
+    ctx.fillText(text, start, y2 + height / 2 + getMiddleCenterBias(ctx, fontStyle));
     if (hoverAmount !== 0) {
       ctx.globalAlpha = 1;
     }
@@ -23551,14 +22524,14 @@ function drawNewRowCell(args, data, icon) {
     spriteManager
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width: w2,
     height: h
   } = rect;
   ctx.beginPath();
   ctx.globalAlpha = hoverAmount;
-  ctx.rect(x + 1, y + 1, w2, h - 2);
+  ctx.rect(x2 + 1, y2 + 1, w2, h - 2);
   ctx.fillStyle = theme.bgHeaderHovered;
   ctx.fill();
   ctx.globalAlpha = 1;
@@ -23568,8 +22541,8 @@ function drawNewRowCell(args, data, icon) {
   if (icon !== void 0) {
     const padding = 8;
     const size = h - padding;
-    const px = x + padding / 2;
-    const py = y + padding / 2;
+    const px = x2 + padding / 2;
+    const py = y2 + padding / 2;
     spriteManager.drawSprite(icon, "normal", ctx, px, py, size, theme, alwaysShowIcon ? 1 : hoverAmount);
     textX = size;
   } else {
@@ -23579,10 +22552,10 @@ function drawNewRowCell(args, data, icon) {
     const xTranslate = alwaysShowIcon ? 0 : (1 - hoverAmount) * finalLineSize * 0.5;
     const padPlus = theme.cellHorizontalPadding + 4;
     if (lineSize > 0) {
-      ctx.moveTo(x + padPlus + xTranslate, y + h / 2);
-      ctx.lineTo(x + padPlus + xTranslate + lineSize, y + h / 2);
-      ctx.moveTo(x + padPlus + xTranslate + lineSize * 0.5, y + h / 2 - lineSize * 0.5);
-      ctx.lineTo(x + padPlus + xTranslate + lineSize * 0.5, y + h / 2 + lineSize * 0.5);
+      ctx.moveTo(x2 + padPlus + xTranslate, y2 + h / 2);
+      ctx.lineTo(x2 + padPlus + xTranslate + lineSize, y2 + h / 2);
+      ctx.moveTo(x2 + padPlus + xTranslate + lineSize * 0.5, y2 + h / 2 - lineSize * 0.5);
+      ctx.lineTo(x2 + padPlus + xTranslate + lineSize * 0.5, y2 + h / 2 + lineSize * 0.5);
       ctx.lineWidth = 2;
       ctx.strokeStyle = theme.bgIconHeader;
       ctx.lineCap = "round";
@@ -23590,7 +22563,7 @@ function drawNewRowCell(args, data, icon) {
     }
   }
   ctx.fillStyle = theme.textMedium;
-  ctx.fillText(data, textX + x + theme.cellHorizontalPadding + 0.5, y + h / 2 + getMiddleCenterBias(ctx, theme));
+  ctx.fillText(data, textX + x2 + theme.cellHorizontalPadding + 0.5, y2 + h / 2 + getMiddleCenterBias(ctx, theme));
   ctx.beginPath();
 }
 function drawEditHoverIndicator(ctx, theme, effectTheme, displayData, rect, hoverAmount, overrideCursor) {
@@ -23618,13 +22591,13 @@ function getHoverEffectRect(ctx, cellRect, displayData, theme, fullSize) {
       height: cellRect.height - padY - 1
     };
   }
-  const m = measureTextCached(displayData, ctx, theme.baseFontFull, "alphabetic");
+  const m2 = measureTextCached(displayData, ctx, theme.baseFontFull, "alphabetic");
   const maxH = cellRect.height - padY;
-  const h = Math.min(maxH, m.actualBoundingBoxAscent * 2.5);
+  const h = Math.min(maxH, m2.actualBoundingBoxAscent * 2.5);
   return {
     x: cellRect.x + padX / 2,
     y: cellRect.y + (cellRect.height - h) / 2 + 1,
-    width: m.width + padX * 3,
+    width: m2.width + padX * 3,
     height: h - 1
   };
 }
@@ -23671,11 +22644,11 @@ const numberCellRenderer = {
       value,
       validatedSelection
     } = p2;
-    return /* @__PURE__ */ jsx(React.Suspense, { fallback: null, children: /* @__PURE__ */ jsx(NumberOverlayEditor$1, { highlight: isHighlighted, disabled: value.readonly === true, value: value.data, fixedDecimals: value.fixedDecimals, allowNegative: value.allowNegative, thousandSeparator: value.thousandSeparator, decimalSeparator: value.decimalSeparator, validatedSelection, onChange: (x) => {
+    return /* @__PURE__ */ jsx(React.Suspense, { fallback: null, children: /* @__PURE__ */ jsx(NumberOverlayEditor$1, { highlight: isHighlighted, disabled: value.readonly === true, value: value.data, fixedDecimals: value.fixedDecimals, allowNegative: value.allowNegative, thousandSeparator: value.thousandSeparator, decimalSeparator: value.decimalSeparator, validatedSelection, onChange: (x2) => {
       var _x$floatValue;
       return onChange({
         ...value,
-        data: Number.isNaN((_x$floatValue = x.floatValue) !== null && _x$floatValue !== void 0 ? _x$floatValue : 0) ? 0 : x.floatValue
+        data: Number.isNaN((_x$floatValue = x2.floatValue) !== null && _x$floatValue !== void 0 ? _x$floatValue : 0) ? 0 : x2.floatValue
       });
     }, onKeyDown: (e) => {
       if (e.key === "Enter" && !e.shiftKey) {
@@ -23717,23 +22690,23 @@ function drawProtectedCell(args) {
     rect
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     height: h
   } = rect;
   ctx.beginPath();
   const radius = 2.5;
-  let xStart = x + theme.cellHorizontalPadding + radius;
-  const center = y + h / 2;
+  let xStart = x2 + theme.cellHorizontalPadding + radius;
+  const center = y2 + h / 2;
   const p2 = Math.cos(degreesToRadians(30)) * radius;
-  const q = Math.sin(degreesToRadians(30)) * radius;
+  const q2 = Math.sin(degreesToRadians(30)) * radius;
   for (let i = 0; i < 12; i++) {
     ctx.moveTo(xStart, center - radius);
     ctx.lineTo(xStart, center + radius);
-    ctx.moveTo(xStart + p2, center - q);
-    ctx.lineTo(xStart - p2, center + q);
-    ctx.moveTo(xStart - p2, center - q);
-    ctx.lineTo(xStart + p2, center + q);
+    ctx.moveTo(xStart + p2, center - q2);
+    ctx.lineTo(xStart - p2, center + q2);
+    ctx.moveTo(xStart - p2, center - q2);
+    ctx.lineTo(xStart + p2, center + q2);
     xStart += 8;
   }
   ctx.lineWidth = 1.1;
@@ -23766,9 +22739,9 @@ const rowIDCellRenderer = {
     ctx.fillStyle = theme.textDark;
     ctx.font = theme.baseFontStyle;
     ctx.textAlign = "left";
-    const x = rect.x + theme.cellHorizontalPadding;
+    const x2 = rect.x + theme.cellHorizontalPadding;
     const centerY = rect.y + rect.height / 2;
-    ctx.fillText(rowId, x, centerY + getMiddleCenterBias(ctx, theme));
+    ctx.fillText(rowId, x2, centerY + getMiddleCenterBias(ctx, theme));
   },
   onClick: () => void 0,
   onPaste: () => void 0
@@ -23815,14 +22788,14 @@ function drawRowIdMarkerCell(args, rowId) {
     theme
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     height
   } = rect;
   ctx.fillStyle = theme.textDark;
   ctx.font = "12px sans-serif";
-  const textX = x + 8;
-  const centerY = y + height / 2;
+  const textX = x2 + 8;
+  const centerY = y2 + height / 2;
   ctx.fillText(rowId, textX, centerY + getMiddleCenterBias(ctx, ctx.font));
 }
 const rowStatusCellRenderer = {
@@ -23866,8 +22839,8 @@ function drawRowStatusCell(args, status) {
     rect
   } = args;
   const {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width,
     height
   } = rect;
@@ -23878,8 +22851,8 @@ function drawRowStatusCell(args, status) {
   };
   ctx.fillStyle = colors[status];
   ctx.font = "bold 14px sans-serif";
-  const centerX = x + width / 2;
-  const centerY = y + height / 2;
+  const centerX = x2 + width / 2;
+  const centerY = y2 + height / 2;
   ctx.fillText(status, centerX, centerY + getMiddleCenterBias(ctx, ctx.font));
 }
 const textCellRenderer = {
@@ -23958,7 +22931,7 @@ const UriOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
   propsAsIs: false
 });
 const UriOverlayEditor = (p2) => {
-  const $ = compilerRuntimeExports.c(17);
+  const $2 = compilerRuntimeExports.c(17);
   const {
     uri,
     onChange,
@@ -23972,85 +22945,85 @@ const UriOverlayEditor = (p2) => {
   } = React.useContext(GhostModeContext);
   const [editMode, setEditMode] = React.useState(!readonly && (uri === "" || forceEditMode));
   let t0;
-  if ($[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
+  if ($2[0] === /* @__PURE__ */ Symbol.for("react.memo_cache_sentinel")) {
     t0 = () => {
       setEditMode(true);
     };
-    $[0] = t0;
+    $2[0] = t0;
   } else {
-    t0 = $[0];
+    t0 = $2[0];
   }
   const onEditClick = t0;
   if (editMode) {
     const t12 = !isGhostMode;
     let t22;
-    if ($[1] !== onChange || $[2] !== t12 || $[3] !== uri || $[4] !== validatedSelection) {
+    if ($2[1] !== onChange || $2[2] !== t12 || $2[3] !== uri || $2[4] !== validatedSelection) {
       t22 = /* @__PURE__ */ jsx(GrowingEntry, { validatedSelection, highlight: true, autoFocus: t12, value: uri, onChange });
-      $[1] = onChange;
-      $[2] = t12;
-      $[3] = uri;
-      $[4] = validatedSelection;
-      $[5] = t22;
+      $2[1] = onChange;
+      $2[2] = t12;
+      $2[3] = uri;
+      $2[4] = validatedSelection;
+      $2[5] = t22;
     } else {
-      t22 = $[5];
+      t22 = $2[5];
     }
     return t22;
   }
   let t1;
-  if ($[6] !== preview || $[7] !== uri) {
+  if ($2[6] !== preview || $2[7] !== uri) {
     t1 = /* @__PURE__ */ jsx("a", { className: "gdg-link-area", href: uri, target: "_blank", rel: "noopener noreferrer", children: preview });
-    $[6] = preview;
-    $[7] = uri;
-    $[8] = t1;
+    $2[6] = preview;
+    $2[7] = uri;
+    $2[8] = t1;
   } else {
-    t1 = $[8];
+    t1 = $2[8];
   }
   let t2;
-  if ($[9] !== readonly) {
+  if ($2[9] !== readonly) {
     t2 = !readonly && /* @__PURE__ */ jsx("div", { className: "gdg-edit-icon", onClick: onEditClick, children: /* @__PURE__ */ jsx(EditPencil, {}) });
-    $[9] = readonly;
-    $[10] = t2;
+    $2[9] = readonly;
+    $2[10] = t2;
   } else {
-    t2 = $[10];
+    t2 = $2[10];
   }
   const t3 = !isGhostMode;
   let t4;
-  if ($[11] !== t3) {
+  if ($2[11] !== t3) {
     t4 = /* @__PURE__ */ jsx("textarea", { className: "gdg-input", autoFocus: t3 });
-    $[11] = t3;
-    $[12] = t4;
+    $2[11] = t3;
+    $2[12] = t4;
   } else {
-    t4 = $[12];
+    t4 = $2[12];
   }
   let t5;
-  if ($[13] !== t1 || $[14] !== t2 || $[15] !== t4) {
+  if ($2[13] !== t1 || $2[14] !== t2 || $2[15] !== t4) {
     t5 = /* @__PURE__ */ jsxs(UriOverlayEditorStyle, { children: [
       t1,
       t2,
       t4
     ] });
-    $[13] = t1;
-    $[14] = t2;
-    $[15] = t4;
-    $[16] = t5;
+    $2[13] = t1;
+    $2[14] = t2;
+    $2[15] = t4;
+    $2[16] = t5;
   } else {
-    t5 = $[16];
+    t5 = $2[16];
   }
   return t5;
 };
 function getTextRect(metrics, rect, theme, contentAlign) {
-  let x = theme.cellHorizontalPadding;
-  const y = rect.height / 2 - metrics.actualBoundingBoxAscent / 2;
+  let x2 = theme.cellHorizontalPadding;
+  const y2 = rect.height / 2 - metrics.actualBoundingBoxAscent / 2;
   const width = metrics.width;
   const height = metrics.actualBoundingBoxAscent;
   if (contentAlign === "right") {
-    x = rect.width - width - theme.cellHorizontalPadding;
+    x2 = rect.width - width - theme.cellHorizontalPadding;
   } else if (contentAlign === "center") {
-    x = rect.width / 2 - width / 2;
+    x2 = rect.width / 2 - width / 2;
   }
   return {
-    x,
-    y,
+    x: x2,
+    y: y2,
     width,
     height
   };
@@ -24066,9 +23039,9 @@ function isOverLinkText(e) {
   } = e;
   const txt = (_cell$displayData = cell.displayData) !== null && _cell$displayData !== void 0 ? _cell$displayData : cell.data;
   if (cell.hoverEffect !== true || cell.onClickUri === void 0) return false;
-  const m = getMeasuredTextCache(txt, theme.baseFontFull);
-  if (m === void 0) return false;
-  const textRect = getTextRect(m, bounds, theme, cell.contentAlign);
+  const m2 = getMeasuredTextCache(txt, theme.baseFontFull);
+  if (m2 === void 0) return false;
+  const textRect = getTextRect(m2, bounds, theme, cell.contentAlign);
   return pointInRect({
     x: textRect.x - 4,
     y: textRect.y - 4,
@@ -24100,22 +23073,22 @@ const uriCellRenderer = {
     const txt = (_cell$displayData2 = cell.displayData) !== null && _cell$displayData2 !== void 0 ? _cell$displayData2 : cell.data;
     const isLinky = cell.hoverEffect === true;
     if (overrideCursor !== void 0 && isLinky && hoverX !== void 0 && hoverY !== void 0) {
-      const m = measureTextCached(txt, ctx, theme.baseFontFull);
-      const textRect = getTextRect(m, rect, theme, cell.contentAlign);
+      const m2 = measureTextCached(txt, ctx, theme.baseFontFull);
+      const textRect = getTextRect(m2, rect, theme, cell.contentAlign);
       const {
-        x,
-        y,
+        x: x2,
+        y: y2,
         width: w2,
         height: h
       } = textRect;
-      if (hoverX >= x - 4 && hoverX <= x - 4 + w2 + 8 && hoverY >= y - 4 && hoverY <= y - 4 + h + 8) {
+      if (hoverX >= x2 - 4 && hoverX <= x2 - 4 + w2 + 8 && hoverY >= y2 - 4 && hoverY <= y2 - 4 + h + 8) {
         const middleCenterBias = getMiddleCenterBias(ctx, theme.baseFontFull);
         overrideCursor("pointer");
         const underlineOffset = 5;
-        const drawY = y - middleCenterBias;
+        const drawY = y2 - middleCenterBias;
         ctx.beginPath();
-        ctx.moveTo(rect.x + x, Math.floor(rect.y + drawY + h + underlineOffset) + 0.5);
-        ctx.lineTo(rect.x + x + w2, Math.floor(rect.y + drawY + h + underlineOffset) + 0.5);
+        ctx.moveTo(rect.x + x2, Math.floor(rect.y + drawY + h + underlineOffset) + 0.5);
+        ctx.lineTo(rect.x + x2 + w2, Math.floor(rect.y + drawY + h + underlineOffset) + 0.5);
         ctx.strokeStyle = theme.linkColor;
         ctx.stroke();
         ctx.save();
@@ -24244,8 +23217,8 @@ class ImageWindowLoaderImpl extends WindowingTrackerBase {
       for (const key of keys) {
         const obj = this.cache[key];
         let keep = false;
-        for (let j = 0; j < obj.cells.length; j++) {
-          const packed = obj.cells[j];
+        for (let j2 = 0; j2 < obj.cells.length; j2++) {
+          const packed = obj.cells[j2];
           if (this.isInWindow(packed)) {
             keep = true;
             break;
@@ -24320,41 +23293,41 @@ class ImageWindowLoaderImpl extends WindowingTrackerBase {
 }
 const DataEditorAllImpl = (p2, ref) => {
   var _p$renderers;
-  const $ = compilerRuntimeExports.c(10);
+  const $2 = compilerRuntimeExports.c(10);
   let t0;
-  if ($[0] !== p2.headerIcons) {
+  if ($2[0] !== p2.headerIcons) {
     t0 = {
       ...sprites,
       ...p2.headerIcons
     };
-    $[0] = p2.headerIcons;
-    $[1] = t0;
+    $2[0] = p2.headerIcons;
+    $2[1] = t0;
   } else {
-    t0 = $[1];
+    t0 = $2[1];
   }
   const allSprites = t0;
   const renderers = (_p$renderers = p2.renderers) !== null && _p$renderers !== void 0 ? _p$renderers : AllCellRenderers;
   let t1;
-  if ($[2] !== p2.imageWindowLoader) {
+  if ($2[2] !== p2.imageWindowLoader) {
     var _p$imageWindowLoader;
     t1 = (_p$imageWindowLoader = p2.imageWindowLoader) !== null && _p$imageWindowLoader !== void 0 ? _p$imageWindowLoader : new ImageWindowLoaderImpl();
-    $[2] = p2.imageWindowLoader;
-    $[3] = t1;
+    $2[2] = p2.imageWindowLoader;
+    $2[3] = t1;
   } else {
-    t1 = $[3];
+    t1 = $2[3];
   }
   const imageWindowLoader = t1;
   let t2;
-  if ($[4] !== allSprites || $[5] !== imageWindowLoader || $[6] !== p2 || $[7] !== ref || $[8] !== renderers) {
+  if ($2[4] !== allSprites || $2[5] !== imageWindowLoader || $2[6] !== p2 || $2[7] !== ref || $2[8] !== renderers) {
     t2 = /* @__PURE__ */ jsx(DataEditor, { ...p2, renderers, headerIcons: allSprites, ref, imageWindowLoader });
-    $[4] = allSprites;
-    $[5] = imageWindowLoader;
-    $[6] = p2;
-    $[7] = ref;
-    $[8] = renderers;
-    $[9] = t2;
+    $2[4] = allSprites;
+    $2[5] = imageWindowLoader;
+    $2[6] = p2;
+    $2[7] = ref;
+    $2[8] = renderers;
+    $2[9] = t2;
   } else {
-    t2 = $[9];
+    t2 = $2[9];
   }
   return t2;
 };
@@ -24554,18 +23527,18 @@ function setCaretPosition(el, caretPos) {
   }
 }
 var findChangeRange = memoizeOnce(function(prevValue, newValue) {
-  var i = 0, j = 0;
+  var i = 0, j2 = 0;
   var prevLength = prevValue.length;
   var newLength = newValue.length;
   while (prevValue[i] === newValue[i] && i < prevLength) {
     i++;
   }
-  while (prevValue[prevLength - 1 - j] === newValue[newLength - 1 - j] && newLength - j > i && prevLength - j > i) {
-    j++;
+  while (prevValue[prevLength - 1 - j2] === newValue[newLength - 1 - j2] && newLength - j2 > i && prevLength - j2 > i) {
+    j2++;
   }
   return {
-    from: { start: i, end: prevLength - j },
-    to: { start: i, end: newLength - j }
+    from: { start: i, end: prevLength - j2 },
+    to: { start: i, end: newLength - j2 }
   };
 });
 var findChangedRangeFromCaretPositions = function(lastCaretPositions, currentCaretPosition) {
@@ -24621,17 +23594,17 @@ function getCaretPosition(newFormattedValue, lastFormattedValue, curValue, curCa
   var indexMap = new Array(curValLn);
   for (var i = 0; i < curValLn; i++) {
     indexMap[i] = -1;
-    for (var j = 0, jLn = formattedValueLn; j < jLn; j++) {
+    for (var j2 = 0, jLn = formattedValueLn; j2 < jLn; j2++) {
       var isCharSame = isCharacterSame({
         currentValue: curValue,
         lastValue: lastFormattedValue,
         formattedValue: newFormattedValue,
         currentValueIndex: i,
-        formattedValueIndex: j
+        formattedValueIndex: j2
       });
-      if (isCharSame && addedIndexMap[j] !== true) {
-        indexMap[i] = j;
-        addedIndexMap[j] = true;
+      if (isCharSame && addedIndexMap[j2] !== true) {
+        indexMap[i] = j2;
+        addedIndexMap[j2] = true;
         break;
       }
     }
@@ -25381,7 +24354,7 @@ function getThousandSeprator() {
   return getDecimalSeparator() === "." ? "," : ".";
 }
 const NumberOverlayEditor = (p2) => {
-  const $ = compilerRuntimeExports.c(25);
+  const $2 = compilerRuntimeExports.c(25);
   const {
     value,
     onChange,
@@ -25400,7 +24373,7 @@ const NumberOverlayEditor = (p2) => {
   } = React.useContext(GhostModeContext);
   let t0;
   let t1;
-  if ($[0] !== validatedSelection) {
+  if ($2[0] !== validatedSelection) {
     t0 = () => {
       if (validatedSelection !== void 0) {
         var _inputRef$current;
@@ -25409,77 +24382,77 @@ const NumberOverlayEditor = (p2) => {
       }
     };
     t1 = [validatedSelection];
-    $[0] = validatedSelection;
-    $[1] = t0;
-    $[2] = t1;
+    $2[0] = validatedSelection;
+    $2[1] = t0;
+    $2[2] = t1;
   } else {
-    t0 = $[1];
-    t1 = $[2];
+    t0 = $2[1];
+    t1 = $2[2];
   }
   React.useLayoutEffect(t0, t1);
   let t2;
-  if ($[3] !== isGhostMode) {
+  if ($2[3] !== isGhostMode) {
     t2 = isGhostMode ? {
       visibility: "hidden"
     } : void 0;
-    $[3] = isGhostMode;
-    $[4] = t2;
+    $2[3] = isGhostMode;
+    $2[4] = t2;
   } else {
-    t2 = $[4];
+    t2 = $2[4];
   }
   const ghostStyle = t2;
   const t3 = !isGhostMode;
   let t4;
-  if ($[5] !== highlight) {
+  if ($2[5] !== highlight) {
     t4 = (e) => e.target.setSelectionRange(highlight ? 0 : e.target.value.length, e.target.value.length);
-    $[5] = highlight;
-    $[6] = t4;
+    $2[5] = highlight;
+    $2[6] = t4;
   } else {
-    t4 = $[6];
+    t4 = $2[6];
   }
   const t5 = disabled === true;
   let t6;
-  if ($[7] !== thousandSeparator) {
+  if ($2[7] !== thousandSeparator) {
     t6 = thousandSeparator !== null && thousandSeparator !== void 0 ? thousandSeparator : getThousandSeprator();
-    $[7] = thousandSeparator;
-    $[8] = t6;
+    $2[7] = thousandSeparator;
+    $2[8] = t6;
   } else {
-    t6 = $[8];
+    t6 = $2[8];
   }
   let t7;
-  if ($[9] !== decimalSeparator) {
+  if ($2[9] !== decimalSeparator) {
     t7 = decimalSeparator !== null && decimalSeparator !== void 0 ? decimalSeparator : getDecimalSeparator();
-    $[9] = decimalSeparator;
-    $[10] = t7;
+    $2[9] = decimalSeparator;
+    $2[10] = t7;
   } else {
-    t7 = $[10];
+    t7 = $2[10];
   }
   const t8 = Object.is(value, 0) ? "-" : value !== null && value !== void 0 ? value : "";
   let t9;
-  if ($[11] !== allowNegative || $[12] !== fixedDecimals || $[13] !== onChange || $[14] !== onKeyDown || $[15] !== t3 || $[16] !== t4 || $[17] !== t5 || $[18] !== t6 || $[19] !== t7 || $[20] !== t8) {
+  if ($2[11] !== allowNegative || $2[12] !== fixedDecimals || $2[13] !== onChange || $2[14] !== onKeyDown || $2[15] !== t3 || $2[16] !== t4 || $2[17] !== t5 || $2[18] !== t6 || $2[19] !== t7 || $2[20] !== t8) {
     t9 = /* @__PURE__ */ jsx(NumericFormat, { autoFocus: t3, getInputRef: inputRef, className: "gdg-input", onFocus: t4, onKeyDown, disabled: t5, decimalScale: fixedDecimals, allowNegative, thousandSeparator: t6, decimalSeparator: t7, value: t8, onValueChange: onChange });
-    $[11] = allowNegative;
-    $[12] = fixedDecimals;
-    $[13] = onChange;
-    $[14] = onKeyDown;
-    $[15] = t3;
-    $[16] = t4;
-    $[17] = t5;
-    $[18] = t6;
-    $[19] = t7;
-    $[20] = t8;
-    $[21] = t9;
+    $2[11] = allowNegative;
+    $2[12] = fixedDecimals;
+    $2[13] = onChange;
+    $2[14] = onKeyDown;
+    $2[15] = t3;
+    $2[16] = t4;
+    $2[17] = t5;
+    $2[18] = t6;
+    $2[19] = t7;
+    $2[20] = t8;
+    $2[21] = t9;
   } else {
-    t9 = $[21];
+    t9 = $2[21];
   }
   let t10;
-  if ($[22] !== ghostStyle || $[23] !== t9) {
+  if ($2[22] !== ghostStyle || $2[23] !== t9) {
     t10 = /* @__PURE__ */ jsx(NumberOverlayEditorStyle, { style: ghostStyle, children: t9 });
-    $[22] = ghostStyle;
-    $[23] = t9;
-    $[24] = t10;
+    $2[22] = ghostStyle;
+    $2[23] = t9;
+    $2[24] = t10;
   } else {
-    t10 = $[24];
+    t10 = $2[24];
   }
   return t10;
 };

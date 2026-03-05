@@ -46,7 +46,11 @@ module.exports = {
         return mergeConfig(config, {
             plugins: [
                 reactCompilerPlugin(),
-                wyw.default(),
+                wyw.default({
+                    babelOptions: {
+                        presets: ["@babel/preset-typescript", "@babel/preset-react"],
+                    },
+                }),
             ],
             optimizeDeps: {
                 exclude: ["@faker-js/faker"],
