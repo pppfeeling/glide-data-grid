@@ -4,6 +4,7 @@ export const SearchWrapper = styled.div`
     position: absolute;
     top: 4px;
     right: 20px;
+    z-index: 1;
 
     background-color: var(--gdg-bg-cell);
     color: var(--gdg-text-dark);
