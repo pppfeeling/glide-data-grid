@@ -2152,6 +2152,8 @@ export declare interface Theme {
     horizontalBorderColor?: string;
     headerBottomBorderColor?: string;
     roundingRadius?: number;
+    treeIndent?: number;
+    treeIconSize?: number;
 }
 
 /** @category Cells */

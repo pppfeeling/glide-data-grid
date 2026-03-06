@@ -2,15 +2,14 @@ import React from "react";
 import { DataEditorAll as DataEditor } from "../../data-editor-all.js";
 import {
     GridCellKind,
-    type CustomCell,
-    type CustomRenderer,
+    type EditableGridCell,
     type Item,
-    getMiddleCenterBias,
 } from "../../index.js";
 import { type RowGroupingOptions, type RowGroup } from "../../data-editor/row-grouping.js";
 import { useRowGrouping, updateRowGroupingByPath, getRowGroupingForPath } from "../../data-editor/row-grouping-api.js";
 import { BeautifulWrapper, Description, defaultProps } from "../stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
+import { treeCellRenderer, type TreeCell } from "../../cells/tree-cell.js";
 
 export default {
     title: "Glide-Data-Grid/DataEditor Demos",
@@ -148,132 +147,6 @@ function buildRowGroupingGroups(flatRows: readonly FlatTreeItem<any>[]): readonl
     return buildGroups(0, flatRows.length, 0);
 }
 
-// ─── TreeCell custom renderer ──────────────────────────────────────────────────
-interface TreeCellData {
-    readonly kind: "tree-cell";
-    readonly text: string;
-    // mirrors FlatTreeItem metadata
-    readonly level: number;
-    readonly child: boolean;
-    readonly isExpanded: boolean;
-    readonly last: boolean;
-    readonly parentContinues: readonly boolean[];
-}
-
-type TreeCell = CustomCell<TreeCellData>;
-
-const INDENT = 18;
-const ICON_SIZE = 13;
-
-const treeCellRenderer: CustomRenderer<TreeCell> = {
-    kind: GridCellKind.Custom,
-    isMatch: (c): c is TreeCell => (c.data as any).kind === "tree-cell",
-    needsHover: true,
-    needsHoverPosition: true,
-
-    draw: (args, cell) => {
-        const { ctx, rect, theme, hoverX, hoverY, overrideCursor } = args;
-        const { text, level, child, isExpanded, last, parentContinues } = cell.data;
-
-        const leftPad = 8;
-        const x0 = rect.x + leftPad;
-        const cy = rect.y + rect.height / 2;
-
-        // Centre x of slot d
-        const slotX = (d: number) => x0 + d * INDENT + INDENT / 2 + 0.5;
-
-        // Text always starts at the slot after the current level
-        const textX = x0 + (level + 1) * INDENT + 4;
-
-        ctx.save();
-        ctx.strokeStyle = "#bbb";
-        ctx.lineWidth = 1;
-
-        // ── Ancestor slots 0…level-1: draw full-height │ where ancestor continues ──
-        for (let d = 0; d < level; d++) {
-            if (parentContinues[d]) {
-                const lx = slotX(d);
-                ctx.beginPath();
-                ctx.moveTo(lx, rect.y);
-                ctx.lineTo(lx, rect.y + rect.height);
-                ctx.stroke();
-            }
-        }
-
-        // ── Current slot (level): icon for child rows, ├─ / └─ for leaf rows ──
-        const connX = slotX(level);
-
-        if (child) {
-            // Box icon centred at connX
-            const iconLeft = Math.round(connX - ICON_SIZE / 2 - 0.5);
-            const iconTop = Math.round(cy - ICON_SIZE / 2);
-
-            const relX = hoverX ?? -999;
-            const relY = hoverY ?? -999;
-            const isHovering =
-                relX >= iconLeft - rect.x - 2 &&
-                relX <= iconLeft - rect.x + ICON_SIZE + 2 &&
-                relY >= iconTop - rect.y - 2 &&
-                relY <= iconTop - rect.y + ICON_SIZE + 2;
-
-            if (isHovering && overrideCursor !== undefined) overrideCursor("pointer");
-
-            ctx.fillStyle = isHovering ? "#e8f0fe" : theme.bgCell;
-            ctx.strokeStyle = "#888";
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.rect(iconLeft + 0.5, iconTop + 0.5, ICON_SIZE, ICON_SIZE);
-            ctx.fill();
-            ctx.stroke();
-
-            // − when expanded, + when collapsed
-            ctx.strokeStyle = "#555";
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.moveTo(iconLeft + 3, cy);
-            ctx.lineTo(iconLeft + ICON_SIZE - 2, cy);
-            if (!isExpanded) {
-                ctx.moveTo(Math.round(connX), iconTop + 3);
-                ctx.lineTo(Math.round(connX), iconTop + ICON_SIZE - 2);
-            }
-            ctx.stroke();
-        } else {
-            // ├─  (last=false): vertical runs full cell height
-            // └─  (last=true):  vertical runs only to row centre
-            ctx.strokeStyle = "#bbb";
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(connX, rect.y);
-            ctx.lineTo(connX, last ? cy : rect.y + rect.height);
-            ctx.moveTo(connX, cy);
-            ctx.lineTo(textX - 2, cy);
-            ctx.stroke();
-        }
-
-        // ── Text ────────────────────────────────────────────────────────────────
-        const maxTextWidth = rect.x + rect.width - textX - 4;
-
-        ctx.font = theme.baseFontFull;
-        ctx.fillStyle = theme.textDark;
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "left";
-
-        ctx.beginPath();
-        ctx.rect(textX, rect.y, Math.max(0, maxTextWidth), rect.height);
-        ctx.clip();
-        ctx.fillText(text, textX, cy + getMiddleCenterBias(ctx, theme));
-
-        ctx.restore();
-        return true;
-    },
-
-    measure: (ctx, cell, theme) => {
-        const { text, level } = cell.data;
-        const textStart = 8 + (level + 1) * INDENT + 4;
-        return textStart + ctx.measureText(text).width + theme.cellHorizontalPadding;
-    },
-};
-
 // ─── Sample menu data ──────────────────────────────────────────────────────────
 interface MenuItem {
     menu_cd: string;
@@ -316,10 +189,12 @@ const COLUMNS = [
 
 // ─── Story ─────────────────────────────────────────────────────────────────────
 export const TreeView = () => {
+    const [menuData, setMenuData] = React.useState<MenuItem[]>(() => [...MENU_DATA]);
+
     // hierachyTransformByKey: flat array → nested tree → flat DFS rows with metadata
     const flatRows = React.useMemo(
-        () => hierachyTransformByKey(MENU_DATA, "menu_cd", "up_menu_cd", "children", "ROOT", "sort"),
-        []
+        () => hierachyTransformByKey(menuData, "menu_cd", "up_menu_cd", "children", "ROOT", null),
+        [menuData]
     );
 
     const totalRows = flatRows.length;
@@ -329,8 +204,8 @@ export const TreeView = () => {
     const [rowGrouping, setRowGrouping] = React.useState<RowGroupingOptions>(() => ({
         groups: initialGroups,
         height: 34,
-        navigationBehavior: "block",
-        selectionBehavior: "block-spanning",
+        navigationBehavior: "normal",
+        selectionBehavior: "allow-spanning",
         themeOverride: { bgCell: "#f0f4ff" },
     }));
 
@@ -353,8 +228,7 @@ export const TreeView = () => {
                 case 0:
                     return {
                         kind: GridCellKind.Custom,
-                        allowOverlay: false,
-                        readonly: true,
+                        allowOverlay: true,
                         copyData: menuItem.menu_nm,
                         data: {
                             kind: "tree-cell",
@@ -371,7 +245,7 @@ export const TreeView = () => {
                         kind: GridCellKind.Text,
                         data: menuItem.menu_cd,
                         displayData: menuItem.menu_cd,
-                        allowOverlay: false,
+                        allowOverlay: true,
                         style: menuItem.url ? "faded" : "normal",
                         themeOverride: menuItem.url ? { textDark: "#1565c0", fontStyle: "bold" } : undefined,
                     } as any;
@@ -380,14 +254,14 @@ export const TreeView = () => {
                         kind: GridCellKind.Text,
                         data: menuItem.url,
                         displayData: menuItem.url,
-                        allowOverlay: false,
+                        allowOverlay: true,
                     };
                 case 3:
                     return {
                         kind: GridCellKind.Number,
                         data: menuItem.sort,
                         displayData: String(menuItem.sort),
-                        allowOverlay: false,
+                        allowOverlay: true,
                         contentAlign: "center",
                     };
                 case 4:
@@ -422,6 +296,37 @@ export const TreeView = () => {
         [mapper, rowGrouping.groups]
     );
 
+    const onCellEdited = React.useCallback(
+        (item: Item, newValue: EditableGridCell) => {
+            const [col, row] = item;
+            const { originalIndex } = mapper([col, row]);
+            const flatRow = flatRows[originalIndex[1]];
+            if (flatRow === undefined) return;
+
+            const menuCd = flatRow.data.menu_cd;
+            setMenuData(prev =>
+                prev.map(m => {
+                    if (m.menu_cd !== menuCd) return m;
+                    switch (col) {
+                        case 0:
+                            return { ...m, menu_nm: (newValue as any).data.text as string };
+                        case 1:
+                            return { ...m, menu_cd: (newValue as any).data as string };
+                        case 2:
+                            return { ...m, url: (newValue as any).data as string };
+                        case 3:
+                            return { ...m, sort: (newValue as any).data as number };
+                        case 4:
+                            return { ...m, use_yn: (newValue as any).data as boolean };
+                        default:
+                            return m;
+                    }
+                })
+            );
+        },
+        [mapper, flatRows]
+    );
+
     const customRenderers = React.useMemo(() => [treeCellRenderer], []);
 
     return (
@@ -434,6 +339,7 @@ export const TreeView = () => {
             getCellContent={getCellContent}
             rowGrouping={rowGrouping}
             onCellClicked={onCellClicked}
+            onCellEdited={onCellEdited}
             customRenderers={customRenderers}
             rowMarkers="none"
             verticalBorder={true}
