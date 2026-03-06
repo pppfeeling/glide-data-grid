@@ -91,21 +91,23 @@ export function drawHighlightRings(
             if (rect.y + rect.height >= rows) {
                 bottomRightBounds.height -= 1;
             }
+            const rawRect = {
+                x: topLeftBounds.x,
+                y: topLeftBounds.y,
+                width: bottomRightBounds.x + bottomRightBounds.width - topLeftBounds.x,
+                height: bottomRightBounds.y + bottomRightBounds.height - topLeftBounds.y,
+            };
+
+            if (h.clipLeftPx !== undefined && h.clipLeftPx > 0) {
+                rawRect.x += h.clipLeftPx;
+                rawRect.width -= h.clipLeftPx;
+            }
+
             return {
                 color: h.color,
                 style,
                 clip: arg.clip,
-                rect: hugRectToTarget(
-                    {
-                        x: topLeftBounds.x,
-                        y: topLeftBounds.y,
-                        width: bottomRightBounds.x + bottomRightBounds.width - topLeftBounds.x,
-                        height: bottomRightBounds.y + bottomRightBounds.height - topLeftBounds.y,
-                    },
-                    width,
-                    height,
-                    8
-                ),
+                rect: hugRectToTarget(rawRect, width, height, 8),
             };
         });
     });

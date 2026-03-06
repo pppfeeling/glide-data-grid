@@ -300,6 +300,7 @@ export declare interface CustomCell<T extends {} = {}> extends BaseGridCell {
 export declare interface CustomRenderer<T extends CustomCell = CustomCell> extends BaseCellRenderer<T> {
     readonly isMatch: (cell: CustomCell) => cell is T;
     readonly onPaste?: (val: string, cellData: T["data"]) => T["data"] | undefined;
+    readonly getContentLeftOffset?: (cell: T, theme: FullTheme) => number | undefined;
 }
 
 declare type DamageUpdateList = readonly {
@@ -1474,6 +1475,7 @@ declare interface Highlight_2 {
     readonly color: string;
     readonly range: Rectangle;
     readonly style?: "dashed" | "solid" | "no-outline" | "solid-outline";
+    readonly clipLeftPx?: number;
 }
 export { Highlight_2 as Highlight }
 

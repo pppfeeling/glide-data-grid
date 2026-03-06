@@ -211,9 +211,22 @@ export const TreeView = () => {
 
     const { mapper } = useRowGrouping(rowGrouping, totalRows);
 
+    const toggleGroup = React.useCallback(
+        (path: readonly number[]) => {
+            const group = getRowGroupingForPath(rowGrouping.groups, path);
+            setRowGrouping(prev => ({
+                ...prev,
+                groups: updateRowGroupingByPath(prev.groups, path, {
+                    isCollapsed: !group.isCollapsed,
+                }),
+            }));
+        },
+        [rowGrouping.groups]
+    );
+
     const getCellContent = React.useCallback(
         ([col, row]: Item) => {
-            const { originalIndex, isGroupHeader } = mapper([col, row]);
+            const { originalIndex, isGroupHeader, path } = mapper([col, row]);
             const flatRow = flatRows[originalIndex[1]];
             if (flatRow === undefined) {
                 return { kind: GridCellKind.Text, data: "", displayData: "", allowOverlay: false };
@@ -238,6 +251,7 @@ export const TreeView = () => {
                             isExpanded,
                             last,
                             parentContinues,
+                            onToggle: isGroupHeader ? () => toggleGroup(path) : undefined,
                         },
                     } as TreeCell;
                 case 1:
@@ -274,26 +288,7 @@ export const TreeView = () => {
                     return { kind: GridCellKind.Text, data: "", displayData: "", allowOverlay: false };
             }
         },
-        [flatRows, mapper, rowGrouping]
-    );
-
-    const onCellClicked = React.useCallback(
-        (item: Item) => {
-            const [col] = item;
-            if (col !== 0) return;
-
-            const { path, isGroupHeader } = mapper(item);
-            if (!isGroupHeader) return;
-
-            const group = getRowGroupingForPath(rowGrouping.groups, path);
-            setRowGrouping(prev => ({
-                ...prev,
-                groups: updateRowGroupingByPath(prev.groups, path, {
-                    isCollapsed: !group.isCollapsed,
-                }),
-            }));
-        },
-        [mapper, rowGrouping.groups]
+        [flatRows, mapper, rowGrouping, toggleGroup]
     );
 
     const onCellEdited = React.useCallback(
@@ -338,7 +333,6 @@ export const TreeView = () => {
             rows={totalRows}
             getCellContent={getCellContent}
             rowGrouping={rowGrouping}
-            onCellClicked={onCellClicked}
             onCellEdited={onCellEdited}
             customRenderers={customRenderers}
             rowMarkers="none"

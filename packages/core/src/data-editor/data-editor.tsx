@@ -506,6 +506,39 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
     const highlightFocusCol = highlightFocus?.[0];
     const highlightFocusRow = highlightFocus?.[1];
 
+    const rowsRef = React.useRef(rows);
+    rowsRef.current = rows;
+
+    const getMangledCellContent = useGetMangledCellContent({
+        config: rowMarkerConfig,
+        showTrailingBlankRow,
+        mangledRows,
+        onRowStatus,
+        onRowId,
+        rowNumberMapper,
+        gridSelectionRows: gridSelection.rows,
+        onRowMoved,
+        trailingRowOptions,
+        experimental,
+        getCellContent,
+        disabledRows: p.disabledRows,
+        mangledCols,
+        visibleRegionRef,
+        rowsRef,
+    });
+
+    const focusCellClipLeft = React.useMemo(() => {
+        if (highlightFocusCol === undefined || highlightFocusRow === undefined) return undefined;
+        const cell = getMangledCellContent([highlightFocusCol, highlightFocusRow]);
+        if (cell.kind === GridCellKind.Custom) {
+            const renderer = getCellRenderer(cell);
+            if (renderer !== undefined && "getContentLeftOffset" in renderer) {
+                return (renderer as any).getContentLeftOffset(cell, mergedTheme);
+            }
+        }
+        return undefined;
+    }, [highlightFocusCol, highlightFocusRow, getMangledCellContent, getCellRenderer, mergedTheme]);
+
     const highlightRegions = React.useMemo(() => {
         if (
             (highlightRegionsIn === undefined || highlightRegionsIn.length === 0) &&
@@ -558,12 +591,14 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
                     height: 1,
                 },
                 style: "solid-outline",
+                clipLeftPx: focusCellClipLeft,
             });
         }
 
         return regions.length > 0 ? regions : undefined;
     }, [
         fillHighlightRegion,
+        focusCellClipLeft,
         highlightRange,
         highlightFocusCol,
         highlightFocusRow,
@@ -572,28 +607,6 @@ const DataEditorImpl: React.ForwardRefRenderFunction<DataEditorRef, DataEditorPr
         mergedTheme.accentColor,
         rowMarkerOffset,
     ]);
-
-    const rowsRef = React.useRef(rows);
-    rowsRef.current = rows;
-
-    const getMangledCellContent = useGetMangledCellContent({
-        config: rowMarkerConfig,
-        showTrailingBlankRow,
-        mangledRows,
-        onRowStatus,
-        onRowId,
-        rowNumberMapper,
-        gridSelectionRows: gridSelection.rows,
-        onRowMoved,
-        trailingRowOptions,
-        experimental,
-        getCellContent,
-        disabledRows: p.disabledRows,
-        mangledCols,
-        visibleRegionRef,
-        rowsRef,
-    });
-
 
     const reselect = React.useCallback(
         (bounds: Rectangle, activation: CellActivatedEventArgs, initialValue?: string) => {

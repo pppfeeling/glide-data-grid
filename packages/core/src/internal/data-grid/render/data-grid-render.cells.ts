@@ -58,6 +58,7 @@ export interface Highlight {
     readonly color: string;
     readonly range: Rectangle;
     readonly style?: "dashed" | "solid" | "no-outline" | "solid-outline";
+    readonly clipLeftPx?: number;
 }
 
 // preppable items:
