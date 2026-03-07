@@ -475,11 +475,100 @@ export function drawGrid(arg: DrawGridArg, lastArg: DrawGridArg | undefined) {
 
         if (damageInView) {
             doDamage(targetCtx);
+
+            // 데미지 렌더링 후 하이라이트 링(포커스 렉트)을 다시 그려서
+            // 셀 재렌더링에 의해 덮어쓰여진 포커스 보더를 복원
+            drawHighlightRings(
+                targetCtx,
+                width,
+                height,
+                cellXOffset,
+                cellYOffset,
+                translateX,
+                translateY,
+                mappedColumns,
+                freezeColumns,
+                headerHeight,
+                totalGroupHeaderHeight,
+                rowHeight,
+                freezeTrailingRows,
+                rows,
+                highlightRegions,
+                theme,
+                groupLevels,
+                groupHeaderHeights
+            );
+            if (drawFocus) {
+                drawFillHandle(
+                    targetCtx,
+                    width,
+                    height,
+                    cellYOffset,
+                    translateX,
+                    translateY,
+                    effectiveCols,
+                    mappedColumns,
+                    theme,
+                    totalHeaderHeight,
+                    selection,
+                    getRowHeight,
+                    getCellContent,
+                    freezeTrailingRows,
+                    hasAppendRow,
+                    fillHandle,
+                    rows
+                );
+            }
+
             if (mainCtx !== null) {
                 mainCtx.save();
                 mainCtx.scale(dpr, dpr);
                 mainCtx.textBaseline = "middle";
                 doDamage(mainCtx);
+
+                // mainCtx에도 동일하게 하이라이트 링 복원
+                drawHighlightRings(
+                    mainCtx,
+                    width,
+                    height,
+                    cellXOffset,
+                    cellYOffset,
+                    translateX,
+                    translateY,
+                    mappedColumns,
+                    freezeColumns,
+                    headerHeight,
+                    totalGroupHeaderHeight,
+                    rowHeight,
+                    freezeTrailingRows,
+                    rows,
+                    highlightRegions,
+                    theme,
+                    groupLevels,
+                    groupHeaderHeights
+                );
+                if (drawFocus) {
+                    drawFillHandle(
+                        mainCtx,
+                        width,
+                        height,
+                        cellYOffset,
+                        translateX,
+                        translateY,
+                        effectiveCols,
+                        mappedColumns,
+                        theme,
+                        totalHeaderHeight,
+                        selection,
+                        getRowHeight,
+                        getCellContent,
+                        freezeTrailingRows,
+                        hasAppendRow,
+                        fillHandle,
+                        rows
+                    );
+                }
+
                 mainCtx.restore();
             }
 

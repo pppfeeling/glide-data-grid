@@ -154,6 +154,7 @@ packages/core/src/
 | 스크롤링/가상화/DnD | `17-scrolling-and-virtualization.md` |
 | 검색 UI/오버레이 에디터 | `18-search-and-overlay-editor.md` |
 | 애니메이션/Blit/성능 | `19-animation-and-performance.md` |
+| 하이라이트 링/데미지 렌더링 | `20-highlight-rings-and-damage-rendering.md` |
 
 ### analyze/에 남아있는 참고 자료
 - `analyze/API.md` - 전체 API 레퍼런스 (대용량, 필요 시 직접 참조)
