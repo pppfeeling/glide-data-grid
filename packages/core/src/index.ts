@@ -73,13 +73,16 @@ export { sprites } from "./internal/data-grid/sprites.js";
 export { default as ImageWindowLoaderImpl } from "./common/image-window-loader.js";
 export * from "./data-editor/copy-paste.js";
 
-export { useRowGrouping } from "./data-editor/row-grouping-api.js";
+export { useRowGrouping, updateRowGroupingByPath, getRowGroupingForPath } from "./data-editor/row-grouping-api.js";
 export type {
     RowGroupingMapper,
     RowGroupingMapperResult,
     UseRowGroupingResult,
 } from "./data-editor/row-grouping-api.js";
 export type { RowGroup, RowGroupingOptions } from "./data-editor/row-grouping.js";
+
+export { treeCellRenderer } from "./cells/tree-cell.js";
+export type { TreeCell, TreeCellData } from "./cells/tree-cell.js";
 
 /**
  * @category DataEditor

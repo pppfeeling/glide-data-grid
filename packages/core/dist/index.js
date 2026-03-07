@@ -13268,7 +13268,7 @@ function _temp2$6() {
 function _temp$8(c) {
   return c.sourceIndex;
 }
-const DataGrid$1 = (p2, forwardedRef) => {
+const DataGrid = (p2, forwardedRef) => {
   var _p$translateX, _p$translateY, _experimental$eventTa;
   const {
     width,
@@ -13673,7 +13673,7 @@ const DataGrid$1 = (p2, forwardedRef) => {
     stickyShadow
   ] });
 };
-const DataGrid = React.memo(React.forwardRef(DataGrid$1));
+const DataGrid$1 = React.memo(React.forwardRef(DataGrid));
 function offsetColumnSize(column, width, min, max) {
   var _column$growOffset;
   return clamp$1(Math.round(width - ((_column$growOffset = column.growOffset) !== null && _column$growOffset !== void 0 ? _column$growOffset : 0)), Math.ceil(min), Math.floor(max));
@@ -14046,7 +14046,7 @@ const DataGridDnd = (p2) => {
   const t10 = resizeCol !== void 0;
   let t11;
   if ($2[66] !== canResize || $2[67] !== dragColActive || $2[68] !== dragOffset || $2[69] !== getMangledCellContent || $2[70] !== gridRef || $2[71] !== onDragStartImpl || $2[72] !== onHeaderIndicatorClickMangled || $2[73] !== onHeaderMenuClickMangled || $2[74] !== onItemHoveredImpl || $2[75] !== onMouseDownImpl || $2[76] !== onMouseMove || $2[77] !== onMouseUpImpl || $2[78] !== p2.accessibilityHeight || $2[79] !== p2.canvasRef || $2[80] !== p2.cellXOffset || $2[81] !== p2.cellYOffset || $2[82] !== p2.columns || $2[83] !== p2.disabledRows || $2[84] !== p2.drawCell || $2[85] !== p2.drawFocusRing || $2[86] !== p2.drawHeader || $2[87] !== p2.enableGroups || $2[88] !== p2.eventTargetRef || $2[89] !== p2.experimental || $2[90] !== p2.fillHandle || $2[91] !== p2.firstColAccessible || $2[92] !== p2.fixedShadowX || $2[93] !== p2.fixedShadowY || $2[94] !== p2.freezeColumns || $2[95] !== p2.freezeTrailingRows || $2[96] !== p2.getCellRenderer || $2[97] !== p2.getGroupDetails || $2[98] !== p2.getRowThemeOverride || $2[99] !== p2.groupHeaderHeight || $2[100] !== p2.groupHeaderHeights || $2[101] !== p2.groupLevels || $2[102] !== p2.hasAppendRow || $2[103] !== p2.headerHeight || $2[104] !== p2.headerIcons || $2[105] !== p2.height || $2[106] !== p2.highlightRegions || $2[107] !== p2.imageWindowLoader || $2[108] !== p2.isDraggable || $2[109] !== p2.isFilling || $2[110] !== p2.isFocused || $2[111] !== p2.onCanvasBlur || $2[112] !== p2.onCanvasFocused || $2[113] !== p2.onCellFocused || $2[114] !== p2.onContextMenu || $2[115] !== p2.onDragEnd || $2[116] !== p2.onDragLeave || $2[117] !== p2.onDragOverCell || $2[118] !== p2.onDrop || $2[119] !== p2.onKeyDown || $2[120] !== p2.onKeyUp || $2[121] !== p2.onMouseMove || $2[122] !== p2.prelightCells || $2[123] !== p2.resizeIndicator || $2[124] !== p2.rowHeight || $2[125] !== p2.rows || $2[126] !== p2.selection || $2[127] !== p2.smoothScrollX || $2[128] !== p2.smoothScrollY || $2[129] !== p2.theme || $2[130] !== p2.translateX || $2[131] !== p2.translateY || $2[132] !== p2.verticalBorder || $2[133] !== p2.width || $2[134] !== resizeCol || $2[135] !== t10) {
-    t11 = /* @__PURE__ */ jsx(DataGrid, { accessibilityHeight: p2.accessibilityHeight, canvasRef: p2.canvasRef, cellXOffset: p2.cellXOffset, cellYOffset: p2.cellYOffset, columns: p2.columns, disabledRows: p2.disabledRows, drawFocusRing: p2.drawFocusRing, drawHeader: p2.drawHeader, drawCell: p2.drawCell, enableGroups: p2.enableGroups, groupLevels: p2.groupLevels, groupHeaderHeights: p2.groupHeaderHeights, eventTargetRef: p2.eventTargetRef, experimental: p2.experimental, fillHandle: p2.fillHandle, firstColAccessible: p2.firstColAccessible, fixedShadowX: p2.fixedShadowX, fixedShadowY: p2.fixedShadowY, freezeColumns: p2.freezeColumns, getCellRenderer: p2.getCellRenderer, getGroupDetails: p2.getGroupDetails, getRowThemeOverride: p2.getRowThemeOverride, groupHeaderHeight: p2.groupHeaderHeight, headerHeight: p2.headerHeight, headerIcons: p2.headerIcons, height: p2.height, highlightRegions: p2.highlightRegions, imageWindowLoader: p2.imageWindowLoader, resizeColumn: resizeCol, isDraggable: p2.isDraggable, isFilling: p2.isFilling, isFocused: p2.isFocused, onCanvasBlur: p2.onCanvasBlur, onCanvasFocused: p2.onCanvasFocused, onCellFocused: p2.onCellFocused, onContextMenu: p2.onContextMenu, onDragEnd: p2.onDragEnd, onDragLeave: p2.onDragLeave, onDragOverCell: p2.onDragOverCell, onDrop: p2.onDrop, onKeyDown: p2.onKeyDown, onKeyUp: p2.onKeyUp, onMouseMove: p2.onMouseMove, prelightCells: p2.prelightCells, rowHeight: p2.rowHeight, rows: p2.rows, selection: p2.selection, smoothScrollX: p2.smoothScrollX, smoothScrollY: p2.smoothScrollY, theme: p2.theme, freezeTrailingRows: p2.freezeTrailingRows, hasAppendRow: p2.hasAppendRow, translateX: p2.translateX, translateY: p2.translateY, resizeIndicator: p2.resizeIndicator, verticalBorder: p2.verticalBorder, width: p2.width, getCellContent: getMangledCellContent, isResizing: t10, onHeaderMenuClick: onHeaderMenuClickMangled, onHeaderIndicatorClick: onHeaderIndicatorClickMangled, isDragging: dragColActive, onItemHovered: onItemHoveredImpl, onDragStart: onDragStartImpl, onMouseDown: onMouseDownImpl, allowResize: canResize, onMouseUp: onMouseUpImpl, dragAndDropState: dragOffset, onMouseMoveRaw: onMouseMove, ref: gridRef });
+    t11 = /* @__PURE__ */ jsx(DataGrid$1, { accessibilityHeight: p2.accessibilityHeight, canvasRef: p2.canvasRef, cellXOffset: p2.cellXOffset, cellYOffset: p2.cellYOffset, columns: p2.columns, disabledRows: p2.disabledRows, drawFocusRing: p2.drawFocusRing, drawHeader: p2.drawHeader, drawCell: p2.drawCell, enableGroups: p2.enableGroups, groupLevels: p2.groupLevels, groupHeaderHeights: p2.groupHeaderHeights, eventTargetRef: p2.eventTargetRef, experimental: p2.experimental, fillHandle: p2.fillHandle, firstColAccessible: p2.firstColAccessible, fixedShadowX: p2.fixedShadowX, fixedShadowY: p2.fixedShadowY, freezeColumns: p2.freezeColumns, getCellRenderer: p2.getCellRenderer, getGroupDetails: p2.getGroupDetails, getRowThemeOverride: p2.getRowThemeOverride, groupHeaderHeight: p2.groupHeaderHeight, headerHeight: p2.headerHeight, headerIcons: p2.headerIcons, height: p2.height, highlightRegions: p2.highlightRegions, imageWindowLoader: p2.imageWindowLoader, resizeColumn: resizeCol, isDraggable: p2.isDraggable, isFilling: p2.isFilling, isFocused: p2.isFocused, onCanvasBlur: p2.onCanvasBlur, onCanvasFocused: p2.onCanvasFocused, onCellFocused: p2.onCellFocused, onContextMenu: p2.onContextMenu, onDragEnd: p2.onDragEnd, onDragLeave: p2.onDragLeave, onDragOverCell: p2.onDragOverCell, onDrop: p2.onDrop, onKeyDown: p2.onKeyDown, onKeyUp: p2.onKeyUp, onMouseMove: p2.onMouseMove, prelightCells: p2.prelightCells, rowHeight: p2.rowHeight, rows: p2.rows, selection: p2.selection, smoothScrollX: p2.smoothScrollX, smoothScrollY: p2.smoothScrollY, theme: p2.theme, freezeTrailingRows: p2.freezeTrailingRows, hasAppendRow: p2.hasAppendRow, translateX: p2.translateX, translateY: p2.translateY, resizeIndicator: p2.resizeIndicator, verticalBorder: p2.verticalBorder, width: p2.width, getCellContent: getMangledCellContent, isResizing: t10, onHeaderMenuClick: onHeaderMenuClickMangled, onHeaderIndicatorClick: onHeaderIndicatorClickMangled, isDragging: dragColActive, onItemHovered: onItemHoveredImpl, onDragStart: onDragStartImpl, onMouseDown: onMouseDownImpl, allowResize: canResize, onMouseUp: onMouseUpImpl, dragAndDropState: dragOffset, onMouseMoveRaw: onMouseMove, ref: gridRef });
     $2[66] = canResize;
     $2[67] = dragColActive;
     $2[68] = dragOffset;
@@ -23357,6 +23357,202 @@ const DataEditorAllImpl = (p2, ref) => {
   return t2;
 };
 const DataEditorAll = React.forwardRef(DataEditorAllImpl);
+const DEFAULT_INDENT = 18;
+const DEFAULT_ICON_SIZE = 13;
+const treeCellRenderer = {
+  kind: GridCellKind.Custom,
+  isMatch: (c) => c.data.kind === "tree-cell",
+  needsHover: true,
+  needsHoverPosition: true,
+  draw: (args, cell) => {
+    var _theme$treeIndent, _theme$treeIconSize;
+    const {
+      ctx,
+      rect,
+      theme,
+      highlighted,
+      hoverX,
+      hoverY,
+      overrideCursor
+    } = args;
+    const {
+      text,
+      level,
+      child,
+      isExpanded,
+      last,
+      parentContinues
+    } = cell.data;
+    const indent = (_theme$treeIndent = theme.treeIndent) !== null && _theme$treeIndent !== void 0 ? _theme$treeIndent : DEFAULT_INDENT;
+    const iconSize = (_theme$treeIconSize = theme.treeIconSize) !== null && _theme$treeIconSize !== void 0 ? _theme$treeIconSize : DEFAULT_ICON_SIZE;
+    const leftPad = 8;
+    const x0 = rect.x + leftPad;
+    const cy = rect.y + rect.height / 2;
+    const slotX = (d2) => x0 + d2 * indent + indent / 2 + 0.5;
+    const textX = x0 + (level + 1) * indent + 4;
+    if (highlighted) {
+      ctx.fillStyle = theme.bgCell;
+      ctx.fillRect(rect.x, rect.y, textX - rect.x, rect.height);
+    }
+    ctx.save();
+    ctx.strokeStyle = "#bbb";
+    ctx.lineWidth = 1;
+    for (let d2 = 0; d2 < level; d2++) {
+      if (parentContinues[d2]) {
+        const lx = slotX(d2);
+        ctx.beginPath();
+        ctx.moveTo(lx, rect.y);
+        ctx.lineTo(lx, rect.y + rect.height);
+        ctx.stroke();
+      }
+    }
+    const connX = slotX(level);
+    if (child) {
+      const iconLeft = Math.round(connX - iconSize / 2 - 0.5);
+      const iconTop = Math.round(cy - iconSize / 2);
+      const relX = hoverX !== null && hoverX !== void 0 ? hoverX : -999;
+      const relY = hoverY !== null && hoverY !== void 0 ? hoverY : -999;
+      const isHovering = relX >= iconLeft - rect.x - 2 && relX <= iconLeft - rect.x + iconSize + 2 && relY >= iconTop - rect.y - 2 && relY <= iconTop - rect.y + iconSize + 2;
+      if (isHovering && overrideCursor !== void 0) overrideCursor("pointer");
+      ctx.fillStyle = isHovering ? "#e8f0fe" : theme.bgCell;
+      ctx.strokeStyle = "#888";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.rect(iconLeft + 0.5, iconTop + 0.5, iconSize, iconSize);
+      ctx.fill();
+      ctx.stroke();
+      ctx.strokeStyle = "#555";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(iconLeft + 3, cy);
+      ctx.lineTo(iconLeft + iconSize - 2, cy);
+      if (!isExpanded) {
+        ctx.moveTo(Math.round(connX), iconTop + 3);
+        ctx.lineTo(Math.round(connX), iconTop + iconSize - 2);
+      }
+      ctx.stroke();
+    } else {
+      ctx.strokeStyle = "#bbb";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(connX, rect.y);
+      ctx.lineTo(connX, last ? cy : rect.y + rect.height);
+      ctx.moveTo(connX, cy);
+      ctx.lineTo(textX - 2, cy);
+      ctx.stroke();
+    }
+    const maxTextWidth = rect.x + rect.width - textX - 4;
+    ctx.font = theme.baseFontFull;
+    ctx.fillStyle = theme.textDark;
+    ctx.textBaseline = "middle";
+    ctx.textAlign = "left";
+    ctx.beginPath();
+    ctx.rect(textX, rect.y, Math.max(0, maxTextWidth), rect.height);
+    ctx.clip();
+    ctx.fillText(text, textX, cy + getMiddleCenterBias(ctx, theme));
+    ctx.restore();
+    return true;
+  },
+  onClick: (args) => {
+    var _theme$treeIndent2, _theme$treeIconSize2;
+    const {
+      cell,
+      posX,
+      posY,
+      bounds,
+      theme,
+      preventDefault
+    } = args;
+    const {
+      child,
+      level,
+      onToggle
+    } = cell.data;
+    if (!child || onToggle === void 0) return void 0;
+    const indent = (_theme$treeIndent2 = theme.treeIndent) !== null && _theme$treeIndent2 !== void 0 ? _theme$treeIndent2 : DEFAULT_INDENT;
+    const iconSize = (_theme$treeIconSize2 = theme.treeIconSize) !== null && _theme$treeIconSize2 !== void 0 ? _theme$treeIconSize2 : DEFAULT_ICON_SIZE;
+    const leftPad = 8;
+    const x0 = bounds.x + leftPad;
+    const cy = bounds.y + bounds.height / 2;
+    const connX = x0 + level * indent + indent / 2 + 0.5;
+    const iconLeft = Math.round(connX - iconSize / 2 - 0.5);
+    const iconTop = Math.round(cy - iconSize / 2);
+    const absX = posX + bounds.x;
+    const absY = posY + bounds.y;
+    if (absX >= iconLeft - 2 && absX <= iconLeft + iconSize + 2 && absY >= iconTop - 2 && absY <= iconTop + iconSize + 2) {
+      onToggle();
+      preventDefault();
+    }
+    return void 0;
+  },
+  measure: (ctx, cell, theme) => {
+    var _theme$treeIndent3;
+    const {
+      text,
+      level
+    } = cell.data;
+    const indent = (_theme$treeIndent3 = theme.treeIndent) !== null && _theme$treeIndent3 !== void 0 ? _theme$treeIndent3 : DEFAULT_INDENT;
+    const textStart = 8 + (level + 1) * indent + 4;
+    return textStart + ctx.measureText(text).width + theme.cellHorizontalPadding;
+  },
+  getContentLeftOffset: (cell, theme) => {
+    var _theme$treeIndent4;
+    const indent = (_theme$treeIndent4 = theme.treeIndent) !== null && _theme$treeIndent4 !== void 0 ? _theme$treeIndent4 : DEFAULT_INDENT;
+    return 8 + (cell.data.level + 1) * indent + 4;
+  },
+  provideEditor: (cell) => {
+    const level = cell.data.level;
+    const leftOffset = 8 + (level + 1) * DEFAULT_INDENT + 4;
+    return {
+      editor: (p2) => {
+        const {
+          text
+        } = p2.value.data;
+        const [value, setValue] = React__default.useState(text);
+        return /* @__PURE__ */ jsx("input", { autoFocus: true, style: {
+          width: "100%",
+          height: "100%",
+          border: "none",
+          outline: "none",
+          padding: "0 8px",
+          fontSize: "inherit",
+          fontFamily: "inherit",
+          background: "transparent"
+        }, value, onChange: (e) => setValue(e.target.value), onKeyDown: (e) => {
+          if (e.key === "Enter") {
+            p2.onFinishedEditing({
+              ...p2.value,
+              copyData: value,
+              data: {
+                ...p2.value.data,
+                text: value
+              }
+            }, [0, 1]);
+          } else if (e.key === "Escape") {
+            p2.onFinishedEditing(void 0);
+          }
+        }, onBlur: () => {
+          p2.onFinishedEditing({
+            ...p2.value,
+            copyData: value,
+            data: {
+              ...p2.value.data,
+              text: value
+            }
+          });
+        } });
+      },
+      disablePadding: true,
+      styleOverride: {
+        marginLeft: leftOffset
+      }
+    };
+  },
+  onPaste: (val, data) => ({
+    ...data,
+    text: val
+  })
+};
 const NumberOverlayEditorStyle = /* @__PURE__ */ styled_default("div")({
   name: "NumberOverlayEditorStyle",
   class: "gdg-n1v9tqa4",
@@ -24516,6 +24712,7 @@ export {
   getEmHeight,
   getLuminance,
   getMiddleCenterBias,
+  getRowGroupingForPath,
   imageCellRenderer,
   interpolateColors,
   isEditableGridCell,
@@ -24540,6 +24737,8 @@ export {
   rowStatusCellRenderer,
   sprites,
   textCellRenderer,
+  treeCellRenderer,
+  updateRowGroupingByPath,
   uriCellRenderer,
   useColumnSizer,
   useRowGrouping,

@@ -1299,6 +1299,8 @@ export declare function getLuminance(color: string): number;
 /** @category Drawing */
 export declare function getMiddleCenterBias(ctx: CanvasRenderingContext2D, font: string | FullTheme): number;
 
+export declare function getRowGroupingForPath(rowGrouping: readonly RowGroup[], path: readonly number[]): RowGroup;
+
 export declare type GetRowThemeCallback = (row: number) => Partial<Theme> | undefined;
 
 /** @category Cells */
@@ -2157,6 +2159,23 @@ export declare interface Theme {
     treeIndent?: number;
     treeIconSize?: number;
 }
+
+export declare type TreeCell = CustomCell<TreeCellData>;
+
+export declare interface TreeCellData {
+    readonly kind: "tree-cell";
+    readonly text: string;
+    readonly level: number;
+    readonly child: boolean;
+    readonly isExpanded: boolean;
+    readonly last: boolean;
+    readonly parentContinues: readonly boolean[];
+    readonly onToggle?: () => void;
+}
+
+export declare const treeCellRenderer: CustomRenderer<TreeCell>;
+
+export declare function updateRowGroupingByPath(rowGrouping: readonly RowGroup[], path: readonly number[], update: Partial<RowGroup>): readonly RowGroup[];
 
 /** @category Cells */
 export declare interface UriCell extends BaseGridCell {
