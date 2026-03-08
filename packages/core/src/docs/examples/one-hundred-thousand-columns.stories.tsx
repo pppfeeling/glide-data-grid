@@ -1,6 +1,7 @@
 import React from "react";
 import { DataEditorAll as DataEditor } from "../../data-editor-all.js";
-import { BeautifulWrapper, Description, useMockDataGenerator, defaultProps } from "../stories/utils.js";
+import { GridCellKind, type GridCell, type GridColumn, type Item } from "../../internal/data-grid/data-grid-types.js";
+import { BeautifulWrapper, Description, defaultProps } from "../stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
 
 export default {
@@ -25,7 +26,24 @@ export default {
 };
 
 export const OneHundredThousandCols: React.FC = () => {
-    const { cols, getCellContent } = useMockDataGenerator(100_000);
+    const cols = React.useMemo<GridColumn[]>(() => {
+        return Array.from({ length: 100_000 }, (_, index) => ({
+            id: `col-${index}`,
+            title: `Col ${index + 1}`,
+            width: 120,
+        }));
+    }, []);
+
+    const getCellContent = React.useCallback(([col, row]: Item): GridCell => {
+        const display = `R${row + 1} C${col + 1}`;
+        return {
+            kind: GridCellKind.Text,
+            data: display,
+            displayData: display,
+            allowOverlay: true,
+            readonly: true,
+        };
+    }, []);
 
     return <DataEditor {...defaultProps} getCellContent={getCellContent} columns={cols} rows={1000} />;
 };

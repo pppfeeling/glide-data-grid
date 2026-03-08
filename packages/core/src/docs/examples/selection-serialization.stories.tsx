@@ -99,7 +99,6 @@ export const SelectionSerialization: React.FC = () => {
                 </Description>
             }>
             <DataEditor
-                {...useMockDataGenerator(30, false)}
                 columns={cols}
                 getCellContent={getCellContent}
                 rows={10_000}
@@ -168,7 +167,6 @@ export const SelectionRoundTrip: React.FC = () => {
                 <div>
                     <h3>Original Selection</h3>
                     <DataEditor
-                        {...useMockDataGenerator(30, false)}
                         columns={cols}
                         getCellContent={getCellContent}
                         rows={1000}
@@ -181,7 +179,6 @@ export const SelectionRoundTrip: React.FC = () => {
                 <div>
                     <h3>Restored Selection</h3>
                     <DataEditor
-                        {...useMockDataGenerator(30, false)}
                         columns={cols}
                         getCellContent={getCellContent}
                         rows={1000}

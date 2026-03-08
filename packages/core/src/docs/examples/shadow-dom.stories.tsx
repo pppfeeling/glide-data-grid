@@ -9,7 +9,7 @@ import {
     defaultProps,
 } from "../stories/utils.js";
 import { SimpleThemeWrapper } from "../../stories/story-utils.js";
-import { createRoot } from "react-dom/client";
+import { createPortal } from "react-dom";
 
 export default {
     title: "Glide-Data-Grid/DataEditor Demos",
@@ -35,37 +35,59 @@ export default {
 export const ShadowDOM: React.FC = () => {
     const { cols, getCellContent } = useMockDataGenerator(20, false, false);
 
-    return (
-        <ShadowDOMWrapper
-            render={() => (
-                <DataEditor
-                    {...defaultProps}
-                    getCellContent={getCellContent}
-                    columns={cols}
-                    rows={1000}
-                    height={"100%"}
-                    rowMarkers="both"
-                />
-            )}
-        />
-    );
+    const renderEditor = React.useCallback(() => {
+        return (
+            <DataEditor
+                {...defaultProps}
+                getCellContent={getCellContent}
+                columns={cols}
+                rows={1000}
+                height={"100%"}
+                rowMarkers="both"
+            />
+        );
+    }, [cols, getCellContent]);
+
+    return <ShadowDOMWrapper render={renderEditor} />;
 };
 
-const copyStylesToShadowRoot = (shadowRoot: ShadowRoot) => {
+const cloneExternalStylesheet = (shadowRoot: ShadowRoot, sheet: CSSStyleSheet): void => {
+    if (!sheet.href) return;
+
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = sheet.href;
+
+    if (sheet.ownerNode instanceof HTMLLinkElement && sheet.ownerNode.crossOrigin) {
+        link.crossOrigin = sheet.ownerNode.crossOrigin;
+    }
+
+    shadowRoot.append(link);
+};
+
+const copyStylesToShadowRoot = (shadowRoot: ShadowRoot): void => {
     const styleElement = document.createElement("style");
+
     for (const sheet of document.styleSheets) {
         try {
-            if (sheet.cssRules !== undefined) {
-                // Check if cssRules are accessible
-                const rules = [...sheet.cssRules].map(rule => rule.cssText).join("\n");
-                styleElement.append(document.createTextNode(rules));
+            const rules = Array.from(sheet.cssRules, rule => rule.cssText).join("\n");
+            if (rules.length > 0) {
+                styleElement.append(document.createTextNode(`${rules}\n`));
             }
         } catch (error: unknown) {
+            if (error instanceof DOMException && error.name === "SecurityError") {
+                cloneExternalStylesheet(shadowRoot, sheet);
+                continue;
+            }
+
             // eslint-disable-next-line no-console
-            console.warn("Cannot access stylesheet rules due to CORS policy", error);
+            console.warn("Failed to copy stylesheet into shadow root", error);
         }
     }
-    shadowRoot.append(styleElement);
+
+    if (styleElement.childNodes.length > 0) {
+        shadowRoot.append(styleElement);
+    }
 };
 
 const ShadowDOMWrapper: React.FC<{
@@ -73,35 +95,33 @@ const ShadowDOMWrapper: React.FC<{
     render: () => React.ReactElement;
 }> = ({ className, render }) => {
     const hostRef = React.useRef<HTMLDivElement | null>(null);
-    const didMountRef = React.useRef(true);
+    const [portalContainer, setPortalContainer] = React.useState<HTMLDivElement | null>(null);
 
     React.useEffect(() => {
-        if (hostRef.current === null || didMountRef.current) {
-            didMountRef.current = false;
-            return;
-        }
+        if (hostRef.current === null) return;
 
         const host = hostRef.current;
-        const shadowRoot = host.attachShadow({ mode: "open" });
+        const shadowRoot = host.shadowRoot ?? host.attachShadow({ mode: "open" });
 
         (window as any).glideShadowRoot = shadowRoot;
 
+        shadowRoot.replaceChildren();
         copyStylesToShadowRoot(shadowRoot);
 
-        // Create a div to serve as the react root container inside the shadow DOM
         const reactRootContainer = document.createElement("div");
         reactRootContainer.style.height = "100%";
         shadowRoot.append(reactRootContainer);
+        setPortalContainer(reactRootContainer);
 
-        // Create a React root and render the children inside it
-        const root = createRoot(reactRootContainer);
-        root.render(<>{render()}</>);
-
-        // Clean up when the component unmounts
         return () => {
-            root.unmount();
+            shadowRoot.replaceChildren();
         };
-    }, [render]);
+    }, []);
 
-    return <div ref={hostRef} className={className} style={{ height: "100%" }} />;
+    return (
+        <>
+            <div ref={hostRef} className={className} style={{ height: "100%" }} />
+            {portalContainer === null ? null : createPortal(render(), portalContainer)}
+        </>
+    );
 };
